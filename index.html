@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WinTube - المنصة المتكاملة</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        body { background-color: #080808; color: white; font-family: 'Cairo', sans-serif; overflow-x: hidden; }
+        .glass { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(15px); border: 1px solid rgba(255,255,255,0.05); }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .hidden-panel { display: none !important; }
+        /* تصميم مودال الأفلام مثل نتفلكس */
+        #series-detail-modal { display: none; position: fixed; inset: 0; z-index: 500; background: #080808; overflow-y: auto; }
+    </style>
+</head>
+<body class="pb-24">
+
+    <header class="p-4 glass sticky top-0 z-[100] flex justify-between items-center px-6">
+        <h1 class="text-2xl font-black text-blue-600 tracking-tighter">WIN<span class="text-white">TUBE</span></h1>
+        <div class="flex items-center gap-2">
+            <button onclick="startQuiz()" class="bg-gradient-to-r from-blue-600 to-purple-600 text-[10px] px-3 py-1.5 rounded-2xl font-black animate-pulse">مسابقة 10 نقاط 🎁</button>
+            <div class="flex items-center gap-2 bg-yellow-500/10 px-3 py-1 rounded-2xl border border-yellow-500/30">
+                <i class="fas fa-coins text-yellow-500 text-xs"></i>
+                <span id="points-display" class="font-bold text-yellow-500 text-sm">0</span>
+            </div>
+        </div>
+    </header>
+
+    <div class="p-4 flex gap-3 overflow-x-auto no-scrollbar">
+        <button onclick="loadContent('all')" class="bg-blue-600 px-6 py-2 rounded-xl font-bold whitespace-nowrap">الكل</button>
+        <button onclick="loadContent('movie')" class="glass px-6 py-2 rounded-xl font-bold whitespace-nowrap">أفلام</button>
+        <button onclick="loadContent('series')" class="glass px-6 py-2 rounded-xl font-bold whitespace-nowrap">مسلسلات</button>
+        <button onclick="loadShorts()" class="glass px-6 py-2 rounded-xl font-bold whitespace-nowrap text-red-500">Shorts 🔥</button>
+        <button onclick="setupBettingGrid()" class="glass px-6 py-2 rounded-xl font-bold whitespace-nowrap text-yellow-500">الألعاب 🎱</button>
+    </div>
+
+    <div class="p-6">
+        <div id="content-grid" class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+            </div>
+    </div>
+
+    <div id="admin-panel" class="hidden-panel fixed inset-0 z-[1000] bg-[#080808] p-6 overflow-y-auto">
+        <div class="flex justify-between items-center mb-8">
+            <h2 class="text-2xl font-black">لوحة التحكم 🛠️</h2>
+            <button onclick="closeAdmin()" class="text-2xl">&times;</button>
+        </div>
+        
+        <div class="glass p-6 rounded-3xl space-y-4 mb-6">
+            <h3 class="font-bold text-blue-400">إضافة محتوى ذكي (API)</h3>
+            <div class="flex gap-2">
+                <input type="text" id="up-title" placeholder="اسم الفيلم بالإنجليزية" class="flex-1 p-4 rounded-xl bg-white/5 border border-white/10">
+                <button onclick="fetchTMDBData()" class="bg-blue-600 px-4 rounded-xl text-xs font-bold">جلب ✨</button>
+            </div>
+            <div class="grid grid-cols-2 gap-2">
+                <input type="text" id="up-year" placeholder="السنة" class="p-4 rounded-xl bg-white/5 border border-white/10 text-xs">
+                <input type="text" id="up-rating" placeholder="التقييم" class="p-4 rounded-xl bg-white/5 border border-white/10 text-xs">
+            </div>
+            <input type="text" id="up-poster" placeholder="رابط البوستر" class="w-full p-4 rounded-xl bg-white/5 border border-white/10 text-xs">
+            <textarea id="up-desc" placeholder="الوصف" class="w-full p-4 rounded-xl bg-white/5 border border-white/10 h-20 text-xs"></textarea>
+            <input type="text" id="up-link" placeholder="رابط الفيديو (درايف)" class="w-full p-4 rounded-xl bg-white/5 border border-white/10 text-xs">
+            <select id="up-type" class="w-full p-4 rounded-xl bg-white/5">
+                <option value="movie">فيلم</option>
+                <option value="series">مسلسل</option>
+            </select>
+            <button onclick="uploadContent()" class="w-full py-4 bg-green-600 rounded-2xl font-bold">نشر الآن 🚀</button>
+        </div>
+    </div>
+
+    <div id="series-detail-modal">
+        <div id="modal-bg" class="h-64 w-full bg-cover bg-center relative">
+            <div class="absolute inset-0 bg-gradient-to-t from-[#080808] to-transparent"></div>
+            <button onclick="closeModal('series-detail-modal')" class="absolute top-6 left-6 text-2xl">&times;</button>
+        </div>
+        <div class="p-6 -mt-12 relative">
+            <h2 id="modal-title" class="text-3xl font-black mb-2"></h2>
+            <div id="modal-info" class="text-sm text-gray-400 mb-6 italic"></div>
+            <p id="modal-desc" class="text-gray-300 text-sm mb-8 leading-relaxed"></p>
+            <button id="play-button" class="w-full py-4 bg-white text-black rounded-2xl font-bold text-lg mb-4">
+                <i class="fas fa-play ml-2"></i> مشاهدة الآن
+            </button>
+        </div>
+    </div>
+
+    <div id="game-lobby-modal" class="hidden-panel fixed inset-0 z-[500] bg-[#080808] p-6">
+        <div class="flex justify-between items-center mb-8">
+            <h2 class="text-2xl font-black text-yellow-500">ردهة الرهان 🎱</h2>
+            <button onclick="closeModal('game-lobby-modal')">&times;</button>
+        </div>
+        <div id="betting-grid" class="grid grid-cols-2 gap-4"></div>
+    </div>
+
+    <div id="shorts-container" class="hidden-panel fixed inset-0 z-[500] bg-black">
+        <button onclick="closeModal('shorts-container')" class="absolute top-6 right-6 z-[600] text-3xl">&times;</button>
+        <div id="shorts-wrapper" class="h-full overflow-y-scroll snap-y snap-mandatory no-scrollbar"></div>
+    </div>
+
+    <nav class="fixed bottom-0 left-0 right-0 glass p-4 flex justify-around text-gray-500 text-xl z-[100]">
+        <button onclick="location.reload()"><i class="fas fa-home text-blue-500"></i></button>
+        <button onclick="loadShorts()"><i class="fab fa-youtube"></i></button>
+        <button onclick="setupBettingGrid()"><i class="fas fa-gamepad"></i></button>
+        <button onclick="adminAuth()"><i class="fas fa-user-shield"></i></button>
+    </nav>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getFirestore, doc, getDoc, setDoc, updateDoc, increment, collection, addDoc, getDocs, query, where, orderBy } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCOV-2qbB6eFEU-myiTjlXbcE-bWhuqLQs",
+            authDomain: "wintube-8bcaa.firebaseapp.com",
+            projectId: "wintube-8bcaa",
+            storageBucket: "wintube-8bcaa.firebasestorage.app",
+            messagingSenderId: "459173658209",
+            appId: "1:459173658209:web:d1e5ddf04ecf548cc67420"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const auth = getAuth(app);
+        const TMDB_KEY = "ae8fc214afde0a123d40f5ad6e23de70";
+        const YT_API_KEY = "AIzaSyDNK9EJ5IQ2dFLBn1jUk1hslgOwwTBdvJ0";
+
+        let currentUser = null;
+
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                currentUser = user;
+                const userRef = doc(db, "users", user.uid);
+                const snap = await getDoc(userRef);
+                if (!snap.exists()) await setDoc(userRef, { points: 10, uid: user.uid });
+                document.getElementById('points-display').innerText = snap.exists() ? snap.data().points : 10;
+                loadContent('all');
+            } else {
+                signInAnonymously(auth);
+            }
+        });
+
+        // --- وظائف الأدمن ---
+        window.adminAuth = () => {
+            const pass = prompt("أدخل كلمة مرور الإدارة:");
+            if(pass === "1234") document.getElementById('admin-panel').classList.remove('hidden-panel');
+            else alert("خطأ!");
+        };
+
+        window.fetchTMDBData = async () => {
+            const title = document.getElementById('up-title').value;
+            const res = await fetch(`https://api.themoviedb.org/3/search/multi?api_key=${TMDB_KEY}&query=${title}&language=ar`);
+            const data = await res.json();
+            if(data.results[0]) {
+                const item = data.results[0];
+                document.getElementById('up-title').value = item.title || item.name;
+                document.getElementById('up-year').value = (item.release_date || item.first_air_date || "").split('-')[0];
+                document.getElementById('up-rating').value = item.vote_average.toFixed(1);
+                document.getElementById('up-poster').value = `https://image.tmdb.org/t/p/w500${item.poster_path}`;
+                document.getElementById('up-desc').value = item.overview;
+                alert("تم جلب البيانات بنجاح!");
+            }
+        };
+
+        window.uploadContent = async () => {
+            await addDoc(collection(db, "content"), {
+                title: document.getElementById('up-title').value,
+                year: document.getElementById('up-year').value,
+                rating: document.getElementById('up-rating').value,
+                poster: document.getElementById('up-poster').value,
+                desc: document.getElementById('up-desc').value,
+                link: document.getElementById('up-link').value,
+                type: document.getElementById('up-type').value,
+                timestamp: new Date()
+            });
+            alert("تم النشر!");
+            location.reload();
+        };
+
+        // --- وظائف العرض ---
+        window.loadContent = async (type) => {
+            const grid = document.getElementById('content-grid');
+            grid.innerHTML = "<p class='col-span-full text-center p-10 opacity-50'>جاري التحميل...</p>";
+            
+            let q = query(collection(db, "content"), orderBy("timestamp", "desc"));
+            if (type !== 'all') q = query(collection(db, "content"), where("type", "==", type));
+            
+            const snap = await getDocs(q);
+            grid.innerHTML = "";
+            snap.forEach(d => {
+                const item = d.data();
+                const div = document.createElement('div');
+                div.className = "movie-card glass rounded-xl overflow-hidden aspect-[2/3] relative group cursor-pointer";
+                div.innerHTML = `
+                    <img src="${item.poster}" class="w-full h-full object-cover">
+                    <div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 flex flex-col justify-end p-3 transition-all">
+                        <p class="text-xs font-bold">${item.title}</p>
+                        <p class="text-[10px] text-yellow-500">⭐ ${item.rating}</p>
+                    </div>
+                `;
+                div.onclick = () => openDetails(item);
+                grid.appendChild(div);
+            });
+        };
+
+        window.openDetails = (item) => {
+            document.getElementById('modal-title').innerText = item.title;
+            document.getElementById('modal-info').innerText = `${item.year} | ⭐ ${item.rating} | ${item.type === 'movie' ? 'فيلم' : 'مسلسل'}`;
+            document.getElementById('modal-desc').innerText = item.desc;
+            document.getElementById('modal-bg').style.backgroundImage = `url(${item.poster})`;
+            document.getElementById('play-button').onclick = () => window.open(item.link, '_blank');
+            document.getElementById('series-detail-modal').style.display = 'block';
+        };
+
+        // --- وظائف Shorts ---
+        window.loadShorts = async () => {
+            const wrapper = document.getElementById('shorts-wrapper');
+            wrapper.innerHTML = "";
+            const res = await fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=10&q=funny-shorts&type=video&videoDuration=short&key=${YT_API_KEY}`);
+            const data = await res.json();
+            data.items.forEach(item => {
+                const div = document.createElement('div');
+                div.className = "h-full w-full snap-start relative bg-black";
+                div.innerHTML = `<iframe class="w-full h-full" src="https://www.youtube.com/embed/${item.id.videoId}?autoplay=1&controls=0&modestbranding=1" frameborder="0"></iframe>`;
+                wrapper.appendChild(div);
+            });
+            document.getElementById('shorts-container').classList.remove('hidden-panel');
+        };
+
+        window.closeModal = (id) => document.getElementById(id).style.display = 'none';
+        window.closeAdmin = () => document.getElementById('admin-panel').classList.add('hidden-panel');
+    </script>
+</body>
+</html>
+
