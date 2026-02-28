@@ -1,116 +1,160 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WinTube Pro</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <style>
-        body { background-color: #050505; color: white; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; overflow-x: hidden; }
-        .glass { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(15px); border: 1px solid rgba(255,255,255,0.05); }
-        .section { display: none; min-height: 100vh; padding-bottom: 100px; }
-        .section.active { display: block; }
-        .nav-btn.active { color: #3b82f6; transform: scale(1.2); }
-    </style>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>WinTube</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+
+<style>
+
+body{
+background:#050505;
+color:white;
+font-family:Segoe UI;
+}
+
+.card{
+background:#111;
+border-radius:16px;
+overflow:hidden;
+cursor:pointer;
+transition:.3s;
+}
+
+.card:hover{
+transform:scale(1.05);
+}
+
+</style>
+
 </head>
+
 <body>
 
-    <header class="p-4 glass sticky top-0 z-[100] flex justify-between items-center px-6">
-        <h1 class="text-2xl font-black text-blue-600">WIN<span class="text-white">TUBE</span></h1>
-        <div class="flex items-center gap-3">
-            <div class="bg-yellow-500/10 px-3 py-1 rounded-full border border-yellow-500/30 text-yellow-500 text-sm font-bold">⭐ <span id="user-pts">10</span></div>
-        </div>
-    </header>
+<header class="p-4 flex justify-between items-center">
 
-    <main id="home-sec" class="section active p-4">
-        <div id="movies-grid" class="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <div class="col-span-2 text-center py-20 opacity-40">
-                <i class="fas fa-film text-5xl mb-4"></i>
-                <p>لا توجد أفلام حالياً.. ارفع أول فيلم من لوحة الأدمن!</p>
-            </div>
-        </div>
-    </main>
+<h1 class="text-2xl font-bold text-blue-500">
+WIN<span class="text-white">TUBE</span>
+</h1>
 
-    <section id="games-sec" class="section p-4">
-        <h2 class="text-2xl font-bold mb-6">ردهة الألعاب والرهان 🎮</h2>
-        <div class="grid gap-4">
-            <div class="glass p-6 rounded-3xl flex justify-between items-center">
-                <div>
-                    <h3 class="font-bold">بطولة البلياردو 🎱</h3>
-                    <p class="text-xs text-gray-400">رهان: 5 نقاط | الربح: 10 نقاط</p>
-                </div>
-                <button onclick="alert('سيبدأ التحدي قريباً!')" class="bg-blue-600 px-6 py-2 rounded-xl text-sm font-bold">دخول</button>
-            </div>
-            <div class="glass p-6 rounded-3xl flex justify-between items-center">
-                <div>
-                    <h3 class="font-bold">سباق السرعة 🏎️</h3>
-                    <p class="text-xs text-gray-400">مجانية | تدريب</p>
-                </div>
-                <button class="bg-white/10 px-6 py-2 rounded-xl text-sm font-bold">لعب</button>
-            </div>
-        </div>
-    </section>
+<div class="bg-yellow-500/10 px-3 py-1 rounded-full text-yellow-500">
+⭐ <span id="points">0</span>
+</div>
 
-    <section id="shorts-sec" class="section">
-        <div class="h-[80vh] flex flex-col items-center justify-center text-center p-10">
-            <i class="fab fa-youtube text-6xl text-red-600 mb-4"></i>
-            <h2 class="text-xl font-bold">قريباً: WinShorts</h2>
-            <p class="text-gray-400 text-sm mt-2">نحن الآن نربط الموقع بسيرفرات اليوتيوب لجلب أحدث المقاطع.</p>
-        </div>
-    </section>
+</header>
 
-    <section id="admin-sec" class="section p-6">
-        <h2 class="text-2xl font-bold mb-6">لوحة الإدارة 🛠️</h2>
-        <div class="glass p-6 rounded-3xl space-y-4">
-            <input type="text" id="m-title" placeholder="اسم الفيلم أو المسلسل" class="w-full p-4 bg-white/5 rounded-2xl border border-white/10 outline-none focus:border-blue-500">
-            <input type="text" id="m-poster" placeholder="رابط صورة البوستر" class="w-full p-4 bg-white/5 rounded-2xl border border-white/10 outline-none">
-            <input type="text" id="m-url" placeholder="رابط فيديو الفيلم" class="w-full p-4 bg-white/5 rounded-2xl border border-white/10 outline-none">
-            <button onclick="addMovie()" class="w-full py-4 bg-blue-600 rounded-2xl font-bold hover:bg-blue-700 transition">نشر المحتوى الآن</button>
-        </div>
-    </section>
 
-    <nav class="fixed bottom-0 left-0 right-0 glass p-4 flex justify-around items-center z-[200]">
-        <button onclick="showSec('home-sec')" class="nav-btn active text-2xl"><i class="fas fa-home"></i></button>
-        <button onclick="showSec('games-sec')" class="nav-btn text-2xl"><i class="fas fa-gamepad"></i></button>
-        <button onclick="showSec('shorts-sec')" class="nav-btn text-2xl"><i class="fab fa-youtube"></i></button>
-        <button onclick="adminAuth()" class="nav-btn text-2xl"><i class="fas fa-user-shield"></i></button>
-    </nav>
+<main class="p-4">
 
-    <script>
-        // دالة التنقل بين الأقسام
-        function showSec(id) {
-            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-            document.getElementById(id).classList.add('active');
-            event.currentTarget.classList.add('active');
-        }
+<h2 class="text-xl mb-4">Trending Videos</h2>
 
-        // حماية لوحة الأدمن
-        function adminAuth() {
-            const pass = prompt("كلمة مرور الإدارة:");
-            if(pass === "1234") showSec('admin-sec');
-            else alert("عذراً، كلمة المرور خاطئة!");
-        }
+<div id="videos" class="grid grid-cols-2 md:grid-cols-4 gap-4"></div>
 
-        // دالة إضافة فيلم (وهمية حالياً لغرض التجربة حتى تربط Firebase مية مية)
-        function addMovie() {
-            const title = document.getElementById('m-title').value;
-            if(!title) return alert("يرجى كتابة الاسم");
-            
-            const grid = document.getElementById('movies-grid');
-            const card = `
-                <div class="glass rounded-2xl overflow-hidden animate-pulse">
-                    <div class="aspect-[2/3] bg-white/5 flex items-center justify-center">
-                        <i class="fas fa-image opacity-20"></i>
-                    </div>
-                    <div class="p-3 text-sm font-bold text-center">${title}</div>
-                </div>
-            `;
-            grid.innerHTML = card + grid.innerHTML;
-            alert("تم النشر بنجاح! سيظهر الفيلم للجميع.");
-            showSec('home-sec');
-        }
-    </script>
+</main>
+
+
+<script>
+
+// Firebase
+
+const firebaseConfig = {
+
+apiKey: "AIzaSyCOV-2qbB6eFEU-myiTjlXbcE-bWhuqLQs",
+
+authDomain: "wintube-8bcaa.firebaseapp.com",
+
+projectId: "wintube-8bcaa",
+
+storageBucket: "wintube-8bcaa.firebasestorage.app",
+
+messagingSenderId: "459173658209",
+
+appId: "1:459173658209:web:d1e5ddf04ecf548cc67420"
+
+}
+
+firebase.initializeApp(firebaseConfig)
+
+const db = firebase.firestore()
+
+
+
+
+// YouTube API
+
+const API_KEY = "AIzaSyDNK9EJ5IQ2dFLBn1jUk1hslgOwwTBdvJ0"
+
+
+
+async function loadVideos(){
+
+const res = await fetch(
+
+`https://www.googleapis.com/youtube/v3/search?part=snippet&chart=mostPopular&maxResults=12&type=video&key=${API_KEY}`
+
+)
+
+const data = await res.json()
+
+const container = document.getElementById("videos")
+
+data.items.forEach(v=>{
+
+const videoId = v.id.videoId
+
+const title = v.snippet.title
+
+const thumb = v.snippet.thumbnails.high.url
+
+
+container.innerHTML += `
+
+<div class="card" onclick="watch('${videoId}')">
+
+<img src="${thumb}" style="width:100%;height:180px;object-fit:cover">
+
+<div style="padding:10px;font-size:14px">${title}</div>
+
+</div>
+
+`
+
+})
+
+}
+
+loadVideos()
+
+
+
+
+// نقاط المشاهدة
+
+let pts = 0
+
+function watch(id){
+
+window.open(`https://www.youtube.com/watch?v=${id}`)
+
+setInterval(()=>{
+
+pts+=2
+
+document.getElementById("points").innerText = pts
+
+},30000)
+
+}
+
+</script>
+
+
 </body>
 </html>
