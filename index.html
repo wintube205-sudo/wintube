@@ -53,16 +53,23 @@ WIN<span class="text-white">TUBE</span>
 
 <main class="p-4">
 
-<h2 class="text-xl mb-4">Trending Videos</h2>
+<h2 class="text-xl mb-4">YouTube Videos</h2>
 
 <div id="videos" class="grid grid-cols-2 md:grid-cols-4 gap-4"></div>
+
+
+<h2 class="text-xl mt-10 mb-4">Movies</h2>
+
+<div id="movies" class="grid grid-cols-2 md:grid-cols-4 gap-4"></div>
 
 </main>
 
 
 <script>
 
+////////////////////////////
 // Firebase
+////////////////////////////
 
 const firebaseConfig = {
 
@@ -86,19 +93,16 @@ const db = firebase.firestore()
 
 
 
-
+////////////////////////////
 // YouTube API
+////////////////////////////
 
-const API_KEY = "AIzaSyDNK9EJ5IQ2dFLBn1jUk1hslgOwwTBdvJ0"
-
-
+const YOUTUBE_KEY = "AIzaSyDNK9EJ5IQ2dFLBn1jUk1hslgOwwTBdvJ0"
 
 async function loadVideos(){
 
 const res = await fetch(
-
-`https://www.googleapis.com/youtube/v3/search?part=snippet&chart=mostPopular&maxResults=12&type=video&key=${API_KEY}`
-
+`https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=8&q=gaming&type=video&key=${YOUTUBE_KEY}`
 )
 
 const data = await res.json()
@@ -112,7 +116,6 @@ const videoId = v.id.videoId
 const title = v.snippet.title
 
 const thumb = v.snippet.thumbnails.high.url
-
 
 container.innerHTML += `
 
@@ -134,8 +137,9 @@ loadVideos()
 
 
 
-
-// نقاط المشاهدة
+////////////////////////////
+// Points System
+////////////////////////////
 
 let pts = 0
 
@@ -152,6 +156,105 @@ document.getElementById("points").innerText = pts
 },30000)
 
 }
+
+
+
+////////////////////////////
+// TMDB API
+////////////////////////////
+
+const TMDB_KEY = "ae8fc214afde0a123d40f5ad6e23de70"
+
+async function searchMovie(){
+
+const name = prompt("Movie name")
+
+const res = await fetch(
+`https://api.themoviedb.org/3/search/movie?api_key=${TMDB_KEY}&query=${name}`
+)
+
+const data = await res.json()
+
+const movie = data.results[0]
+
+const poster = "https://image.tmdb.org/t/p/w500"+movie.poster_path
+
+const drive = prompt("Google Drive video link")
+
+db.collection("movies").add({
+
+title:movie.title,
+
+poster:poster,
+
+url:drive
+
+})
+
+}
+
+
+
+////////////////////////////
+// Load Movies
+////////////////////////////
+
+db.collection("movies").onSnapshot((data)=>{
+
+const container = document.getElementById("movies")
+
+container.innerHTML=""
+
+data.forEach(doc=>{
+
+const m = doc.data()
+
+container.innerHTML += `
+
+<div class="card" onclick="playMovie('${m.url}')">
+
+<img src="${m.poster}" style="width:100%;height:180px;object-fit:cover">
+
+<div style="padding:10px;font-size:14px">${m.title}</div>
+
+</div>
+
+`
+
+})
+
+})
+
+
+
+function playMovie(url){
+
+window.open(url)
+
+}
+
+
+
+////////////////////////////
+// Admin Add Movie
+////////////////////////////
+
+document.addEventListener("keydown",function(e){
+
+if(e.key==="a"){
+
+const pass = prompt("Admin password")
+
+if(pass==="1234"){
+
+searchMovie()
+
+}
+
+}
+
+})
+
 
 </script>
 
