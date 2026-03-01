@@ -1,263 +1,163 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
+<script type="module">
 
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js"
+import { getFirestore,collection,addDoc,getDocs,updateDoc,doc,setDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js"
+import { getAuth,signInAnonymously,onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js"
 
-<title>WinTube</title>
-
-<script src="https://cdn.tailwindcss.com"></script>
-
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-
-<style>
-
-body{
-background:#050505;
-color:white;
-font-family:Segoe UI;
+const firebaseConfig={
+apiKey:"AIzaSyCOV-2qbB6eFEU-myiTjlXbcE-bWhuqLQs",
+authDomain:"wintube-8bcaa.firebaseapp.com",
+projectId:"wintube-8bcaa",
+storageBucket:"wintube-8bcaa.firebasestorage.app",
+messagingSenderId:"459173658209",
+appId:"1:459173658209:web:d1e5ddf04ecf548cc67420"
 }
 
-.card{
-background:#111;
-border-radius:16px;
-overflow:hidden;
-cursor:pointer;
-transition:.3s;
-}
+const app=initializeApp(firebaseConfig)
 
-.card:hover{
-transform:scale(1.05);
-}
+const db=getFirestore(app)
 
-</style>
+const auth=getAuth(app)
 
-</head>
+let uid=null
+let points=0
 
-<body>
+signInAnonymously(auth)
 
-<header class="p-4 flex justify-between items-center">
+onAuthStateChanged(auth,async(user)=>{
 
-<h1 class="text-2xl font-bold text-blue-500">
-WIN<span class="text-white">TUBE</span>
-</h1>
+uid=user.uid
 
-<div class="bg-yellow-500/10 px-3 py-1 rounded-full text-yellow-500">
-⭐ <span id="points">0</span>
-</div>
+const userRef=doc(db,"users",uid)
 
-</header>
+await setDoc(userRef,{points:0},{merge:true})
 
+loadPoints()
 
-<main class="p-4">
+})
 
-<h2 class="text-xl mb-4">YouTube Videos</h2>
+async function loadPoints(){
 
-<div id="videos" class="grid grid-cols-2 md:grid-cols-4 gap-4"></div>
+const querySnapshot=await getDocs(collection(db,"users"))
 
+querySnapshot.forEach((docu)=>{
 
-<h2 class="text-xl mt-10 mb-4">Movies</h2>
+if(docu.id===uid){
 
-<div id="movies" class="grid grid-cols-2 md:grid-cols-4 gap-4"></div>
-
-</main>
-
-
-<script>
-
-////////////////////////////
-// Firebase
-////////////////////////////
-
-const firebaseConfig = {
-
-apiKey: "AIzaSyCOV-2qbB6eFEU-myiTjlXbcE-bWhuqLQs",
-
-authDomain: "wintube-8bcaa.firebaseapp.com",
-
-projectId: "wintube-8bcaa",
-
-storageBucket: "wintube-8bcaa.firebasestorage.app",
-
-messagingSenderId: "459173658209",
-
-appId: "1:459173658209:web:d1e5ddf04ecf548cc67420"
+points=docu.data().points||0
+document.getElementById("points").innerText=points
 
 }
 
-firebase.initializeApp(firebaseConfig)
+})
 
-const db = firebase.firestore()
+}
 
+async function addPoints(p){
 
+points+=p
 
-////////////////////////////
-// YouTube API
-////////////////////////////
+document.getElementById("points").innerText=points
 
-const YOUTUBE_KEY = "AIzaSyDNK9EJ5IQ2dFLBn1jUk1hslgOwwTBdvJ0"
+await updateDoc(doc(db,"users",uid),{
+points:points
+})
 
-async function loadVideos(){
+}
 
-const res = await fetch(
-`https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=8&q=gaming&type=video&key=${YOUTUBE_KEY}`
-)
+window.rewardGame=function(){
 
-const data = await res.json()
+addPoints(8)
 
-const container = document.getElementById("videos")
+}
 
-data.items.forEach(v=>{
+window.spin=function(){
 
-const videoId = v.id.videoId
+let rewards=[2,4,6,10,20]
 
-const title = v.snippet.title
+let r=rewards[Math.floor(Math.random()*rewards.length)]
 
-const thumb = v.snippet.thumbnails.high.url
+addPoints(r)
 
-container.innerHTML += `
+document.getElementById("spin-result").innerText="You won "+r+" points"
 
-<div class="card" onclick="watch('${videoId}')">
+}
 
-<img src="${thumb}" style="width:100%;height:180px;object-fit:cover">
+window.withdraw=async function(){
 
-<div style="padding:10px;font-size:14px">${title}</div>
+let amount=parseInt(document.getElementById("amount").value)
 
-</div>
+if(amount>points)return alert("not enough points")
 
+points-=amount
+
+await updateDoc(doc(db,"users",uid),{points:points})
+
+await addDoc(collection(db,"withdraws"),{
+
+user:uid,
+amount:amount,
+method:document.getElementById("method").value,
+status:"pending",
+time:Date.now()
+
+})
+
+alert("withdraw request sent")
+
+}
+
+window.addMovie=async function(){
+
+let title=document.getElementById("movieTitle").value
+let url=document.getElementById("movieDrive").value
+
+await addDoc(collection(db,"movies"),{
+
+title:title,
+url:url
+
+})
+
+loadMovies()
+
+}
+
+async function loadMovies(){
+
+let div=document.getElementById("movies")
+
+div.innerHTML=""
+
+const snap=await getDocs(collection(db,"movies"))
+
+snap.forEach((d)=>{
+
+let m=d.data()
+
+let card=document.createElement("div")
+
+card.className="card"
+
+card.innerHTML=`
+<h3>${m.title}</h3>
+<button onclick="watch('${m.url}')">Watch</button>
 `
 
-})
-
-}
-
-loadVideos()
-
-
-
-////////////////////////////
-// Points System
-////////////////////////////
-
-let pts = 0
-
-function watch(id){
-
-window.open(`https://www.youtube.com/watch?v=${id}`)
-
-setInterval(()=>{
-
-pts+=2
-
-document.getElementById("points").innerText = pts
-
-},30000)
-
-}
-
-
-
-////////////////////////////
-// TMDB API
-////////////////////////////
-
-const TMDB_KEY = "ae8fc214afde0a123d40f5ad6e23de70"
-
-async function searchMovie(){
-
-const name = prompt("Movie name")
-
-const res = await fetch(
-`https://api.themoviedb.org/3/search/movie?api_key=${TMDB_KEY}&query=${name}`
-)
-
-const data = await res.json()
-
-const movie = data.results[0]
-
-const poster = "https://image.tmdb.org/t/p/w500"+movie.poster_path
-
-const drive = prompt("Google Drive video link")
-
-db.collection("movies").add({
-
-title:movie.title,
-
-poster:poster,
-
-url:drive
+div.appendChild(card)
 
 })
 
 }
 
+window.watch=function(url){
 
-
-////////////////////////////
-// Load Movies
-////////////////////////////
-
-db.collection("movies").onSnapshot((data)=>{
-
-const container = document.getElementById("movies")
-
-container.innerHTML=""
-
-data.forEach(doc=>{
-
-const m = doc.data()
-
-container.innerHTML += `
-
-<div class="card" onclick="playMovie('${m.url}')">
-
-<img src="${m.poster}" style="width:100%;height:180px;object-fit:cover">
-
-<div style="padding:10px;font-size:14px">${m.title}</div>
-
-</div>
-
-`
-
-})
-
-})
-
-
-
-function playMovie(url){
+addPoints(2)
 
 window.open(url)
 
 }
 
-
-
-////////////////////////////
-// Admin Add Movie
-////////////////////////////
-
-document.addEventListener("keydown",function(e){
-
-if(e.key==="a"){
-
-const pass = prompt("Admin password")
-
-if(pass==="1234"){
-
-searchMovie()
-
-}
-
-}
-
-})
-
+loadMovies()
 
 </script>
-
-
-</body>
-</html>
