@@ -1,3 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<title>WinTube</title>
+
+<style>
+
+body{
+background:#0a0a0a;
+color:white;
+font-family:Arial;
+margin:0;
+}
+
+header{
+background:#111;
+padding:15px;
+display:flex;
+justify-content:space-between;
+}
+
+.points{
+background:#222;
+padding:6px 12px;
+border-radius:20px;
+}
+
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fill,minmax(200px,1fr));
+gap:20px;
+padding:20px;
+}
+
+.card{
+background:#141414;
+padding:10px;
+border-radius:10px;
+}
+
+button{
+background:#2563eb;
+border:none;
+padding:10px;
+color:white;
+border-radius:6px;
+cursor:pointer;
+}
+
+.admin{
+padding:20px;
+border-top:1px solid #333;
+}
+
+input,select{
+padding:10px;
+width:100%;
+margin-bottom:10px;
+background:#111;
+color:white;
+border:1px solid #333;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<header>
+
+<h2>WinTube</h2>
+
+<div class="points">
+⭐ <span id="points">0</span>
+</div>
+
+</header>
+
+<div class="grid" id="movies"></div>
+
+<div class="admin">
+
+<h3>Admin Panel</h3>
+
+<input id="movieTitle" placeholder="movie name">
+
+<input id="movieDrive" placeholder="google drive link">
+
+<button onclick="addMovie()">Upload Movie</button>
+
+<hr>
+
+<h3>Spin</h3>
+
+<button onclick="spin()">Spin</button>
+
+<div id="spin-result"></div>
+
+<hr>
+
+<h3>Withdraw</h3>
+
+<input id="amount" placeholder="points">
+
+<select id="method">
+
+<option>USDT</option>
+<option>ZainCash</option>
+<option>Asiacell</option>
+<option>MasterCard</option>
+
+</select>
+
+<button onclick="withdraw()">Request Withdraw</button>
+
+</div>
+
 <script type="module">
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js"
@@ -59,15 +181,7 @@ points+=p
 
 document.getElementById("points").innerText=points
 
-await updateDoc(doc(db,"users",uid),{
-points:points
-})
-
-}
-
-window.rewardGame=function(){
-
-addPoints(8)
+await updateDoc(doc(db,"users",uid),{points:points})
 
 }
 
@@ -79,7 +193,7 @@ let r=rewards[Math.floor(Math.random()*rewards.length)]
 
 addPoints(r)
 
-document.getElementById("spin-result").innerText="You won "+r+" points"
+document.getElementById("spin-result").innerText="You won "+r
 
 }
 
@@ -87,7 +201,7 @@ window.withdraw=async function(){
 
 let amount=parseInt(document.getElementById("amount").value)
 
-if(amount>points)return alert("not enough points")
+if(amount>points)return alert("not enough")
 
 points-=amount
 
@@ -103,7 +217,7 @@ time:Date.now()
 
 })
 
-alert("withdraw request sent")
+alert("request sent")
 
 }
 
@@ -161,3 +275,6 @@ window.open(url)
 loadMovies()
 
 </script>
+
+</body>
+</html>
