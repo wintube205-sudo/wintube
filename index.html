@@ -145,22 +145,22 @@ main { padding:clamp(1rem,3vw,2rem); }
 
 /* ══ VIDEO MODAL ══ */
 .modal-overlay {
-  position:fixed; inset:0; background:rgba(0,0,0,.92); z-index:1000;
+  position:fixed; inset:0; background:rgba(0,0,0,.96); z-index:1000;
   display:flex; align-items:center; justify-content:center;
-  padding:clamp(.4rem,2vw,1rem); opacity:0; pointer-events:none; transition:opacity .3s;
+  opacity:0; pointer-events:none; transition:opacity .3s;
 }
 .modal-overlay.open { opacity:1; pointer-events:all; }
 .modal {
   background:var(--card); border:1px solid var(--border);
-  border-radius:clamp(8px,2vw,16px); width:100%; max-width:900px;
-  overflow:hidden; transform:scale(.95); transition:transform .3s;
-  max-height:calc(100dvh - 1rem); display:flex; flex-direction:column;
+  border-radius:0; width:100%; height:100%;
+  overflow:hidden; display:flex; flex-direction:column;
+  transform:translateY(20px); transition:transform .3s;
 }
-.modal-overlay.open .modal { transform:scale(1); }
+.modal-overlay.open .modal { transform:translateY(0); }
 .modal-header {
   display:flex; align-items:center; gap:.7rem;
-  padding:clamp(.6rem,2vw,.9rem) clamp(.8rem,2vw,1.3rem);
-  border-bottom:1px solid var(--border); flex-shrink:0; flex-wrap:wrap;
+  padding:clamp(.5rem,1.5vw,.85rem) clamp(.75rem,2vw,1.3rem);
+  border-bottom:1px solid var(--border); flex-shrink:0; flex-wrap:nowrap;
 }
 .close-btn {
   background:#222; border:none; color:#fff;
@@ -173,12 +173,29 @@ main { padding:clamp(1rem,3vw,2rem); }
   font-size:clamp(.78rem,2vw,.9rem); font-weight:600; flex:1;
   overflow:hidden; text-overflow:ellipsis; white-space:nowrap; min-width:0;
 }
-.iframe-wrap { aspect-ratio:16/9; background:#000; flex-shrink:0; }
-.iframe-wrap iframe { width:100%; height:100%; border:none; display:block; }
+/* iframe fills ALL remaining height after header */
+.iframe-wrap { flex:1; background:#000; min-height:0; position:relative; overflow:hidden; }
+.iframe-wrap #ytPlayerContainer { position:absolute; inset:0; width:100%; height:100%; }
+.iframe-wrap #ytPlayerContainer iframe { width:100% !important; height:100% !important; border:none; display:block; }
+/* pause indicator overlay */
+.pause-indicator {
+  position:absolute; inset:0; display:flex; flex-direction:column;
+  align-items:center; justify-content:center; gap:1rem;
+  background:rgba(0,0,0,.65); opacity:0; pointer-events:none;
+  transition:opacity .4s;
+}
+.pause-indicator.visible { opacity:1; }
+.pause-icon { font-size:4rem; }
+.pause-label {
+  color:#fff; font-family:'Cairo',sans-serif; font-size:1rem;
+  background:rgba(255,255,255,.1); border:1px solid rgba(255,255,255,.2);
+  border-radius:50px; padding:.45rem 1.4rem;
+}
 .modal-desc {
-  padding:clamp(.7rem,2vw,1rem) clamp(.8rem,2vw,1.3rem);
-  max-height:80px; overflow-y:auto;
-  font-size:clamp(.75rem,2vw,.83rem); line-height:1.7; color:#999;
+  padding:clamp(.5rem,1.5vw,.8rem) clamp(.75rem,2vw,1.3rem);
+  max-height:70px; overflow-y:auto; flex-shrink:0;
+  font-size:clamp(.72rem,1.8vw,.83rem); line-height:1.6; color:#999;
+  border-top:1px solid var(--border);
 }
 
 /* ══ POINTS COUNTER ══ */
@@ -452,8 +469,12 @@ main { padding:clamp(1rem,3vw,2rem); }
         </div>
       </div>
     </div>
-    <div class="iframe-wrap">
-      <iframe id="videoFrame" allowfullscreen allow="autoplay;encrypted-media"></iframe>
+    <div class="iframe-wrap" id="iframeWrap">
+      <div id="ytPlayerContainer"></div>
+      <div class="pause-indicator" id="pauseIndicator">
+        <div class="pause-icon">⏸️</div>
+        <div class="pause-label">العداد متوقف — استمر بالمشاهدة لكسب النقاط</div>
+      </div>
     </div>
     <div class="modal-desc" id="modalDesc"></div>
   </div>
@@ -575,7 +596,7 @@ function openModal(vid,title,desc){
 function closeModal(){
   clearInterval(watchTimer); watchTimer=null; timerSecs=30; drawRing();
   document.getElementById('modalOverlay').classList.remove('open');
-  document.getElementById('videoFrame').src='';
+  document.getElementById('ytPlayerContainer').innerHTML='';
 }
 function switchTab(tab){
   document.getElementById('loginForm').style.display=tab==='login'?'':'none';
@@ -656,10 +677,13 @@ function initApp() {
     document.getElementById('hAvatar').textContent=name[0].toUpperCase();
   }
 
-  // ── Timer ──
+  // ── Timer — only counts while video is PLAYING ──
+  var isPlaying = false;
+
   function startTimer(){
     stopTimer(); timerSecs=DEDUCT_EVERY; drawRing();
     watchTimer=setInterval(function(){
+      if(!isPlaying) return;          // paused → freeze counter
       timerSecs--; drawRing();
       if(timerSecs<=0){
         timerSecs=DEDUCT_EVERY;
@@ -673,8 +697,58 @@ function initApp() {
       }
     },1000);
   }
-  function stopTimer(){clearInterval(watchTimer);watchTimer=null;timerSecs=DEDUCT_EVERY;drawRing();}
+  function stopTimer(){
+    clearInterval(watchTimer);watchTimer=null;
+    isPlaying=false; timerSecs=DEDUCT_EVERY; drawRing();
+  }
+  function setPlaying(playing){
+    isPlaying=playing;
+    document.getElementById('pauseIndicator').classList.toggle('visible',!playing);
+  }
   function showToast(){var t=document.getElementById('toast');t.classList.add('show');setTimeout(function(){t.classList.remove('show');},1800);}
+
+  // ── YouTube IFrame API ──
+  var ytPlayer = null;
+  var ytReadyCbs = [];
+  function onYTReady(cb){ if(window.YT&&window.YT.Player){cb();}else{ytReadyCbs.push(cb);} }
+
+  // Load YouTube IFrame API once
+  if(!window._ytApiLoading){
+    window._ytApiLoading=true;
+    window.onYouTubeIframeAPIReady=function(){
+      ytReadyCbs.forEach(function(cb){cb();});
+      ytReadyCbs=[];
+    };
+    var ytScript=document.createElement('script');
+    ytScript.src='https://www.youtube.com/iframe_api';
+    document.head.appendChild(ytScript);
+  }
+
+  function createYTPlayer(videoId){
+    // destroy old player
+    if(ytPlayer){ try{ ytPlayer.destroy(); }catch(e){} ytPlayer=null; }
+    // reset container
+    var container = document.getElementById('ytPlayerContainer');
+    container.innerHTML = '';
+    onYTReady(function(){
+      ytPlayer = new YT.Player('ytPlayerContainer', {
+        videoId: videoId,
+        width:   '100%',
+        height:  '100%',
+        playerVars:{ autoplay:1, rel:0, modestbranding:1, playsinline:1 },
+        events:{
+          onStateChange: function(e){
+            if(e.data === YT.PlayerState.PLAYING){
+              setPlaying(true);
+            } else {
+              setPlaying(false);
+            }
+          },
+          onReady: function(e){ e.target.playVideo(); }
+        }
+      });
+    });
+  }
 
   function errMsg(code){
     var m={'auth/user-not-found':'البريد غير مسجّل','auth/wrong-password':'كلمة المرور خاطئة',
@@ -715,19 +789,21 @@ function initApp() {
 
   openModal = function(vid,title,desc){
     if(!currentUser){document.getElementById('authOverlay').classList.remove('hidden');return;}
-    if(userPoints<=0){document.getElementById('zeroOverlay').classList.add('open');return;}
-    document.getElementById('videoFrame').src='https://www.youtube.com/embed/'+vid+'?autoplay=1';
     document.getElementById('modalTitle').textContent=title;
     document.getElementById('modalDesc').textContent=desc;
     document.getElementById('modalPts').textContent=userPoints+' نقطة';
     document.getElementById('modalOverlay').classList.add('open');
+    setPlaying(false);
     startTimer();
+    createYTPlayer(vid);
   };
 
   closeModal = function(){
     stopTimer();
     document.getElementById('modalOverlay').classList.remove('open');
-    document.getElementById('videoFrame').src='';
+    document.getElementById('pauseIndicator').classList.remove('visible');
+    if(ytPlayer){ try{ ytPlayer.stopVideo(); ytPlayer.destroy(); }catch(e){} ytPlayer=null; }
+    document.getElementById('ytPlayerContainer').innerHTML='';
   };
 }
 </script>
