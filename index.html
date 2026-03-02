@@ -505,6 +505,142 @@ main { padding:clamp(1rem,3vw,2rem); }
   padding:2.5rem; width:100%; max-width:340px; text-align:center; margin:auto;
 }
 .admin-login-box .a-logo { font-family:'Bebas Neue',sans-serif; font-size:2rem; color:var(--red); letter-spacing:3px; display:block; margin-bottom:1.5rem; }
+
+/* ══ ADMIN TABS ══ */
+.admin-tabs { display:flex; gap:.5rem; margin-bottom:1.4rem; }
+.admin-tab-btn {
+  flex:1; padding:.55rem; border-radius:8px; border:1px solid var(--border);
+  background:transparent; color:var(--muted); font-family:'Cairo',sans-serif;
+  font-size:.85rem; cursor:pointer; transition:all .2s;
+}
+.admin-tab-btn.active { background:var(--red); border-color:var(--red); color:#fff; font-weight:700; }
+
+/* Add game form */
+.admin-form-row { display:flex; flex-direction:column; gap:.5rem; margin-bottom:1rem; }
+.admin-form-label { font-size:.8rem; color:var(--muted); }
+.admin-form-input {
+  background:#0a0a0a; border:1px solid var(--border); color:var(--text);
+  padding:.7rem 1rem; border-radius:10px; font-family:'Cairo',sans-serif;
+  font-size:.88rem; outline:none; width:100%; direction:ltr; text-align:left;
+}
+.admin-form-input:focus { border-color:var(--red); }
+.admin-form-input.rtl-input { direction:rtl; text-align:right; }
+.admin-add-btn {
+  width:100%; background:linear-gradient(135deg,var(--red),#cc2424);
+  border:none; color:#fff; padding:.8rem; border-radius:10px;
+  font-family:'Cairo',sans-serif; font-size:.95rem; font-weight:700;
+  cursor:pointer; margin-top:.3rem; transition:opacity .2s;
+}
+.admin-add-btn:hover { opacity:.85; }
+.admin-add-btn:disabled { background:#444; cursor:not-allowed; opacity:1; }
+
+/* Games list in admin */
+.admin-game-item {
+  background:var(--card); border:1px solid var(--border); border-radius:10px;
+  padding:.8rem 1rem; margin-bottom:.6rem;
+  display:flex; align-items:center; justify-content:space-between; gap:.8rem;
+}
+.admin-game-name { font-size:.88rem; font-weight:700; }
+.admin-game-url { font-size:.72rem; color:var(--muted); direction:ltr; unicode-bidi:embed; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:200px; }
+.admin-game-del {
+  background:rgba(255,45,45,.12); border:1px solid rgba(255,45,45,.3);
+  color:var(--red); padding:.35rem .75rem; border-radius:8px;
+  font-family:'Cairo',sans-serif; font-size:.78rem; cursor:pointer;
+  flex-shrink:0; transition:background .2s;
+}
+.admin-game-del:hover { background:rgba(255,45,45,.25); }
+
+/* ══ GAMES SECTION ══ */
+#gamesSection { display:none; }
+.games-grid {
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(min(100%,260px),1fr));
+  gap:clamp(.75rem,2vw,1.4rem);
+}
+.game-card {
+  background:var(--card); border:1px solid var(--border); border-radius:14px;
+  overflow:hidden; cursor:pointer;
+  transition:transform .25s,border-color .25s,box-shadow .25s;
+  -webkit-tap-highlight-color:transparent; position:relative;
+}
+.game-card:hover { transform:translateY(-4px); border-color:#a855f7; box-shadow:0 8px 28px rgba(168,85,247,.18); }
+.game-thumb {
+  aspect-ratio:16/9; background:linear-gradient(135deg,#1a0533,#2d0a5c,#0f172a);
+  display:flex; align-items:center; justify-content:center; position:relative; overflow:hidden;
+}
+.game-thumb::before {
+  content:''; position:absolute; inset:0;
+  background:radial-gradient(circle at 50% 50%,rgba(168,85,247,.15),transparent 70%);
+}
+.game-thumb-icon { font-size:3rem; z-index:1; }
+.game-play-overlay {
+  position:absolute; inset:0; background:rgba(0,0,0,.45);
+  display:flex; align-items:center; justify-content:center;
+  opacity:0; transition:opacity .25s;
+}
+.game-card:hover .game-play-overlay { opacity:1; }
+@media(hover:none){ .game-play-overlay { opacity:1; background:rgba(0,0,0,.25); } }
+.game-play-btn {
+  width:52px; height:52px; background:#a855f7; border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  box-shadow:0 4px 20px rgba(168,85,247,.6); font-size:1.3rem;
+}
+.game-info { padding:.8rem 1rem; }
+.game-name { font-size:.92rem; font-weight:700; margin-bottom:.3rem; }
+.game-daily-bar-wrap { display:flex; align-items:center; gap:.6rem; }
+.game-daily-bar-bg {
+  flex:1; height:5px; background:#1a1a1a; border-radius:99px; overflow:hidden;
+}
+.game-daily-bar-fill {
+  height:100%; background:linear-gradient(90deg,#a855f7,#7c3aed);
+  border-radius:99px; transition:width .4s;
+}
+.game-daily-label { font-size:.68rem; color:var(--muted); white-space:nowrap; flex-shrink:0; }
+.game-cap-badge {
+  position:absolute; top:8px; right:8px;
+  background:rgba(168,85,247,.85); color:#fff;
+  font-size:.65rem; font-weight:700; padding:2px 8px;
+  border-radius:50px; backdrop-filter:blur(4px);
+}
+.game-cap-badge.maxed { background:rgba(255,45,45,.85); }
+
+/* ══ GAME IFRAME MODAL ══ */
+.game-overlay {
+  position:fixed; inset:0; z-index:1500;
+  background:#000; display:none; flex-direction:column;
+}
+.game-overlay.open { display:flex; }
+.game-top-bar {
+  position:absolute; top:0; left:0; right:0; z-index:10;
+  background:linear-gradient(to bottom,rgba(0,0,0,.85),transparent);
+  padding:.6rem 1rem; display:flex; align-items:center; gap:.8rem;
+  opacity:0; transition:opacity .3s; pointer-events:none;
+}
+.game-overlay:hover .game-top-bar,
+.game-top-bar.visible { opacity:1; pointer-events:all; }
+.game-top-title { font-size:.9rem; font-weight:700; flex:1; }
+.game-pts-badge {
+  background:rgba(168,85,247,.8); color:#fff; border-radius:50px;
+  padding:.28rem .75rem; font-size:.75rem; font-weight:700; white-space:nowrap;
+}
+.game-close-btn {
+  background:rgba(255,255,255,.15); border:none; color:#fff;
+  width:34px; height:34px; border-radius:50%; cursor:pointer; font-size:1rem;
+  display:flex; align-items:center; justify-content:center; flex-shrink:0;
+}
+.game-close-btn:hover { background:var(--red); }
+.game-iframe-container { flex:1; position:relative; }
+.game-iframe-container iframe { position:absolute; inset:0; width:100%; height:100%; border:none; }
+/* Game timer toast */
+.game-toast {
+  position:fixed; top:60px; left:50%;
+  transform:translateX(-50%) translateY(-10px);
+  background:rgba(168,85,247,.95); color:#fff;
+  padding:.45rem 1.2rem; border-radius:50px;
+  font-size:.85rem; font-weight:700; z-index:9999;
+  opacity:0; pointer-events:none; transition:opacity .3s,transform .3s; white-space:nowrap;
+}
+.game-toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
 </style>
 </head>
 <body>
@@ -638,27 +774,53 @@ main { padding:clamp(1rem,3vw,2rem); }
       <button class="admin-close" onclick="closeAdmin()">✕</button>
     </div>
     <div class="admin-body">
-      <div class="admin-title">📋 طلبات السحب</div>
-      <div id="adminReqList"><div class="admin-empty">جاري التحميل...</div></div>
+      <div class="admin-tabs">
+        <button class="admin-tab-btn active" id="aTabWith" onclick="switchAdminTab('withdrawals')">💰 طلبات السحب</button>
+        <button class="admin-tab-btn" id="aTabGames" onclick="switchAdminTab('games')">🎮 إدارة الألعاب</button>
+      </div>
+
+      <!-- Withdrawals panel -->
+      <div id="adminWithdrawPanel">
+        <div class="admin-title">📋 طلبات السحب</div>
+        <div id="adminReqList"><div class="admin-empty">جاري التحميل...</div></div>
+      </div>
+
+      <!-- Games panel -->
+      <div id="adminGamesPanel" style="display:none">
+        <div class="admin-title">➕ إضافة لعبة جديدة</div>
+        <div class="admin-form-row">
+          <label class="admin-form-label">اسم اللعبة</label>
+          <input class="admin-form-input rtl-input" type="text" id="newGameName" placeholder="مثال: Subway Surfers">
+        </div>
+        <div class="admin-form-row">
+          <label class="admin-form-label">رابط اللعبة المباشر</label>
+          <input class="admin-form-input" type="url" id="newGameUrl" placeholder="https://...">
+        </div>
+        <button class="admin-add-btn" id="addGameBtn" onclick="adminAddGame()">➕ إضافة اللعبة</button>
+        <div class="w-err" id="addGameErr" style="margin-bottom:.8rem"></div>
+
+        <div class="admin-title" style="margin-top:1.5rem">🎮 الألعاب الحالية</div>
+        <div id="adminGamesList"><div class="admin-empty">جاري التحميل...</div></div>
+      </div>
     </div>
   </div>
 </div>
 
 <!-- CATEGORIES -->
 <div class="categories">
-  <button class="cat-btn active" onclick="searchCategory('trending',this)">🔥 رائج</button>
-  <button class="cat-btn" onclick="searchCategory('تعليم',this)">📚 تعليم</button>
-  <button class="cat-btn" onclick="searchCategory('تكنولوجيا',this)">💻 تكنولوجيا</button>
-  <button class="cat-btn" onclick="searchCategory('رياضة',this)">⚽ رياضة</button>
-  <button class="cat-btn" onclick="searchCategory('موسيقى',this)">🎵 موسيقى</button>
-  <button class="cat-btn" onclick="searchCategory('طبخ',this)">🍳 طبخ</button>
-  <button class="cat-btn" onclick="searchCategory('سفر',this)">✈️ سفر</button>
-  <button class="cat-btn" onclick="searchCategory('ألعاب',this)">🎮 ألعاب</button>
-  <button class="cat-btn" onclick="searchCategory('أخبار',this)">📰 أخبار</button>
+  <button class="cat-btn active" id="catTrending" onclick="showVideos('trending',this)">🔥 رائج</button>
+  <button class="cat-btn" onclick="showVideos('تعليم',this)">📚 تعليم</button>
+  <button class="cat-btn" onclick="showVideos('تكنولوجيا',this)">💻 تكنولوجيا</button>
+  <button class="cat-btn" onclick="showVideos('رياضة',this)">⚽ رياضة</button>
+  <button class="cat-btn" onclick="showVideos('موسيقى',this)">🎵 موسيقى</button>
+  <button class="cat-btn" onclick="showVideos('طبخ',this)">🍳 طبخ</button>
+  <button class="cat-btn" onclick="showVideos('سفر',this)">✈️ سفر</button>
+  <button class="cat-btn" id="catGames" onclick="showGamesSection(this)">🎮 ألعاب</button>
+  <button class="cat-btn" onclick="showVideos('أخبار',this)">📰 أخبار</button>
 </div>
 
-<!-- MAIN -->
-<main>
+<!-- MAIN — Videos -->
+<main id="videosSection">
   <div class="section-title" id="sectionTitle">🔥 الفيديوهات الرائجة</div>
   <div class="loading" id="loading"><div class="spinner"></div><p>جاري التحميل...</p></div>
   <div class="empty-state" id="emptyState"><div class="icon">🎬</div><p>لا توجد نتائج</p></div>
@@ -666,6 +828,13 @@ main { padding:clamp(1rem,3vw,2rem); }
   <div class="load-more-wrap" id="loadMoreWrap" style="display:none">
     <button class="load-more-btn" onclick="loadMore()">تحميل المزيد</button>
   </div>
+</main>
+
+<!-- MAIN — Games -->
+<main id="gamesSection">
+  <div class="section-title">🎮 الألعاب — اكسب <span style="color:#a855f7">50 نقطة</span> من كل لعبة يومياً</div>
+  <div id="gamesGrid" class="games-grid"></div>
+  <div id="gamesEmpty" class="empty-state" style="display:none"><div class="icon">🎮</div><p>لا توجد ألعاب بعد، انتظر إضافة الأدمن!</p></div>
 </main>
 
 <!-- VIDEO MODAL -->
@@ -700,6 +869,19 @@ main { padding:clamp(1rem,3vw,2rem); }
 </div>
 
 <div class="toast" id="toast">+2 نقطة 🎉</div>
+<div class="game-toast" id="gameToast">+1 نقطة 🎮</div>
+
+<!-- GAME IFRAME MODAL -->
+<div class="game-overlay" id="gameOverlay">
+  <div class="game-top-bar" id="gameTopBar">
+    <button class="game-close-btn" onclick="closeGame()">✕</button>
+    <div class="game-top-title" id="gameTopTitle">لعبة</div>
+    <div class="game-pts-badge" id="gamePtsBadge">0 / 50 نقطة اليوم</div>
+  </div>
+  <div class="game-iframe-container">
+    <iframe id="gameFrame" allowfullscreen allow="autoplay;fullscreen"></iframe>
+  </div>
+</div>
 
 <script>
 // ═══════════════════════════════════════════════════════════════
@@ -794,8 +976,8 @@ function renderCards(items){
   });
 }
 
-function doSearch(){var q=document.getElementById('searchInput').value.trim();if(!q)return;currentQuery=q;nextPageToken='';document.getElementById('sectionTitle').textContent='نتائج: "'+q+'"';document.querySelectorAll('.cat-btn').forEach(function(b){b.classList.remove('active');});fetchVideos(q);}
-function searchCategory(q,btn){currentQuery=q;nextPageToken='';document.getElementById('searchInput').value='';document.querySelectorAll('.cat-btn').forEach(function(b){b.classList.remove('active');});btn.classList.add('active');var L={trending:'🔥 الفيديوهات الرائجة',تعليم:'📚 تعليم',تكنولوجيا:'💻 تكنولوجيا',رياضة:'⚽ رياضة',موسيقى:'🎵 موسيقى',طبخ:'🍳 طبخ',سفر:'✈️ سفر',ألعاب:'🎮 ألعاب',أخبار:'📰 أخبار'};document.getElementById('sectionTitle').textContent=L[q]||q;fetchVideos(q);}
+function doSearch(){var q=document.getElementById("searchInput").value.trim();if(!q)return;showVideos(q,null);}
+function searchCategory(q,btn){showVideos(q,btn);}
 function loadMore(){if(nextPageToken)fetchVideos(currentQuery,nextPageToken,true);}
 
 // Timer ring (safe to call before Firebase)
@@ -838,6 +1020,30 @@ function openAdmin(){}
 function closeAdmin(){ document.getElementById('adminOverlay').classList.remove('open'); }
 function checkAdminPass(){}
 function adminAction(){}
+function switchAdminTab(t){}
+function adminAddGame(){}
+function adminDeleteGame(id){}
+function openGame(id,name,url){}
+function closeGame(){ document.getElementById('gameOverlay').classList.remove('open'); document.getElementById('gameFrame').src=''; }
+
+// Section switcher (works before Firebase)
+function showVideos(q, btn){
+  document.getElementById('videosSection').style.display='';
+  document.getElementById('gamesSection').style.display='none';
+  document.querySelectorAll('.cat-btn').forEach(function(b){b.classList.remove('active');});
+  if(btn) btn.classList.add('active');
+  currentQuery=q; nextPageToken='';
+  var labels={trending:'🔥 الفيديوهات الرائجة',تعليم:'📚 تعليم',تكنولوجيا:'💻 تكنولوجيا',رياضة:'⚽ رياضة',موسيقى:'🎵 موسيقى',طبخ:'🍳 طبخ',سفر:'✈️ سفر',أخبار:'📰 أخبار'};
+  document.getElementById('sectionTitle').textContent=labels[q]||('نتائج: "'+q+'"');
+  fetchVideos(q);
+}
+function showGamesSection(btn){
+  document.getElementById('videosSection').style.display='none';
+  document.getElementById('gamesSection').style.display='';
+  document.querySelectorAll('.cat-btn').forEach(function(b){b.classList.remove('active');});
+  if(btn) btn.classList.add('active');
+  if(window._loadGamesSection) window._loadGamesSection();
+}
 
 // Start YouTube immediately (doesn't need Firebase)
 drawRing();
@@ -1035,6 +1241,218 @@ function initApp() {
     if(ytPlayer){ try{ ytPlayer.stopVideo(); ytPlayer.destroy(); }catch(e){} ytPlayer=null; }
     document.getElementById('ytPlayerContainer').innerHTML='';
   };
+  // ══════════════════════════════════════════════
+  //  GAMES SYSTEM
+  // ══════════════════════════════════════════════
+  var GAME_DAILY_CAP   = 50;   // max points per game per day
+  var GAME_EARN_EVERY  = 120;  // seconds per point (2 minutes)
+  var gameTimer        = null;
+  var gameElapsed      = 0;
+  var activeGameId     = null;
+  var activeGameName   = '';
+  var gameDailyCache   = {};   // {gameId: pointsToday}
+
+  // Get today's date string as key
+  function todayKey(){ var d=new Date(); return d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate(); }
+
+  // Load how many points user earned today for a game
+  function getGameDailyPts(gameId, cb){
+    if(!currentUser){ cb(0); return; }
+    var key = 'gamePts_'+todayKey()+'_'+gameId;
+    db.collection('users').doc(currentUser.uid)
+      .collection('gameDailyPts').doc(key).get()
+      .then(function(snap){ cb(snap.exists ? (snap.data().pts||0) : 0); })
+      .catch(function(){ cb(0); });
+  }
+
+  function saveGameDailyPts(gameId, pts){
+    if(!currentUser) return;
+    var key = 'gamePts_'+todayKey()+'_'+gameId;
+    db.collection('users').doc(currentUser.uid)
+      .collection('gameDailyPts').doc(key)
+      .set({ pts: pts, gameId: gameId, date: todayKey() });
+  }
+
+  // Load and render games grid
+  function loadGamesSection(){
+    var grid  = document.getElementById('gamesGrid');
+    var empty = document.getElementById('gamesEmpty');
+    grid.innerHTML = '<div class="loading" style="display:block"><div class="spinner"></div><p>جاري التحميل...</p></div>';
+    empty.style.display = 'none';
+
+    db.collection('games').orderBy('createdAt','asc').get().then(function(snap){
+      grid.innerHTML = '';
+      if(snap.empty){ empty.style.display='block'; return; }
+      var gameIds = [];
+      snap.forEach(function(doc){ gameIds.push({id:doc.id, data:doc.data()}); });
+
+      // Load daily pts for each game then render
+      var pending = gameIds.length;
+      gameIds.forEach(function(g){
+        getGameDailyPts(g.id, function(pts){
+          gameDailyCache[g.id] = pts;
+          pending--;
+          if(pending===0) renderGamesGrid(gameIds);
+        });
+      });
+    }).catch(function(e){
+      grid.innerHTML='<div class="empty-state" style="display:block"><div class="icon">⚠️</div><p>'+e.message+'</p></div>';
+    });
+  }
+
+  function renderGamesGrid(games){
+    var grid = document.getElementById('gamesGrid');
+    grid.innerHTML = '';
+    var icons = ['🎮','🕹️','👾','🏆','⚔️','🧩','🚀','🎯','🏎️','⚽','🎲','🃏'];
+    games.forEach(function(g, i){
+      var d    = g.data;
+      var pts  = gameDailyCache[g.id] || 0;
+      var pct  = Math.min(100, Math.round(pts/GAME_DAILY_CAP*100));
+      var maxd = pts >= GAME_DAILY_CAP;
+      var icon = icons[i % icons.length];
+      var card = document.createElement('div');
+      card.className = 'game-card';
+      card.id = 'gcard-'+g.id;
+      card.innerHTML =
+        '<div class="game-thumb">'+
+          '<div class="game-thumb-icon">'+icon+'</div>'+
+          '<div class="game-play-overlay"><div class="game-play-btn">▶</div></div>'+
+        '</div>'+
+        (maxd?'<div class="game-cap-badge maxed">اكتمل اليوم ✓</div>':'<div class="game-cap-badge">'+pts+'/'+GAME_DAILY_CAP+' نقطة</div>')+
+        '<div class="game-info">'+
+          '<div class="game-name">'+d.name+'</div>'+
+          '<div class="game-daily-bar-wrap">'+
+            '<div class="game-daily-bar-bg"><div class="game-daily-bar-fill" style="width:'+pct+'%"></div></div>'+
+            '<div class="game-daily-label">'+(maxd?'<span style="color:var(--green)">اكتمل ✓</span>':pts+'/'+GAME_DAILY_CAP)+'</div>'+
+          '</div>'+
+        '</div>';
+      (function(id,name,url){ card.onclick=function(){ openGame(id,name,url); }; })(g.id,d.name,d.url);
+      grid.appendChild(card);
+    });
+  }
+
+  // Wire loadGamesSection to global hook
+  window._loadGamesSection = loadGamesSection;
+
+  // ── Open/close game ──
+  window.openGame = function(gameId, gameName, gameUrl){
+    if(!currentUser){ document.getElementById('authOverlay').classList.remove('hidden'); return; }
+    getGameDailyPts(gameId, function(pts){
+      activeGameId   = gameId;
+      activeGameName = gameName;
+      document.getElementById('gameTopTitle').textContent = gameName;
+      document.getElementById('gamePtsBadge').textContent = pts+' / '+GAME_DAILY_CAP+' نقطة اليوم';
+      document.getElementById('gameFrame').src = gameUrl;
+      document.getElementById('gameOverlay').classList.add('open');
+      startGameTimer(pts);
+      // Show bar on hover
+      var bar = document.getElementById('gameTopBar');
+      var t; bar.classList.add('visible');
+      clearTimeout(t); t=setTimeout(function(){ bar.classList.remove('visible'); },3000);
+      document.getElementById('gameOverlay').addEventListener('mousemove',function(){
+        bar.classList.add('visible'); clearTimeout(t);
+        t=setTimeout(function(){ bar.classList.remove('visible'); },2500);
+      });
+    });
+  };
+
+  window.closeGame = function(){
+    stopGameTimer();
+    document.getElementById('gameOverlay').classList.remove('open');
+    document.getElementById('gameFrame').src='';
+    activeGameId=null;
+    // refresh games grid if visible
+    if(document.getElementById('gamesSection').style.display!=='none') loadGamesSection();
+  };
+
+  function startGameTimer(currentDayPts){
+    stopGameTimer();
+    var dayPts = currentDayPts;
+    gameElapsed = 0;
+    gameTimer = setInterval(function(){
+      if(dayPts >= GAME_DAILY_CAP){ stopGameTimer(); showGameCapNotice(); return; }
+      gameElapsed++;
+      if(gameElapsed >= GAME_EARN_EVERY){
+        gameElapsed = 0;
+        dayPts++;
+        userPoints++;
+        gameDailyCache[activeGameId] = dayPts;
+        savePoints();
+        saveGameDailyPts(activeGameId, dayPts);
+        updateHeader();
+        document.getElementById('gamePtsBadge').textContent = dayPts+' / '+GAME_DAILY_CAP+' نقطة اليوم';
+        showGameToast();
+        if(dayPts >= GAME_DAILY_CAP){ stopGameTimer(); showGameCapNotice(); }
+      }
+    }, 1000);
+  }
+
+  function stopGameTimer(){ clearInterval(gameTimer); gameTimer=null; gameElapsed=0; }
+
+  function showGameToast(){
+    var t=document.getElementById('gameToast');
+    t.classList.add('show'); setTimeout(function(){ t.classList.remove('show'); },1800);
+  }
+
+  function showGameCapNotice(){
+    document.getElementById('gamePtsBadge').textContent='✅ اكتملت نقاط هذه اللعبة اليوم!';
+    document.getElementById('gamePtsBadge').style.background='rgba(34,197,94,.8)';
+  }
+
+  // ── Admin: switchAdminTab ──
+  window.switchAdminTab = function(tab){
+    var isW = tab==='withdrawals';
+    document.getElementById('adminWithdrawPanel').style.display = isW?'':'none';
+    document.getElementById('adminGamesPanel').style.display    = isW?'none':'';
+    document.getElementById('aTabWith').classList.toggle('active', isW);
+    document.getElementById('aTabGames').classList.toggle('active', !isW);
+    if(!isW) loadAdminGamesList();
+  };
+
+  // ── Admin: add game ──
+  window.adminAddGame = function(){
+    var name = document.getElementById('newGameName').value.trim();
+    var url  = document.getElementById('newGameUrl').value.trim();
+    var err  = document.getElementById('addGameErr');
+    var btn  = document.getElementById('addGameBtn');
+    if(!name){ err.textContent='يرجى إدخال اسم اللعبة'; return; }
+    if(!url || !url.startsWith('http')){ err.textContent='يرجى إدخال رابط صحيح'; return; }
+    err.textContent=''; btn.disabled=true; btn.textContent='جاري الإضافة...';
+    db.collection('games').add({
+      name: name, url: url,
+      createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    }).then(function(){
+      document.getElementById('newGameName').value='';
+      document.getElementById('newGameUrl').value='';
+      btn.disabled=false; btn.textContent='➕ إضافة اللعبة';
+      loadAdminGamesList();
+    }).catch(function(e){ err.textContent='خطأ: '+e.message; btn.disabled=false; btn.textContent='➕ إضافة اللعبة'; });
+  };
+
+  function loadAdminGamesList(){
+    var list = document.getElementById('adminGamesList');
+    list.innerHTML='<div class="admin-empty">جاري التحميل...</div>';
+    db.collection('games').orderBy('createdAt','asc').get().then(function(snap){
+      if(snap.empty){ list.innerHTML='<div class="admin-empty">لا توجد ألعاب بعد</div>'; return; }
+      list.innerHTML='';
+      snap.forEach(function(doc){
+        var d=doc.data(), id=doc.id;
+        list.innerHTML+='<div class="admin-game-item">'+
+          '<div style="min-width:0;flex:1">'+
+            '<div class="admin-game-name">🎮 '+d.name+'</div>'+
+            '<div class="admin-game-url">'+d.url+'</div>'+
+          '</div>'+
+          '<button class="admin-game-del" onclick="adminDeleteGame(\''+id+'\')">🗑️ حذف</button>'+
+        '</div>';
+      });
+    }).catch(function(e){ list.innerHTML='<div class="admin-empty">خطأ: '+e.message+'</div>'; });
+  }
+
+  window.adminDeleteGame = function(id){
+    if(!confirm('حذف هذه اللعبة نهائياً؟')) return;
+    db.collection('games').doc(id).delete().then(loadAdminGamesList).catch(function(e){ alert('خطأ: '+e.message); });
+  };
+
   // ══════════════════════════════════════════════
   //  WITHDRAW & ADMIN — assigned to window so onclick works
   // ══════════════════════════════════════════════
