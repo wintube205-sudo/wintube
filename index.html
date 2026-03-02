@@ -1036,92 +1036,88 @@ function initApp() {
     document.getElementById('ytPlayerContainer').innerHTML='';
   };
   // ══════════════════════════════════════════════
-  //  WITHDRAW SYSTEM
+  //  WITHDRAW & ADMIN — assigned to window so onclick works
   // ══════════════════════════════════════════════
   var ADMIN_PASS    = 'Hernios66@';
   var MIN_WITHDRAW  = 5000;
   var PTS_PER_USD   = 1000;
   var adminUnlocked = false;
 
-  function openWithdraw(){
+  window.openWithdraw = function(){
     if(!currentUser) return;
     document.getElementById('wPts').textContent = userPoints;
     document.getElementById('wUsd').textContent = (userPoints/PTS_PER_USD).toFixed(2);
-    document.getElementById('wForm').style.display   = '';
+    document.getElementById('wForm').style.display    = '';
     document.getElementById('wSuccess').style.display = 'none';
-    document.getElementById('wErr').textContent = '';
-    document.getElementById('wAmt').value = '';
-    document.getElementById('wAddr').value = '';
-    document.getElementById('wMethod').value = '';
-    document.getElementById('wCalc').textContent = '';
+    document.getElementById('wErr').textContent       = '';
+    document.getElementById('wAmt').value             = '';
+    document.getElementById('wAddr').value            = '';
+    document.getElementById('wMethod').value          = '';
+    document.getElementById('wCalc').textContent      = '';
     loadMyRequests();
     document.getElementById('wOverlay').classList.add('open');
-  }
-  function closeWithdraw(){ document.getElementById('wOverlay').classList.remove('open'); }
+  };
 
-  function calcWithdraw(){
+  window.closeWithdraw = function(){
+    document.getElementById('wOverlay').classList.remove('open');
+  };
+
+  window.calcWithdraw = function(){
     var amt = parseInt(document.getElementById('wAmt').value)||0;
-    var usd = (amt/PTS_PER_USD).toFixed(2);
-    document.getElementById('wCalc').textContent = amt>0 ? '≈ $'+usd : '';
-  }
+    document.getElementById('wCalc').textContent = amt>0 ? '≈ $'+(amt/PTS_PER_USD).toFixed(2) : '';
+  };
 
-  function updateWalletPlaceholder(){
+  window.updateWalletPlaceholder = function(){
     var m = document.getElementById('wMethod').value;
     var l = document.getElementById('wAddrLabel');
     var i = document.getElementById('wAddr');
     if(m==='Mastercard'){
-      l.textContent='رقم البطاقة';
-      i.placeholder='XXXX XXXX XXXX XXXX';
+      l.textContent='رقم البطاقة'; i.placeholder='XXXX XXXX XXXX XXXX';
     } else if(m){
-      l.textContent='عنوان المحفظة';
-      i.placeholder='أدخل عنوان '+m+' هنا';
+      l.textContent='عنوان المحفظة'; i.placeholder='أدخل عنوان '+m+' هنا';
     } else {
-      l.textContent='عنوان المحفظة / رقم البطاقة';
-      i.placeholder='أدخل العنوان هنا';
+      l.textContent='عنوان المحفظة / رقم البطاقة'; i.placeholder='أدخل العنوان هنا';
     }
-  }
+  };
 
-  function submitWithdraw(){
-    var method  = document.getElementById('wMethod').value;
-    var addr    = document.getElementById('wAddr').value.trim();
-    var amtRaw  = document.getElementById('wAmt').value;
-    var amt     = parseInt(amtRaw)||0;
-    var errEl   = document.getElementById('wErr');
+  window.submitWithdraw = function(){
+    var method = document.getElementById('wMethod').value;
+    var addr   = document.getElementById('wAddr').value.trim();
+    var amt    = parseInt(document.getElementById('wAmt').value)||0;
+    var errEl  = document.getElementById('wErr');
+    var btn    = document.getElementById('wSubmitBtn');
 
     if(!method)          { errEl.textContent='يرجى اختيار طريقة الدفع'; return; }
     if(!addr)            { errEl.textContent='يرجى إدخال العنوان أو رقم البطاقة'; return; }
     if(amt<MIN_WITHDRAW) { errEl.textContent='الحد الأدنى للسحب 5000 نقطة'; return; }
-    if(amt>userPoints)   { errEl.textContent='نقاطك غير كافية'; return; }
+    if(amt>userPoints)   { errEl.textContent='نقاطك غير كافية (رصيدك: '+userPoints+')'; return; }
     if(amt%1000!==0)     { errEl.textContent='يجب أن يكون العدد من مضاعفات 1000'; return; }
 
-    var btn = document.getElementById('wSubmitBtn');
     btn.disabled=true; btn.textContent='جاري الإرسال...'; errEl.textContent='';
 
-    var usd = amt/PTS_PER_USD;
     db.collection('withdrawals').add({
-      uid:         currentUser.uid,
-      name:        currentUser.displayName || currentUser.email,
-      email:       currentUser.email,
-      method:      method,
-      address:     addr,
-      points:      amt,
-      usd:         usd,
-      status:      'pending',
-      createdAt:   firebase.firestore.FieldValue.serverTimestamp()
+      uid:       currentUser.uid,
+      name:      currentUser.displayName || currentUser.email,
+      email:     currentUser.email,
+      method:    method,
+      address:   addr,
+      points:    amt,
+      usd:       amt/PTS_PER_USD,
+      status:    'pending',
+      createdAt: firebase.firestore.FieldValue.serverTimestamp()
     }).then(function(){
-      // deduct points
       userPoints -= amt;
       savePoints(); updateHeader();
-      document.getElementById('wPts').textContent = userPoints;
-      document.getElementById('wUsd').textContent = (userPoints/PTS_PER_USD).toFixed(2);
+      document.getElementById('wPts').textContent      = userPoints;
+      document.getElementById('wUsd').textContent      = (userPoints/PTS_PER_USD).toFixed(2);
       document.getElementById('wForm').style.display   = 'none';
-      document.getElementById('wSuccess').style.display = '';
+      document.getElementById('wSuccess').style.display= '';
       btn.disabled=false; btn.textContent='إرسال الطلب ←';
     }).catch(function(e){
       errEl.textContent='خطأ: '+e.message;
       btn.disabled=false; btn.textContent='إرسال الطلب ←';
     });
-  }
+  };
 
   function loadMyRequests(){
     var list = document.getElementById('wReqList');
@@ -1136,29 +1132,32 @@ function initApp() {
         snap.forEach(function(doc){
           var d=doc.data();
           var date=d.createdAt?d.createdAt.toDate().toLocaleDateString('ar-SA'):'—';
-          var badge={'pending':'pending انتظار','approved':'approved مقبول','rejected':'rejected مرفوض'}[d.status]||d.status;
+          var bLabel={'pending':'⏳ انتظار','approved':'✅ مقبول','rejected':'❌ مرفوض'}[d.status]||d.status;
           var bClass=d.status||'pending';
-          list.innerHTML+='<div class="req-item"><div class="req-item-info"><div class="req-item-method">'+d.method+'</div><div class="req-item-amt">'+d.points+' نقطة ≈ $'+d.usd+' — '+date+'</div></div><span class="req-badge '+bClass+'">'+badge.split(' ')[1]+'</span></div>';
+          list.innerHTML+='<div class="req-item"><div class="req-item-info">'+
+            '<div class="req-item-method">'+d.method+'</div>'+
+            '<div class="req-item-amt">'+d.points+' نقطة ≈ $'+d.usd+' — '+date+'</div>'+
+            '</div><span class="req-badge '+bClass+'">'+bLabel+'</span></div>';
         });
       }).catch(function(){list.innerHTML='';});
   }
 
-  // ══════════════════════════════════════════════
-  //  ADMIN PANEL
-  // ══════════════════════════════════════════════
-  function openAdmin(){
+  // ── ADMIN ──
+  window.openAdmin = function(){
     adminUnlocked=false;
     document.getElementById('adminLoginScreen').style.display='flex';
     document.getElementById('adminDashboard').style.display='none';
     document.getElementById('adminPass').value='';
     document.getElementById('adminPassErr').textContent='';
     document.getElementById('adminOverlay').classList.add('open');
-  }
-  function closeAdmin(){
+  };
+
+  window.closeAdmin = function(){
     document.getElementById('adminOverlay').classList.remove('open');
     adminUnlocked=false;
-  }
-  function checkAdminPass(){
+  };
+
+  window.checkAdminPass = function(){
     var v=document.getElementById('adminPass').value;
     if(v===ADMIN_PASS){
       adminUnlocked=true;
@@ -1168,7 +1167,7 @@ function initApp() {
     } else {
       document.getElementById('adminPassErr').textContent='كلمة المرور غير صحيحة';
     }
-  }
+  };
 
   function loadAdminRequests(){
     var list=document.getElementById('adminReqList');
@@ -1180,53 +1179,46 @@ function initApp() {
         if(snap.empty){ list.innerHTML='<div class="admin-empty">لا توجد طلبات بعد</div>'; return; }
         list.innerHTML='';
         snap.forEach(function(doc){
-          var d=doc.data();
-          var id=doc.id;
+          var d=doc.data(), id=doc.id;
           var date=d.createdAt?d.createdAt.toDate().toLocaleString('ar-SA'):'—';
           var bLabel={'pending':'⏳ انتظار','approved':'✅ مقبول','rejected':'❌ مرفوض'}[d.status]||d.status;
           var bClass=d.status||'pending';
-          var actionsHtml='';
+          var actions='';
           if(d.status==='pending'){
-            actionsHtml='<div class="admin-req-actions">'+
+            actions='<div class="admin-req-actions">'+
               '<button class="a-approve" onclick="adminAction(\''+id+'\',\'approved\',\''+d.uid+'\','+d.points+')">✅ قبول</button>'+
               '<button class="a-reject"  onclick="adminAction(\''+id+'\',\'rejected\',\''+d.uid+'\','+d.points+')">❌ رفض</button>'+
             '</div>';
           }
-          list.innerHTML+='<div class="admin-req" id="req-'+id+'">'+
+          list.innerHTML+='<div class="admin-req">'+
             '<div class="admin-req-top">'+
               '<div><div class="admin-req-name">'+d.name+'</div><div class="admin-req-date">'+date+'</div></div>'+
               '<span class="req-badge '+bClass+'">'+bLabel+'</span>'+
             '</div>'+
             '<div class="admin-req-row">📧 البريد: <span>'+d.email+'</span></div>'+
             '<div class="admin-req-row">💳 الطريقة: <span>'+d.method+'</span></div>'+
-            '<div class="admin-req-row">🏦 العنوان: <span style="direction:ltr;unicode-bidi:embed">'+d.address+'</span></div>'+
+            '<div class="admin-req-row">🏦 العنوان/البطاقة: <span style="direction:ltr;unicode-bidi:embed">'+d.address+'</span></div>'+
             '<div class="admin-req-row">🔢 النقاط: <span>'+d.points+' نقطة</span></div>'+
             '<div class="admin-req-row">💵 المبلغ: <span>$'+d.usd+'</span></div>'+
-            actionsHtml+
+            actions+
           '</div>';
         });
       }).catch(function(e){ list.innerHTML='<div class="admin-empty">خطأ: '+e.message+'</div>'; });
   }
 
-  function adminAction(docId, status, uid, points){
+  window.adminAction = function(docId, status, uid, points){
     if(!adminUnlocked) return;
-    var label = status==='approved'?'قبول':'رفض';
-    if(!confirm('هل تريد '+label+' هذا الطلب؟')) return;
-
-    var batch = db.batch();
-    // update withdrawal status
-    batch.update(db.collection('withdrawals').doc(docId), { status: status });
-    // if rejected → refund points to user
+    if(!confirm('هل تريد '+(status==='approved'?'قبول':'رفض')+' هذا الطلب؟')) return;
+    var batch=db.batch();
+    batch.update(db.collection('withdrawals').doc(docId),{status:status});
     if(status==='rejected'){
       batch.update(db.collection('users').doc(uid),
-        { points: firebase.firestore.FieldValue.increment(points) });
+        {points:firebase.firestore.FieldValue.increment(points)});
     }
-    batch.commit().then(function(){
-      loadAdminRequests();
-    }).catch(function(e){ alert('خطأ: '+e.message); });
-  }
+    batch.commit().then(loadAdminRequests).catch(function(e){alert('خطأ: '+e.message);});
+  };
 
-  // Show withdraw & admin buttons after login
+  // Show/hide header buttons
   function showHeaderBtns(){
     document.getElementById('withdrawBtn').style.display='';
     document.getElementById('adminBtn').style.display='';
