@@ -964,7 +964,8 @@ loadScript('https://www.gstatic.com/firebasejs/' + FB_VER + '/firebase-app-compa
 // ═══════════════════════════════════════════════════════════════
 var YT_KEY        = 'AIzaSyDNK9EJ5IQ2dFLBn1jUk1hslgOwwTBdvJ0';
 var nextPageToken = '';
-var currentQuery  = 'trending';
+var currentQuery   = 'trending';
+var currentSection = 'home';
 
 function fmt(n){if(!n)return'';n=+n;return n>=1e6?(n/1e6).toFixed(1)+'M':n>=1e3?(n/1e3).toFixed(1)+'K':String(n);}
 function parseDur(iso){if(!iso)return'';var m=iso.match(/PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?/);if(!m)return'';var h=+m[1]||0,mn=+m[2]||0,s=+m[3]||0;function p(x){return String(x).padStart(2,'0');}return h?h+':'+p(mn)+':'+p(s):mn+':'+p(s);}
@@ -972,12 +973,11 @@ function timeAgo(d){var sec=Math.floor((Date.now()-new Date(d))/1000);if(sec<60)
 
 function fetchVideos(query, pageToken, append) {
   pageToken=pageToken||''; append=append||false;
-  // decide which grid/loading/empty to use
-  var isHome  = (query==='trending' && !pageToken && !append);
-  var gridId  = isHome ? 'videoGrid'       : 'videoGridSearch';
-  var loadId  = isHome ? 'loading'          : 'loadingSearch';
-  var emptyId = isHome ? 'emptyState'       : 'emptySearch';
-  var moreId  = isHome ? 'loadMoreWrap'     : 'loadMoreSearch';
+  var isHome  = (currentSection === 'home');
+  var gridId  = isHome ? 'videoGrid'    : 'videoGridSearch';
+  var loadId  = isHome ? 'loading'      : 'loadingSearch';
+  var emptyId = isHome ? 'emptyState'   : 'emptySearch';
+  var moreId  = isHome ? 'loadMoreWrap' : 'loadMoreSearch';
 
   document.getElementById(loadId).style.display='block';
   document.getElementById(emptyId).style.display='none';
@@ -1034,7 +1034,7 @@ function showHomepage(){
   document.getElementById('searchSection').style.display='none';
   document.querySelectorAll('.cat-btn').forEach(function(b){b.classList.remove('active');});
   document.getElementById('catTrending').classList.add('active');
-  currentQuery='trending'; nextPageToken='';
+  currentQuery='trending'; nextPageToken=''; currentSection='home';
   document.getElementById('sectionTitle').textContent='🔥 الفيديوهات الرائجة';
   fetchVideos('trending');
 }
@@ -1042,6 +1042,7 @@ function showHomepage(){
 // Show search/category results (hides homepage)
 function showVideos(q, btn){
   if(q==='trending'){ showHomepage(); return; }
+  currentSection='search';
   document.getElementById('videosSection').style.display='none';
   document.getElementById('searchSection').style.display='';
   document.querySelectorAll('.cat-btn').forEach(function(b){b.classList.remove('active');});
