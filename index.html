@@ -610,10 +610,21 @@ main { padding:clamp(1rem,3vw,2rem); }
   background:#000; display:none; flex-direction:column;
 }
 .game-overlay.open { display:flex; }
+/* Always-visible close button */
+.game-close-fixed {
+  position:absolute; top:10px; right:10px; z-index:20;
+  background:rgba(0,0,0,.7); border:1px solid rgba(255,255,255,.2);
+  color:#fff; width:38px; height:38px; border-radius:50%;
+  cursor:pointer; font-size:1.1rem;
+  display:flex; align-items:center; justify-content:center;
+  transition:background .2s; -webkit-tap-highlight-color:transparent;
+  backdrop-filter:blur(4px);
+}
+.game-close-fixed:hover { background:var(--red); border-color:var(--red); }
 .game-top-bar {
   position:absolute; top:0; left:0; right:0; z-index:10;
   background:linear-gradient(to bottom,rgba(0,0,0,.85),transparent);
-  padding:.6rem 1rem; display:flex; align-items:center; gap:.8rem;
+  padding:.6rem 1rem .6rem 3.5rem; display:flex; align-items:center; gap:.8rem;
   opacity:0; transition:opacity .3s; pointer-events:none;
 }
 .game-overlay:hover .game-top-bar,
@@ -623,12 +634,7 @@ main { padding:clamp(1rem,3vw,2rem); }
   background:rgba(168,85,247,.8); color:#fff; border-radius:50px;
   padding:.28rem .75rem; font-size:.75rem; font-weight:700; white-space:nowrap;
 }
-.game-close-btn {
-  background:rgba(255,255,255,.15); border:none; color:#fff;
-  width:34px; height:34px; border-radius:50%; cursor:pointer; font-size:1rem;
-  display:flex; align-items:center; justify-content:center; flex-shrink:0;
-}
-.game-close-btn:hover { background:var(--red); }
+.game-close-btn { display:none; } /* legacy — replaced by fixed btn */
 .game-iframe-container { flex:1; position:relative; }
 .game-iframe-container iframe { position:absolute; inset:0; width:100%; height:100%; border:none; }
 /* Game timer toast */
@@ -910,8 +916,10 @@ main { padding:clamp(1rem,3vw,2rem); }
 
 <!-- GAME IFRAME MODAL -->
 <div class="game-overlay" id="gameOverlay">
+  <!-- Always-visible close button -->
+  <button class="game-close-fixed" onclick="closeGame()" title="إغلاق اللعبة">✕</button>
+  <!-- Hover info bar -->
   <div class="game-top-bar" id="gameTopBar">
-    <button class="game-close-btn" onclick="closeGame()">✕</button>
     <div class="game-top-title" id="gameTopTitle">لعبة</div>
     <div class="game-pts-badge" id="gamePtsBadge">0 / 50 نقطة اليوم</div>
   </div>
