@@ -1085,15 +1085,14 @@ function drawRing(){
   fill.style.stroke=color; num.style.color=color; num.textContent=timerSecs;
 }
 
-// Placeholder for openModal — real one assigned in initApp
-function openModal(vid,title,desc){
+// Placeholder for openModal/closeModal — real ones assigned in initApp
+window.openModal = function(vid,title,desc){
   document.getElementById('authOverlay').classList.remove('hidden');
-}
-function closeModal(){
-  clearInterval(watchTimer); watchTimer=null; timerSecs=30; drawRing();
+};
+window.closeModal = function(){
   document.getElementById('modalOverlay').classList.remove('open');
   document.getElementById('ytPlayerContainer').innerHTML='';
-}
+};
 function switchTab(tab){
   document.getElementById('loginForm').style.display=tab==='login'?'':'none';
   document.getElementById('regForm').style.display=tab==='reg'?'':'none';
@@ -1102,34 +1101,24 @@ function switchTab(tab){
   document.getElementById('authErr').textContent='';
 }
 
-// These are safe no-ops until Firebase loads
-function doLogin(){document.getElementById('authErr').textContent='جاري تحميل Firebase...';}
-function doRegister(){document.getElementById('authErr').textContent='جاري تحميل Firebase...';}
-function doSignOut(){}
-function openWithdraw(){}
-function closeWithdraw(){ document.getElementById('wOverlay').classList.remove('open'); }
-function updateWalletPlaceholder(){}
-function calcWithdraw(){}
-function submitWithdraw(){}
-function openAdmin(){}
-function closeAdmin(){ document.getElementById('adminOverlay').classList.remove('open'); }
-function checkAdminPass(){}
-function adminAction(){}
-function switchAdminTab(t){}
-function adminAddGame(){}
-function adminDeleteGame(id){}
-function switchGameSrc(t){
-  var isUrl = t==='url';
-  document.getElementById('urlRow').style.display    = isUrl ? '' : 'none';
-  document.getElementById('iframeRow').style.display = isUrl ? 'none' : '';
-  document.getElementById('srcUrl').classList.toggle('active', isUrl);
-  document.getElementById('srcIframe').classList.toggle('active', !isUrl);
-  document.getElementById('srcUrl').dataset.mode    = 'url';
-  document.getElementById('srcIframe').dataset.mode = 'iframe';
-  window._gameSrcMode = t;
-}
-function openGame(id,name,url){}
-function closeGame(){ document.getElementById('gameOverlay').classList.remove('open'); document.getElementById('gameFrame').src=''; }
+// Stubs — overridden by initApp after Firebase loads
+window.doLogin    = function(){document.getElementById('authErr').textContent='جاري تحميل Firebase...';};
+window.doRegister = function(){document.getElementById('authErr').textContent='جاري تحميل Firebase...';};
+window.doSignOut  = function(){};
+window.openWithdraw = function(){};
+window.closeWithdraw = function(){ document.getElementById('wOverlay').classList.remove('open'); };
+window.updateWalletPlaceholder = function(){};
+window.calcWithdraw = function(){};
+window.submitWithdraw = function(){};
+window.openAdmin = function(){};
+window.closeAdmin = function(){ document.getElementById('adminOverlay').classList.remove('open'); };
+window.checkAdminPass = function(){};
+window.adminAction = function(){};
+window.switchAdminTab = function(){};
+window.adminAddGame = function(){};
+window.adminDeleteGame = function(){};
+window.openGame = function(){};
+window.closeGame = function(){ document.getElementById('gameOverlay').classList.remove('open'); document.getElementById('gameFrame').src=''; };
 
 // Start YouTube immediately (doesn't need Firebase)
 drawRing();
@@ -1282,8 +1271,7 @@ function initApp() {
   function showErr(msg){document.getElementById('authErr').textContent=msg;}
   function setBtn(id,dis,label){var b=document.getElementById(id);b.disabled=dis;b.textContent=label;}
 
-  // ── Override the placeholder functions with real Firebase ones ──
-  doLogin = function(){
+  window.doLogin = function(){
     var email=document.getElementById('lEmail').value.trim();
     var pass=document.getElementById('lPass').value;
     if(!email||!pass){showErr('يرجى ملء جميع الحقول');return;}
@@ -1292,7 +1280,7 @@ function initApp() {
       .catch(function(e){showErr(errMsg(e.code));setBtn('loginBtn',false,'دخول ←');});
   };
 
-  doRegister = function(){
+  window.doRegister = function(){
     var name=document.getElementById('rName').value.trim();
     var email=document.getElementById('rEmail').value.trim();
     var pass=document.getElementById('rPass').value;
@@ -1304,12 +1292,12 @@ function initApp() {
       .catch(function(e){showErr(errMsg(e.code));setBtn('regBtn',false,'إنشاء الحساب ←');});
   };
 
-  doSignOut = function(){
+  window.doSignOut = function(){
     if(!confirm('تسجيل الخروج؟'))return;
-    stopTimer(); closeModal(); auth.signOut();
+    stopTimer(); window.closeModal(); auth.signOut();
   };
 
-  openModal = function(vid,title,desc){
+  window.openModal = function(vid,title,desc){
     if(!currentUser){document.getElementById('authOverlay').classList.remove('hidden');return;}
     document.getElementById('modalTitle').textContent=title;
     document.getElementById('modalDesc').textContent=desc;
@@ -1320,7 +1308,7 @@ function initApp() {
     createYTPlayer(vid);
   };
 
-  closeModal = function(){
+  window.closeModal = function(){
     stopTimer();
     document.getElementById('modalOverlay').classList.remove('open');
     document.getElementById('pauseIndicator').classList.remove('visible');
