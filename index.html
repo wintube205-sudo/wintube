@@ -551,7 +551,7 @@ main { padding:clamp(1rem,3vw,2rem); }
 .admin-game-del:hover { background:rgba(255,45,45,.25); }
 
 /* ══ GAMES SECTION ══ */
-#gamesSection { display:none; }
+#gamesSection { }
 .games-grid {
   display:grid;
   grid-template-columns:repeat(auto-fill,minmax(min(100%,260px),1fr));
@@ -815,11 +815,11 @@ main { padding:clamp(1rem,3vw,2rem); }
   <button class="cat-btn" onclick="showVideos('موسيقى',this)">🎵 موسيقى</button>
   <button class="cat-btn" onclick="showVideos('طبخ',this)">🍳 طبخ</button>
   <button class="cat-btn" onclick="showVideos('سفر',this)">✈️ سفر</button>
-  <button class="cat-btn" id="catGames" onclick="showGamesSection(this)">🎮 ألعاب</button>
+  <button class="cat-btn" id="catGames" onclick="scrollToGames(this)">🎮 ألعاب</button>
   <button class="cat-btn" onclick="showVideos('أخبار',this)">📰 أخبار</button>
 </div>
 
-<!-- MAIN — Videos -->
+<!-- MAIN — Videos + Games always on homepage -->
 <main id="videosSection">
   <div class="section-title" id="sectionTitle">🔥 الفيديوهات الرائجة</div>
   <div class="loading" id="loading"><div class="spinner"></div><p>جاري التحميل...</p></div>
@@ -828,13 +828,29 @@ main { padding:clamp(1rem,3vw,2rem); }
   <div class="load-more-wrap" id="loadMoreWrap" style="display:none">
     <button class="load-more-btn" onclick="loadMore()">تحميل المزيد</button>
   </div>
+
+  <!-- ══ GAMES STRIP — always visible ══ -->
+  <div id="gamesSection" style="margin-top:3rem">
+    <div class="section-title" style="margin-bottom:1.2rem">
+      🎮 الألعاب
+      <span style="font-size:.75rem;font-weight:400;color:var(--muted);margin-right:.5rem">اكسب <strong style="color:#a855f7">50 نقطة</strong> من كل لعبة يومياً</span>
+    </div>
+    <div id="gamesGrid" class="games-grid"></div>
+    <div id="gamesEmpty" class="empty-state" style="display:none">
+      <div class="icon">🎮</div><p>لا توجد ألعاب بعد، انتظر إضافة الأدمن!</p>
+    </div>
+  </div>
 </main>
 
-<!-- MAIN — Games -->
-<main id="gamesSection">
-  <div class="section-title">🎮 الألعاب — اكسب <span style="color:#a855f7">50 نقطة</span> من كل لعبة يومياً</div>
-  <div id="gamesGrid" class="games-grid"></div>
-  <div id="gamesEmpty" class="empty-state" style="display:none"><div class="icon">🎮</div><p>لا توجد ألعاب بعد، انتظر إضافة الأدمن!</p></div>
+<!-- SEARCH/CATEGORY RESULTS — replaces homepage when searching -->
+<main id="searchSection" style="display:none">
+  <div class="section-title" id="searchSectionTitle">نتائج البحث</div>
+  <div class="loading" id="loadingSearch"><div class="spinner"></div><p>جاري التحميل...</p></div>
+  <div class="empty-state" id="emptySearch"><div class="icon">🎬</div><p>لا توجد نتائج</p></div>
+  <div class="video-grid" id="videoGridSearch"></div>
+  <div class="load-more-wrap" id="loadMoreSearch" style="display:none">
+    <button class="load-more-btn" onclick="loadMore()">تحميل المزيد</button>
+  </div>
 </main>
 
 <!-- VIDEO MODAL -->
@@ -927,21 +943,28 @@ function timeAgo(d){var sec=Math.floor((Date.now()-new Date(d))/1000);if(sec<60)
 
 function fetchVideos(query, pageToken, append) {
   pageToken=pageToken||''; append=append||false;
-  document.getElementById('loading').style.display='block';
-  document.getElementById('emptyState').style.display='none';
-  var grid=document.getElementById('videoGrid');
+  // decide which grid/loading/empty to use
+  var isHome  = (query==='trending' && !pageToken && !append);
+  var gridId  = isHome ? 'videoGrid'       : 'videoGridSearch';
+  var loadId  = isHome ? 'loading'          : 'loadingSearch';
+  var emptyId = isHome ? 'emptyState'       : 'emptySearch';
+  var moreId  = isHome ? 'loadMoreWrap'     : 'loadMoreSearch';
+
+  document.getElementById(loadId).style.display='block';
+  document.getElementById(emptyId).style.display='none';
+  var grid=document.getElementById(gridId);
   if(!append) grid.innerHTML='';
   var base='https://www.googleapis.com/youtube/v3/';
 
   function done(items,token){
     nextPageToken=token||'';
-    document.getElementById('loading').style.display='none';
-    if(items&&items.length){renderCards(items);}
-    else if(!append){document.getElementById('emptyState').style.display='block';}
-    document.getElementById('loadMoreWrap').style.display=nextPageToken?'block':'none';
+    document.getElementById(loadId).style.display='none';
+    if(items&&items.length){ renderCards(items, gridId); }
+    else if(!append){ document.getElementById(emptyId).style.display='block'; }
+    document.getElementById(moreId).style.display=nextPageToken?'block':'none';
   }
   function fail(e){
-    document.getElementById('loading').style.display='none';
+    document.getElementById(loadId).style.display='none';
     if(!append) grid.innerHTML='<div style="color:#ff6b6b;padding:2rem;grid-column:1/-1;text-align:center">⚠️ '+e.message+'</div>';
   }
 
@@ -950,7 +973,7 @@ function fetchVideos(query, pageToken, append) {
       .then(function(r){return r.json();}).then(function(d){if(d.error)throw new Error(d.error.message);done(d.items,d.nextPageToken);}).catch(fail);
   } else {
     fetch(base+'search?part=snippet&q='+encodeURIComponent(query)+'&type=video&maxResults=16&pageToken='+pageToken+'&key='+YT_KEY)
-      .then(function(r){return r.json();}). then(function(sd){
+      .then(function(r){return r.json();}).then(function(sd){
         if(sd.error)throw new Error(sd.error.message);
         var ids=(sd.items||[]).map(function(i){return i.id.videoId;}).filter(Boolean);
         if(!ids.length){done([],sd.nextPageToken);return;}
@@ -960,8 +983,8 @@ function fetchVideos(query, pageToken, append) {
   }
 }
 
-function renderCards(items){
-  var grid=document.getElementById('videoGrid');
+function renderCards(items, gridId){
+  var grid=document.getElementById(gridId||'videoGrid');
   items.forEach(function(item){
     var s=item.snippet;
     var th=s.thumbnails&&(s.thumbnails.high||s.thumbnails.medium)?(s.thumbnails.high||s.thumbnails.medium).url:'';
@@ -976,12 +999,54 @@ function renderCards(items){
   });
 }
 
-function doSearch(){var q=document.getElementById("searchInput").value.trim();if(!q)return;showVideos(q,null);}
-function searchCategory(q,btn){showVideos(q,btn);}
-function loadMore(){if(nextPageToken)fetchVideos(currentQuery,nextPageToken,true);}
+// Show homepage (trending videos + games strip)
+function showHomepage(){
+  document.getElementById('videosSection').style.display='';
+  document.getElementById('searchSection').style.display='none';
+  document.querySelectorAll('.cat-btn').forEach(function(b){b.classList.remove('active');});
+  document.getElementById('catTrending').classList.add('active');
+  currentQuery='trending'; nextPageToken='';
+  document.getElementById('sectionTitle').textContent='🔥 الفيديوهات الرائجة';
+  fetchVideos('trending');
+}
 
-// Timer ring (safe to call before Firebase)
-var CIRCUMFERENCE=101, timerSecs=30, watchTimer=null;
+// Show search/category results (hides homepage)
+function showVideos(q, btn){
+  if(q==='trending'){ showHomepage(); return; }
+  document.getElementById('videosSection').style.display='none';
+  document.getElementById('searchSection').style.display='';
+  document.querySelectorAll('.cat-btn').forEach(function(b){b.classList.remove('active');});
+  if(btn) btn.classList.add('active');
+  currentQuery=q; nextPageToken='';
+  var labels={تعليم:'📚 تعليم',تكنولوجيا:'💻 تكنولوجيا',رياضة:'⚽ رياضة',موسيقى:'🎵 موسيقى',طبخ:'🍳 طبخ',سفر:'✈️ سفر',أخبار:'📰 أخبار'};
+  document.getElementById('searchSectionTitle').textContent=labels[q]||('🔍 نتائج: "'+q+'"');
+  fetchVideos(q);
+}
+
+// Scroll to games strip on homepage
+function scrollToGames(btn){
+  showHomepage();
+  document.querySelectorAll('.cat-btn').forEach(function(b){b.classList.remove('active');});
+  if(btn) btn.classList.add('active');
+  setTimeout(function(){
+    var el=document.getElementById('gamesSection');
+    if(el) el.scrollIntoView({behavior:'smooth',block:'start'});
+  },100);
+}
+
+function showGamesSection(btn){ scrollToGames(btn); }
+
+function doSearch(){
+  var q=document.getElementById('searchInput').value.trim();
+  if(!q) return;
+  showVideos(q, null);
+}
+function searchCategory(q,btn){ showVideos(q,btn); }
+function loadMore(){
+  if(!nextPageToken) return;
+  var isHome = document.getElementById('videosSection').style.display!=='none' && currentQuery==='trending';
+  fetchVideos(currentQuery, nextPageToken, true);
+}
 function drawRing(){
   var fill=document.getElementById('ringFill'),num=document.getElementById('timerNum');
   if(!fill||!num)return;
@@ -1025,25 +1090,6 @@ function adminAddGame(){}
 function adminDeleteGame(id){}
 function openGame(id,name,url){}
 function closeGame(){ document.getElementById('gameOverlay').classList.remove('open'); document.getElementById('gameFrame').src=''; }
-
-// Section switcher (works before Firebase)
-function showVideos(q, btn){
-  document.getElementById('videosSection').style.display='';
-  document.getElementById('gamesSection').style.display='none';
-  document.querySelectorAll('.cat-btn').forEach(function(b){b.classList.remove('active');});
-  if(btn) btn.classList.add('active');
-  currentQuery=q; nextPageToken='';
-  var labels={trending:'🔥 الفيديوهات الرائجة',تعليم:'📚 تعليم',تكنولوجيا:'💻 تكنولوجيا',رياضة:'⚽ رياضة',موسيقى:'🎵 موسيقى',طبخ:'🍳 طبخ',سفر:'✈️ سفر',أخبار:'📰 أخبار'};
-  document.getElementById('sectionTitle').textContent=labels[q]||('نتائج: "'+q+'"');
-  fetchVideos(q);
-}
-function showGamesSection(btn){
-  document.getElementById('videosSection').style.display='none';
-  document.getElementById('gamesSection').style.display='';
-  document.querySelectorAll('.cat-btn').forEach(function(b){b.classList.remove('active');});
-  if(btn) btn.classList.add('active');
-  if(window._loadGamesSection) window._loadGamesSection();
-}
 
 // Start YouTube immediately (doesn't need Firebase)
 drawRing();
@@ -1333,6 +1379,8 @@ function initApp() {
 
   // Wire loadGamesSection to global hook
   window._loadGamesSection = loadGamesSection;
+  // Load games immediately on Firebase ready (no auth needed to view)
+  loadGamesSection();
 
   // ── Open/close game ──
   window.openGame = function(gameId, gameName, gameUrl){
