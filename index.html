@@ -788,14 +788,35 @@ main { padding:clamp(1rem,3vw,2rem); }
       <!-- Games panel -->
       <div id="adminGamesPanel" style="display:none">
         <div class="admin-title">➕ إضافة لعبة جديدة</div>
+
+        <!-- Source type toggle -->
+        <div style="display:flex;gap:.5rem;margin-bottom:1rem">
+          <button class="admin-tab-btn active" id="srcUrl"  onclick="switchGameSrc('url')">🔗 رابط مباشر</button>
+          <button class="admin-tab-btn"        id="srcIframe" onclick="switchGameSrc('iframe')">🖼️ كود iframe</button>
+        </div>
+
         <div class="admin-form-row">
           <label class="admin-form-label">اسم اللعبة</label>
           <input class="admin-form-input rtl-input" type="text" id="newGameName" placeholder="مثال: Subway Surfers">
         </div>
-        <div class="admin-form-row">
+
+        <!-- URL input -->
+        <div class="admin-form-row" id="urlRow">
           <label class="admin-form-label">رابط اللعبة المباشر</label>
           <input class="admin-form-input" type="url" id="newGameUrl" placeholder="https://...">
         </div>
+
+        <!-- iframe code input -->
+        <div class="admin-form-row" id="iframeRow" style="display:none">
+          <label class="admin-form-label">كود الـ iframe الكامل</label>
+          <textarea class="admin-form-input" id="newGameIframe" rows="4"
+            style="resize:vertical;min-height:90px;font-size:.78rem;line-height:1.6"
+            placeholder='<iframe src="https://..." width="800" height="600"></iframe>'></textarea>
+          <div style="font-size:.72rem;color:var(--muted);margin-top:.3rem">
+            💡 سيتم استخراج رابط src تلقائياً من الكود
+          </div>
+        </div>
+
         <button class="admin-add-btn" id="addGameBtn" onclick="adminAddGame()">➕ إضافة اللعبة</button>
         <div class="w-err" id="addGameErr" style="margin-bottom:.8rem"></div>
 
@@ -1088,6 +1109,16 @@ function adminAction(){}
 function switchAdminTab(t){}
 function adminAddGame(){}
 function adminDeleteGame(id){}
+function switchGameSrc(t){
+  var isUrl = t==='url';
+  document.getElementById('urlRow').style.display    = isUrl ? '' : 'none';
+  document.getElementById('iframeRow').style.display = isUrl ? 'none' : '';
+  document.getElementById('srcUrl').classList.toggle('active', isUrl);
+  document.getElementById('srcIframe').classList.toggle('active', !isUrl);
+  document.getElementById('srcUrl').dataset.mode    = 'url';
+  document.getElementById('srcIframe').dataset.mode = 'iframe';
+  window._gameSrcMode = t;
+}
 function openGame(id,name,url){}
 function closeGame(){ document.getElementById('gameOverlay').classList.remove('open'); document.getElementById('gameFrame').src=''; }
 
@@ -1457,22 +1488,48 @@ function initApp() {
     if(!isW) loadAdminGamesList();
   };
 
+  window.switchGameSrc = function(t){
+    var isUrl = t==='url';
+    document.getElementById('urlRow').style.display    = isUrl ? '' : 'none';
+    document.getElementById('iframeRow').style.display = isUrl ? 'none' : '';
+    document.getElementById('srcUrl').classList.toggle('active', isUrl);
+    document.getElementById('srcIframe').classList.toggle('active', !isUrl);
+    window._gameSrcMode = t;
+  };
+
   // ── Admin: add game ──
   window.adminAddGame = function(){
-    var name = document.getElementById('newGameName').value.trim();
-    var url  = document.getElementById('newGameUrl').value.trim();
-    var err  = document.getElementById('addGameErr');
-    var btn  = document.getElementById('addGameBtn');
-    if(!name){ err.textContent='يرجى إدخال اسم اللعبة'; return; }
-    if(!url || !url.startsWith('http')){ err.textContent='يرجى إدخال رابط صحيح'; return; }
+    var name  = document.getElementById('newGameName').value.trim();
+    var err   = document.getElementById('addGameErr');
+    var btn   = document.getElementById('addGameBtn');
+    var mode  = window._gameSrcMode || 'url';
+    var url   = '';
+
+    if(mode === 'iframe'){
+      var code = document.getElementById('newGameIframe').value.trim();
+      // extract src="..." or src='...' from iframe code
+      var match = code.match(/src=["']([^"']+)["']/i);
+      if(!code)        { err.textContent='يرجى إدخال كود الـ iframe'; return; }
+      if(!match)       { err.textContent='لم يتم العثور على رابط src في كود الـ iframe'; return; }
+      url = match[1];
+    } else {
+      url = document.getElementById('newGameUrl').value.trim();
+    }
+
+    if(!name)                      { err.textContent='يرجى إدخال اسم اللعبة'; return; }
+    if(!url || !url.startsWith('http')) { err.textContent='يرجى إدخال رابط صحيح يبدأ بـ https://'; return; }
+
     err.textContent=''; btn.disabled=true; btn.textContent='جاري الإضافة...';
+
     db.collection('games').add({
       name: name, url: url,
       createdAt: firebase.firestore.FieldValue.serverTimestamp()
     }).then(function(){
       document.getElementById('newGameName').value='';
       document.getElementById('newGameUrl').value='';
+      document.getElementById('newGameIframe').value='';
       btn.disabled=false; btn.textContent='➕ إضافة اللعبة';
+      err.textContent='';
       loadAdminGamesList();
     }).catch(function(e){ err.textContent='خطأ: '+e.message; btn.disabled=false; btn.textContent='➕ إضافة اللعبة'; });
   };
