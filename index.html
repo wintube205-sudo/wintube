@@ -179,9 +179,9 @@ main{padding:1.25rem 1rem;}
 .pts-val{font-size:.88rem;font-weight:700;color:var(--green);}
 .pts-val.flash{animation:flashG .6s;}
 @keyframes flashG{0%,100%{color:var(--green);}50%{color:#fff;text-shadow:0 0 12px #22c55e;}}
-.iframe-wrap{flex:1;position:relative;min-height:200px;}
-.iframe-wrap #ytPC{position:absolute;inset:0;width:100%;height:100%;}
-.iframe-wrap #ytPC iframe{width:100%!important;height:100%!important;border:none;display:block;}
+.iframe-wrap{flex:1;position:relative;min-height:200px;background:#000;}
+.iframe-wrap #ytPCWrap{position:absolute;inset:0;width:100%;height:100%;}
+.iframe-wrap #ytPCWrap iframe{width:100%!important;height:100%!important;border:none;display:block;}
 .pause-ind{position:absolute;inset:0;background:rgba(0,0,0,.7);display:none;flex-direction:column;align-items:center;justify-content:center;gap:.5rem;z-index:2;}
 .pause-ind.on{display:flex;}
 .pause-icon{font-size:2.5rem;}
@@ -635,7 +635,7 @@ main{padding:1.25rem 1rem;}
       </div>
     </div>
     <div class="iframe-wrap">
-      <div id="ytPC"></div>
+      <div id="ytPCWrap" style="position:absolute;inset:0;width:100%;height:100%"></div>
       <div class="pause-ind" id="pauseInd">
         <div class="pause-icon">⏸️</div>
         <div class="pause-lbl">العداد متوقف — استمر بالمشاهدة لكسب النقاط</div>
@@ -847,7 +847,7 @@ function closeVideoModal(){
   stopWTimer();
   G('pauseInd').classList.remove('on');
   if(ytPlayer){try{ytPlayer.stopVideo();ytPlayer.destroy();}catch(e){}ytPlayer=null;}
-  G('ytPC').innerHTML='';
+  G('ytPCWrap').innerHTML='';
 }
 
 /* ════════════════════════════════════════════
@@ -880,12 +880,20 @@ window.onYouTubeIframeAPIReady=function(){ytCbs.forEach(function(cb){cb();});ytC
 function onYTReady(cb){if(window.YT&&window.YT.Player)cb();else ytCbs.push(cb);}
 
 function createYTPlayer(videoId){
-  if(ytPlayer){try{ytPlayer.destroy();}catch(e){}ytPlayer=null;}
-  G('ytPC').innerHTML='';
+  // Destroy old player
+  if(ytPlayer){try{ytPlayer.stopVideo();ytPlayer.destroy();}catch(e){}ytPlayer=null;}
+  // Clear wrapper and insert a FRESH div — YT.Player consumes/replaces the div
+  var wrap=G('ytPCWrap');
+  wrap.innerHTML='';
+  var div=document.createElement('div');
+  div.id='ytPC';
+  div.style.cssText='width:100%;height:100%;';
+  wrap.appendChild(div);
+
   onYTReady(function(){
     ytPlayer=new YT.Player('ytPC',{
       videoId:videoId, width:'100%', height:'100%',
-      playerVars:{autoplay:1,rel:0,modestbranding:1,playsinline:1},
+      playerVars:{autoplay:1,rel:0,modestbranding:1,playsinline:1,fs:1},
       events:{
         onReady:function(e){e.target.playVideo();},
         onStateChange:function(e){setPlaying(e.data===YT.PlayerState.PLAYING);}
