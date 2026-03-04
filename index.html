@@ -2,656 +2,219 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>WinTube</title>
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=Bebas+Neue&display=swap" rel="stylesheet">
 <style>
-:root {
-  --red:#ff2d2d; --dark:#0a0a0a; --card:#111; --border:#1e1e1e;
-  --text:#f0f0f0; --muted:#666; --green:#22c55e; --yellow:#f59e0b;
-}
-*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
-html { font-size:16px; }
-body {
-  background:var(--dark); color:var(--text);
-  font-family:'Cairo',sans-serif; min-height:100vh;
-  overflow-x:hidden; -webkit-text-size-adjust:100%;
-}
+:root{--red:#ff2d2d;--dark:#0a0a0a;--card:#111;--border:#1e1e1e;--text:#f0f0f0;--muted:#666;--green:#22c55e;--yellow:#f59e0b;}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--dark);color:var(--text);font-family:'Cairo',sans-serif;min-height:100vh;overflow-x:hidden;}
 
-/* ══ HEADER ══ */
-header {
-  position:sticky; top:0; z-index:100;
-  background:rgba(10,10,10,.97); backdrop-filter:blur(20px);
-  border-bottom:1px solid var(--border);
-  padding:0 clamp(.75rem,3vw,2rem);
-  height:clamp(56px,8vw,70px);
-  display:flex; align-items:center; gap:clamp(.6rem,2vw,1.5rem);
-}
-.logo {
-  font-family:'Bebas Neue',sans-serif;
-  font-size:clamp(1.3rem,4vw,2rem);
-  color:var(--red); letter-spacing:3px; white-space:nowrap;
-  text-shadow:0 0 30px rgba(255,45,45,.5); flex-shrink:0;
-}
-.logo span { color:var(--text); }
+/* ── HEADER ── */
+header{position:sticky;top:0;z-index:100;background:rgba(10,10,10,.97);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:0 clamp(.75rem,3vw,2rem);height:clamp(56px,8vw,70px);display:flex;align-items:center;gap:clamp(.5rem,2vw,1.2rem);}
+.logo{font-family:'Bebas Neue',sans-serif;font-size:clamp(1.3rem,4vw,2rem);color:var(--red);letter-spacing:3px;white-space:nowrap;flex-shrink:0;}
+.logo span{color:var(--text);}
+.search-bar{flex:1;display:flex;min-width:0;max-width:520px;}
+.search-bar input{flex:1;min-width:0;background:var(--card);border:1px solid var(--border);border-left:none;color:var(--text);padding:.6rem 1rem;font-family:'Cairo',sans-serif;font-size:.88rem;outline:none;border-radius:0 8px 8px 0;}
+.search-bar input:focus{border-color:var(--red);}
+.search-bar button{background:var(--red);border:none;color:#fff;padding:0 1.1rem;cursor:pointer;font-size:.95rem;border-radius:8px 0 0 8px;flex-shrink:0;}
+.user-panel{margin-right:auto;display:flex;align-items:center;gap:.6rem;background:var(--card);border:1px solid var(--border);border-radius:50px;padding:.35rem .8rem;cursor:pointer;flex-shrink:0;}
+.user-panel:hover{border-color:var(--red);}
+.user-avatar{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--red),#ff8c00);display:flex;align-items:center;justify-content:center;font-size:.85rem;font-weight:700;color:#fff;}
+.user-name{font-size:.8rem;font-weight:600;}
+.user-pts{font-size:.72rem;color:var(--yellow);}
+.hbtn{border:none;color:#fff;border-radius:50px;padding:.35rem .9rem;font-family:'Cairo',sans-serif;font-size:.78rem;font-weight:700;cursor:pointer;white-space:nowrap;flex-shrink:0;}
+.hbtn-gold{background:linear-gradient(135deg,#f59e0b,#d97706);}
+.hbtn-red{background:linear-gradient(135deg,#ef4444,#b91c1c);}
 
-.search-bar { flex:1; display:flex; min-width:0; max-width:550px; }
-.search-bar input {
-  flex:1; min-width:0;
-  background:var(--card); border:1px solid var(--border); border-left:none;
-  color:var(--text); padding:.6rem clamp(.6rem,2vw,1.2rem);
-  font-family:'Cairo',sans-serif; font-size:clamp(.8rem,2.5vw,.9rem);
-  outline:none; transition:border-color .2s;
-  border-radius:0 8px 8px 0;
-}
-.search-bar input:focus { border-color:var(--red); }
-.search-bar button {
-  background:var(--red); border:none; color:#fff;
-  padding:0 clamp(.7rem,2vw,1.3rem);
-  cursor:pointer; font-size:clamp(.85rem,2.5vw,1rem);
-  border-radius:8px 0 0 8px; flex-shrink:0;
-}
+/* ── CATEGORIES ── */
+.categories{padding:.7rem clamp(.75rem,3vw,2rem);display:flex;gap:.5rem;overflow-x:auto;border-bottom:1px solid var(--border);scrollbar-width:none;}
+.categories::-webkit-scrollbar{display:none;}
+.cat-btn{background:var(--card);border:1px solid var(--border);color:var(--muted);padding:.38rem 1rem;border-radius:50px;cursor:pointer;font-family:'Cairo',sans-serif;font-size:.82rem;white-space:nowrap;transition:all .2s;}
+.cat-btn:hover,.cat-btn.active{background:var(--red);border-color:var(--red);color:#fff;}
 
-.user-panel {
-  margin-right:auto; display:flex; align-items:center;
-  gap:.6rem; background:var(--card); border:1px solid var(--border);
-  border-radius:50px; padding:.35rem .8rem; cursor:pointer; flex-shrink:0;
-  transition:border-color .2s;
-}
-.user-panel:hover { border-color:var(--red); }
-.user-avatar {
-  width:32px; height:32px; border-radius:50%;
-  background:linear-gradient(135deg,var(--red),#ff8c00);
-  display:flex; align-items:center; justify-content:center;
-  font-size:.85rem; font-weight:700; color:#fff; flex-shrink:0;
-}
-.user-name { font-size:.8rem; font-weight:600; }
-.user-pts { font-size:.72rem; color:var(--yellow); }
+/* ── MAIN ── */
+main{padding:clamp(1rem,3vw,2rem);}
+.section-title{font-size:clamp(1rem,3vw,1.2rem);font-weight:700;margin-bottom:clamp(1rem,2vw,1.5rem);display:flex;align-items:center;gap:.8rem;}
+.section-title::before{content:'';width:4px;height:1.3em;background:var(--red);border-radius:2px;display:inline-block;flex-shrink:0;}
 
-/* ══ CATEGORIES ══ */
-.categories {
-  padding:.7rem clamp(.75rem,3vw,2rem);
-  display:flex; gap:.5rem; overflow-x:auto;
-  border-bottom:1px solid var(--border); scrollbar-width:none;
-  -webkit-overflow-scrolling:touch;
-}
-.categories::-webkit-scrollbar { display:none; }
-.cat-btn {
-  background:var(--card); border:1px solid var(--border); color:var(--muted);
-  padding:.38rem clamp(.7rem,2vw,1.1rem);
-  border-radius:50px; cursor:pointer; font-family:'Cairo',sans-serif;
-  font-size:clamp(.75rem,2vw,.82rem); white-space:nowrap; transition:all .2s;
-  -webkit-tap-highlight-color:transparent;
-}
-.cat-btn:hover,.cat-btn.active { background:var(--red); border-color:var(--red); color:#fff; }
+/* ── VIDEO GRID ── */
+.video-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,260px),1fr));gap:clamp(.75rem,2vw,1.4rem);}
+.video-card{background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden;cursor:pointer;transition:transform .25s,border-color .25s;}
+.video-card:hover{transform:translateY(-4px);border-color:var(--red);}
+.thumb-wrap{position:relative;aspect-ratio:16/9;overflow:hidden;}
+.thumb-wrap img{width:100%;height:100%;object-fit:cover;display:block;}
+.play-overlay{position:absolute;inset:0;background:rgba(0,0,0,.4);display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .25s;}
+.video-card:hover .play-overlay{opacity:1;}
+.play-btn{width:48px;height:48px;background:var(--red);border-radius:50%;display:flex;align-items:center;justify-content:center;}
+.play-btn svg{fill:#fff;margin-right:-2px;}
+.duration{position:absolute;bottom:6px;left:6px;background:rgba(0,0,0,.8);color:#fff;font-size:.72rem;padding:2px 6px;border-radius:4px;}
+.card-info{padding:.75rem .9rem;}
+.card-title{font-size:.88rem;font-weight:600;line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;margin-bottom:.4rem;}
+.card-meta{font-size:.75rem;color:var(--muted);display:flex;flex-direction:column;gap:.15rem;}
+.channel-name{color:#aaa;}
+.loading{display:none;text-align:center;padding:3rem;color:var(--muted);}
+.spinner{width:36px;height:36px;border:3px solid var(--border);border-top-color:var(--red);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 1rem;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.empty-state{display:none;text-align:center;padding:4rem;color:var(--muted);}
+.empty-state .icon{font-size:3rem;margin-bottom:.8rem;}
+.load-more-wrap{text-align:center;margin-top:2rem;}
+.load-more-btn{background:var(--card);border:1px solid var(--border);color:var(--text);padding:.7rem 2rem;border-radius:50px;cursor:pointer;font-family:'Cairo',sans-serif;font-size:.9rem;}
+.load-more-btn:hover{border-color:var(--red);color:var(--red);}
 
-/* ══ MAIN ══ */
-main { padding:clamp(1rem,3vw,2rem); }
-.section-title {
-  font-size:clamp(1rem,3vw,1.2rem); font-weight:700;
-  margin-bottom:clamp(1rem,3vw,1.5rem);
-  display:flex; align-items:center; gap:.8rem;
-}
-.section-title::before {
-  content:''; width:4px; height:1.3em; background:var(--red);
-  border-radius:2px; display:inline-block; flex-shrink:0;
-}
+/* ── AUTH ── */
+.auth-overlay{position:fixed;inset:0;background:rgba(0,0,0,.97);z-index:9000;display:flex;align-items:center;justify-content:center;padding:1rem;}
+.auth-overlay.hidden{display:none;}
+.auth-box{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:clamp(1.5rem,4vw,2.5rem);width:100%;max-width:400px;}
+.auth-logo{font-family:'Bebas Neue',sans-serif;font-size:2.2rem;color:var(--red);letter-spacing:4px;text-align:center;margin-bottom:.3rem;}
+.auth-logo span{color:var(--text);}
+.auth-sub{text-align:center;color:var(--muted);font-size:.85rem;margin-bottom:1rem;}
+.bonus-badge{background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.3);border-radius:8px;padding:.5rem 1rem;font-size:.82rem;color:var(--yellow);text-align:center;margin-bottom:1.2rem;}
+.auth-tabs{display:flex;gap:.5rem;margin-bottom:1.2rem;}
+.auth-tab{flex:1;padding:.55rem;background:transparent;border:1px solid var(--border);color:var(--muted);border-radius:8px;cursor:pointer;font-family:'Cairo',sans-serif;font-size:.88rem;}
+.auth-tab.active{background:var(--red);border-color:var(--red);color:#fff;font-weight:700;}
+.auth-input{width:100%;background:#0a0a0a;border:1px solid var(--border);color:var(--text);padding:.75rem 1rem;font-family:'Cairo',sans-serif;font-size:.9rem;border-radius:10px;outline:none;display:block;margin-bottom:.8rem;}
+.auth-input:focus{border-color:var(--red);}
+.auth-submit{width:100%;background:var(--red);border:none;color:#fff;padding:.85rem;border-radius:10px;font-family:'Cairo',sans-serif;font-size:1rem;font-weight:700;cursor:pointer;margin-top:.3rem;}
+.auth-submit:disabled{background:#444;cursor:not-allowed;}
+.auth-err{color:var(--red);font-size:.82rem;text-align:center;margin-top:.8rem;min-height:1.2em;}
 
-/* ══ VIDEO GRID ══ */
-.video-grid {
-  display:grid;
-  grid-template-columns:repeat(auto-fill, minmax(min(100%,280px),1fr));
-  gap:clamp(.75rem,2vw,1.5rem);
-}
-.video-card {
-  background:var(--card); border:1px solid var(--border);
-  border-radius:12px; overflow:hidden; cursor:pointer;
-  transition:transform .25s,border-color .25s,box-shadow .25s;
-  -webkit-tap-highlight-color:transparent;
-}
-.video-card:hover { transform:translateY(-4px); border-color:var(--red); box-shadow:0 8px 30px rgba(255,45,45,.15); }
-.thumb-wrap { position:relative; aspect-ratio:16/9; overflow:hidden; }
-.thumb-wrap img { width:100%; height:100%; object-fit:cover; transition:transform .4s; display:block; }
-.video-card:hover .thumb-wrap img { transform:scale(1.05); }
-.play-overlay {
-  position:absolute; inset:0; background:rgba(0,0,0,.4);
-  display:flex; align-items:center; justify-content:center;
-  opacity:0; transition:opacity .25s;
-}
-.video-card:hover .play-overlay { opacity:1; }
-/* Always show play icon on touch devices */
-@media(hover:none) { .play-overlay { opacity:1; background:rgba(0,0,0,.25); } }
-.play-btn {
-  width:clamp(42px,8vw,54px); height:clamp(42px,8vw,54px);
-  background:var(--red); border-radius:50%;
-  display:flex; align-items:center; justify-content:center;
-  box-shadow:0 4px 20px rgba(255,45,45,.6);
-}
-.play-btn svg { fill:#fff; margin-right:-2px; }
-.duration {
-  position:absolute; bottom:8px; left:8px;
-  background:rgba(0,0,0,.85); color:#fff;
-  font-size:.7rem; padding:2px 6px; border-radius:4px;
-}
-.card-info { padding:clamp(.65rem,2vw,.9rem); }
-.card-title {
-  font-size:clamp(.82rem,2.2vw,.9rem); font-weight:600;
-  line-height:1.4; margin-bottom:.45rem;
-  display:-webkit-box; -webkit-line-clamp:2;
-  -webkit-box-orient:vertical; overflow:hidden;
-}
-.card-meta { font-size:clamp(.7rem,1.8vw,.78rem); color:var(--muted); display:flex; justify-content:space-between; flex-wrap:wrap; gap:.2rem; }
-.channel-name { color:#aaa; font-weight:600; }
+/* ── VIDEO MODAL ── */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.97);z-index:3000;display:none;align-items:center;justify-content:center;}
+.modal-overlay.open{display:flex;}
+.modal{background:var(--card);border:1px solid var(--border);border-radius:20px;width:100%;max-width:820px;max-height:96dvh;display:flex;flex-direction:column;overflow:hidden;margin:1rem;}
+.modal-header{display:flex;align-items:center;gap:.8rem;padding:.9rem 1.2rem;border-bottom:1px solid var(--border);flex-shrink:0;}
+.close-btn{background:#1a1a1a;border:1px solid var(--border);color:#fff;width:34px;height:34px;border-radius:50%;cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.close-btn:hover{background:var(--red);border-color:var(--red);}
+.modal-title{flex:1;font-size:.9rem;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.points-counter{display:flex;align-items:center;gap:.6rem;flex-shrink:0;}
+.timer-ring{position:relative;width:38px;height:38px;flex-shrink:0;}
+.timer-ring svg{transform:rotate(-90deg);}
+.ring-bg{fill:none;stroke:#1e1e1e;stroke-width:3;}
+.ring-fill{fill:none;stroke-width:3;stroke-linecap:round;stroke-dasharray:101;stroke-dashoffset:0;transition:stroke-dashoffset .8s,stroke .3s;}
+.timer-num{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:700;}
+.pts-info{text-align:right;}
+.pts-label{font-size:.68rem;color:var(--muted);}
+.pts-val{font-size:.88rem;font-weight:700;color:var(--green);}
+.pts-val.flash{animation:flashGreen .6s;}
+@keyframes flashGreen{0%,100%{color:var(--green);}50%{color:#fff;text-shadow:0 0 12px #22c55e;}}
+.iframe-wrap{flex:1;position:relative;min-height:0;}
+.iframe-wrap #ytPlayerContainer{position:absolute;inset:0;width:100%;height:100%;}
+.pause-indicator{position:absolute;inset:0;background:rgba(0,0,0,.75);display:none;flex-direction:column;align-items:center;justify-content:center;gap:.6rem;z-index:2;}
+.pause-indicator.visible{display:flex;}
+.pause-icon{font-size:2.5rem;}
+.pause-label{font-size:.85rem;color:#ccc;}
+.modal-desc{padding:.8rem 1.2rem;font-size:.8rem;color:var(--muted);max-height:80px;overflow-y:auto;flex-shrink:0;border-top:1px solid var(--border);}
+.toast{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%) translateY(20px);background:rgba(34,197,94,.95);color:#fff;padding:.5rem 1.4rem;border-radius:50px;font-size:.88rem;font-weight:700;z-index:9999;opacity:0;pointer-events:none;transition:opacity .3s,transform .3s;}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 
-/* ══ VIDEO MODAL ══ */
-.modal-overlay {
-  position:fixed; inset:0; background:rgba(0,0,0,.96); z-index:1000;
-  display:flex; align-items:center; justify-content:center;
-  opacity:0; pointer-events:none; transition:opacity .3s;
-}
-.modal-overlay.open { opacity:1; pointer-events:all; }
-.modal {
-  background:var(--card); border:1px solid var(--border);
-  border-radius:0; width:100%; height:100%;
-  overflow:hidden; display:flex; flex-direction:column;
-  transform:translateY(20px); transition:transform .3s;
-}
-.modal-overlay.open .modal { transform:translateY(0); }
-.modal-header {
-  display:flex; align-items:center; gap:.7rem;
-  padding:clamp(.5rem,1.5vw,.85rem) clamp(.75rem,2vw,1.3rem);
-  border-bottom:1px solid var(--border); flex-shrink:0; flex-wrap:nowrap;
-}
-.close-btn {
-  background:#222; border:none; color:#fff;
-  width:34px; height:34px; border-radius:50%; cursor:pointer;
-  font-size:1rem; display:flex; align-items:center; justify-content:center;
-  flex-shrink:0; transition:background .2s; -webkit-tap-highlight-color:transparent;
-}
-.close-btn:hover { background:var(--red); }
-.modal-title {
-  font-size:clamp(.78rem,2vw,.9rem); font-weight:600; flex:1;
-  overflow:hidden; text-overflow:ellipsis; white-space:nowrap; min-width:0;
-}
-/* iframe fills ALL remaining height after header */
-.iframe-wrap { flex:1; background:#000; min-height:0; position:relative; overflow:hidden; }
-.iframe-wrap #ytPlayerContainer { position:absolute; inset:0; width:100%; height:100%; }
-.iframe-wrap #ytPlayerContainer iframe { width:100% !important; height:100% !important; border:none; display:block; }
-/* pause indicator overlay */
-.pause-indicator {
-  position:absolute; inset:0; display:flex; flex-direction:column;
-  align-items:center; justify-content:center; gap:1rem;
-  background:rgba(0,0,0,.65); opacity:0; pointer-events:none;
-  transition:opacity .4s;
-}
-.pause-indicator.visible { opacity:1; }
-.pause-icon { font-size:4rem; }
-.pause-label {
-  color:#fff; font-family:'Cairo',sans-serif; font-size:1rem;
-  background:rgba(255,255,255,.1); border:1px solid rgba(255,255,255,.2);
-  border-radius:50px; padding:.45rem 1.4rem;
-}
-.modal-desc {
-  padding:clamp(.5rem,1.5vw,.8rem) clamp(.75rem,2vw,1.3rem);
-  max-height:70px; overflow-y:auto; flex-shrink:0;
-  font-size:clamp(.72rem,1.8vw,.83rem); line-height:1.6; color:#999;
-  border-top:1px solid var(--border);
-}
+/* ── WITHDRAW ── */
+.w-overlay{position:fixed;inset:0;background:rgba(0,0,0,.95);z-index:5000;display:none;align-items:center;justify-content:center;padding:1rem;}
+.w-overlay.open{display:flex;}
+.w-box{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:clamp(1.5rem,4vw,2.2rem);width:100%;max-width:440px;max-height:90dvh;overflow-y:auto;}
+.w-title{font-size:1.3rem;font-weight:800;margin-bottom:1.2rem;}
+.w-balance{background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.3);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.3rem;display:flex;justify-content:space-between;align-items:center;}
+.w-balance-label{font-size:.82rem;color:var(--muted);}
+.w-balance-val{font-size:1.2rem;font-weight:800;color:var(--yellow);}
+.w-balance-usd{font-size:.8rem;color:var(--green);}
+.w-min-note{font-size:.78rem;color:var(--muted);margin-bottom:1.1rem;background:rgba(255,255,255,.04);border-radius:8px;padding:.6rem .8rem;}
+.w-label{font-size:.82rem;font-weight:600;margin-bottom:.45rem;display:block;}
+.w-select,.w-input{width:100%;background:#0a0a0a;border:1px solid var(--border);color:var(--text);padding:.75rem 1rem;font-family:'Cairo',sans-serif;font-size:.88rem;border-radius:10px;outline:none;margin-bottom:.9rem;display:block;}
+.w-select:focus,.w-input:focus{border-color:var(--yellow);}
+.w-input{direction:ltr;text-align:left;}
+.w-actions{display:flex;gap:.8rem;margin-top:.5rem;}
+.w-submit{flex:1;background:linear-gradient(135deg,#f59e0b,#d97706);border:none;color:#fff;padding:.85rem;border-radius:10px;font-family:'Cairo',sans-serif;font-size:1rem;font-weight:700;cursor:pointer;}
+.w-submit:disabled{background:#444;cursor:not-allowed;}
+.w-cancel{background:#1a1a1a;border:1px solid var(--border);color:var(--muted);padding:.85rem 1.4rem;border-radius:10px;font-family:'Cairo',sans-serif;font-size:.9rem;cursor:pointer;}
+.w-err{color:var(--red);font-size:.8rem;margin-top:.6rem;min-height:1.2em;}
+.req-list{margin-top:1.2rem;}
+.req-item{background:#0d0d0d;border:1px solid var(--border);border-radius:10px;padding:.8rem 1rem;margin-bottom:.6rem;display:flex;justify-content:space-between;align-items:center;gap:.6rem;}
+.req-item-method{font-weight:700;color:var(--yellow);font-size:.78rem;}
+.req-item-amt{font-size:.75rem;color:var(--muted);}
+.req-badge{font-size:.68rem;font-weight:700;padding:.25rem .65rem;border-radius:50px;white-space:nowrap;}
+.req-badge.pending{background:rgba(245,158,11,.15);color:var(--yellow);border:1px solid rgba(245,158,11,.3);}
+.req-badge.approved{background:rgba(34,197,94,.15);color:var(--green);border:1px solid rgba(34,197,94,.3);}
+.req-badge.rejected{background:rgba(255,45,45,.15);color:var(--red);border:1px solid rgba(255,45,45,.3);}
 
-/* ══ POINTS COUNTER ══ */
-.points-counter {
-  display:flex; align-items:center; gap:.6rem;
-  background:rgba(0,0,0,.5); border:1px solid #2a2a2a;
-  border-radius:50px; padding:.3rem .8rem .3rem .6rem; flex-shrink:0;
-}
-.timer-ring { position:relative; width:36px; height:36px; flex-shrink:0; }
-.timer-ring svg { transform:rotate(-90deg); }
-.ring-bg { fill:none; stroke:#2a2a2a; stroke-width:3; }
-.ring-fill { fill:none; stroke-width:3; stroke-linecap:round; stroke-dasharray:101; stroke-dashoffset:0; transition:stroke-dashoffset 1s linear,stroke .4s; }
-.timer-num { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-size:.62rem; font-weight:800; }
-.pts-info { text-align:right; }
-.pts-label { font-size:.65rem; color:var(--muted); }
-.pts-val { font-size:clamp(.9rem,2.5vw,1.05rem); font-weight:800; color:var(--yellow); }
-.pts-val.flash { animation:ptsBlink .5s ease; color:var(--green)!important; }
-@keyframes ptsBlink{0%,100%{transform:scale(1)}50%{transform:scale(1.35)}}
+/* ── ADMIN ── */
+.admin-overlay{position:fixed;inset:0;background:rgba(0,0,0,.97);z-index:6000;display:none;flex-direction:column;}
+.admin-overlay.open{display:flex;}
+.admin-bar{background:#0d0d0d;border-bottom:1px solid var(--border);padding:.8rem 1.5rem;display:flex;align-items:center;gap:1rem;}
+.admin-bar .a-logo{font-family:'Bebas Neue',sans-serif;font-size:1.5rem;color:var(--red);letter-spacing:2px;}
+.admin-close{margin-right:auto;background:#222;border:none;color:#fff;width:34px;height:34px;border-radius:50%;cursor:pointer;font-size:1rem;}
+.admin-close:hover{background:var(--red);}
+.admin-body{flex:1;overflow-y:auto;padding:1.5rem;}
+.admin-tabs{display:flex;gap:.5rem;margin-bottom:1.4rem;}
+.admin-tab-btn{flex:1;padding:.55rem;border-radius:8px;border:1px solid var(--border);background:transparent;color:var(--muted);font-family:'Cairo',sans-serif;font-size:.85rem;cursor:pointer;}
+.admin-tab-btn.active{background:var(--red);border-color:var(--red);color:#fff;font-weight:700;}
+.admin-title{font-size:1.1rem;font-weight:800;margin-bottom:1.2rem;color:var(--yellow);}
+.admin-req{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1rem 1.2rem;margin-bottom:.9rem;}
+.admin-req-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:.8rem;flex-wrap:wrap;gap:.5rem;}
+.admin-req-name{font-weight:700;font-size:.95rem;}
+.admin-req-date{font-size:.72rem;color:var(--muted);}
+.admin-req-row{font-size:.8rem;margin-bottom:.25rem;color:#ccc;}
+.admin-req-row span{color:#fff;font-weight:600;}
+.admin-req-actions{display:flex;gap:.7rem;margin-top:.9rem;}
+.a-approve{flex:1;background:rgba(34,197,94,.15);border:1px solid rgba(34,197,94,.4);color:var(--green);padding:.6rem;border-radius:8px;font-family:'Cairo',sans-serif;font-size:.88rem;font-weight:700;cursor:pointer;}
+.a-approve:hover{background:rgba(34,197,94,.3);}
+.a-reject{flex:1;background:rgba(255,45,45,.12);border:1px solid rgba(255,45,45,.3);color:var(--red);padding:.6rem;border-radius:8px;font-family:'Cairo',sans-serif;font-size:.88rem;font-weight:700;cursor:pointer;}
+.a-reject:hover{background:rgba(255,45,45,.25);}
+.admin-empty{text-align:center;color:var(--muted);padding:4rem;font-size:.95rem;}
+.admin-login-box{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:2.5rem;width:100%;max-width:340px;text-align:center;margin:auto;}
+.admin-form-row{display:flex;flex-direction:column;gap:.5rem;margin-bottom:1rem;}
+.admin-form-label{font-size:.8rem;color:var(--muted);}
+.admin-form-input{background:#0a0a0a;border:1px solid var(--border);color:var(--text);padding:.7rem 1rem;border-radius:10px;font-family:'Cairo',sans-serif;font-size:.88rem;outline:none;width:100%;direction:ltr;text-align:left;}
+.admin-form-input.rtl{direction:rtl;text-align:right;}
+.admin-form-input:focus{border-color:var(--red);}
+.admin-add-btn{width:100%;background:linear-gradient(135deg,var(--red),#cc2424);border:none;color:#fff;padding:.8rem;border-radius:10px;font-family:'Cairo',sans-serif;font-size:.95rem;font-weight:700;cursor:pointer;margin-top:.3rem;}
+.admin-add-btn:disabled{background:#444;cursor:not-allowed;}
+.admin-game-item{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:.8rem 1rem;margin-bottom:.6rem;display:flex;align-items:center;justify-content:space-between;gap:.8rem;}
+.admin-game-name{font-size:.88rem;font-weight:700;}
+.admin-game-url{font-size:.72rem;color:var(--muted);direction:ltr;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:200px;}
+.admin-game-del{background:rgba(255,45,45,.12);border:1px solid rgba(255,45,45,.3);color:var(--red);padding:.35rem .75rem;border-radius:8px;font-family:'Cairo',sans-serif;font-size:.78rem;cursor:pointer;flex-shrink:0;}
 
-/* ══ TOAST ══ */
-.toast {
-  position:fixed; top:80px; left:50%;
-  transform:translateX(-50%) translateY(-10px);
-  background:rgba(255,45,45,.92); color:#fff;
-  padding:.5rem 1.2rem; border-radius:50px;
-  font-size:clamp(.8rem,2.5vw,.9rem); font-weight:700;
-  z-index:9999; opacity:0; pointer-events:none;
-  transition:opacity .3s,transform .3s; white-space:nowrap;
-}
-.toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
+/* ── GAMES SECTION ── */
+.games-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,260px),1fr));gap:clamp(.75rem,2vw,1.4rem);}
+.game-card{background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden;cursor:pointer;transition:transform .25s,border-color .25s;position:relative;}
+.game-card:hover{transform:translateY(-4px);border-color:#a855f7;}
+.game-thumb{aspect-ratio:16/9;background:linear-gradient(135deg,#1a0533,#2d0a5c,#0f172a);display:flex;align-items:center;justify-content:center;position:relative;}
+.game-thumb-icon{font-size:3rem;}
+.game-play-overlay{position:absolute;inset:0;background:rgba(0,0,0,.4);display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .25s;}
+.game-card:hover .game-play-overlay{opacity:1;}
+.game-play-btn{width:52px;height:52px;background:#a855f7;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.3rem;}
+.game-info{padding:.8rem 1rem;}
+.game-name{font-size:.92rem;font-weight:700;margin-bottom:.4rem;}
+.game-daily-bar-wrap{display:flex;align-items:center;gap:.6rem;}
+.game-daily-bar-bg{flex:1;height:5px;background:#1a1a1a;border-radius:99px;overflow:hidden;}
+.game-daily-bar-fill{height:100%;background:linear-gradient(90deg,#a855f7,#7c3aed);border-radius:99px;transition:width .4s;}
+.game-daily-label{font-size:.68rem;color:var(--muted);white-space:nowrap;}
+.game-cap-badge{position:absolute;top:8px;right:8px;background:rgba(168,85,247,.85);color:#fff;font-size:.65rem;font-weight:700;padding:2px 8px;border-radius:50px;}
+.game-cap-badge.maxed{background:rgba(255,45,45,.85);}
 
-/* ══ AUTH MODAL ══ */
-.auth-overlay {
-  position:fixed; inset:0; background:rgba(0,0,0,.96); z-index:2000;
-  display:flex; align-items:center; justify-content:center;
-  padding:1rem; overflow-y:auto;
-}
-.auth-overlay.hidden { display:none; }
-.auth-box {
-  background:var(--card); border:1px solid var(--border);
-  border-radius:clamp(12px,3vw,20px);
-  padding:clamp(1.5rem,5vw,2.5rem);
-  width:100%; max-width:380px; text-align:center;
-  margin:auto;
-}
-.auth-logo { font-family:'Bebas Neue',sans-serif; font-size:clamp(2rem,6vw,2.5rem); color:var(--red); letter-spacing:4px; text-shadow:0 0 30px rgba(255,45,45,.5); }
-.auth-logo span { color:var(--text); }
-.auth-sub { color:var(--muted); font-size:clamp(.8rem,2.2vw,.88rem); margin:.3rem 0 1.2rem; }
-.bonus-badge { background:rgba(34,197,94,.1); border:1px solid rgba(34,197,94,.3); border-radius:8px; padding:.5rem; font-size:clamp(.75rem,2vw,.82rem); color:var(--green); margin-bottom:1.1rem; }
-.auth-tabs { display:flex; background:#0a0a0a; border-radius:10px; padding:4px; margin-bottom:1.3rem; gap:4px; }
-.auth-tab { flex:1; padding:.48rem; border:none; background:transparent; color:var(--muted); font-family:'Cairo',sans-serif; font-size:clamp(.8rem,2.2vw,.88rem); cursor:pointer; border-radius:8px; transition:all .2s; -webkit-tap-highlight-color:transparent; }
-.auth-tab.active { background:var(--red); color:#fff; font-weight:600; }
-.auth-input {
-  width:100%; background:#0a0a0a; border:1px solid var(--border);
-  color:var(--text); padding:.75rem 1rem;
-  font-family:'Cairo',sans-serif; font-size:clamp(.85rem,2.5vw,.9rem);
-  border-radius:10px; outline:none; margin-bottom:.7rem;
-  text-align:right; transition:border-color .2s; display:block;
-  /* prevent iOS zoom on focus */
-  font-size:max(.9rem, 16px);
-}
-.auth-input:focus { border-color:var(--red); }
-.auth-submit {
-  width:100%; background:var(--red); border:none; color:#fff;
-  padding:.82rem; border-radius:10px;
-  font-family:'Cairo',sans-serif;
-  font-size:clamp(.9rem,2.5vw,1rem); font-weight:700;
-  cursor:pointer; margin-top:.2rem; transition:background .2s;
-  -webkit-tap-highlight-color:transparent;
-}
-.auth-submit:hover { background:#cc2424; }
-.auth-submit:disabled { background:#555; cursor:not-allowed; }
-.auth-err { color:var(--red); font-size:clamp(.75rem,2vw,.82rem); margin-top:.8rem; min-height:1.4em; line-height:1.4; }
+/* ── GAME IFRAME ── */
+.game-overlay{position:fixed;inset:0;z-index:4000;background:#000;display:none;flex-direction:column;}
+.game-overlay.open{display:flex;}
+.game-close-fixed{position:absolute;top:12px;right:12px;z-index:20;background:rgba(0,0,0,.75);border:2px solid rgba(255,255,255,.3);color:#fff;width:42px;height:42px;border-radius:50%;cursor:pointer;font-size:1.2rem;display:flex;align-items:center;justify-content:center;transition:background .2s;}
+.game-close-fixed:hover{background:var(--red);border-color:var(--red);}
+.game-info-bar{position:absolute;top:12px;left:12px;z-index:20;display:flex;align-items:center;gap:.6rem;}
+.game-title-badge{background:rgba(0,0,0,.75);border:1px solid rgba(255,255,255,.2);color:#fff;padding:.3rem .8rem;border-radius:50px;font-size:.8rem;font-weight:700;backdrop-filter:blur(4px);}
+.game-pts-badge{background:rgba(168,85,247,.85);color:#fff;border-radius:50px;padding:.3rem .8rem;font-size:.75rem;font-weight:700;}
+.game-iframe-wrap{flex:1;position:relative;}
+.game-iframe-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:none;}
+.game-toast{position:fixed;top:65px;left:50%;transform:translateX(-50%) translateY(-10px);background:rgba(168,85,247,.95);color:#fff;padding:.45rem 1.2rem;border-radius:50px;font-size:.85rem;font-weight:700;z-index:9999;opacity:0;pointer-events:none;transition:opacity .3s,transform .3s;}
+.game-toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 
-/* ══ ZERO POINTS ══ */
-.zero-overlay { position:fixed; inset:0; background:rgba(0,0,0,.97); z-index:3000; display:flex; align-items:center; justify-content:center; padding:1rem; opacity:0; pointer-events:none; transition:opacity .4s; }
-.zero-overlay.open { opacity:1; pointer-events:all; }
-.zero-box { text-align:center; padding:clamp(1.5rem,5vw,3rem) 2rem; }
-.zero-icon { font-size:clamp(3.5rem,10vw,5rem); margin-bottom:1rem; }
-.zero-title { font-size:clamp(1.3rem,4vw,1.8rem); font-weight:900; margin-bottom:.5rem; }
-.zero-sub { color:var(--muted); font-size:clamp(.85rem,2.5vw,.95rem); margin-bottom:2rem; }
-
-/* ══ STATES ══ */
-.loading { text-align:center; padding:4rem; display:none; }
-.spinner { width:48px; height:48px; border:3px solid var(--border); border-top-color:var(--red); border-radius:50%; animation:spin .8s linear infinite; margin:0 auto 1rem; }
-@keyframes spin { to { transform:rotate(360deg); } }
-.empty-state { text-align:center; padding:5rem 1rem; display:none; }
-.empty-state .icon { font-size:4rem; margin-bottom:1rem; }
-.empty-state p { color:var(--muted); }
-.load-more-wrap { text-align:center; margin-top:2rem; }
-.load-more-btn { background:transparent; border:1px solid var(--red); color:var(--red); padding:.72rem 2.5rem; border-radius:8px; font-family:'Cairo',sans-serif; font-size:.95rem; cursor:pointer; transition:all .2s; -webkit-tap-highlight-color:transparent; }
-.load-more-btn:hover { background:var(--red); color:#fff; }
-
-/* ══ RESPONSIVE BREAKPOINTS ══ */
-
-/* Large desktop (1400px+) */
-@media(min-width:1400px) {
-  .video-grid { grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); }
+/* ── RESPONSIVE ── */
+@media(max-width:600px){
+  .modal{margin:.3rem;border-radius:12px;}
+  .modal-header{padding:.7rem .9rem;gap:.5rem;}
+  .game-close-fixed{top:8px;right:8px;width:38px;height:38px;}
 }
-
-/* Tablet landscape (900–1199px) */
-@media(max-width:1199px) {
-  .video-grid { grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); }
-}
-
-/* Tablet portrait (600–899px) */
-@media(max-width:899px) {
-  .video-grid { grid-template-columns:repeat(2,1fr); }
-  .modal { border-radius:12px; }
-}
-
-/* Mobile (≤599px) */
-@media(max-width:599px) {
-  /* Header: stack search below logo+avatar */
-  header {
-    height:auto; padding:.6rem 1rem;
-    flex-wrap:wrap; gap:.5rem;
-  }
-  .logo { font-size:1.5rem; order:1; }
-  .user-panel { order:2; padding:.3rem .6rem; gap:.4rem; }
-  .user-name { display:none; }
-  .search-bar { order:3; width:100%; max-width:100%; flex:none; }
-  .search-bar input { font-size:16px; /* prevent iOS zoom */ border-radius:0 8px 8px 0; }
-
-  /* Categories: smaller pills */
-  .categories { padding:.6rem .75rem; gap:.4rem; }
-  .cat-btn { font-size:.75rem; padding:.35rem .8rem; }
-
-  main { padding:.75rem; }
-
-  /* Single column grid */
-  .video-grid { grid-template-columns:1fr; gap:.75rem; }
-  .card-info { padding:.7rem; }
-
-  /* Modal: full screen on mobile */
-  .modal-overlay { padding:0; align-items:flex-end; }
-  .modal {
-    border-radius:16px 16px 0 0;
-    max-height:95dvh;
-    transform:translateY(20px);
-  }
-  .modal-overlay.open .modal { transform:translateY(0); }
-  .modal-header { padding:.7rem .9rem; gap:.6rem; flex-wrap:nowrap; }
-  .modal-title { font-size:.78rem; }
-  .modal-desc { max-height:60px; padding:.6rem .9rem; font-size:.75rem; }
-
-  /* Points counter: compact */
-  .points-counter { padding:.25rem .6rem .25rem .5rem; gap:.4rem; }
-  .timer-ring { width:30px; height:30px; }
-  .pts-label { display:none; }
-  .pts-val { font-size:.9rem; }
-
-  /* Auth modal */
-  .auth-box { padding:1.5rem 1.2rem; border-radius:16px; }
-  .auth-logo { font-size:2rem; }
-
-  /* Toast */
-  .toast { font-size:.8rem; padding:.45rem 1rem; top:70px; }
-
-  /* Zero points */
-  .zero-box { padding:2rem 1rem; }
-  .zero-icon { font-size:3.5rem; }
-  .zero-title { font-size:1.4rem; }
-}
-
-/* Very small phones (≤360px) */
-@media(max-width:360px) {
-  .logo { font-size:1.3rem; letter-spacing:2px; }
-  .video-grid { gap:.6rem; }
-  .auth-box { padding:1.2rem 1rem; }
-  .auth-tabs .auth-tab { font-size:.78rem; padding:.4rem .2rem; }
-}
-
-/* ══ WITHDRAW BUTTON IN HEADER ══ */
-.withdraw-btn {
-  background:linear-gradient(135deg,#f59e0b,#d97706);
-  border:none; color:#fff; border-radius:50px;
-  padding:.35rem .9rem; font-family:'Cairo',sans-serif;
-  font-size:.78rem; font-weight:700; cursor:pointer;
-  white-space:nowrap; flex-shrink:0; transition:opacity .2s;
-}
-.withdraw-btn:hover { opacity:.85; }
-
-/* ══ WITHDRAW MODAL ══ */
-.w-overlay {
-  position:fixed; inset:0; background:rgba(0,0,0,.95); z-index:2500;
-  display:flex; align-items:center; justify-content:center;
-  padding:1rem; opacity:0; pointer-events:none; transition:opacity .3s;
-}
-.w-overlay.open { opacity:1; pointer-events:all; }
-.w-box {
-  background:var(--card); border:1px solid var(--border);
-  border-radius:20px; padding:clamp(1.5rem,4vw,2.2rem);
-  width:100%; max-width:440px; max-height:90dvh; overflow-y:auto;
-}
-.w-title { font-size:1.3rem; font-weight:800; margin-bottom:1.2rem; display:flex; align-items:center; gap:.6rem; }
-.w-balance {
-  background:rgba(245,158,11,.1); border:1px solid rgba(245,158,11,.3);
-  border-radius:12px; padding:.9rem 1.1rem; margin-bottom:1.3rem;
-  display:flex; justify-content:space-between; align-items:center;
-}
-.w-balance-label { font-size:.82rem; color:var(--muted); }
-.w-balance-val { font-size:1.2rem; font-weight:800; color:var(--yellow); }
-.w-balance-usd { font-size:.8rem; color:var(--green); }
-.w-min-note { font-size:.78rem; color:var(--muted); margin-bottom:1.1rem; background:rgba(255,255,255,.04); border-radius:8px; padding:.6rem .8rem; }
-.w-label { font-size:.82rem; font-weight:600; margin-bottom:.45rem; display:block; }
-.w-select {
-  width:100%; background:#0a0a0a; border:1px solid var(--border);
-  color:var(--text); padding:.75rem 1rem; font-family:'Cairo',sans-serif;
-  font-size:.9rem; border-radius:10px; outline:none; margin-bottom:.9rem;
-  appearance:none; cursor:pointer;
-}
-.w-select:focus { border-color:var(--yellow); }
-.w-input {
-  width:100%; background:#0a0a0a; border:1px solid var(--border);
-  color:var(--text); padding:.75rem 1rem; font-family:'Cairo',sans-serif;
-  font-size:.88rem; border-radius:10px; outline:none; margin-bottom:.9rem;
-  display:block; direction:ltr; text-align:left;
-}
-.w-input:focus { border-color:var(--yellow); }
-.w-input::placeholder { color:var(--muted); font-size:.8rem; }
-.w-actions { display:flex; gap:.8rem; margin-top:.5rem; }
-.w-submit {
-  flex:1; background:linear-gradient(135deg,#f59e0b,#d97706);
-  border:none; color:#fff; padding:.85rem; border-radius:10px;
-  font-family:'Cairo',sans-serif; font-size:1rem; font-weight:700;
-  cursor:pointer; transition:opacity .2s;
-}
-.w-submit:hover { opacity:.85; }
-.w-submit:disabled { background:#444; cursor:not-allowed; opacity:1; }
-.w-cancel {
-  background:#1a1a1a; border:1px solid var(--border); color:var(--muted);
-  padding:.85rem 1.4rem; border-radius:10px; font-family:'Cairo',sans-serif;
-  font-size:.9rem; cursor:pointer;
-}
-.w-err { color:var(--red); font-size:.8rem; margin-top:.6rem; min-height:1.2em; }
-.w-success {
-  text-align:center; padding:1.5rem 0;
-}
-.w-success .s-icon { font-size:3.5rem; margin-bottom:.8rem; }
-.w-success .s-title { font-size:1.1rem; font-weight:800; margin-bottom:.4rem; }
-.w-success .s-sub { font-size:.85rem; color:var(--muted); }
-
-/* Request history */
-.req-list { margin-top:1.2rem; }
-.req-item {
-  background:#0d0d0d; border:1px solid var(--border); border-radius:10px;
-  padding:.8rem 1rem; margin-bottom:.6rem;
-  display:flex; justify-content:space-between; align-items:center; gap:.6rem;
-}
-.req-item-info { font-size:.78rem; }
-.req-item-method { font-weight:700; color:var(--yellow); }
-.req-item-amt { font-size:.75rem; color:var(--muted); }
-.req-badge {
-  font-size:.68rem; font-weight:700; padding:.25rem .65rem;
-  border-radius:50px; white-space:nowrap;
-}
-.req-badge.pending  { background:rgba(245,158,11,.15); color:var(--yellow); border:1px solid rgba(245,158,11,.3); }
-.req-badge.approved { background:rgba(34,197,94,.15);  color:var(--green);  border:1px solid rgba(34,197,94,.3); }
-.req-badge.rejected { background:rgba(255,45,45,.15);  color:var(--red);    border:1px solid rgba(255,45,45,.3); }
-
-/* ══ ADMIN PANEL ══ */
-.admin-overlay {
-  position:fixed; inset:0; background:rgba(0,0,0,.97); z-index:4000;
-  display:none; flex-direction:column;
-}
-.admin-overlay.open { display:flex; }
-.admin-bar {
-  background:#0d0d0d; border-bottom:1px solid var(--border);
-  padding:.8rem 1.5rem; display:flex; align-items:center; gap:1rem;
-}
-.admin-bar .a-logo { font-family:'Bebas Neue',sans-serif; font-size:1.5rem; color:var(--red); letter-spacing:2px; }
-.admin-bar .a-logo span { color:var(--text); }
-.admin-close { margin-right:auto; background:#222; border:none; color:#fff; width:34px; height:34px; border-radius:50%; cursor:pointer; font-size:1rem; }
-.admin-close:hover { background:var(--red); }
-.admin-body { flex:1; overflow-y:auto; padding:1.5rem; }
-.admin-title { font-size:1.1rem; font-weight:800; margin-bottom:1.2rem; color:var(--yellow); }
-.admin-req {
-  background:var(--card); border:1px solid var(--border); border-radius:12px;
-  padding:1rem 1.2rem; margin-bottom:.9rem;
-}
-.admin-req-top { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:.8rem; flex-wrap:wrap; gap:.5rem; }
-.admin-req-name { font-weight:700; font-size:.95rem; }
-.admin-req-date { font-size:.72rem; color:var(--muted); }
-.admin-req-row { font-size:.8rem; margin-bottom:.25rem; color:#ccc; }
-.admin-req-row span { color:#fff; font-weight:600; }
-.admin-req-actions { display:flex; gap:.7rem; margin-top:.9rem; }
-.a-approve {
-  flex:1; background:rgba(34,197,94,.15); border:1px solid rgba(34,197,94,.4);
-  color:var(--green); padding:.6rem; border-radius:8px;
-  font-family:'Cairo',sans-serif; font-size:.88rem; font-weight:700; cursor:pointer;
-  transition:background .2s;
-}
-.a-approve:hover { background:rgba(34,197,94,.3); }
-.a-reject {
-  flex:1; background:rgba(255,45,45,.12); border:1px solid rgba(255,45,45,.3);
-  color:var(--red); padding:.6rem; border-radius:8px;
-  font-family:'Cairo',sans-serif; font-size:.88rem; font-weight:700; cursor:pointer;
-  transition:background .2s;
-}
-.a-reject:hover { background:rgba(255,45,45,.25); }
-.admin-empty { text-align:center; color:var(--muted); padding:4rem; font-size:.95rem; }
-
-/* Admin login */
-.admin-login-box {
-  background:var(--card); border:1px solid var(--border); border-radius:20px;
-  padding:2.5rem; width:100%; max-width:340px; text-align:center; margin:auto;
-}
-.admin-login-box .a-logo { font-family:'Bebas Neue',sans-serif; font-size:2rem; color:var(--red); letter-spacing:3px; display:block; margin-bottom:1.5rem; }
-
-/* ══ ADMIN TABS ══ */
-.admin-tabs { display:flex; gap:.5rem; margin-bottom:1.4rem; }
-.admin-tab-btn {
-  flex:1; padding:.55rem; border-radius:8px; border:1px solid var(--border);
-  background:transparent; color:var(--muted); font-family:'Cairo',sans-serif;
-  font-size:.85rem; cursor:pointer; transition:all .2s;
-}
-.admin-tab-btn.active { background:var(--red); border-color:var(--red); color:#fff; font-weight:700; }
-
-/* Add game form */
-.admin-form-row { display:flex; flex-direction:column; gap:.5rem; margin-bottom:1rem; }
-.admin-form-label { font-size:.8rem; color:var(--muted); }
-.admin-form-input {
-  background:#0a0a0a; border:1px solid var(--border); color:var(--text);
-  padding:.7rem 1rem; border-radius:10px; font-family:'Cairo',sans-serif;
-  font-size:.88rem; outline:none; width:100%; direction:ltr; text-align:left;
-}
-.admin-form-input:focus { border-color:var(--red); }
-.admin-form-input.rtl-input { direction:rtl; text-align:right; }
-.admin-add-btn {
-  width:100%; background:linear-gradient(135deg,var(--red),#cc2424);
-  border:none; color:#fff; padding:.8rem; border-radius:10px;
-  font-family:'Cairo',sans-serif; font-size:.95rem; font-weight:700;
-  cursor:pointer; margin-top:.3rem; transition:opacity .2s;
-}
-.admin-add-btn:hover { opacity:.85; }
-.admin-add-btn:disabled { background:#444; cursor:not-allowed; opacity:1; }
-
-/* Games list in admin */
-.admin-game-item {
-  background:var(--card); border:1px solid var(--border); border-radius:10px;
-  padding:.8rem 1rem; margin-bottom:.6rem;
-  display:flex; align-items:center; justify-content:space-between; gap:.8rem;
-}
-.admin-game-name { font-size:.88rem; font-weight:700; }
-.admin-game-url { font-size:.72rem; color:var(--muted); direction:ltr; unicode-bidi:embed; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:200px; }
-.admin-game-del {
-  background:rgba(255,45,45,.12); border:1px solid rgba(255,45,45,.3);
-  color:var(--red); padding:.35rem .75rem; border-radius:8px;
-  font-family:'Cairo',sans-serif; font-size:.78rem; cursor:pointer;
-  flex-shrink:0; transition:background .2s;
-}
-.admin-game-del:hover { background:rgba(255,45,45,.25); }
-
-/* ══ GAMES SECTION ══ */
-#gamesSection { }
-.games-grid {
-  display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(min(100%,260px),1fr));
-  gap:clamp(.75rem,2vw,1.4rem);
-}
-.game-card {
-  background:var(--card); border:1px solid var(--border); border-radius:14px;
-  overflow:hidden; cursor:pointer;
-  transition:transform .25s,border-color .25s,box-shadow .25s;
-  -webkit-tap-highlight-color:transparent; position:relative;
-}
-.game-card:hover { transform:translateY(-4px); border-color:#a855f7; box-shadow:0 8px 28px rgba(168,85,247,.18); }
-.game-thumb {
-  aspect-ratio:16/9; background:linear-gradient(135deg,#1a0533,#2d0a5c,#0f172a);
-  display:flex; align-items:center; justify-content:center; position:relative; overflow:hidden;
-}
-.game-thumb::before {
-  content:''; position:absolute; inset:0;
-  background:radial-gradient(circle at 50% 50%,rgba(168,85,247,.15),transparent 70%);
-}
-.game-thumb-icon { font-size:3rem; z-index:1; }
-.game-play-overlay {
-  position:absolute; inset:0; background:rgba(0,0,0,.45);
-  display:flex; align-items:center; justify-content:center;
-  opacity:0; transition:opacity .25s;
-}
-.game-card:hover .game-play-overlay { opacity:1; }
-@media(hover:none){ .game-play-overlay { opacity:1; background:rgba(0,0,0,.25); } }
-.game-play-btn {
-  width:52px; height:52px; background:#a855f7; border-radius:50%;
-  display:flex; align-items:center; justify-content:center;
-  box-shadow:0 4px 20px rgba(168,85,247,.6); font-size:1.3rem;
-}
-.game-info { padding:.8rem 1rem; }
-.game-name { font-size:.92rem; font-weight:700; margin-bottom:.3rem; }
-.game-daily-bar-wrap { display:flex; align-items:center; gap:.6rem; }
-.game-daily-bar-bg {
-  flex:1; height:5px; background:#1a1a1a; border-radius:99px; overflow:hidden;
-}
-.game-daily-bar-fill {
-  height:100%; background:linear-gradient(90deg,#a855f7,#7c3aed);
-  border-radius:99px; transition:width .4s;
-}
-.game-daily-label { font-size:.68rem; color:var(--muted); white-space:nowrap; flex-shrink:0; }
-.game-cap-badge {
-  position:absolute; top:8px; right:8px;
-  background:rgba(168,85,247,.85); color:#fff;
-  font-size:.65rem; font-weight:700; padding:2px 8px;
-  border-radius:50px; backdrop-filter:blur(4px);
-}
-.game-cap-badge.maxed { background:rgba(255,45,45,.85); }
-
-/* ══ GAME IFRAME MODAL ══ */
-.game-overlay {
-  position:fixed; inset:0; z-index:1500;
-  background:#000; display:none; flex-direction:column;
-}
-.game-overlay.open { display:flex; }
-/* Always-visible close button */
-.game-close-fixed {
-  position:absolute; top:10px; right:10px; z-index:20;
-  background:rgba(0,0,0,.7); border:1px solid rgba(255,255,255,.2);
-  color:#fff; width:38px; height:38px; border-radius:50%;
-  cursor:pointer; font-size:1.1rem;
-  display:flex; align-items:center; justify-content:center;
-  transition:background .2s; -webkit-tap-highlight-color:transparent;
-  backdrop-filter:blur(4px);
-}
-.game-close-fixed:hover { background:var(--red); border-color:var(--red); }
-.game-top-bar {
-  position:absolute; top:0; left:0; right:0; z-index:10;
-  background:linear-gradient(to bottom,rgba(0,0,0,.85),transparent);
-  padding:.6rem 1rem .6rem 3.5rem; display:flex; align-items:center; gap:.8rem;
-  opacity:0; transition:opacity .3s; pointer-events:none;
-}
-.game-overlay:hover .game-top-bar,
-.game-top-bar.visible { opacity:1; pointer-events:all; }
-.game-top-title { font-size:.9rem; font-weight:700; flex:1; }
-.game-pts-badge {
-  background:rgba(168,85,247,.8); color:#fff; border-radius:50px;
-  padding:.28rem .75rem; font-size:.75rem; font-weight:700; white-space:nowrap;
-}
-.game-close-btn { display:none; } /* legacy — replaced by fixed btn */
-.game-iframe-container { flex:1; position:relative; }
-.game-iframe-container iframe { position:absolute; inset:0; width:100%; height:100%; border:none; }
-/* Game timer toast */
-.game-toast {
-  position:fixed; top:60px; left:50%;
-  transform:translateX(-50%) translateY(-10px);
-  background:rgba(168,85,247,.95); color:#fff;
-  padding:.45rem 1.2rem; border-radius:50px;
-  font-size:.85rem; font-weight:700; z-index:9999;
-  opacity:0; pointer-events:none; transition:opacity .3s,transform .3s; white-space:nowrap;
-}
-.game-toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
 </style>
 </head>
 <body>
 
-<!-- AUTH -->
+<!-- ═══ AUTH OVERLAY ═══ -->
 <div class="auth-overlay" id="authOverlay">
   <div class="auth-box">
     <div class="auth-logo">WIN<span>TUBE</span></div>
@@ -662,38 +225,26 @@ main { padding:clamp(1rem,3vw,2rem); }
       <button class="auth-tab" id="regTab" onclick="switchTab('reg')">حساب جديد</button>
     </div>
     <div id="loginForm">
-      <input class="auth-input" type="email" id="lEmail" placeholder="البريد الإلكتروني" autocomplete="email">
-      <input class="auth-input" type="password" id="lPass" placeholder="كلمة المرور" autocomplete="current-password">
+      <input class="auth-input" type="email" id="lEmail" placeholder="البريد الإلكتروني">
+      <input class="auth-input" type="password" id="lPass" placeholder="كلمة المرور">
       <button class="auth-submit" id="loginBtn" onclick="doLogin()">دخول ←</button>
     </div>
     <div id="regForm" style="display:none">
-      <input class="auth-input" type="text" id="rName" placeholder="الاسم" autocomplete="name">
-      <input class="auth-input" type="email" id="rEmail" placeholder="البريد الإلكتروني" autocomplete="email">
-      <input class="auth-input" type="password" id="rPass" placeholder="كلمة المرور (6 أحرف+)" autocomplete="new-password">
+      <input class="auth-input" type="text" id="rName" placeholder="الاسم">
+      <input class="auth-input" type="email" id="rEmail" placeholder="البريد الإلكتروني">
+      <input class="auth-input" type="password" id="rPass" placeholder="كلمة المرور (6 أحرف+)">
       <button class="auth-submit" id="regBtn" onclick="doRegister()">إنشاء الحساب ←</button>
     </div>
     <div class="auth-err" id="authErr"></div>
   </div>
 </div>
 
-<!-- ZERO POINTS -->
-<div class="zero-overlay" id="zeroOverlay">
-  <div class="zero-box">
-    <div class="zero-icon">💸</div>
-    <div class="zero-title">نفدت نقاطك!</div>
-    <div class="zero-sub">لا يمكن مشاهدة المزيد. اشحن نقاطك للاستمرار.</div>
-    <button class="auth-submit" style="max-width:220px;margin:0 auto;display:block"
-      onclick="document.getElementById('zeroOverlay').classList.remove('open')">حسناً</button>
-  </div>
-</div>
-
-<!-- HEADER -->
+<!-- ═══ HEADER ═══ -->
 <header>
   <div class="logo">WIN<span>TUBE</span></div>
   <div class="search-bar">
     <button onclick="doSearch()">🔍</button>
-    <input type="text" id="searchInput" placeholder="ابحث عن أي فيديو..."
-      onkeydown="if(event.key==='Enter')doSearch()">
+    <input type="text" id="searchInput" placeholder="ابحث عن أي فيديو..." onkeydown="if(event.key==='Enter')doSearch()">
   </div>
   <div class="user-panel" onclick="doSignOut()">
     <div>
@@ -702,15 +253,14 @@ main { padding:clamp(1rem,3vw,2rem); }
     </div>
     <div class="user-avatar" id="hAvatar">?</div>
   </div>
-  <button class="withdraw-btn" id="withdrawBtn" onclick="openWithdraw()" style="display:none">💰 سحب</button>
-  <button class="withdraw-btn" style="display:none;background:linear-gradient(135deg,#ef4444,#b91c1c)" id="adminBtn" onclick="openAdmin()">🛡️ أدمن</button>
+  <button class="hbtn hbtn-gold" id="withdrawBtn" style="display:none" onclick="openWithdraw()">💰 سحب</button>
+  <button class="hbtn hbtn-red"  id="adminBtn"   style="display:none" onclick="openAdmin()">🛡️ أدمن</button>
 </header>
 
-<!-- WITHDRAW MODAL -->
+<!-- ═══ WITHDRAW MODAL ═══ -->
 <div class="w-overlay" id="wOverlay">
   <div class="w-box">
     <div class="w-title">💰 سحب النقاط</div>
-
     <div class="w-balance">
       <div>
         <div class="w-balance-label">رصيدك الحالي</div>
@@ -721,111 +271,78 @@ main { padding:clamp(1rem,3vw,2rem); }
         <div class="w-balance-usd">≈ $<span id="wUsd">0.00</span></div>
       </div>
     </div>
-
-    <div class="w-min-note">⚠️ الحد الأدنى للسحب: <strong>5000 نقطة = $5</strong> — كل 1000 نقطة = $1</div>
-
-    <div id="wForm">
-      <label class="w-label">طريقة الاستلام</label>
-      <select class="w-select" id="wMethod" onchange="updateWalletPlaceholder()">
-        <option value="">— اختر طريقة الدفع —</option>
-        <option value="USDT (TRC20)">💎 USDT (TRC20)</option>
-        <option value="BNB (BEP20)">🔶 BNB (BEP20)</option>
-        <option value="Mastercard">💳 Mastercard</option>
-      </select>
-
-      <label class="w-label" id="wAddrLabel">عنوان المحفظة / رقم البطاقة</label>
-      <input class="w-input" type="text" id="wAddr" placeholder="أدخل العنوان هنا">
-
-      <label class="w-label">عدد النقاط للسحب</label>
-      <input class="w-input" type="number" id="wAmt" placeholder="مثال: 5000" min="5000" step="1000"
-        oninput="calcWithdraw()">
-      <div style="font-size:.75rem;color:var(--green);margin-top:-.5rem;margin-bottom:.9rem" id="wCalc"></div>
-
-      <div class="w-actions">
-        <button class="w-cancel" onclick="closeWithdraw()">إلغاء</button>
-        <button class="w-submit" id="wSubmitBtn" onclick="submitWithdraw()">إرسال الطلب ←</button>
-      </div>
-      <div class="w-err" id="wErr"></div>
+    <div class="w-min-note">📌 الحد الأدنى للسحب: <strong>5000 نقطة = $5</strong> | كل 1000 نقطة = $1</div>
+    <label class="w-label">طريقة السحب</label>
+    <select class="w-select" id="wMethod" onchange="updateWalletPlaceholder()">
+      <option value="">— اختر طريقة —</option>
+      <option value="USDT">💎 USDT (TRC20)</option>
+      <option value="BNB">🟡 BNB (BEP20)</option>
+      <option value="Mastercard">💳 Mastercard</option>
+    </select>
+    <label class="w-label">عنوان المحفظة / رقم البطاقة</label>
+    <input class="w-input" type="text" id="wAddress" placeholder="أدخل العنوان...">
+    <label class="w-label">عدد النقاط للسحب</label>
+    <input class="w-input" type="number" id="wAmount" placeholder="مثال: 5000" oninput="calcWithdraw()">
+    <div style="font-size:.82rem;color:var(--green);margin-bottom:.6rem">= $<span id="wCalcUsd">0.00</span></div>
+    <div class="w-err" id="wErr"></div>
+    <div class="w-actions">
+      <button class="w-submit" onclick="submitWithdraw()">إرسال الطلب</button>
+      <button class="w-cancel" onclick="closeWithdraw()">إلغاء</button>
     </div>
-
-    <div id="wSuccess" style="display:none" class="w-success">
-      <div class="s-icon">✅</div>
-      <div class="s-title">تم إرسال طلب السحب!</div>
-      <div class="s-sub">سيتم مراجعة طلبك من قِبل الإدارة وإشعارك بالنتيجة.</div>
-      <button class="w-cancel" style="margin-top:1.2rem;width:100%" onclick="closeWithdraw()">حسناً</button>
-    </div>
-
-    <!-- Previous requests -->
-    <div class="req-list" id="wReqList"></div>
+    <div class="req-list" id="wHistory"></div>
   </div>
 </div>
 
-<!-- ADMIN PANEL -->
+<!-- ═══ ADMIN OVERLAY ═══ -->
 <div class="admin-overlay" id="adminOverlay">
   <!-- Login screen -->
-  <div id="adminLoginScreen" style="display:flex;flex:1;align-items:center;justify-content:center;padding:1rem">
+  <div id="adminLoginScreen" style="display:flex;flex:1;align-items:center;justify-content:center;padding:1.5rem">
     <div class="admin-login-box">
-      <span class="a-logo">WIN<span style="color:var(--text)">TUBE</span> ADMIN</span>
-      <input class="auth-input" type="password" id="adminPass" placeholder="كلمة مرور الأدمن"
-        onkeydown="if(event.key==='Enter')checkAdminPass()">
-      <button class="auth-submit" onclick="checkAdminPass()" style="margin-top:.5rem">دخول الأدمن ←</button>
+      <span style="font-family:'Bebas Neue',sans-serif;font-size:2rem;color:var(--red);letter-spacing:3px;display:block;margin-bottom:1.5rem">🛡️ ADMIN</span>
+      <input class="auth-input" type="password" id="adminPass" placeholder="كلمة المرور" onkeydown="if(event.key==='Enter')checkAdminPass()">
+      <button class="auth-submit" onclick="checkAdminPass()">دخول</button>
       <div class="auth-err" id="adminPassErr"></div>
-      <button class="w-cancel" onclick="closeAdmin()" style="margin-top:.8rem;width:100%">إلغاء</button>
+      <button class="w-cancel" style="width:100%;margin-top:.8rem;text-align:center" onclick="closeAdmin()">إلغاء</button>
     </div>
   </div>
-  <!-- Admin dashboard (hidden until password correct) -->
+  <!-- Dashboard -->
   <div id="adminDashboard" style="display:none;flex-direction:column;flex:1;overflow:hidden">
     <div class="admin-bar">
-      <div class="a-logo">WIN<span>TUBE</span> <span style="color:var(--yellow);font-size:1rem">ADMIN</span></div>
+      <div class="a-logo">WIN<span style="color:var(--text)">TUBE</span> <span style="color:var(--yellow);font-size:1rem">ADMIN</span></div>
       <button class="admin-close" onclick="closeAdmin()">✕</button>
     </div>
     <div class="admin-body">
       <div class="admin-tabs">
-        <button class="admin-tab-btn active" id="aTabWith" onclick="switchAdminTab('withdrawals')">💰 طلبات السحب</button>
-        <button class="admin-tab-btn" id="aTabGames" onclick="switchAdminTab('games')">🎮 إدارة الألعاب</button>
+        <button class="admin-tab-btn active" id="aTabWith" onclick="switchAdminTab('w')">💰 طلبات السحب</button>
+        <button class="admin-tab-btn" id="aTabGames" onclick="switchAdminTab('g')">🎮 إدارة الألعاب</button>
       </div>
-
       <!-- Withdrawals panel -->
-      <div id="adminWithdrawPanel">
+      <div id="adminPanelW">
         <div class="admin-title">📋 طلبات السحب</div>
         <div id="adminReqList"><div class="admin-empty">جاري التحميل...</div></div>
       </div>
-
       <!-- Games panel -->
-      <div id="adminGamesPanel" style="display:none">
+      <div id="adminPanelG" style="display:none">
         <div class="admin-title">➕ إضافة لعبة جديدة</div>
-
-        <!-- Source type toggle -->
         <div style="display:flex;gap:.5rem;margin-bottom:1rem">
-          <button class="admin-tab-btn active" id="srcUrl"  onclick="switchGameSrc('url')">🔗 رابط مباشر</button>
-          <button class="admin-tab-btn"        id="srcIframe" onclick="switchGameSrc('iframe')">🖼️ كود iframe</button>
+          <button class="admin-tab-btn active" id="srcUrlBtn" onclick="switchGameSrc('url')">🔗 رابط مباشر</button>
+          <button class="admin-tab-btn" id="srcIframeBtn" onclick="switchGameSrc('iframe')">🖼️ كود iframe</button>
         </div>
-
         <div class="admin-form-row">
           <label class="admin-form-label">اسم اللعبة</label>
-          <input class="admin-form-input rtl-input" type="text" id="newGameName" placeholder="مثال: Subway Surfers">
+          <input class="admin-form-input rtl" type="text" id="newGameName" placeholder="مثال: Subway Surfers">
         </div>
-
-        <!-- URL input -->
-        <div class="admin-form-row" id="urlRow">
+        <div class="admin-form-row" id="rowUrl">
           <label class="admin-form-label">رابط اللعبة المباشر</label>
           <input class="admin-form-input" type="url" id="newGameUrl" placeholder="https://...">
         </div>
-
-        <!-- iframe code input -->
-        <div class="admin-form-row" id="iframeRow" style="display:none">
+        <div class="admin-form-row" id="rowIframe" style="display:none">
           <label class="admin-form-label">كود الـ iframe الكامل</label>
-          <textarea class="admin-form-input" id="newGameIframe" rows="4"
-            style="resize:vertical;min-height:90px;font-size:.78rem;line-height:1.6"
-            placeholder='<iframe src="https://..." width="800" height="600"></iframe>'></textarea>
-          <div style="font-size:.72rem;color:var(--muted);margin-top:.3rem">
-            💡 سيتم استخراج رابط src تلقائياً من الكود
-          </div>
+          <textarea class="admin-form-input" id="newGameIframe" rows="4" style="resize:vertical" placeholder='<iframe src="https://..."></iframe>'></textarea>
+          <div style="font-size:.72rem;color:var(--muted)">💡 سيتم استخراج رابط src تلقائياً</div>
         </div>
-
         <button class="admin-add-btn" id="addGameBtn" onclick="adminAddGame()">➕ إضافة اللعبة</button>
-        <div class="w-err" id="addGameErr" style="margin-bottom:.8rem"></div>
-
+        <div class="w-err" id="addGameErr"></div>
         <div class="admin-title" style="margin-top:1.5rem">🎮 الألعاب الحالية</div>
         <div id="adminGamesList"><div class="admin-empty">جاري التحميل...</div></div>
       </div>
@@ -833,66 +350,64 @@ main { padding:clamp(1rem,3vw,2rem); }
   </div>
 </div>
 
-<!-- CATEGORIES -->
+<!-- ═══ CATEGORIES ═══ -->
 <div class="categories">
-  <button class="cat-btn active" id="catTrending" onclick="showVideos('trending',this)">🔥 رائج</button>
-  <button class="cat-btn" onclick="showVideos('تعليم',this)">📚 تعليم</button>
-  <button class="cat-btn" onclick="showVideos('تكنولوجيا',this)">💻 تكنولوجيا</button>
-  <button class="cat-btn" onclick="showVideos('رياضة',this)">⚽ رياضة</button>
-  <button class="cat-btn" onclick="showVideos('موسيقى',this)">🎵 موسيقى</button>
-  <button class="cat-btn" onclick="showVideos('طبخ',this)">🍳 طبخ</button>
-  <button class="cat-btn" onclick="showVideos('سفر',this)">✈️ سفر</button>
-  <button class="cat-btn" id="catGames" onclick="scrollToGames(this)">🎮 ألعاب</button>
-  <button class="cat-btn" onclick="showVideos('أخبار',this)">📰 أخبار</button>
+  <button class="cat-btn active" id="catHome"  onclick="goHome(this)">🔥 رائج</button>
+  <button class="cat-btn" onclick="searchCat('تعليم',this)">📚 تعليم</button>
+  <button class="cat-btn" onclick="searchCat('تكنولوجيا',this)">💻 تكنولوجيا</button>
+  <button class="cat-btn" onclick="searchCat('رياضة',this)">⚽ رياضة</button>
+  <button class="cat-btn" onclick="searchCat('موسيقى',this)">🎵 موسيقى</button>
+  <button class="cat-btn" onclick="searchCat('طبخ',this)">🍳 طبخ</button>
+  <button class="cat-btn" onclick="searchCat('سفر',this)">✈️ سفر</button>
+  <button class="cat-btn" id="catGames" onclick="scrollGames(this)">🎮 ألعاب</button>
+  <button class="cat-btn" onclick="searchCat('أخبار',this)">📰 أخبار</button>
 </div>
 
-<!-- MAIN — Videos + Games always on homepage -->
-<main id="videosSection">
-  <div class="section-title" id="sectionTitle">🔥 الفيديوهات الرائجة</div>
-  <div class="loading" id="loading"><div class="spinner"></div><p>جاري التحميل...</p></div>
-  <div class="empty-state" id="emptyState"><div class="icon">🎬</div><p>لا توجد نتائج</p></div>
-  <div class="video-grid" id="videoGrid"></div>
-  <div class="load-more-wrap" id="loadMoreWrap" style="display:none">
+<!-- ═══ SEARCH RESULTS SECTION ═══ -->
+<main id="secSearch" style="display:none">
+  <div class="section-title" id="searchTitle">نتائج البحث</div>
+  <div class="loading" id="loadSearch"><div class="spinner"></div><p>جاري التحميل...</p></div>
+  <div class="empty-state" id="emptySearch"><div class="icon">🎬</div><p>لا توجد نتائج</p></div>
+  <div class="video-grid" id="gridSearch"></div>
+  <div class="load-more-wrap" id="moreSearch" style="display:none">
     <button class="load-more-btn" onclick="loadMore()">تحميل المزيد</button>
   </div>
+</main>
 
-  <!-- ══ GAMES STRIP — always visible ══ -->
-  <div id="gamesSection" style="margin-top:3rem">
-    <div class="section-title" style="margin-bottom:1.2rem">
+<!-- ═══ HOME SECTION (trending + games) ═══ -->
+<main id="secHome">
+  <div class="section-title">🔥 الفيديوهات الرائجة</div>
+  <div class="loading" id="loadHome"><div class="spinner"></div><p>جاري التحميل...</p></div>
+  <div class="empty-state" id="emptyHome"><div class="icon">🎬</div><p>لا توجد نتائج</p></div>
+  <div class="video-grid" id="gridHome"></div>
+  <div class="load-more-wrap" id="moreHome" style="display:none">
+    <button class="load-more-btn" onclick="loadMoreHome()">تحميل المزيد</button>
+  </div>
+
+  <!-- GAMES STRIP -->
+  <div id="gamesStrip" style="margin-top:3rem">
+    <div class="section-title">
       🎮 الألعاب
       <span style="font-size:.75rem;font-weight:400;color:var(--muted);margin-right:.5rem">اكسب <strong style="color:#a855f7">50 نقطة</strong> من كل لعبة يومياً</span>
     </div>
-    <div id="gamesGrid" class="games-grid"></div>
-    <div id="gamesEmpty" class="empty-state" style="display:none">
-      <div class="icon">🎮</div><p>لا توجد ألعاب بعد، انتظر إضافة الأدمن!</p>
-    </div>
+    <div class="games-grid" id="gamesGrid"></div>
+    <div class="empty-state" id="gamesEmpty" style="display:none"><div class="icon">🎮</div><p>لا توجد ألعاب بعد</p></div>
   </div>
 </main>
 
-<!-- SEARCH/CATEGORY RESULTS — replaces homepage when searching -->
-<main id="searchSection" style="display:none">
-  <div class="section-title" id="searchSectionTitle">نتائج البحث</div>
-  <div class="loading" id="loadingSearch"><div class="spinner"></div><p>جاري التحميل...</p></div>
-  <div class="empty-state" id="emptySearch"><div class="icon">🎬</div><p>لا توجد نتائج</p></div>
-  <div class="video-grid" id="videoGridSearch"></div>
-  <div class="load-more-wrap" id="loadMoreSearch" style="display:none">
-    <button class="load-more-btn" onclick="loadMore()">تحميل المزيد</button>
-  </div>
-</main>
-
-<!-- VIDEO MODAL -->
-<div class="modal-overlay" id="modalOverlay" onclick="if(event.target===this)closeModal()">
+<!-- ═══ VIDEO MODAL ═══ -->
+<div class="modal-overlay" id="modalOverlay">
   <div class="modal">
     <div class="modal-header">
-      <button class="close-btn" onclick="closeModal()">✕</button>
+      <button class="close-btn" id="closeVideoBtn">✕</button>
       <div class="modal-title" id="modalTitle"></div>
       <div class="points-counter">
         <div class="timer-ring">
           <svg width="38" height="38" viewBox="0 0 38 38">
             <circle class="ring-bg" cx="19" cy="19" r="16"/>
-            <circle class="ring-fill" id="ringFill" cx="19" cy="19" r="16" stroke="#22c55e"/>
+            <circle class="ring-fill" id="ringFill" cx="19" cy="19" r="16"/>
           </svg>
-          <div class="timer-num" id="timerNum" style="color:#22c55e">30</div>
+          <div class="timer-num" id="timerNum">30</div>
         </div>
         <div class="pts-info">
           <div class="pts-label">نقاطك المكتسبة</div>
@@ -911,843 +426,619 @@ main { padding:clamp(1rem,3vw,2rem); }
   </div>
 </div>
 
+<!-- ═══ TOASTS ═══ -->
 <div class="toast" id="toast">+2 نقطة 🎉</div>
 <div class="game-toast" id="gameToast">+1 نقطة 🎮</div>
 
-<!-- GAME IFRAME MODAL -->
+<!-- ═══ GAME IFRAME ═══ -->
 <div class="game-overlay" id="gameOverlay">
-  <!-- Always-visible close button -->
-  <button class="game-close-fixed" onclick="closeGame()" title="إغلاق اللعبة">✕</button>
-  <!-- Hover info bar -->
-  <div class="game-top-bar" id="gameTopBar">
-    <div class="game-top-title" id="gameTopTitle">لعبة</div>
-    <div class="game-pts-badge" id="gamePtsBadge">0 / 50 نقطة اليوم</div>
+  <button class="game-close-fixed" id="closeGameBtn">✕</button>
+  <div class="game-info-bar">
+    <div class="game-title-badge" id="gameTitle">لعبة</div>
+    <div class="game-pts-badge" id="gamePts">0 / 50 نقطة</div>
   </div>
-  <div class="game-iframe-container">
-    <iframe id="gameFrame" allowfullscreen allow="autoplay;fullscreen"></iframe>
+  <div class="game-iframe-wrap">
+    <iframe id="gameFrame" allowfullscreen allow="autoplay;fullscreen;payment"></iframe>
   </div>
 </div>
 
 <script>
-// ═══════════════════════════════════════════════════════════════
-//  STEP 1 — Load 3 Firebase compat scripts one after another
-//           using a promise chain so each finishes before the next
-// ═══════════════════════════════════════════════════════════════
-function loadScript(src) {
-  return new Promise(function(resolve, reject) {
-    var s = document.createElement('script');
-    s.src = src;
-    s.onload  = resolve;
-    s.onerror = function() { reject(new Error('Failed to load: ' + src)); };
-    document.head.appendChild(s);
-  });
+// ═══════════════════════════════════════════════════════
+//  CONFIG
+// ═══════════════════════════════════════════════════════
+var FB_CFG = {
+  apiKey:'AIzaSyCOV-2qbB6eFEU-myiTjlXbcE-bWhuqLQs',
+  authDomain:'wintube-8bcaa.firebaseapp.com',
+  projectId:'wintube-8bcaa',
+  storageBucket:'wintube-8bcaa.firebasestorage.app',
+  messagingSenderId:'459173658209',
+  appId:'1:459173658209:web:d1e5ddf04ecf548cc67420'
+};
+var YT_KEY     = 'AIzaSyDNK9EJ5IQ2dFLBn1jUk1hslgOwwTBdvJ0';
+var ADMIN_PASS = 'Hernios66@';
+var START_PTS  = 100;
+var EARN_AMT   = 2;
+var EARN_EVERY = 30;   // seconds per video earn
+var GAME_CAP   = 50;   // daily pts per game
+var GAME_EVERY = 120;  // seconds per game point
+
+// ═══════════════════════════════════════════════════════
+//  STATE
+// ═══════════════════════════════════════════════════════
+var auth, db;
+var currentUser  = null;
+var userPoints   = 0;
+var homeToken    = '';
+var searchToken  = '';
+var currentQuery = '';
+var gameSrcMode  = 'url';
+var gameCache    = {};   // {gameId: dailyPts}
+
+// video timer
+var CIRC      = 101;
+var timerSecs = EARN_EVERY;
+var watchInt  = null;
+var isPlaying = false;
+var ytPlayer  = null;
+var ytCbs     = [];
+
+// game timer
+var gameInt     = null;
+var gameElapsed = 0;
+var activeGame  = null;
+
+// ═══════════════════════════════════════════════════════
+//  HELPERS
+// ═══════════════════════════════════════════════════════
+function fmt(n){if(!n)return'';n=+n;return n>=1e6?(n/1e6).toFixed(1)+'M':n>=1e3?(n/1e3).toFixed(1)+'K':String(n);}
+function parseDur(s){if(!s)return'';var m=s.match(/PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?/);if(!m)return'';var h=+m[1]||0,mn=+m[2]||0,sc=+m[3]||0,p=function(x){return String(x).padStart(2,'0');};return h?h+':'+p(mn)+':'+p(sc):mn+':'+p(sc);}
+function timeAgo(d){var s=Math.floor((Date.now()-new Date(d))/1000);if(s<60)return'الآن';if(s<3600)return Math.floor(s/60)+'د';if(s<86400)return Math.floor(s/3600)+'س';if(s<2592000)return Math.floor(s/86400)+'ي';return Math.floor(s/2592000)+'ش';}
+function todayKey(){var d=new Date();return d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();}
+function loadScript(src){return new Promise(function(res,rej){var s=document.createElement('script');s.src=src;s.onload=res;s.onerror=function(){rej(new Error('load fail:'+src));};document.head.appendChild(s);});}
+
+// ═══════════════════════════════════════════════════════
+//  RING DRAW
+// ═══════════════════════════════════════════════════════
+function drawRing(){
+  var fill=document.getElementById('ringFill');
+  var num =document.getElementById('timerNum');
+  if(!fill||!num)return;
+  var frac=timerSecs/EARN_EVERY;
+  var color=frac>.6?'#22c55e':frac>.3?'#f59e0b':'#ff2d2d';
+  fill.style.strokeDasharray=CIRC;
+  fill.style.strokeDashoffset=CIRC*(1-frac);
+  fill.style.stroke=color;
+  num.style.color=color;
+  num.textContent=timerSecs;
+}
+drawRing();
+
+// ═══════════════════════════════════════════════════════
+//  TABS / SEARCH
+// ═══════════════════════════════════════════════════════
+function switchTab(t){
+  document.getElementById('loginForm').style.display=t==='login'?'':'none';
+  document.getElementById('regForm').style.display=t==='reg'?'':'none';
+  document.getElementById('loginTab').classList.toggle('active',t==='login');
+  document.getElementById('regTab').classList.toggle('active',t==='reg');
+  document.getElementById('authErr').textContent='';
 }
 
-var FB_VER = '9.23.0';
-loadScript('https://www.gstatic.com/firebasejs/' + FB_VER + '/firebase-app-compat.js')
-  .then(function() {
-    return loadScript('https://www.gstatic.com/firebasejs/' + FB_VER + '/firebase-auth-compat.js');
-  })
-  .then(function() {
-    return loadScript('https://www.gstatic.com/firebasejs/' + FB_VER + '/firebase-firestore-compat.js');
-  })
-  .then(function() {
-    // ─── ALL 3 scripts loaded, safe to use firebase now ───
-    initApp();
-  })
-  .catch(function(err) {
-    document.getElementById('authErr').textContent = 'فشل تحميل Firebase: ' + err.message;
-  });
+function setCatActive(el){
+  document.querySelectorAll('.cat-btn').forEach(function(b){b.classList.remove('active');});
+  if(el)el.classList.add('active');
+}
 
-// ═══════════════════════════════════════════════════════════════
-//  STEP 2 — YouTube (no Firebase needed, runs immediately)
-// ═══════════════════════════════════════════════════════════════
-var YT_KEY        = 'AIzaSyDNK9EJ5IQ2dFLBn1jUk1hslgOwwTBdvJ0';
-var nextPageToken = '';
-var currentQuery   = 'trending';
-var currentSection = 'home';
+function goHome(btn){
+  setCatActive(btn||document.getElementById('catHome'));
+  document.getElementById('secSearch').style.display='none';
+  document.getElementById('secHome').style.display='';
+}
 
-function fmt(n){if(!n)return'';n=+n;return n>=1e6?(n/1e6).toFixed(1)+'M':n>=1e3?(n/1e3).toFixed(1)+'K':String(n);}
-function parseDur(iso){if(!iso)return'';var m=iso.match(/PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?/);if(!m)return'';var h=+m[1]||0,mn=+m[2]||0,s=+m[3]||0;function p(x){return String(x).padStart(2,'0');}return h?h+':'+p(mn)+':'+p(s):mn+':'+p(s);}
-function timeAgo(d){var sec=Math.floor((Date.now()-new Date(d))/1000);if(sec<60)return'الآن';if(sec<3600)return Math.floor(sec/60)+'د';if(sec<86400)return Math.floor(sec/3600)+'س';if(sec<2592000)return Math.floor(sec/86400)+'ي';if(sec<31536000)return Math.floor(sec/2592000)+'ش';return Math.floor(sec/31536000)+'سنة';}
+function scrollGames(btn){
+  goHome(null);
+  setCatActive(btn);
+  setTimeout(function(){
+    var el=document.getElementById('gamesStrip');
+    if(el)el.scrollIntoView({behavior:'smooth',block:'start'});
+  },100);
+}
 
-function fetchVideos(query, pageToken, append) {
-  pageToken=pageToken||''; append=append||false;
-  var isHome  = (currentSection === 'home');
-  var gridId  = isHome ? 'videoGrid'    : 'videoGridSearch';
-  var loadId  = isHome ? 'loading'      : 'loadingSearch';
-  var emptyId = isHome ? 'emptyState'   : 'emptySearch';
-  var moreId  = isHome ? 'loadMoreWrap' : 'loadMoreSearch';
+function doSearch(){
+  var q=document.getElementById('searchInput').value.trim();
+  if(!q)return;
+  searchCat(q, null);
+}
 
-  document.getElementById(loadId).style.display='block';
-  document.getElementById(emptyId).style.display='none';
-  var grid=document.getElementById(gridId);
-  if(!append) grid.innerHTML='';
+function searchCat(q, btn){
+  setCatActive(btn);
+  currentQuery=q; searchToken='';
+  document.getElementById('secHome').style.display='none';
+  document.getElementById('secSearch').style.display='';
+  var labels={تعليم:'📚 تعليم',تكنولوجيا:'💻 تكنولوجيا',رياضة:'⚽ رياضة',موسيقى:'🎵 موسيقى',طبخ:'🍳 طبخ',سفر:'✈️ سفر',أخبار:'📰 أخبار'};
+  document.getElementById('searchTitle').textContent=labels[q]||('🔍 نتائج: "'+q+'"');
+  fetchSearch(q, '', false);
+}
+
+// ═══════════════════════════════════════════════════════
+//  YOUTUBE FETCH
+// ═══════════════════════════════════════════════════════
+function fetchHome(token, append){
   var base='https://www.googleapis.com/youtube/v3/';
+  if(!append){document.getElementById('loadHome').style.display='block';document.getElementById('emptyHome').style.display='none';document.getElementById('gridHome').innerHTML='';}
+  fetch(base+'videos?part=snippet,contentDetails,statistics&chart=mostPopular&regionCode=SA&hl=ar&maxResults=16&pageToken='+(token||'')+'&key='+YT_KEY)
+    .then(function(r){return r.json();})
+    .then(function(d){
+      document.getElementById('loadHome').style.display='none';
+      if(d.error)throw new Error(d.error.message);
+      homeToken=d.nextPageToken||'';
+      if(d.items&&d.items.length){renderCards(d.items,'gridHome');}
+      else if(!append){document.getElementById('emptyHome').style.display='block';}
+      document.getElementById('moreHome').style.display=homeToken?'block':'none';
+    })
+    .catch(function(e){document.getElementById('loadHome').style.display='none';document.getElementById('gridHome').innerHTML='<div style="color:#ff6b6b;padding:2rem;grid-column:1/-1;text-align:center">⚠️ '+e.message+'</div>';});
+}
 
-  function done(items,token){
-    nextPageToken=token||'';
-    document.getElementById(loadId).style.display='none';
-    if(items&&items.length){ renderCards(items, gridId); }
-    else if(!append){ document.getElementById(emptyId).style.display='block'; }
-    document.getElementById(moreId).style.display=nextPageToken?'block':'none';
-  }
-  function fail(e){
-    document.getElementById(loadId).style.display='none';
-    if(!append) grid.innerHTML='<div style="color:#ff6b6b;padding:2rem;grid-column:1/-1;text-align:center">⚠️ '+e.message+'</div>';
-  }
-
-  if(query==='trending'){
-    fetch(base+'videos?part=snippet,contentDetails,statistics&chart=mostPopular&regionCode=SA&hl=ar&maxResults=16&pageToken='+pageToken+'&key='+YT_KEY)
-      .then(function(r){return r.json();}).then(function(d){if(d.error)throw new Error(d.error.message);done(d.items,d.nextPageToken);}).catch(fail);
-  } else {
-    fetch(base+'search?part=snippet&q='+encodeURIComponent(query)+'&type=video&maxResults=16&pageToken='+pageToken+'&key='+YT_KEY)
-      .then(function(r){return r.json();}).then(function(sd){
-        if(sd.error)throw new Error(sd.error.message);
-        var ids=(sd.items||[]).map(function(i){return i.id.videoId;}).filter(Boolean);
-        if(!ids.length){done([],sd.nextPageToken);return;}
-        fetch(base+'videos?part=snippet,contentDetails,statistics&id='+ids.join(',')+'&key='+YT_KEY)
-          .then(function(r){return r.json();}).then(function(vd){done(vd.items,sd.nextPageToken);}).catch(fail);
-      }).catch(fail);
-  }
+function fetchSearch(q, token, append){
+  var base='https://www.googleapis.com/youtube/v3/';
+  if(!append){document.getElementById('loadSearch').style.display='block';document.getElementById('emptySearch').style.display='none';document.getElementById('gridSearch').innerHTML='';}
+  fetch(base+'search?part=snippet&q='+encodeURIComponent(q)+'&type=video&maxResults=16&pageToken='+(token||'')+'&key='+YT_KEY)
+    .then(function(r){return r.json();})
+    .then(function(sd){
+      if(sd.error)throw new Error(sd.error.message);
+      var ids=(sd.items||[]).map(function(i){return i.id.videoId;}).filter(Boolean);
+      searchToken=sd.nextPageToken||'';
+      if(!ids.length){document.getElementById('loadSearch').style.display='none';if(!append)document.getElementById('emptySearch').style.display='block';document.getElementById('moreSearch').style.display='none';return;}
+      return fetch(base+'videos?part=snippet,contentDetails,statistics&id='+ids.join(',')+'&key='+YT_KEY)
+        .then(function(r){return r.json();})
+        .then(function(vd){
+          document.getElementById('loadSearch').style.display='none';
+          if(vd.items&&vd.items.length){renderCards(vd.items,'gridSearch');}
+          document.getElementById('moreSearch').style.display=searchToken?'block':'none';
+        });
+    })
+    .catch(function(e){document.getElementById('loadSearch').style.display='none';document.getElementById('gridSearch').innerHTML='<div style="color:#ff6b6b;padding:2rem;grid-column:1/-1;text-align:center">⚠️ '+e.message+'</div>';});
 }
 
 function renderCards(items, gridId){
-  var grid=document.getElementById(gridId||'videoGrid');
+  var grid=document.getElementById(gridId);
   items.forEach(function(item){
     var s=item.snippet;
-    var th=s.thumbnails&&(s.thumbnails.high||s.thumbnails.medium)?(s.thumbnails.high||s.thumbnails.medium).url:'';
-    var d=parseDur(item.contentDetails&&item.contentDetails.duration);
+    var th=(s.thumbnails&&(s.thumbnails.high||s.thumbnails.medium)||(s.thumbnails&&s.thumbnails.default)||{}).url||'';
+    var dur=parseDur(item.contentDetails&&item.contentDetails.duration);
     var vid=typeof item.id==='string'?item.id:(item.id&&item.id.videoId)||'';
     var views=item.statistics&&item.statistics.viewCount?fmt(item.statistics.viewCount)+' مش • ':'';
     var card=document.createElement('div');
     card.className='video-card';
-    card.innerHTML='<div class="thumb-wrap"><img src="'+th+'" alt="" loading="lazy"><div class="play-overlay"><div class="play-btn"><svg width="22" height="22" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div>'+(d?'<div class="duration">'+d+'</div>':'')+'</div><div class="card-info"><div class="card-title">'+s.title+'</div><div class="card-meta"><span class="channel-name">'+s.channelTitle+'</span><span>'+views+timeAgo(s.publishedAt)+' م</span></div></div>';
-    (function(id,t,desc){card.onclick=function(){openModal(id,t,desc);};})(vid,s.title,s.description||'');
+    card.innerHTML='<div class="thumb-wrap"><img src="'+th+'" alt="" loading="lazy"><div class="play-overlay"><div class="play-btn"><svg width="22" height="22" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div>'+(dur?'<div class="duration">'+dur+'</div>':'')+'</div><div class="card-info"><div class="card-title">'+s.title+'</div><div class="card-meta"><span class="channel-name">'+s.channelTitle+'</span><span>'+views+timeAgo(s.publishedAt)+'</span></div></div>';
+    (function(id,t,desc){card.onclick=function(){openVideoModal(id,t,desc);};})(vid,s.title,s.description||'');
     grid.appendChild(card);
   });
 }
 
-// Show homepage (trending videos + games strip)
-function showHomepage(){
-  document.getElementById('videosSection').style.display='';
-  document.getElementById('searchSection').style.display='none';
-  document.querySelectorAll('.cat-btn').forEach(function(b){b.classList.remove('active');});
-  document.getElementById('catTrending').classList.add('active');
-  currentQuery='trending'; nextPageToken=''; currentSection='home';
-  document.getElementById('sectionTitle').textContent='🔥 الفيديوهات الرائجة';
-  fetchVideos('trending');
+function loadMore(){if(searchToken)fetchSearch(currentQuery,searchToken,true);}
+function loadMoreHome(){if(homeToken)fetchHome(homeToken,true);}
+
+// ═══════════════════════════════════════════════════════
+//  VIDEO MODAL
+// ═══════════════════════════════════════════════════════
+function openVideoModal(vid,title,desc){
+  if(!currentUser){document.getElementById('authOverlay').classList.remove('hidden');return;}
+  document.getElementById('modalTitle').textContent=title;
+  document.getElementById('modalDesc').textContent=desc;
+  document.getElementById('modalPts').textContent=userPoints+' نقطة';
+  document.getElementById('modalOverlay').style.display='flex';
+  isPlaying=false;
+  document.getElementById('pauseIndicator').classList.remove('visible');
+  startWatchTimer();
+  createYTPlayer(vid);
 }
 
-// Show search/category results (hides homepage)
-function showVideos(q, btn){
-  if(q==='trending'){ showHomepage(); return; }
-  currentSection='search';
-  document.getElementById('videosSection').style.display='none';
-  document.getElementById('searchSection').style.display='';
-  document.querySelectorAll('.cat-btn').forEach(function(b){b.classList.remove('active');});
-  if(btn) btn.classList.add('active');
-  currentQuery=q; nextPageToken='';
-  var labels={تعليم:'📚 تعليم',تكنولوجيا:'💻 تكنولوجيا',رياضة:'⚽ رياضة',موسيقى:'🎵 موسيقى',طبخ:'🍳 طبخ',سفر:'✈️ سفر',أخبار:'📰 أخبار'};
-  document.getElementById('searchSectionTitle').textContent=labels[q]||('🔍 نتائج: "'+q+'"');
-  fetchVideos(q);
-}
-
-// Scroll to games strip on homepage
-function scrollToGames(btn){
-  showHomepage();
-  document.querySelectorAll('.cat-btn').forEach(function(b){b.classList.remove('active');});
-  if(btn) btn.classList.add('active');
-  setTimeout(function(){
-    var el=document.getElementById('gamesSection');
-    if(el) el.scrollIntoView({behavior:'smooth',block:'start'});
-  },100);
-}
-
-function showGamesSection(btn){ scrollToGames(btn); }
-
-function doSearch(){
-  var q=document.getElementById('searchInput').value.trim();
-  if(!q) return;
-  showVideos(q, null);
-}
-function searchCategory(q,btn){ showVideos(q,btn); }
-function loadMore(){
-  if(!nextPageToken) return;
-  var isHome = document.getElementById('videosSection').style.display!=='none' && currentQuery==='trending';
-  fetchVideos(currentQuery, nextPageToken, true);
-}
-function drawRing(){
-  var fill=document.getElementById('ringFill'),num=document.getElementById('timerNum');
-  if(!fill||!num)return;
-  var frac=timerSecs/30,color=frac>.6?'#22c55e':frac>.3?'#f59e0b':'#ff2d2d';
-  fill.style.strokeDashoffset=CIRCUMFERENCE*(1-frac);
-  fill.style.stroke=color; num.style.color=color; num.textContent=timerSecs;
-}
-
-// Placeholder for openModal/closeModal — real ones assigned in initApp
-window.openModal = function(vid,title,desc){
-  document.getElementById('authOverlay').classList.remove('hidden');
-};
-window.closeModal = function(){
-  document.getElementById('modalOverlay').classList.remove('open');
+function closeVideoModal(){
+  stopWatchTimer();
+  document.getElementById('modalOverlay').style.display='none';
+  document.getElementById('pauseIndicator').classList.remove('visible');
+  if(ytPlayer){try{ytPlayer.stopVideo();ytPlayer.destroy();}catch(e){}ytPlayer=null;}
   document.getElementById('ytPlayerContainer').innerHTML='';
-};
-function switchTab(tab){
-  document.getElementById('loginForm').style.display=tab==='login'?'':'none';
-  document.getElementById('regForm').style.display=tab==='reg'?'':'none';
-  document.getElementById('loginTab').classList.toggle('active',tab==='login');
-  document.getElementById('regTab').classList.toggle('active',tab==='reg');
-  document.getElementById('authErr').textContent='';
 }
 
-// Stubs — overridden by initApp after Firebase loads
-window.doLogin    = function(){document.getElementById('authErr').textContent='جاري تحميل Firebase...';};
-window.doRegister = function(){document.getElementById('authErr').textContent='جاري تحميل Firebase...';};
-window.doSignOut  = function(){};
-window.openWithdraw = function(){};
-window.closeWithdraw = function(){ document.getElementById('wOverlay').classList.remove('open'); };
-window.updateWalletPlaceholder = function(){};
-window.calcWithdraw = function(){};
-window.submitWithdraw = function(){};
-window.openAdmin = function(){};
-window.closeAdmin = function(){ document.getElementById('adminOverlay').classList.remove('open'); };
-window.checkAdminPass = function(){};
-window.adminAction = function(){};
-window.switchAdminTab = function(){};
-window.adminAddGame = function(){};
-window.adminDeleteGame = function(){};
-window.openGame = function(){};
-window.closeGame = function(){ document.getElementById('gameOverlay').classList.remove('open'); document.getElementById('gameFrame').src=''; };
+// Attach close button with direct JS (no inline onclick issues)
+document.getElementById('closeVideoBtn').addEventListener('click', closeVideoModal);
 
-// Start YouTube immediately (doesn't need Firebase)
-drawRing();
-fetchVideos('trending');
+// ═══════════════════════════════════════════════════════
+//  WATCH TIMER
+// ═══════════════════════════════════════════════════════
+function startWatchTimer(){
+  stopWatchTimer();
+  timerSecs=EARN_EVERY; drawRing();
+  watchInt=setInterval(function(){
+    if(!isPlaying)return;
+    timerSecs--;
+    drawRing();
+    if(timerSecs<=0){
+      timerSecs=EARN_EVERY;
+      userPoints+=EARN_AMT;
+      savePoints(); updateHeader();
+      document.getElementById('modalPts').textContent=userPoints+' نقطة';
+      var pv=document.getElementById('modalPts');
+      pv.classList.remove('flash');void pv.offsetWidth;pv.classList.add('flash');
+      setTimeout(function(){pv.classList.remove('flash');},600);
+      showToast();
+    }
+  },1000);
+}
+function stopWatchTimer(){clearInterval(watchInt);watchInt=null;isPlaying=false;timerSecs=EARN_EVERY;drawRing();}
+function setPlaying(v){isPlaying=v;document.getElementById('pauseIndicator').classList.toggle('visible',!v);}
+function showToast(){var t=document.getElementById('toast');t.classList.add('show');setTimeout(function(){t.classList.remove('show');},1800);}
 
+// ═══════════════════════════════════════════════════════
+//  YOUTUBE IFRAME API
+// ═══════════════════════════════════════════════════════
+window.onYouTubeIframeAPIReady=function(){ytCbs.forEach(function(cb){cb();});ytCbs=[];};
+(function(){var s=document.createElement('script');s.src='https://www.youtube.com/iframe_api';document.head.appendChild(s);})();
 
-// ═══════════════════════════════════════════════════════════════
-//  STEP 3 — initApp() called only after all 3 Firebase
-//            scripts finish loading (from the promise chain above)
-// ═══════════════════════════════════════════════════════════════
-function initApp() {
-  // Firebase is now 100% ready
-  firebase.initializeApp({
-    apiKey:            'AIzaSyCOV-2qbB6eFEU-myiTjlXbcE-bWhuqLQs',
-    authDomain:        'wintube-8bcaa.firebaseapp.com',
-    projectId:         'wintube-8bcaa',
-    storageBucket:     'wintube-8bcaa.firebasestorage.app',
-    messagingSenderId: '459173658209',
-    appId:             '1:459173658209:web:d1e5ddf04ecf548cc67420'
-  });
+function onYTReady(cb){if(window.YT&&window.YT.Player){cb();}else{ytCbs.push(cb);}}
 
-  var auth = firebase.auth();
-  var db   = firebase.firestore();
-
-  var DEDUCT_EVERY = 30, EARN_AMT = 2, START_PTS = 100;
-  var currentUser = null, userPoints = 0;
-
-  // ── Firestore ──
-  function loadPoints(uid, cb){
-    db.collection('users').doc(uid).get().then(function(snap){
-      if(snap.exists){
-        userPoints=snap.data().points!==undefined?snap.data().points:0; cb();
-      } else {
-        db.collection('users').doc(uid).set({
-          name:currentUser.displayName||'مستخدم',email:currentUser.email,
-          points:START_PTS,createdAt:firebase.firestore.FieldValue.serverTimestamp()
-        }).then(function(){userPoints=START_PTS;cb();});
+function createYTPlayer(videoId){
+  if(ytPlayer){try{ytPlayer.destroy();}catch(e){}ytPlayer=null;}
+  document.getElementById('ytPlayerContainer').innerHTML='';
+  onYTReady(function(){
+    ytPlayer=new YT.Player('ytPlayerContainer',{
+      videoId:videoId,width:'100%',height:'100%',
+      playerVars:{autoplay:1,rel:0,modestbranding:1,playsinline:1},
+      events:{
+        onReady:function(e){e.target.playVideo();},
+        onStateChange:function(e){
+          setPlaying(e.data===YT.PlayerState.PLAYING);
+        }
       }
-    }).catch(function(e){console.error(e);userPoints=0;cb();});
-  }
-  function savePoints(){
-    if(!currentUser)return;
-    db.collection('users').doc(currentUser.uid).update({points:userPoints}).catch(console.error);
+    });
+  });
+}
+
+// ═══════════════════════════════════════════════════════
+//  GAME OVERLAY
+// ═══════════════════════════════════════════════════════
+document.getElementById('closeGameBtn').addEventListener('click', function(){
+  stopGameTimer();
+  document.getElementById('gameOverlay').classList.remove('open');
+  document.getElementById('gameFrame').src='';
+  activeGame=null;
+  loadGamesSection();
+});
+
+function openGameOverlay(gameId, gameName, gameUrl){
+  if(!currentUser){document.getElementById('authOverlay').classList.remove('hidden');return;}
+  var pts=gameCache[gameId]||0;
+  activeGame={id:gameId,name:gameName,url:gameUrl};
+  document.getElementById('gameTitle').textContent=gameName;
+  document.getElementById('gamePts').textContent=pts+' / '+GAME_CAP+' نقطة';
+  document.getElementById('gameFrame').src=gameUrl;
+  document.getElementById('gameOverlay').classList.add('open');
+  startGameTimer(pts);
+}
+
+function startGameTimer(startPts){
+  stopGameTimer();
+  var pts=startPts;
+  gameElapsed=0;
+  gameInt=setInterval(function(){
+    if(pts>=GAME_CAP){stopGameTimer();document.getElementById('gamePts').textContent='✅ اكتمل اليوم!';return;}
+    gameElapsed++;
+    if(gameElapsed>=GAME_EVERY){
+      gameElapsed=0; pts++;
+      gameCache[activeGame.id]=pts;
+      userPoints++;
+      if(db&&currentUser)saveGameDailyPts(activeGame.id,pts);
+      savePoints(); updateHeader();
+      document.getElementById('gamePts').textContent=pts+' / '+GAME_CAP+' نقطة';
+      var t=document.getElementById('gameToast');t.classList.add('show');setTimeout(function(){t.classList.remove('show');},1800);
+    }
+  },1000);
+}
+function stopGameTimer(){clearInterval(gameInt);gameInt=null;gameElapsed=0;}
+
+// ═══════════════════════════════════════════════════════
+//  FIREBASE LOAD
+// ═══════════════════════════════════════════════════════
+var FB_VER='9.23.0';
+loadScript('https://www.gstatic.com/firebasejs/'+FB_VER+'/firebase-app-compat.js')
+  .then(function(){return loadScript('https://www.gstatic.com/firebasejs/'+FB_VER+'/firebase-auth-compat.js');})
+  .then(function(){return loadScript('https://www.gstatic.com/firebasejs/'+FB_VER+'/firebase-firestore-compat.js');})
+  .then(initApp)
+  .catch(function(e){document.getElementById('authErr').textContent='فشل تحميل Firebase: '+e.message;});
+
+// ═══════════════════════════════════════════════════════
+//  INIT APP
+// ═══════════════════════════════════════════════════════
+function initApp(){
+  firebase.initializeApp(FB_CFG);
+  auth=firebase.auth();
+  db=firebase.firestore();
+
+  // ── Points ──
+  function savePoints(){if(!currentUser)return;db.collection('users').doc(currentUser.uid).update({points:userPoints}).catch(function(){});}
+  function updateHeader(){document.getElementById('hPts').textContent=userPoints;var n=currentUser.displayName||currentUser.email.split('@')[0];document.getElementById('hName').textContent=n;document.getElementById('hAvatar').textContent=n[0].toUpperCase();}
+
+  // make savePoints / updateHeader available to outer scope
+  window._savePoints=savePoints;
+  window._updateHeader=updateHeader;
+
+  function loadPoints(uid,cb){
+    db.collection('users').doc(uid).get().then(function(snap){
+      if(snap.exists){userPoints=snap.data().points||0;cb();}
+      else{db.collection('users').doc(uid).set({name:currentUser.displayName||'مستخدم',email:currentUser.email,points:START_PTS,createdAt:firebase.firestore.FieldValue.serverTimestamp()}).then(function(){userPoints=START_PTS;cb();});}
+    }).catch(function(){userPoints=0;cb();});
   }
 
-  // ── Auth observer ──
+  // ── Auth ──
   auth.onAuthStateChanged(function(user){
     if(user){
       currentUser=user;
       loadPoints(user.uid,function(){
         updateHeader();
         document.getElementById('authOverlay').classList.add('hidden');
-        showHeaderBtns();
+        document.getElementById('withdrawBtn').style.display='';
+        document.getElementById('adminBtn').style.display='';
+        loadGamesSection();
       });
     } else {
-      currentUser=null; userPoints=0; stopTimer();
+      currentUser=null;userPoints=0;stopWatchTimer();
       document.getElementById('authOverlay').classList.remove('hidden');
-      hideHeaderBtns();
+      document.getElementById('withdrawBtn').style.display='none';
+      document.getElementById('adminBtn').style.display='none';
     }
   });
 
-  // ── Header ──
-  function updateHeader(){
-    document.getElementById('hPts').textContent=userPoints;
-    var name=currentUser.displayName||currentUser.email.split('@')[0];
-    document.getElementById('hName').textContent=name;
-    document.getElementById('hAvatar').textContent=name[0].toUpperCase();
-  }
+  // ── Auth actions ──
+  function authErr(m){document.getElementById('authErr').textContent=m;}
+  function errMsg(code){var m={'auth/user-not-found':'البريد غير مسجّل','auth/wrong-password':'كلمة المرور خاطئة','auth/invalid-credential':'بيانات غير صحيحة','auth/email-already-in-use':'هذا البريد مستخدم','auth/invalid-email':'بريد غير صالح','auth/weak-password':'كلمة المرور ضعيفة','auth/network-request-failed':'تحقق من الإنترنت','auth/too-many-requests':'انتظر قليلاً'};return m[code]||code;}
 
-  // ── Timer — only counts while video is PLAYING ──
-  var isPlaying = false;
-
-  function startTimer(){
-    stopTimer(); timerSecs=DEDUCT_EVERY; drawRing();
-    watchTimer=setInterval(function(){
-      if(!isPlaying) return;          // paused → freeze counter
-      timerSecs--; drawRing();
-      if(timerSecs<=0){
-        timerSecs=DEDUCT_EVERY;
-        userPoints=userPoints+EARN_AMT;
-        savePoints(); updateHeader();
-        document.getElementById('modalPts').textContent=userPoints+' نقطة';
-        showToast();
-        var pv=document.getElementById('modalPts');
-        pv.classList.remove('flash'); void pv.offsetWidth; pv.classList.add('flash');
-        setTimeout(function(){pv.classList.remove('flash');},600);
-      }
-    },1000);
-  }
-  function stopTimer(){
-    clearInterval(watchTimer);watchTimer=null;
-    isPlaying=false; timerSecs=DEDUCT_EVERY; drawRing();
-  }
-  function setPlaying(playing){
-    isPlaying=playing;
-    document.getElementById('pauseIndicator').classList.toggle('visible',!playing);
-  }
-  function showToast(){var t=document.getElementById('toast');t.classList.add('show');setTimeout(function(){t.classList.remove('show');},1800);}
-
-  // ── YouTube IFrame API ──
-  var ytPlayer = null;
-  var ytReadyCbs = [];
-  function onYTReady(cb){ if(window.YT&&window.YT.Player){cb();}else{ytReadyCbs.push(cb);} }
-
-  // Load YouTube IFrame API once
-  if(!window._ytApiLoading){
-    window._ytApiLoading=true;
-    window.onYouTubeIframeAPIReady=function(){
-      ytReadyCbs.forEach(function(cb){cb();});
-      ytReadyCbs=[];
-    };
-    var ytScript=document.createElement('script');
-    ytScript.src='https://www.youtube.com/iframe_api';
-    document.head.appendChild(ytScript);
-  }
-
-  function createYTPlayer(videoId){
-    // destroy old player
-    if(ytPlayer){ try{ ytPlayer.destroy(); }catch(e){} ytPlayer=null; }
-    // reset container
-    var container = document.getElementById('ytPlayerContainer');
-    container.innerHTML = '';
-    onYTReady(function(){
-      ytPlayer = new YT.Player('ytPlayerContainer', {
-        videoId: videoId,
-        width:   '100%',
-        height:  '100%',
-        playerVars:{ autoplay:1, rel:0, modestbranding:1, playsinline:1 },
-        events:{
-          onStateChange: function(e){
-            if(e.data === YT.PlayerState.PLAYING){
-              setPlaying(true);
-            } else {
-              setPlaying(false);
-            }
-          },
-          onReady: function(e){ e.target.playVideo(); }
-        }
-      });
-    });
-  }
-
-  function errMsg(code){
-    var m={'auth/user-not-found':'البريد غير مسجّل','auth/wrong-password':'كلمة المرور خاطئة',
-      'auth/invalid-credential':'البريد أو كلمة المرور غير صحيحة','auth/email-already-in-use':'هذا البريد مستخدم مسبقاً',
-      'auth/invalid-email':'بريد إلكتروني غير صالح','auth/weak-password':'كلمة المرور ضعيفة جداً',
-      'auth/network-request-failed':'تحقق من اتصالك بالإنترنت','auth/too-many-requests':'محاولات كثيرة، انتظر قليلاً'};
-    return m[code]||('خطأ: '+code);
-  }
-  function showErr(msg){document.getElementById('authErr').textContent=msg;}
-  function setBtn(id,dis,label){var b=document.getElementById(id);b.disabled=dis;b.textContent=label;}
-
-  window.doLogin = function(){
+  window.doLogin=function(){
     var email=document.getElementById('lEmail').value.trim();
     var pass=document.getElementById('lPass').value;
-    if(!email||!pass){showErr('يرجى ملء جميع الحقول');return;}
-    showErr(''); setBtn('loginBtn',true,'جاري الدخول...');
-    auth.signInWithEmailAndPassword(email,pass)
-      .catch(function(e){showErr(errMsg(e.code));setBtn('loginBtn',false,'دخول ←');});
+    if(!email||!pass){authErr('يرجى ملء جميع الحقول');return;}
+    authErr('');var b=document.getElementById('loginBtn');b.disabled=true;b.textContent='جاري الدخول...';
+    auth.signInWithEmailAndPassword(email,pass).catch(function(e){authErr(errMsg(e.code));b.disabled=false;b.textContent='دخول ←';});
   };
 
-  window.doRegister = function(){
+  window.doRegister=function(){
     var name=document.getElementById('rName').value.trim();
     var email=document.getElementById('rEmail').value.trim();
     var pass=document.getElementById('rPass').value;
-    if(!name||!email||!pass){showErr('يرجى ملء جميع الحقول');return;}
-    if(pass.length<6){showErr('كلمة المرور 6 أحرف على الأقل');return;}
-    showErr(''); setBtn('regBtn',true,'جاري الإنشاء...');
-    auth.createUserWithEmailAndPassword(email,pass)
-      .then(function(cred){return cred.user.updateProfile({displayName:name});})
-      .catch(function(e){showErr(errMsg(e.code));setBtn('regBtn',false,'إنشاء الحساب ←');});
+    if(!name||!email||!pass){authErr('يرجى ملء جميع الحقول');return;}
+    if(pass.length<6){authErr('كلمة المرور 6 أحرف على الأقل');return;}
+    authErr('');var b=document.getElementById('regBtn');b.disabled=true;b.textContent='جاري الإنشاء...';
+    auth.createUserWithEmailAndPassword(email,pass).then(function(c){return c.user.updateProfile({displayName:name});}).catch(function(e){authErr(errMsg(e.code));b.disabled=false;b.textContent='إنشاء الحساب ←';});
   };
 
-  window.doSignOut = function(){
+  window.doSignOut=function(){
     if(!confirm('تسجيل الخروج؟'))return;
-    stopTimer(); window.closeModal(); auth.signOut();
+    stopWatchTimer();closeVideoModal();auth.signOut();
   };
 
-  window.openModal = function(vid,title,desc){
-    if(!currentUser){document.getElementById('authOverlay').classList.remove('hidden');return;}
-    document.getElementById('modalTitle').textContent=title;
-    document.getElementById('modalDesc').textContent=desc;
-    document.getElementById('modalPts').textContent=userPoints+' نقطة';
-    document.getElementById('modalOverlay').classList.add('open');
-    setPlaying(false);
-    startTimer();
-    createYTPlayer(vid);
+  // ── Withdraw ──
+  window.openWithdraw=function(){
+    if(!currentUser)return;
+    document.getElementById('wPts').textContent=userPoints;
+    document.getElementById('wUsd').textContent=(userPoints/1000).toFixed(2);
+    document.getElementById('wAmount').value='';
+    document.getElementById('wCalcUsd').textContent='0.00';
+    document.getElementById('wErr').textContent='';
+    document.getElementById('wOverlay').style.display='flex';
+    // load history
+    db.collection('withdrawals').where('uid','==',currentUser.uid).orderBy('createdAt','desc').limit(10).get().then(function(snap){
+      var html='';
+      snap.forEach(function(d){var r=d.data();html+='<div class="req-item"><div><div class="req-item-method">'+r.method+'</div><div class="req-item-amt">'+r.points+' نقطة = $'+r.usd+'</div></div><span class="req-badge '+r.status+'">'+(r.status==='pending'?'⏳ انتظار':r.status==='approved'?'✅ مقبول':'❌ مرفوض')+'</span></div>';});
+      document.getElementById('wHistory').innerHTML=html||'<div style="color:var(--muted);font-size:.82rem;margin-top:.8rem">لا توجد طلبات سابقة</div>';
+    }).catch(function(){});
+  };
+  window.closeWithdraw=function(){document.getElementById('wOverlay').style.display='none';};
+  window.updateWalletPlaceholder=function(){var m=document.getElementById('wMethod').value;document.getElementById('wAddress').placeholder=m==='Mastercard'?'رقم البطاقة':'عنوان المحفظة';};
+  window.calcWithdraw=function(){var v=parseInt(document.getElementById('wAmount').value)||0;document.getElementById('wCalcUsd').textContent=(v/1000).toFixed(2);};
+  window.submitWithdraw=function(){
+    var method=document.getElementById('wMethod').value;
+    var addr=document.getElementById('wAddress').value.trim();
+    var amt=parseInt(document.getElementById('wAmount').value)||0;
+    var err=document.getElementById('wErr');
+    if(!method){err.textContent='اختر طريقة السحب';return;}
+    if(!addr){err.textContent='أدخل العنوان';return;}
+    if(amt<5000){err.textContent='الحد الأدنى 5000 نقطة';return;}
+    if(amt>userPoints){err.textContent='رصيدك غير كافٍ';return;}
+    if(amt%1000!==0){err.textContent='يجب أن يكون العدد مضاعفاً لـ 1000';return;}
+    err.textContent='';
+    userPoints-=amt;savePoints();updateHeader();
+    db.collection('withdrawals').add({uid:currentUser.uid,name:currentUser.displayName||'',email:currentUser.email,method:method,address:addr,points:amt,usd:(amt/1000).toFixed(2),status:'pending',createdAt:firebase.firestore.FieldValue.serverTimestamp()}).then(function(){window.closeWithdraw();alert('✅ تم إرسال طلب السحب!');}).catch(function(e){userPoints+=amt;savePoints();updateHeader();err.textContent='خطأ: '+e.message;});
   };
 
-  window.closeModal = function(){
-    stopTimer();
-    document.getElementById('modalOverlay').classList.remove('open');
-    document.getElementById('pauseIndicator').classList.remove('visible');
-    if(ytPlayer){ try{ ytPlayer.stopVideo(); ytPlayer.destroy(); }catch(e){} ytPlayer=null; }
-    document.getElementById('ytPlayerContainer').innerHTML='';
+  // ── Admin ──
+  var adminUnlocked=false;
+  window.openAdmin=function(){
+    adminUnlocked=false;
+    document.getElementById('adminPass').value='';
+    document.getElementById('adminPassErr').textContent='';
+    document.getElementById('adminLoginScreen').style.display='flex';
+    document.getElementById('adminDashboard').style.display='none';
+    document.getElementById('adminOverlay').classList.add('open');
   };
-  // ══════════════════════════════════════════════
-  //  GAMES SYSTEM
-  // ══════════════════════════════════════════════
-  var GAME_DAILY_CAP   = 50;   // max points per game per day
-  var GAME_EARN_EVERY  = 120;  // seconds per point (2 minutes)
-  var gameTimer        = null;
-  var gameElapsed      = 0;
-  var activeGameId     = null;
-  var activeGameName   = '';
-  var gameDailyCache   = {};   // {gameId: pointsToday}
+  window.closeAdmin=function(){document.getElementById('adminOverlay').classList.remove('open');adminUnlocked=false;};
+  window.checkAdminPass=function(){
+    if(document.getElementById('adminPass').value===ADMIN_PASS){
+      adminUnlocked=true;
+      document.getElementById('adminLoginScreen').style.display='none';
+      document.getElementById('adminDashboard').style.display='flex';
+      loadAdminWithdrawals();
+    } else {document.getElementById('adminPassErr').textContent='كلمة المرور غير صحيحة';}
+  };
+  window.switchAdminTab=function(t){
+    var isW=t==='w';
+    document.getElementById('adminPanelW').style.display=isW?'':'none';
+    document.getElementById('adminPanelG').style.display=isW?'none':'';
+    document.getElementById('aTabWith').classList.toggle('active',isW);
+    document.getElementById('aTabGames').classList.toggle('active',!isW);
+    if(!isW)loadAdminGamesList();
+  };
 
-  // Get today's date string as key
-  function todayKey(){ var d=new Date(); return d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate(); }
-
-  // Load how many points user earned today for a game
-  function getGameDailyPts(gameId, cb){
-    if(!currentUser){ cb(0); return; }
-    var key = 'gamePts_'+todayKey()+'_'+gameId;
-    db.collection('users').doc(currentUser.uid)
-      .collection('gameDailyPts').doc(key).get()
-      .then(function(snap){ cb(snap.exists ? (snap.data().pts||0) : 0); })
-      .catch(function(){ cb(0); });
+  function loadAdminWithdrawals(){
+    var el=document.getElementById('adminReqList');
+    el.innerHTML='<div class="admin-empty">جاري التحميل...</div>';
+    db.collection('withdrawals').orderBy('createdAt','desc').limit(50).get().then(function(snap){
+      if(snap.empty){el.innerHTML='<div class="admin-empty">لا توجد طلبات</div>';return;}
+      el.innerHTML='';
+      snap.forEach(function(doc){
+        var r=doc.data(),id=doc.id;
+        var isPending=r.status==='pending';
+        var date=r.createdAt&&r.createdAt.toDate?r.createdAt.toDate().toLocaleDateString('ar'):'';
+        el.innerHTML+='<div class="admin-req"><div class="admin-req-top"><div class="admin-req-name">'+r.name+'</div><div class="admin-req-date">'+date+'</div></div><div class="admin-req-row">البريد: <span>'+r.email+'</span></div><div class="admin-req-row">الطريقة: <span>'+r.method+'</span></div><div class="admin-req-row">العنوان: <span style="direction:ltr;unicode-bidi:embed">'+r.address+'</span></div><div class="admin-req-row">المبلغ: <span>'+r.points+' نقطة = $'+r.usd+'</span></div><div class="admin-req-row">الحالة: <span class="req-badge '+r.status+'">'+(r.status==='pending'?'⏳ انتظار':r.status==='approved'?'✅ مقبول':'❌ مرفوض')+'</span></div>'+(isPending?'<div class="admin-req-actions"><button class="a-approve" onclick="adminAction(\''+id+'\',\'approved\','+r.points+',\''+r.uid+'\')">✅ قبول</button><button class="a-reject" onclick="adminAction(\''+id+'\',\'rejected\','+r.points+',\''+r.uid+'\')">❌ رفض</button></div>':'')+'</div>';
+      });
+    }).catch(function(e){el.innerHTML='<div class="admin-empty">خطأ: '+e.message+'</div>';});
   }
 
-  function saveGameDailyPts(gameId, pts){
-    if(!currentUser) return;
-    var key = 'gamePts_'+todayKey()+'_'+gameId;
-    db.collection('users').doc(currentUser.uid)
-      .collection('gameDailyPts').doc(key)
-      .set({ pts: pts, gameId: gameId, date: todayKey() });
-  }
+  window.adminAction=function(docId,status,pts,uid){
+    if(!adminUnlocked)return;
+    var label=status==='approved'?'قبول':'رفض';
+    if(!confirm('تأكيد '+label+' الطلب؟'))return;
+    var batch=db.batch();
+    batch.update(db.collection('withdrawals').doc(docId),{status:status});
+    if(status==='rejected'){batch.update(db.collection('users').doc(uid),{points:firebase.firestore.FieldValue.increment(pts)});}
+    batch.commit().then(function(){loadAdminWithdrawals();}).catch(function(e){alert('خطأ: '+e.message);});
+  };
 
-  // Load and render games grid
-  function loadGamesSection(){
-    var grid  = document.getElementById('gamesGrid');
-    var empty = document.getElementById('gamesEmpty');
-    grid.innerHTML = '<div class="loading" style="display:block"><div class="spinner"></div><p>جاري التحميل...</p></div>';
-    empty.style.display = 'none';
+  // ── Admin Games ──
+  window.switchGameSrc=function(t){
+    gameSrcMode=t;
+    var isUrl=t==='url';
+    document.getElementById('rowUrl').style.display=isUrl?'':'none';
+    document.getElementById('rowIframe').style.display=isUrl?'none':'';
+    document.getElementById('srcUrlBtn').classList.toggle('active',isUrl);
+    document.getElementById('srcIframeBtn').classList.toggle('active',!isUrl);
+  };
 
+  window.adminAddGame=function(){
+    var name=document.getElementById('newGameName').value.trim();
+    var url='';
+    var err=document.getElementById('addGameErr');
+    if(gameSrcMode==='iframe'){
+      var code=document.getElementById('newGameIframe').value.trim();
+      var m=code.match(/src=["']([^"']+)["']/i);
+      if(!code){err.textContent='أدخل كود iframe';return;}
+      if(!m){err.textContent='لم يتم العثور على src في الكود';return;}
+      url=m[1];
+    } else {
+      url=document.getElementById('newGameUrl').value.trim();
+    }
+    if(!name){err.textContent='أدخل اسم اللعبة';return;}
+    if(!url||!url.startsWith('http')){err.textContent='أدخل رابطاً صحيحاً';return;}
+    err.textContent='';var btn=document.getElementById('addGameBtn');btn.disabled=true;btn.textContent='جاري الإضافة...';
+    db.collection('games').add({name:name,url:url,createdAt:firebase.firestore.FieldValue.serverTimestamp()}).then(function(){
+      document.getElementById('newGameName').value='';document.getElementById('newGameUrl').value='';document.getElementById('newGameIframe').value='';
+      btn.disabled=false;btn.textContent='➕ إضافة اللعبة';err.textContent='';
+      loadAdminGamesList();loadGamesSection();
+    }).catch(function(e){err.textContent='خطأ: '+e.message;btn.disabled=false;btn.textContent='➕ إضافة اللعبة';});
+  };
+
+  window.adminDeleteGame=function(id){
+    if(!confirm('حذف هذه اللعبة نهائياً؟'))return;
+    db.collection('games').doc(id).delete().then(function(){loadAdminGamesList();loadGamesSection();}).catch(function(e){alert('خطأ: '+e.message);});
+  };
+
+  function loadAdminGamesList(){
+    var el=document.getElementById('adminGamesList');
+    el.innerHTML='<div class="admin-empty">جاري التحميل...</div>';
     db.collection('games').orderBy('createdAt','asc').get().then(function(snap){
-      grid.innerHTML = '';
-      if(snap.empty){ empty.style.display='block'; return; }
-      var gameIds = [];
-      snap.forEach(function(doc){ gameIds.push({id:doc.id, data:doc.data()}); });
+      if(snap.empty){el.innerHTML='<div class="admin-empty">لا توجد ألعاب</div>';return;}
+      el.innerHTML='';
+      snap.forEach(function(doc){
+        var d=doc.data(),id=doc.id;
+        el.innerHTML+='<div class="admin-game-item"><div style="min-width:0;flex:1"><div class="admin-game-name">🎮 '+d.name+'</div><div class="admin-game-url">'+d.url+'</div></div><button class="admin-game-del" onclick="adminDeleteGame(\''+id+'\')">🗑️ حذف</button></div>';
+      });
+    }).catch(function(e){el.innerHTML='<div class="admin-empty">خطأ: '+e.message+'</div>';});
+  }
 
-      // Load daily pts for each game then render
-      var pending = gameIds.length;
-      gameIds.forEach(function(g){
-        getGameDailyPts(g.id, function(pts){
-          gameDailyCache[g.id] = pts;
-          pending--;
-          if(pending===0) renderGamesGrid(gameIds);
+  // ── Games Section ──
+  function getGameDailyPts(gameId,cb){
+    if(!currentUser){cb(0);return;}
+    db.collection('users').doc(currentUser.uid).collection('gameDailyPts').doc('gamePts_'+todayKey()+'_'+gameId).get().then(function(s){cb(s.exists?(s.data().pts||0):0);}).catch(function(){cb(0);});
+  }
+  function saveGameDailyPts(gameId,pts){
+    if(!currentUser)return;
+    db.collection('users').doc(currentUser.uid).collection('gameDailyPts').doc('gamePts_'+todayKey()+'_'+gameId).set({pts:pts,gameId:gameId,date:todayKey()});
+  }
+  // make accessible to game timer
+  window._saveGameDailyPts=saveGameDailyPts;
+
+  function loadGamesSection(){
+    var grid=document.getElementById('gamesGrid');
+    var empty=document.getElementById('gamesEmpty');
+    grid.innerHTML='<div class="loading" style="display:block"><div class="spinner"></div><p>جاري التحميل...</p></div>';
+    empty.style.display='none';
+    db.collection('games').orderBy('createdAt','asc').get().then(function(snap){
+      grid.innerHTML='';
+      if(snap.empty){empty.style.display='block';return;}
+      var games=[];snap.forEach(function(d){games.push({id:d.id,data:d.data()});});
+      var pending=games.length;
+      games.forEach(function(g){
+        getGameDailyPts(g.id,function(pts){
+          gameCache[g.id]=pts;pending--;
+          if(pending===0)renderGamesGrid(games);
         });
       });
-    }).catch(function(e){
-      grid.innerHTML='<div class="empty-state" style="display:block"><div class="icon">⚠️</div><p>'+e.message+'</p></div>';
-    });
+    }).catch(function(e){grid.innerHTML='<div style="color:var(--red);padding:2rem;text-align:center">⚠️ '+e.message+'</div>';});
   }
+  window.loadGamesSection=loadGamesSection;
 
   function renderGamesGrid(games){
-    var grid = document.getElementById('gamesGrid');
-    grid.innerHTML = '';
-    var icons = ['🎮','🕹️','👾','🏆','⚔️','🧩','🚀','🎯','🏎️','⚽','🎲','🃏'];
-    games.forEach(function(g, i){
-      var d    = g.data;
-      var pts  = gameDailyCache[g.id] || 0;
-      var pct  = Math.min(100, Math.round(pts/GAME_DAILY_CAP*100));
-      var maxd = pts >= GAME_DAILY_CAP;
-      var icon = icons[i % icons.length];
-      var card = document.createElement('div');
-      card.className = 'game-card';
-      card.id = 'gcard-'+g.id;
-      card.innerHTML =
-        '<div class="game-thumb">'+
-          '<div class="game-thumb-icon">'+icon+'</div>'+
-          '<div class="game-play-overlay"><div class="game-play-btn">▶</div></div>'+
-        '</div>'+
-        (maxd?'<div class="game-cap-badge maxed">اكتمل اليوم ✓</div>':'<div class="game-cap-badge">'+pts+'/'+GAME_DAILY_CAP+' نقطة</div>')+
-        '<div class="game-info">'+
-          '<div class="game-name">'+d.name+'</div>'+
-          '<div class="game-daily-bar-wrap">'+
-            '<div class="game-daily-bar-bg"><div class="game-daily-bar-fill" style="width:'+pct+'%"></div></div>'+
-            '<div class="game-daily-label">'+(maxd?'<span style="color:var(--green)">اكتمل ✓</span>':pts+'/'+GAME_DAILY_CAP)+'</div>'+
-          '</div>'+
-        '</div>';
-      (function(id,name,url){ card.onclick=function(){ openGame(id,name,url); }; })(g.id,d.name,d.url);
+    var grid=document.getElementById('gamesGrid');grid.innerHTML='';
+    var icons=['🎮','🕹️','👾','🏆','⚔️','🧩','🚀','🎯','🏎️','⚽','🎲','🃏'];
+    games.forEach(function(g,i){
+      var pts=gameCache[g.id]||0;
+      var pct=Math.min(100,Math.round(pts/GAME_CAP*100));
+      var maxd=pts>=GAME_CAP;
+      var card=document.createElement('div');
+      card.className='game-card';
+      card.innerHTML='<div class="game-thumb"><div class="game-thumb-icon">'+icons[i%icons.length]+'</div><div class="game-play-overlay"><div class="game-play-btn">▶</div></div></div><span class="game-cap-badge'+(maxd?' maxed':'')+'">'+( maxd?'اكتمل ✓':pts+'/'+GAME_CAP)+'</span><div class="game-info"><div class="game-name">'+g.data.name+'</div><div class="game-daily-bar-wrap"><div class="game-daily-bar-bg"><div class="game-daily-bar-fill" style="width:'+pct+'%"></div></div><div class="game-daily-label">'+(maxd?'<span style="color:var(--green)">اكتمل ✓</span>':pts+'/'+GAME_CAP)+'</div></div></div>';
+      (function(id,name,url){card.onclick=function(){openGameOverlay(id,name,url);};})(g.id,g.data.name,g.data.url);
       grid.appendChild(card);
     });
   }
 
-  // Wire loadGamesSection to global hook
-  window._loadGamesSection = loadGamesSection;
-  // Load games immediately on Firebase ready (no auth needed to view)
-  loadGamesSection();
+} // end initApp
 
-  // ── Open/close game ──
-  window.openGame = function(gameId, gameName, gameUrl){
-    if(!currentUser){ document.getElementById('authOverlay').classList.remove('hidden'); return; }
-    getGameDailyPts(gameId, function(pts){
-      activeGameId   = gameId;
-      activeGameName = gameName;
-      document.getElementById('gameTopTitle').textContent = gameName;
-      document.getElementById('gamePtsBadge').textContent = pts+' / '+GAME_DAILY_CAP+' نقطة اليوم';
-      document.getElementById('gameFrame').src = gameUrl;
-      document.getElementById('gameOverlay').classList.add('open');
-      startGameTimer(pts);
-      // Show bar on hover
-      var bar = document.getElementById('gameTopBar');
-      var t; bar.classList.add('visible');
-      clearTimeout(t); t=setTimeout(function(){ bar.classList.remove('visible'); },3000);
-      document.getElementById('gameOverlay').addEventListener('mousemove',function(){
-        bar.classList.add('visible'); clearTimeout(t);
-        t=setTimeout(function(){ bar.classList.remove('visible'); },2500);
-      });
-    });
-  };
+// ═══════════════════════════════════════════════════════
+//  STUBS (before Firebase loads)
+// ═══════════════════════════════════════════════════════
+window.doLogin   =function(){document.getElementById('authErr').textContent='جاري تحميل Firebase...';};
+window.doRegister=function(){document.getElementById('authErr').textContent='جاري تحميل Firebase...';};
+window.doSignOut =function(){};
+window.openWithdraw=function(){};
+window.closeWithdraw=function(){document.getElementById('wOverlay').style.display='none';};
+window.updateWalletPlaceholder=function(){};
+window.calcWithdraw=function(){};
+window.submitWithdraw=function(){};
+window.openAdmin=function(){};
+window.closeAdmin=function(){document.getElementById('adminOverlay').classList.remove('open');};
+window.checkAdminPass=function(){};
+window.adminAction=function(){};
+window.switchAdminTab=function(){};
+window.adminAddGame=function(){};
+window.adminDeleteGame=function(){};
+window.switchGameSrc=function(t){
+  gameSrcMode=t;
+  document.getElementById('rowUrl').style.display=t==='url'?'':'none';
+  document.getElementById('rowIframe').style.display=t==='url'?'none':'';
+  document.getElementById('srcUrlBtn').classList.toggle('active',t==='url');
+  document.getElementById('srcIframeBtn').classList.toggle('active',t!=='url');
+};
+window.loadGamesSection=function(){};
 
-  window.closeGame = function(){
-    stopGameTimer();
-    document.getElementById('gameOverlay').classList.remove('open');
-    document.getElementById('gameFrame').src='';
-    activeGameId=null;
-    // refresh games grid if visible
-    if(document.getElementById('gamesSection').style.display!=='none') loadGamesSection();
-  };
+// ═══════════════════════════════════════════════════════
+//  START: load trending on page load
+// ═══════════════════════════════════════════════════════
+fetchHome('', false);
 
-  function startGameTimer(currentDayPts){
-    stopGameTimer();
-    var dayPts = currentDayPts;
-    gameElapsed = 0;
-    gameTimer = setInterval(function(){
-      if(dayPts >= GAME_DAILY_CAP){ stopGameTimer(); showGameCapNotice(); return; }
-      gameElapsed++;
-      if(gameElapsed >= GAME_EARN_EVERY){
-        gameElapsed = 0;
-        dayPts++;
-        userPoints++;
-        gameDailyCache[activeGameId] = dayPts;
-        savePoints();
-        saveGameDailyPts(activeGameId, dayPts);
-        updateHeader();
-        document.getElementById('gamePtsBadge').textContent = dayPts+' / '+GAME_DAILY_CAP+' نقطة اليوم';
-        showGameToast();
-        if(dayPts >= GAME_DAILY_CAP){ stopGameTimer(); showGameCapNotice(); }
-      }
-    }, 1000);
-  }
-
-  function stopGameTimer(){ clearInterval(gameTimer); gameTimer=null; gameElapsed=0; }
-
-  function showGameToast(){
-    var t=document.getElementById('gameToast');
-    t.classList.add('show'); setTimeout(function(){ t.classList.remove('show'); },1800);
-  }
-
-  function showGameCapNotice(){
-    document.getElementById('gamePtsBadge').textContent='✅ اكتملت نقاط هذه اللعبة اليوم!';
-    document.getElementById('gamePtsBadge').style.background='rgba(34,197,94,.8)';
-  }
-
-  // ── Admin: switchAdminTab ──
-  window.switchAdminTab = function(tab){
-    var isW = tab==='withdrawals';
-    document.getElementById('adminWithdrawPanel').style.display = isW?'':'none';
-    document.getElementById('adminGamesPanel').style.display    = isW?'none':'';
-    document.getElementById('aTabWith').classList.toggle('active', isW);
-    document.getElementById('aTabGames').classList.toggle('active', !isW);
-    if(!isW) loadAdminGamesList();
-  };
-
-  window.switchGameSrc = function(t){
-    var isUrl = t==='url';
-    document.getElementById('urlRow').style.display    = isUrl ? '' : 'none';
-    document.getElementById('iframeRow').style.display = isUrl ? 'none' : '';
-    document.getElementById('srcUrl').classList.toggle('active', isUrl);
-    document.getElementById('srcIframe').classList.toggle('active', !isUrl);
-    window._gameSrcMode = t;
-  };
-
-  // ── Admin: add game ──
-  window.adminAddGame = function(){
-    var name  = document.getElementById('newGameName').value.trim();
-    var err   = document.getElementById('addGameErr');
-    var btn   = document.getElementById('addGameBtn');
-    var mode  = window._gameSrcMode || 'url';
-    var url   = '';
-
-    if(mode === 'iframe'){
-      var code = document.getElementById('newGameIframe').value.trim();
-      // extract src="..." or src='...' from iframe code
-      var match = code.match(/src=["']([^"']+)["']/i);
-      if(!code)        { err.textContent='يرجى إدخال كود الـ iframe'; return; }
-      if(!match)       { err.textContent='لم يتم العثور على رابط src في كود الـ iframe'; return; }
-      url = match[1];
-    } else {
-      url = document.getElementById('newGameUrl').value.trim();
-    }
-
-    if(!name)                      { err.textContent='يرجى إدخال اسم اللعبة'; return; }
-    if(!url || !url.startsWith('http')) { err.textContent='يرجى إدخال رابط صحيح يبدأ بـ https://'; return; }
-
-    err.textContent=''; btn.disabled=true; btn.textContent='جاري الإضافة...';
-
-    db.collection('games').add({
-      name: name, url: url,
-      createdAt: firebase.firestore.FieldValue.serverTimestamp()
-    }).then(function(){
-      document.getElementById('newGameName').value='';
-      document.getElementById('newGameUrl').value='';
-      document.getElementById('newGameIframe').value='';
-      btn.disabled=false; btn.textContent='➕ إضافة اللعبة';
-      err.textContent='';
-      loadAdminGamesList();
-    }).catch(function(e){ err.textContent='خطأ: '+e.message; btn.disabled=false; btn.textContent='➕ إضافة اللعبة'; });
-  };
-
-  function loadAdminGamesList(){
-    var list = document.getElementById('adminGamesList');
-    list.innerHTML='<div class="admin-empty">جاري التحميل...</div>';
-    db.collection('games').orderBy('createdAt','asc').get().then(function(snap){
-      if(snap.empty){ list.innerHTML='<div class="admin-empty">لا توجد ألعاب بعد</div>'; return; }
-      list.innerHTML='';
-      snap.forEach(function(doc){
-        var d=doc.data(), id=doc.id;
-        list.innerHTML+='<div class="admin-game-item">'+
-          '<div style="min-width:0;flex:1">'+
-            '<div class="admin-game-name">🎮 '+d.name+'</div>'+
-            '<div class="admin-game-url">'+d.url+'</div>'+
-          '</div>'+
-          '<button class="admin-game-del" onclick="adminDeleteGame(\''+id+'\')">🗑️ حذف</button>'+
-        '</div>';
-      });
-    }).catch(function(e){ list.innerHTML='<div class="admin-empty">خطأ: '+e.message+'</div>'; });
-  }
-
-  window.adminDeleteGame = function(id){
-    if(!confirm('حذف هذه اللعبة نهائياً؟')) return;
-    db.collection('games').doc(id).delete().then(loadAdminGamesList).catch(function(e){ alert('خطأ: '+e.message); });
-  };
-
-  // ══════════════════════════════════════════════
-  //  WITHDRAW & ADMIN — assigned to window so onclick works
-  // ══════════════════════════════════════════════
-  var ADMIN_PASS    = 'Hernios66@';
-  var MIN_WITHDRAW  = 5000;
-  var PTS_PER_USD   = 1000;
-  var adminUnlocked = false;
-
-  window.openWithdraw = function(){
-    if(!currentUser) return;
-    document.getElementById('wPts').textContent = userPoints;
-    document.getElementById('wUsd').textContent = (userPoints/PTS_PER_USD).toFixed(2);
-    document.getElementById('wForm').style.display    = '';
-    document.getElementById('wSuccess').style.display = 'none';
-    document.getElementById('wErr').textContent       = '';
-    document.getElementById('wAmt').value             = '';
-    document.getElementById('wAddr').value            = '';
-    document.getElementById('wMethod').value          = '';
-    document.getElementById('wCalc').textContent      = '';
-    loadMyRequests();
-    document.getElementById('wOverlay').classList.add('open');
-  };
-
-  window.closeWithdraw = function(){
-    document.getElementById('wOverlay').classList.remove('open');
-  };
-
-  window.calcWithdraw = function(){
-    var amt = parseInt(document.getElementById('wAmt').value)||0;
-    document.getElementById('wCalc').textContent = amt>0 ? '≈ $'+(amt/PTS_PER_USD).toFixed(2) : '';
-  };
-
-  window.updateWalletPlaceholder = function(){
-    var m = document.getElementById('wMethod').value;
-    var l = document.getElementById('wAddrLabel');
-    var i = document.getElementById('wAddr');
-    if(m==='Mastercard'){
-      l.textContent='رقم البطاقة'; i.placeholder='XXXX XXXX XXXX XXXX';
-    } else if(m){
-      l.textContent='عنوان المحفظة'; i.placeholder='أدخل عنوان '+m+' هنا';
-    } else {
-      l.textContent='عنوان المحفظة / رقم البطاقة'; i.placeholder='أدخل العنوان هنا';
-    }
-  };
-
-  window.submitWithdraw = function(){
-    var method = document.getElementById('wMethod').value;
-    var addr   = document.getElementById('wAddr').value.trim();
-    var amt    = parseInt(document.getElementById('wAmt').value)||0;
-    var errEl  = document.getElementById('wErr');
-    var btn    = document.getElementById('wSubmitBtn');
-
-    if(!method)          { errEl.textContent='يرجى اختيار طريقة الدفع'; return; }
-    if(!addr)            { errEl.textContent='يرجى إدخال العنوان أو رقم البطاقة'; return; }
-    if(amt<MIN_WITHDRAW) { errEl.textContent='الحد الأدنى للسحب 5000 نقطة'; return; }
-    if(amt>userPoints)   { errEl.textContent='نقاطك غير كافية (رصيدك: '+userPoints+')'; return; }
-    if(amt%1000!==0)     { errEl.textContent='يجب أن يكون العدد من مضاعفات 1000'; return; }
-
-    btn.disabled=true; btn.textContent='جاري الإرسال...'; errEl.textContent='';
-
-    db.collection('withdrawals').add({
-      uid:       currentUser.uid,
-      name:      currentUser.displayName || currentUser.email,
-      email:     currentUser.email,
-      method:    method,
-      address:   addr,
-      points:    amt,
-      usd:       amt/PTS_PER_USD,
-      status:    'pending',
-      createdAt: firebase.firestore.FieldValue.serverTimestamp()
-    }).then(function(){
-      userPoints -= amt;
-      savePoints(); updateHeader();
-      document.getElementById('wPts').textContent      = userPoints;
-      document.getElementById('wUsd').textContent      = (userPoints/PTS_PER_USD).toFixed(2);
-      document.getElementById('wForm').style.display   = 'none';
-      document.getElementById('wSuccess').style.display= '';
-      btn.disabled=false; btn.textContent='إرسال الطلب ←';
-    }).catch(function(e){
-      errEl.textContent='خطأ: '+e.message;
-      btn.disabled=false; btn.textContent='إرسال الطلب ←';
-    });
-  };
-
-  function loadMyRequests(){
-    var list = document.getElementById('wReqList');
-    list.innerHTML='<p style="color:var(--muted);font-size:.78rem;margin-bottom:.5rem">طلباتك السابقة:</p>';
-    db.collection('withdrawals')
-      .where('uid','==',currentUser.uid)
-      .orderBy('createdAt','desc')
-      .limit(10)
-      .get().then(function(snap){
-        if(snap.empty){ list.innerHTML=''; return; }
-        list.innerHTML='<p style="color:var(--muted);font-size:.78rem;margin-bottom:.5rem">طلباتك السابقة:</p>';
-        snap.forEach(function(doc){
-          var d=doc.data();
-          var date=d.createdAt?d.createdAt.toDate().toLocaleDateString('ar-SA'):'—';
-          var bLabel={'pending':'⏳ انتظار','approved':'✅ مقبول','rejected':'❌ مرفوض'}[d.status]||d.status;
-          var bClass=d.status||'pending';
-          list.innerHTML+='<div class="req-item"><div class="req-item-info">'+
-            '<div class="req-item-method">'+d.method+'</div>'+
-            '<div class="req-item-amt">'+d.points+' نقطة ≈ $'+d.usd+' — '+date+'</div>'+
-            '</div><span class="req-badge '+bClass+'">'+bLabel+'</span></div>';
-        });
-      }).catch(function(){list.innerHTML='';});
-  }
-
-  // ── ADMIN ──
-  window.openAdmin = function(){
-    adminUnlocked=false;
-    document.getElementById('adminLoginScreen').style.display='flex';
-    document.getElementById('adminDashboard').style.display='none';
-    document.getElementById('adminPass').value='';
-    document.getElementById('adminPassErr').textContent='';
-    document.getElementById('adminOverlay').classList.add('open');
-  };
-
-  window.closeAdmin = function(){
-    document.getElementById('adminOverlay').classList.remove('open');
-    adminUnlocked=false;
-  };
-
-  window.checkAdminPass = function(){
-    var v=document.getElementById('adminPass').value;
-    if(v===ADMIN_PASS){
-      adminUnlocked=true;
-      document.getElementById('adminLoginScreen').style.display='none';
-      document.getElementById('adminDashboard').style.display='flex';
-      loadAdminRequests();
-    } else {
-      document.getElementById('adminPassErr').textContent='كلمة المرور غير صحيحة';
-    }
-  };
-
-  function loadAdminRequests(){
-    var list=document.getElementById('adminReqList');
-    list.innerHTML='<div class="admin-empty">جاري التحميل...</div>';
-    db.collection('withdrawals')
-      .orderBy('createdAt','desc')
-      .limit(50)
-      .get().then(function(snap){
-        if(snap.empty){ list.innerHTML='<div class="admin-empty">لا توجد طلبات بعد</div>'; return; }
-        list.innerHTML='';
-        snap.forEach(function(doc){
-          var d=doc.data(), id=doc.id;
-          var date=d.createdAt?d.createdAt.toDate().toLocaleString('ar-SA'):'—';
-          var bLabel={'pending':'⏳ انتظار','approved':'✅ مقبول','rejected':'❌ مرفوض'}[d.status]||d.status;
-          var bClass=d.status||'pending';
-          var actions='';
-          if(d.status==='pending'){
-            actions='<div class="admin-req-actions">'+
-              '<button class="a-approve" onclick="adminAction(\''+id+'\',\'approved\',\''+d.uid+'\','+d.points+')">✅ قبول</button>'+
-              '<button class="a-reject"  onclick="adminAction(\''+id+'\',\'rejected\',\''+d.uid+'\','+d.points+')">❌ رفض</button>'+
-            '</div>';
-          }
-          list.innerHTML+='<div class="admin-req">'+
-            '<div class="admin-req-top">'+
-              '<div><div class="admin-req-name">'+d.name+'</div><div class="admin-req-date">'+date+'</div></div>'+
-              '<span class="req-badge '+bClass+'">'+bLabel+'</span>'+
-            '</div>'+
-            '<div class="admin-req-row">📧 البريد: <span>'+d.email+'</span></div>'+
-            '<div class="admin-req-row">💳 الطريقة: <span>'+d.method+'</span></div>'+
-            '<div class="admin-req-row">🏦 العنوان/البطاقة: <span style="direction:ltr;unicode-bidi:embed">'+d.address+'</span></div>'+
-            '<div class="admin-req-row">🔢 النقاط: <span>'+d.points+' نقطة</span></div>'+
-            '<div class="admin-req-row">💵 المبلغ: <span>$'+d.usd+'</span></div>'+
-            actions+
-          '</div>';
-        });
-      }).catch(function(e){ list.innerHTML='<div class="admin-empty">خطأ: '+e.message+'</div>'; });
-  }
-
-  window.adminAction = function(docId, status, uid, points){
-    if(!adminUnlocked) return;
-    if(!confirm('هل تريد '+(status==='approved'?'قبول':'رفض')+' هذا الطلب؟')) return;
-    var batch=db.batch();
-    batch.update(db.collection('withdrawals').doc(docId),{status:status});
-    if(status==='rejected'){
-      batch.update(db.collection('users').doc(uid),
-        {points:firebase.firestore.FieldValue.increment(points)});
-    }
-    batch.commit().then(loadAdminRequests).catch(function(e){alert('خطأ: '+e.message);});
-  };
-
-  // Show/hide header buttons
-  function showHeaderBtns(){
-    document.getElementById('withdrawBtn').style.display='';
-    document.getElementById('adminBtn').style.display='';
-  }
-  function hideHeaderBtns(){
-    document.getElementById('withdrawBtn').style.display='none';
-    document.getElementById('adminBtn').style.display='none';
-  }
-}
+// override savePoints / updateHeader for game timer (after initApp sets them)
+function savePoints(){if(window._savePoints)window._savePoints();}
+function updateHeader(){if(window._updateHeader)window._updateHeader();}
 </script>
 </body>
-</html>
+  </html>
