@@ -6,40 +6,20 @@
 <title>WinTube</title>
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=Bebas+Neue&display=swap" rel="stylesheet">
 <style>
-/* ── RESET & ROOT ── */
 :root{--red:#ff2d2d;--dark:#0a0a0a;--card:#111;--border:#1e1e1e;--text:#f0f0f0;--muted:#666;--green:#22c55e;--yellow:#f59e0b;--purple:#a855f7;}
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
 html{font-size:16px;-webkit-text-size-adjust:100%;}
 body{background:var(--dark);color:var(--text);font-family:'Cairo',sans-serif;min-height:100vh;overflow-x:hidden;}
 
-/* ── HEADER ── */
-header{
-  position:sticky;top:0;z-index:200;
-  background:rgba(10,10,10,.98);backdrop-filter:blur(20px);
-  border-bottom:1px solid var(--border);
-  padding:0 1rem;height:60px;
-  display:flex;align-items:center;gap:.75rem;
-}
+/* HEADER */
+header{position:sticky;top:0;z-index:200;background:rgba(10,10,10,.98);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:0 1rem;height:60px;display:flex;align-items:center;gap:.75rem;}
 .logo{font-family:'Bebas Neue',sans-serif;font-size:1.7rem;color:var(--red);letter-spacing:3px;flex-shrink:0;line-height:1;}
 .logo span{color:var(--text);}
 .search-bar{flex:1;display:flex;max-width:500px;}
-.search-bar input{
-  flex:1;background:var(--card);border:1px solid var(--border);border-left:none;
-  color:var(--text);padding:.55rem .9rem;font-family:'Cairo',sans-serif;
-  font-size:max(.88rem,16px);outline:none;border-radius:0 8px 8px 0;min-width:0;
-}
+.search-bar input{flex:1;background:var(--card);border:1px solid var(--border);border-left:none;color:var(--text);padding:.55rem .9rem;font-family:'Cairo',sans-serif;font-size:max(.88rem,16px);outline:none;border-radius:0 8px 8px 0;min-width:0;}
 .search-bar input:focus{border-color:var(--red);}
-.search-bar button{
-  background:var(--red);border:none;color:#fff;
-  padding:0 .9rem;cursor:pointer;font-size:.95rem;
-  border-radius:8px 0 0 8px;flex-shrink:0;height:100%;
-}
-.user-panel{
-  margin-right:auto;display:flex;align-items:center;gap:.5rem;
-  background:var(--card);border:1px solid var(--border);
-  border-radius:50px;padding:.3rem .75rem;cursor:pointer;flex-shrink:0;
-  transition:border-color .2s;
-}
+.search-bar button{background:var(--red);border:none;color:#fff;padding:0 .9rem;cursor:pointer;font-size:.95rem;border-radius:8px 0 0 8px;flex-shrink:0;}
+.user-panel{margin-right:auto;display:flex;align-items:center;gap:.5rem;background:var(--card);border:1px solid var(--border);border-radius:50px;padding:.3rem .75rem;cursor:pointer;flex-shrink:0;transition:border-color .2s;}
 .user-panel:hover{border-color:var(--red);}
 .user-avatar{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,var(--red),#ff8c00);display:flex;align-items:center;justify-content:center;font-size:.82rem;font-weight:700;color:#fff;flex-shrink:0;}
 .user-name{font-size:.78rem;font-weight:600;}
@@ -48,59 +28,33 @@ header{
 .hbtn-gold{background:linear-gradient(135deg,#f59e0b,#d97706);}
 .hbtn-red{background:linear-gradient(135deg,#ef4444,#b91c1c);}
 
-/* ── CATEGORIES ── */
-.categories{
-  padding:.6rem 1rem;display:flex;gap:.4rem;
-  overflow-x:auto;border-bottom:1px solid var(--border);scrollbar-width:none;
-  -webkit-overflow-scrolling:touch;
-}
+/* CATEGORIES */
+.categories{padding:.6rem 1rem;display:flex;gap:.4rem;overflow-x:auto;border-bottom:1px solid var(--border);scrollbar-width:none;-webkit-overflow-scrolling:touch;}
 .categories::-webkit-scrollbar{display:none;}
-.cat-btn{
-  background:var(--card);border:1px solid var(--border);color:var(--muted);
-  padding:.35rem .9rem;border-radius:50px;cursor:pointer;
-  font-family:'Cairo',sans-serif;font-size:.8rem;white-space:nowrap;transition:all .2s;
-  flex-shrink:0;
-}
+.cat-btn{background:var(--card);border:1px solid var(--border);color:var(--muted);padding:.35rem .9rem;border-radius:50px;cursor:pointer;font-family:'Cairo',sans-serif;font-size:.8rem;white-space:nowrap;transition:all .2s;flex-shrink:0;}
 .cat-btn:hover,.cat-btn.active{background:var(--red);border-color:var(--red);color:#fff;}
 
-/* ── MAIN ── */
+/* MAIN */
 main{padding:1.25rem 1rem;}
-.section-title{
-  font-size:1.1rem;font-weight:700;margin-bottom:1.25rem;
-  display:flex;align-items:center;gap:.7rem;flex-wrap:wrap;
-}
+.section-title{font-size:1.1rem;font-weight:700;margin-bottom:1.25rem;display:flex;align-items:center;gap:.7rem;flex-wrap:wrap;}
 .section-title::before{content:'';width:4px;height:1.2em;background:var(--red);border-radius:2px;flex-shrink:0;}
 
-/* ── VIDEO GRID ── */
-.video-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(min(100%,260px),1fr));
-  gap:1rem;
-}
-.video-card{
-  background:var(--card);border:1px solid var(--border);
-  border-radius:12px;overflow:hidden;cursor:pointer;
-  transition:transform .2s,border-color .2s,box-shadow .2s;
-}
-.video-card:hover{transform:translateY(-3px);border-color:var(--red);box-shadow:0 6px 24px rgba(255,45,45,.12);}
+/* VIDEO GRID */
+.video-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,260px),1fr));gap:1rem;}
+.video-card{background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden;cursor:pointer;transition:transform .2s,border-color .2s;}
+.video-card:hover{transform:translateY(-3px);border-color:var(--red);}
 .thumb-wrap{position:relative;aspect-ratio:16/9;overflow:hidden;}
 .thumb-wrap img{width:100%;height:100%;object-fit:cover;display:block;}
-.play-ov{
-  position:absolute;inset:0;background:rgba(0,0,0,.35);
-  display:flex;align-items:center;justify-content:center;
-  opacity:0;transition:opacity .2s;
-}
+.play-ov{position:absolute;inset:0;background:rgba(0,0,0,.35);display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .2s;}
 .video-card:hover .play-ov{opacity:1;}
 @media(hover:none){.play-ov{opacity:1;background:rgba(0,0,0,.2);}}
-.play-btn{width:46px;height:46px;background:var(--red);border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 12px rgba(255,45,45,.5);}
+.play-btn{width:46px;height:46px;background:var(--red);border-radius:50%;display:flex;align-items:center;justify-content:center;}
 .play-btn svg{fill:#fff;margin-right:-2px;}
 .duration{position:absolute;bottom:6px;left:6px;background:rgba(0,0,0,.82);color:#fff;font-size:.7rem;padding:1px 5px;border-radius:4px;}
 .card-info{padding:.7rem .85rem;}
 .card-title{font-size:.85rem;font-weight:600;line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;margin-bottom:.35rem;}
 .card-meta{font-size:.72rem;color:var(--muted);}
 .channel-name{display:block;color:#aaa;margin-bottom:.1rem;}
-
-/* states */
 .loading{display:none;text-align:center;padding:3rem 1rem;}
 .spinner{width:38px;height:38px;border:3px solid var(--border);border-top-color:var(--red);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 1rem;}
 @keyframes spin{to{transform:rotate(360deg);}}
@@ -110,7 +64,7 @@ main{padding:1.25rem 1rem;}
 .lm-btn{background:var(--card);border:1px solid var(--red);color:var(--red);padding:.65rem 2rem;border-radius:50px;cursor:pointer;font-family:'Cairo',sans-serif;font-size:.88rem;transition:all .2s;}
 .lm-btn:hover{background:var(--red);color:#fff;}
 
-/* ── GAMES ── */
+/* GAMES */
 .games-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,240px),1fr));gap:1rem;}
 .game-card{background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden;cursor:pointer;transition:transform .2s,border-color .2s;position:relative;}
 .game-card:hover{transform:translateY(-3px);border-color:var(--purple);}
@@ -129,43 +83,35 @@ main{padding:1.25rem 1rem;}
 .game-bar-fill{height:100%;background:linear-gradient(90deg,var(--purple),#7c3aed);border-radius:99px;transition:width .4s;}
 .game-bar-lbl{font-size:.65rem;color:var(--muted);white-space:nowrap;}
 
-/* ── AUTH OVERLAY ── */
+/* AUTH */
 .auth-ov{position:fixed;inset:0;background:rgba(0,0,0,.97);z-index:9000;display:flex;align-items:center;justify-content:center;padding:1rem;overflow-y:auto;}
 .auth-ov.hidden{display:none;}
-.auth-box{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:2rem 1.5rem;width:100%;max-width:390px;text-align:center;}
-.auth-logo{font-family:'Bebas Neue',sans-serif;font-size:2.2rem;color:var(--red);letter-spacing:4px;}
+.auth-box{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:2rem 1.5rem;width:100%;max-width:390px;}
+.auth-logo{font-family:'Bebas Neue',sans-serif;font-size:2.2rem;color:var(--red);letter-spacing:4px;text-align:center;}
 .auth-logo span{color:var(--text);}
-.auth-sub{color:var(--muted);font-size:.85rem;margin:.3rem 0 1rem;}
-.bonus{background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.25);border-radius:8px;padding:.45rem .8rem;font-size:.8rem;color:var(--yellow);margin-bottom:1.2rem;}
-.auth-tabs{display:flex;gap:.4rem;margin-bottom:1.2rem;}
+.auth-sub{color:var(--muted);font-size:.85rem;margin:.3rem 0 1rem;text-align:center;}
+.bonus{background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.25);border-radius:8px;padding:.45rem .8rem;font-size:.8rem;color:var(--yellow);margin-bottom:1rem;text-align:center;}
+.google-btn{width:100%;display:flex;align-items:center;justify-content:center;gap:.65rem;background:#fff;color:#1f1f1f;border:1.5px solid #dadce0;border-radius:10px;padding:.75rem;font-family:'Cairo',sans-serif;font-size:.95rem;font-weight:700;cursor:pointer;margin-bottom:.8rem;transition:background .15s;}
+.google-btn:hover{background:#f8f9fa;}
+.google-btn:disabled{opacity:.6;cursor:not-allowed;}
+.auth-divider{display:flex;align-items:center;gap:.7rem;color:var(--muted);font-size:.78rem;margin-bottom:.9rem;}
+.auth-divider::before,.auth-divider::after{content:'';flex:1;height:1px;background:var(--border);}
+.auth-tabs{display:flex;gap:.4rem;margin-bottom:1rem;}
 .auth-tab{flex:1;padding:.5rem;background:transparent;border:1px solid var(--border);color:var(--muted);border-radius:8px;cursor:pointer;font-family:'Cairo',sans-serif;font-size:.85rem;transition:all .2s;}
 .auth-tab.active{background:var(--red);border-color:var(--red);color:#fff;font-weight:700;}
 .a-inp{width:100%;background:#0a0a0a;border:1px solid var(--border);color:var(--text);padding:.72rem .9rem;font-family:'Cairo',sans-serif;font-size:max(.9rem,16px);border-radius:10px;outline:none;display:block;margin-bottom:.7rem;text-align:right;transition:border-color .2s;}
 .a-inp:focus{border-color:var(--red);}
 .a-sub{width:100%;background:var(--red);border:none;color:#fff;padding:.8rem;border-radius:10px;font-family:'Cairo',sans-serif;font-size:1rem;font-weight:700;cursor:pointer;transition:background .2s;}
 .a-sub:hover{background:#cc2424;}
-.a-sub:disabled{background:#444;cursor:not-allowed;}
-.a-err{color:var(--red);font-size:.8rem;margin-top:.75rem;min-height:1.2em;text-align:center;}
+.a-sub:disabled{background:#555;cursor:not-allowed;}
+.a-err{color:var(--red);font-size:.82rem;margin-top:.75rem;min-height:1.2em;text-align:center;}
 
-/* ── VIDEO MODAL ── */
-.modal-ov{
-  position:fixed;inset:0;background:rgba(0,0,0,.97);z-index:1000;
-  display:none;align-items:center;justify-content:center;
-}
+/* VIDEO MODAL */
+.modal-ov{position:fixed;inset:0;background:rgba(0,0,0,.97);z-index:1000;display:none;align-items:center;justify-content:center;}
 .modal-ov.open{display:flex;}
-.modal{
-  background:var(--card);border:1px solid var(--border);
-  width:100%;max-width:860px;max-height:96dvh;
-  display:flex;flex-direction:column;overflow:hidden;
-  border-radius:16px;margin:1rem;
-}
+.modal{background:var(--card);border:1px solid var(--border);width:100%;max-width:860px;height:90dvh;display:flex;flex-direction:column;overflow:hidden;border-radius:16px;margin:1rem;}
 .modal-hdr{display:flex;align-items:center;gap:.7rem;padding:.85rem 1.1rem;border-bottom:1px solid var(--border);flex-shrink:0;}
-.close-btn{
-  background:#1a1a1a;border:1px solid var(--border);color:#fff;
-  width:36px;height:36px;border-radius:50%;cursor:pointer;
-  font-size:1.05rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;
-  transition:background .2s,border-color .2s;
-}
+.close-btn{background:#1a1a1a;border:1px solid var(--border);color:#fff;width:36px;height:36px;border-radius:50%;cursor:pointer;font-size:1.05rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background .2s;}
 .close-btn:hover{background:var(--red);border-color:var(--red);}
 .modal-title{flex:1;font-size:.88rem;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0;}
 .pts-ctr{display:flex;align-items:center;gap:.55rem;flex-shrink:0;}
@@ -179,61 +125,33 @@ main{padding:1.25rem 1rem;}
 .pts-val{font-size:.88rem;font-weight:700;color:var(--green);}
 .pts-val.flash{animation:flashG .6s;}
 @keyframes flashG{0%,100%{color:var(--green);}50%{color:#fff;text-shadow:0 0 12px #22c55e;}}
-.iframe-wrap{flex:1;position:relative;min-height:220px;background:#000;}
-/* give iframe-wrap a real computed height */
-.modal{height:90dvh;}
+.iframe-wrap{flex:1;position:relative;min-height:220px;background:#000;overflow:hidden;}
 .iframe-wrap #ytPCWrap{position:absolute;inset:0;width:100%;height:100%;overflow:hidden;}
 .iframe-wrap #ytPCWrap iframe,.iframe-wrap #ytPCWrap #ytInner{width:100%!important;height:100%!important;border:none;display:block;}
-.pause-ind{
-  position:absolute;top:0;left:0;right:0;
-  background:rgba(0,0,0,.75);
-  display:none;flex-direction:row;align-items:center;justify-content:center;
-  gap:.5rem;z-index:2;
-  padding:.45rem .8rem;
-  backdrop-filter:blur(4px);
-  pointer-events:none;
-}
+.pause-ind{position:absolute;top:0;left:0;right:0;background:rgba(0,0,0,.75);display:none;flex-direction:row;align-items:center;justify-content:center;gap:.5rem;z-index:2;padding:.45rem .8rem;pointer-events:none;}
 .pause-ind.on{display:flex;}
 .pause-icon{font-size:1.1rem;line-height:1;}
 .pause-lbl{font-size:.78rem;color:#f0f0f0;font-weight:600;white-space:nowrap;}
 .modal-desc{padding:.75rem 1.1rem;font-size:.78rem;color:var(--muted);max-height:70px;overflow-y:auto;flex-shrink:0;border-top:1px solid var(--border);}
 
-/* ── GAME OVERLAY ── */
+/* GAME OVERLAY */
 .game-ov-full{position:fixed;inset:0;z-index:1500;background:#000;display:none;flex-direction:column;}
 .game-ov-full.open{display:flex;}
-.g-close{
-  position:absolute;top:10px;right:10px;z-index:20;
-  background:rgba(0,0,0,.8);border:2px solid rgba(255,255,255,.3);color:#fff;
-  width:42px;height:42px;border-radius:50%;cursor:pointer;font-size:1.2rem;
-  display:flex;align-items:center;justify-content:center;
-  transition:background .2s;backdrop-filter:blur(6px);
-}
-.g-close:hover{background:var(--red);border-color:var(--red);}
+.g-close{position:absolute;top:10px;right:10px;z-index:20;background:rgba(0,0,0,.8);border:2px solid rgba(255,255,255,.3);color:#fff;width:42px;height:42px;border-radius:50%;cursor:pointer;font-size:1.2rem;display:flex;align-items:center;justify-content:center;transition:background .2s;}
+.g-close:hover{background:var(--red);}
 .g-topbar{position:absolute;top:12px;left:12px;z-index:20;display:flex;align-items:center;gap:.5rem;}
-.g-title-badge{background:rgba(0,0,0,.8);color:#fff;border:1px solid rgba(255,255,255,.15);border-radius:50px;padding:.25rem .8rem;font-size:.78rem;font-weight:700;font-family:'Cairo',sans-serif;backdrop-filter:blur(6px);}
+.g-title-badge{background:rgba(0,0,0,.8);color:#fff;border:1px solid rgba(255,255,255,.15);border-radius:50px;padding:.25rem .8rem;font-size:.78rem;font-weight:700;font-family:'Cairo',sans-serif;}
 .g-pts-badge{background:rgba(168,85,247,.9);color:#fff;border-radius:50px;padding:.25rem .7rem;font-size:.72rem;font-weight:700;font-family:'Cairo',sans-serif;}
 .g-iframe{flex:1;position:relative;}
 .g-iframe iframe{position:absolute;inset:0;width:100%;height:100%;border:none;}
 
-/* ── TOAST ── */
-.toast{
-  position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%) translateY(20px);
-  background:rgba(34,197,94,.95);color:#fff;
-  padding:.45rem 1.3rem;border-radius:50px;font-size:.85rem;font-weight:700;
-  z-index:9999;opacity:0;pointer-events:none;transition:opacity .3s,transform .3s;
-  white-space:nowrap;font-family:'Cairo',sans-serif;
-}
+/* TOAST */
+.toast{position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%) translateY(20px);background:rgba(34,197,94,.95);color:#fff;padding:.45rem 1.3rem;border-radius:50px;font-size:.85rem;font-weight:700;z-index:9999;opacity:0;pointer-events:none;transition:opacity .3s,transform .3s;white-space:nowrap;font-family:'Cairo',sans-serif;}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
-.g-toast{
-  position:fixed;top:55px;left:50%;transform:translateX(-50%) translateY(-10px);
-  background:rgba(168,85,247,.95);color:#fff;
-  padding:.4rem 1.1rem;border-radius:50px;font-size:.82rem;font-weight:700;
-  z-index:9999;opacity:0;pointer-events:none;transition:opacity .3s,transform .3s;
-  white-space:nowrap;font-family:'Cairo',sans-serif;
-}
+.g-toast{position:fixed;top:55px;left:50%;transform:translateX(-50%) translateY(-10px);background:rgba(168,85,247,.95);color:#fff;padding:.4rem 1.1rem;border-radius:50px;font-size:.82rem;font-weight:700;z-index:9999;opacity:0;pointer-events:none;transition:opacity .3s,transform .3s;white-space:nowrap;font-family:'Cairo',sans-serif;}
 .g-toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 
-/* ── WITHDRAW MODAL ── */
+/* WITHDRAW */
 .w-ov{position:fixed;inset:0;background:rgba(0,0,0,.95);z-index:5000;display:none;align-items:center;justify-content:center;padding:1rem;}
 .w-ov.open{display:flex;}
 .w-box{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:1.8rem 1.4rem;width:100%;max-width:440px;max-height:92dvh;overflow-y:auto;}
@@ -254,12 +172,12 @@ main{padding:1.25rem 1rem;}
 .req-badge.approved{background:rgba(34,197,94,.12);color:var(--green);border:1px solid rgba(34,197,94,.25);}
 .req-badge.rejected{background:rgba(255,45,45,.12);color:var(--red);border:1px solid rgba(255,45,45,.25);}
 
-/* ── ADMIN OVERLAY ── */
+/* ADMIN */
 .adm-ov{position:fixed;inset:0;background:rgba(0,0,0,.98);z-index:6000;display:none;flex-direction:column;}
 .adm-ov.open{display:flex;}
 .adm-bar{background:#0c0c0c;border-bottom:1px solid var(--border);padding:.75rem 1.2rem;display:flex;align-items:center;gap:1rem;flex-shrink:0;}
 .adm-logo{font-family:'Bebas Neue',sans-serif;font-size:1.4rem;color:var(--red);letter-spacing:2px;}
-.adm-close{margin-right:auto;background:#1a1a1a;border:1px solid var(--border);color:#fff;width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:.95rem;display:flex;align-items:center;justify-content:center;transition:background .2s;}
+.adm-close{margin-right:auto;background:#1a1a1a;border:1px solid var(--border);color:#fff;width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:.95rem;display:flex;align-items:center;justify-content:center;}
 .adm-close:hover{background:var(--red);}
 .adm-body{flex:1;overflow-y:auto;padding:1.2rem;}
 .adm-title{font-size:1rem;font-weight:800;margin-bottom:1rem;color:var(--yellow);}
@@ -279,222 +197,71 @@ main{padding:1.25rem 1rem;}
 .adm-login{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:2rem 1.5rem;width:100%;max-width:340px;text-align:center;margin:auto;}
 .adm-form-row{display:flex;flex-direction:column;gap:.4rem;margin-bottom:.9rem;}
 .adm-form-lbl{font-size:.78rem;color:var(--muted);}
-.adm-inp{background:#0a0a0a;border:1px solid var(--border);color:var(--text);padding:.65rem .9rem;border-radius:8px;font-family:'Cairo',sans-serif;font-size:.88rem;outline:none;width:100%;direction:ltr;text-align:left;transition:border-color .2s;}
+.adm-inp{background:#0a0a0a;border:1px solid var(--border);color:var(--text);padding:.65rem .9rem;border-radius:8px;font-family:'Cairo',sans-serif;font-size:.88rem;outline:none;width:100%;direction:ltr;text-align:left;}
 .adm-inp.rtl{direction:rtl;text-align:right;}
 .adm-inp:focus{border-color:var(--red);}
 .adm-add{width:100%;background:var(--red);border:none;color:#fff;padding:.75rem;border-radius:10px;font-family:'Cairo',sans-serif;font-size:.92rem;font-weight:700;cursor:pointer;margin-top:.2rem;}
 .adm-add:disabled{background:#444;cursor:not-allowed;}
-.adm-game-item{background:var(--card);border:1px solid var(--border);border-radius:9px;padding:.7rem .9rem;margin-bottom:.5rem;display:flex;align-items:center;justify-content:space-between;gap:.7rem;}
+.adm-game-item{background:var(--card);border:1px solid var(--border);border-radius:9px;padding:.7rem .9rem;margin-bottom:.5rem;display:flex;align-items:center;gap:.7rem;}
 .adm-game-name{font-size:.85rem;font-weight:700;}
 .adm-game-url{font-size:.7rem;color:var(--muted);direction:ltr;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:180px;}
-.adm-game-del{background:rgba(255,45,45,.1);border:1px solid rgba(255,45,45,.25);color:var(--red);padding:.3rem .7rem;border-radius:7px;font-family:'Cairo',sans-serif;font-size:.75rem;cursor:pointer;flex-shrink:0;}
+.adm-game-del{background:rgba(255,45,45,.1);border:1px solid rgba(255,45,45,.25);color:var(--red);padding:.3rem .7rem;border-radius:7px;font-family:'Cairo',sans-serif;font-size:.75rem;cursor:pointer;flex-shrink:0;margin-right:auto;}
 
-/* ════════════════════════════════
-   RESPONSIVE — Mobile First
-════════════════════════════════ */
+/* IMAGE UPLOAD */
+.img-upload-box{border:2px dashed var(--border);border-radius:10px;padding:1rem;text-align:center;cursor:pointer;transition:border-color .2s;position:relative;overflow:hidden;background:#0a0a0a;margin-bottom:.9rem;}
+.img-upload-box:hover{border-color:var(--red);}
+.img-upload-box input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;}
+.img-preview{width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:8px;display:none;}
+.img-placeholder{color:var(--muted);font-size:.82rem;padding:.5rem 0;}
+.img-placeholder span{display:block;font-size:1.8rem;margin-bottom:.3rem;}
 
-/* ── Ultra-wide / 4K (1600px+) ── */
-@media(min-width:1600px){
-  header{padding:0 3rem;}
-  .categories{padding:.8rem 3rem;}
-  main{padding:2rem 3rem;max-width:1800px;margin-inline:auto;}
-  .video-grid{grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.4rem;}
-  .games-grid{grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1.4rem;}
-  .modal{max-width:1050px;}
-}
-
-/* ── Desktop (1200px – 1599px) ── */
-@media(min-width:1200px) and (max-width:1599px){
-  header{padding:0 2.5rem;}
-  .categories{padding:.75rem 2.5rem;}
-  main{padding:1.75rem 2.5rem;}
-  .video-grid{grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:1.2rem;}
-  .games-grid{grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:1.2rem;}
-  .modal{max-width:900px;}
-}
-
-/* ── Laptop (1024px – 1199px) ── */
-@media(min-width:1024px) and (max-width:1199px){
-  header{padding:0 1.5rem;}
-  .categories{padding:.65rem 1.5rem;}
-  main{padding:1.5rem;}
-  .video-grid{grid-template-columns:repeat(auto-fill,minmax(240px,1fr));}
-  .games-grid{grid-template-columns:repeat(auto-fill,minmax(220px,1fr));}
-  .modal{max-width:820px;}
-}
-
-/* ── Tablet landscape (768px – 1023px) ── */
-@media(min-width:768px) and (max-width:1023px){
-  header{padding:0 1.25rem;gap:.6rem;}
-  .search-bar{max-width:380px;}
-  .categories{padding:.6rem 1.25rem;}
-  main{padding:1.25rem;}
-  .video-grid{grid-template-columns:repeat(3,1fr);gap:.85rem;}
-  .games-grid{grid-template-columns:repeat(3,1fr);gap:.85rem;}
-  .modal{max-width:96vw;margin:.75rem;}
-  .hbtn{font-size:.72rem;padding:.3rem .7rem;}
-}
-
-/* ── Tablet portrait (600px – 767px) ── */
-@media(min-width:600px) and (max-width:767px){
-  header{
-    height:auto;padding:.6rem 1rem;
-    flex-wrap:wrap;gap:.5rem;
-  }
-  .logo{order:1;font-size:1.55rem;}
+/* MOBILE */
+@media(max-width:767px){
+  header{height:auto;padding:.55rem .75rem;flex-wrap:wrap;gap:.45rem;}
+  .logo{font-size:1.5rem;order:1;}
   .user-panel{order:2;margin-right:auto;}
   .user-name{display:none;}
   .search-bar{order:3;width:100%;max-width:100%;flex:none;}
-  .hbtn{font-size:.7rem;padding:.28rem .65rem;}
-  .categories{padding:.55rem .9rem;}
-  main{padding:1rem .9rem;}
-  .video-grid{grid-template-columns:repeat(2,1fr);gap:.75rem;}
-  .games-grid{grid-template-columns:repeat(2,1fr);gap:.75rem;}
-  .modal{margin:0;border-radius:18px 18px 0 0;max-height:97dvh;}
+  .hbtn{display:none;}
+  .video-grid{grid-template-columns:repeat(2,1fr);gap:.6rem;}
+  .games-grid{grid-template-columns:repeat(2,1fr);gap:.6rem;}
+  main{padding:.75rem;}
+  .modal{margin:0;border-radius:14px 14px 0 0;max-height:97dvh;height:auto;}
   .modal-ov{align-items:flex-end;}
-  .modal-hdr{padding:.75rem 1rem;}
-}
-
-/* ── Mobile (≤599px) ── */
-@media(max-width:599px){
-  header{
-    height:auto;padding:.5rem .75rem;
-    flex-wrap:wrap;gap:.4rem;
-  }
-  .logo{order:1;font-size:1.4rem;letter-spacing:2px;}
-  .user-panel{order:2;margin-right:auto;padding:.25rem .6rem;gap:.4rem;}
-  .user-name{display:none;}
-  .user-pts{font-size:.65rem;}
-  .user-avatar{width:27px;height:27px;font-size:.75rem;}
-  .hbtn{display:none;}   /* move to hamburger / bottom sheet later */
-  .search-bar{order:3;width:100%;max-width:100%;flex:none;}
-  .search-bar input{font-size:16px;padding:.5rem .75rem;}
-  .search-bar button{padding:0 .75rem;font-size:.88rem;}
-  .categories{padding:.45rem .75rem;gap:.35rem;}
-  .cat-btn{font-size:.76rem;padding:.3rem .75rem;}
-  main{padding:.65rem .75rem;}
-  .section-title{font-size:1rem;margin-bottom:1rem;}
-  .video-grid{grid-template-columns:repeat(2,1fr);gap:.55rem;}
-  .games-grid{grid-template-columns:repeat(2,1fr);gap:.55rem;}
-  .card-info{padding:.55rem .65rem;}
-  .card-title{font-size:.8rem;}
-  .card-meta{font-size:.68rem;}
-  .game-info{padding:.55rem .65rem;}
-  .game-name{font-size:.82rem;}
-  /* Modal: sheet from bottom */
-  .modal-ov{align-items:flex-end;padding:0;}
-  .modal{margin:0;border-radius:16px 16px 0 0;max-height:95dvh;max-width:100%;}
-  .modal-hdr{padding:.65rem .85rem;gap:.5rem;}
-  .modal-title{font-size:.82rem;}
-  .close-btn{width:32px;height:32px;font-size:.95rem;}
-  .t-ring{width:30px;height:30px;}
-  .t-ring svg{width:30px;height:30px;}
-  .pts-lbl{display:none;}
-  .modal-desc{padding:.5rem .85rem;font-size:.74rem;max-height:48px;}
-  /* Auth / Withdraw overlays */
-  .auth-box{padding:1.5rem 1.1rem;border-radius:14px;}
-  .auth-logo{font-size:1.9rem;}
-  .w-box{padding:1.3rem 1rem;border-radius:14px;}
-  .adm-body{padding:.9rem;}
-}
-
-/* ── Very small (≤380px) ── */
-@media(max-width:380px){
-  .logo{font-size:1.25rem;}
-  .video-grid{grid-template-columns:1fr;}
-  .games-grid{grid-template-columns:1fr;}
-  .video-card{border-radius:10px;}
-  .card-title{font-size:.82rem;}
-  .auth-tabs .auth-tab{font-size:.78rem;padding:.42rem .3rem;}
-}
-
-/* ── MOBILE BOTTOM BAR ── */
-.mob-bar{
-  display:none;
-  position:fixed;bottom:0;left:0;right:0;z-index:150;
-  background:rgba(10,10,10,.97);backdrop-filter:blur(16px);
-  border-top:1px solid var(--border);
-  padding:.55rem 1rem;
-  gap:.6rem;
-  align-items:center;justify-content:center;
-}
-@media(max-width:599px){
-  .mob-bar{display:flex;}
-  body{padding-bottom:60px;}
-  .mob-bar-btn{
-    flex:1;border:none;color:#fff;border-radius:10px;
-    padding:.6rem .5rem;font-family:'Cairo',sans-serif;
-    font-size:.8rem;font-weight:700;cursor:pointer;
-    display:flex;align-items:center;justify-content:center;gap:.4rem;
-  }
-  .mob-bar-btn.gold{background:linear-gradient(135deg,#f59e0b,#d97706);}
-  .mob-bar-btn.red{background:linear-gradient(135deg,#ef4444,#b91c1c);}
-  .mob-bar-btn:not([data-show]){display:none;}
-  .mob-bar-btn[data-show]{display:flex;}
 }
 @media(max-width:420px){
   .video-grid{grid-template-columns:1fr;}
   .games-grid{grid-template-columns:1fr;}
-  .card-title{font-size:.82rem;}
-  .logo{font-size:1.35rem;}
 }
-
-
-/* ── GOOGLE BUTTON ── */
-.google-btn{
-  width:100%;display:flex;align-items:center;justify-content:center;gap:.65rem;
-  background:#fff;color:#1f1f1f;border:1.5px solid #dadce0;
-  border-radius:10px;padding:.78rem;font-family:'Cairo',sans-serif;
-  font-size:.95rem;font-weight:700;cursor:pointer;margin-bottom:.8rem;
-  transition:background .15s,box-shadow .15s;
+@media(min-width:1200px){
+  header{padding:0 2rem;}main{padding:1.75rem 2rem;}.categories{padding:.7rem 2rem;}
+  .video-grid{grid-template-columns:repeat(auto-fill,minmax(280px,1fr));}
 }
-.google-btn:hover{background:#f8f9fa;box-shadow:0 1px 6px rgba(0,0,0,.2);}
-.google-btn:active{background:#f1f3f4;}
-.google-btn:disabled{opacity:.6;cursor:not-allowed;}
-.auth-divider{
-  display:flex;align-items:center;gap:.7rem;
-  color:var(--muted);font-size:.78rem;margin-bottom:.9rem;
+.mob-bar{display:none;position:fixed;bottom:0;left:0;right:0;z-index:150;background:rgba(10,10,10,.97);backdrop-filter:blur(16px);border-top:1px solid var(--border);padding:.55rem 1rem;gap:.6rem;align-items:center;justify-content:center;}
+@media(max-width:599px){
+  .mob-bar{display:flex;}
+  body{padding-bottom:60px;}
+  .mob-bar-btn{flex:1;border:none;color:#fff;border-radius:10px;padding:.6rem .5rem;font-family:'Cairo',sans-serif;font-size:.8rem;font-weight:700;cursor:pointer;display:none;align-items:center;justify-content:center;gap:.4rem;}
+  .mob-bar-btn.gold{background:linear-gradient(135deg,#f59e0b,#d97706);}
+  .mob-bar-btn.red{background:linear-gradient(135deg,#ef4444,#b91c1c);}
+  .mob-bar-btn[data-show]{display:flex;}
 }
-.auth-divider::before,.auth-divider::after{
-  content:'';flex:1;height:1px;background:var(--border);
-}
-
-/* ── GAME IMAGE UPLOAD ── */
-.img-upload-box{
-  border:2px dashed var(--border);border-radius:10px;
-  padding:1rem;text-align:center;cursor:pointer;
-  transition:border-color .2s;position:relative;overflow:hidden;
-  background:#0a0a0a;
-}
-.img-upload-box:hover{border-color:var(--red);}
-.img-upload-box input[type=file]{
-  position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;
-}
-.img-preview{
-  width:100%;aspect-ratio:16/9;object-fit:cover;
-  border-radius:8px;display:none;
-}
-.img-placeholder{color:var(--muted);font-size:.82rem;padding:.5rem 0;}
-.img-placeholder span{display:block;font-size:1.8rem;margin-bottom:.3rem;}
 </style>
 </head>
 <body>
 
-<!-- ═══ AUTH ═══ -->
+<!-- AUTH -->
 <div class="auth-ov" id="authOv">
   <div class="auth-box">
     <div class="auth-logo">WIN<span>TUBE</span></div>
     <div class="auth-sub">شاهد الفيديوهات واكسب نقاطك!</div>
     <div class="bonus">🎁 احصل على <strong>100 نقطة</strong> مجاناً عند التسجيل</div>
-
-    <!-- Google button -->
-    <button class="google-btn" id="btnGoogle" onclick="doGoogle()">
-      <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.31-8.16 2.31-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/><path fill="none" d="M0 0h48v48H0z"/></svg>
+    <div id="fbStatus" style="font-size:.73rem;color:var(--muted);text-align:center;margin-bottom:.3rem;transition:opacity .3s">⏳ جاري تحميل الخدمات...</div>
+    <button class="google-btn" id="btnGoogle" onclick="doGoogle()" disabled style="opacity:.5">
+      <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.31-8.16 2.31-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
       متابعة مع Google
     </button>
-
     <div class="auth-divider"><span>أو</span></div>
-
     <div class="auth-tabs">
       <button class="auth-tab active" id="tabLogin" onclick="switchTab('login')">تسجيل الدخول</button>
       <button class="auth-tab" id="tabReg" onclick="switchTab('reg')">حساب جديد</button>
@@ -502,41 +269,30 @@ main{padding:1.25rem 1rem;}
     <div id="fLogin">
       <input class="a-inp" type="email" id="lEmail" placeholder="البريد الإلكتروني" autocomplete="email">
       <input class="a-inp" type="password" id="lPass" placeholder="كلمة المرور" autocomplete="current-password">
-      <button class="a-sub" id="btnLogin" onclick="doLogin()">دخول ←</button>
+      <button class="a-sub" id="btnLogin" onclick="doLogin()" disabled style="opacity:.5">⏳ تحميل...</button>
     </div>
     <div id="fReg" style="display:none">
       <input class="a-inp" type="text" id="rName" placeholder="الاسم" autocomplete="name">
       <input class="a-inp" type="email" id="rEmail" placeholder="البريد الإلكتروني" autocomplete="email">
       <input class="a-inp" type="password" id="rPass" placeholder="كلمة المرور (6 أحرف+)" autocomplete="new-password">
-      <button class="a-sub" id="btnReg" onclick="doRegister()">إنشاء الحساب ←</button>
+      <button class="a-sub" id="btnReg" onclick="doRegister()" disabled style="opacity:.5">⏳ تحميل...</button>
     </div>
     <div class="a-err" id="authErr"></div>
   </div>
 </div>
 
-<!-- ═══ WITHDRAW ═══ -->
+<!-- WITHDRAW -->
 <div class="w-ov" id="wOv">
   <div class="w-box">
     <div class="w-title">💰 سحب النقاط</div>
     <div class="w-bal">
-      <div>
-        <div style="font-size:.78rem;color:var(--muted)">رصيدك</div>
-        <div style="font-size:1.2rem;font-weight:800;color:var(--yellow)"><span id="wPts">0</span> نقطة</div>
-      </div>
-      <div style="text-align:left">
-        <div style="font-size:.78rem;color:var(--muted)">يساوي</div>
-        <div style="font-size:.95rem;font-weight:700;color:var(--green)">≈ $<span id="wUsd">0.00</span></div>
-      </div>
+      <div><div style="font-size:.78rem;color:var(--muted)">رصيدك</div><div style="font-size:1.2rem;font-weight:800;color:var(--yellow)"><span id="wPts">0</span> نقطة</div></div>
+      <div style="text-align:left"><div style="font-size:.78rem;color:var(--muted)">يساوي</div><div style="font-size:.95rem;font-weight:700;color:var(--green)">≈ $<span id="wUsd">0.00</span></div></div>
     </div>
     <div id="wForm">
       <div style="font-size:.76rem;color:var(--muted);background:rgba(255,255,255,.03);border-radius:8px;padding:.55rem .8rem;margin-bottom:1rem">الحد الأدنى: 5000 نقطة ($5) | كل 1000 نقطة = $1</div>
       <label class="w-lbl">طريقة الدفع</label>
-      <select class="w-sel" id="wMethod" onchange="updateWalletPlaceholder()">
-        <option value="">اختر طريقة الدفع</option>
-        <option value="USDT (TRC20)">USDT (TRC20)</option>
-        <option value="BNB (BEP20)">BNB (BEP20)</option>
-        <option value="Mastercard">Mastercard</option>
-      </select>
+      <select class="w-sel" id="wMethod" onchange="updateWalletPlaceholder()"><option value="">اختر طريقة الدفع</option><option value="USDT (TRC20)">USDT (TRC20)</option><option value="BNB (BEP20)">BNB (BEP20)</option><option value="Mastercard">Mastercard</option></select>
       <label class="w-lbl" id="wAddrLbl">عنوان المحفظة</label>
       <input class="w-inp" type="text" id="wAddr" placeholder="أدخل العنوان">
       <label class="w-lbl">عدد النقاط (مضاعفات 1000)</label>
@@ -551,23 +307,21 @@ main{padding:1.25rem 1rem;}
     <div id="wOK" style="display:none;text-align:center;padding:1.5rem 0">
       <div style="font-size:3.5rem">✅</div>
       <div style="font-size:1.1rem;font-weight:800;margin:.7rem 0 .3rem">تم إرسال طلب السحب!</div>
-      <div style="font-size:.83rem;color:var(--muted)">سيتم مراجعته من الإدارة</div>
       <button class="a-sub" style="max-width:160px;margin:1.2rem auto 0;display:block" onclick="closeWithdraw()">حسناً</button>
     </div>
     <div id="wHist" style="margin-top:.8rem"></div>
   </div>
 </div>
 
-<!-- ═══ ADMIN ═══ -->
+<!-- ADMIN -->
 <div class="adm-ov" id="admOv">
   <div id="admLogin" style="display:flex;flex:1;align-items:center;justify-content:center;padding:1rem">
     <div class="adm-login">
-      <div class="adm-logo" style="display:block;font-size:1.8rem;margin-bottom:1.2rem">WIN<span style="color:var(--text)">TUBE</span></div>
-      <p style="color:var(--muted);margin-bottom:1.2rem;font-size:.88rem">لوحة تحكم المشرف</p>
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:1.8rem;color:var(--red);margin-bottom:1.2rem">WINTUBE <span style="color:var(--text)">ADMIN</span></div>
       <input class="a-inp" type="password" id="admPass" placeholder="كلمة المرور" onkeydown="if(event.key==='Enter')checkAdminPass()">
       <button class="a-sub" onclick="checkAdminPass()">دخول</button>
       <div class="a-err" id="admErr"></div>
-      <button onclick="closeAdmin()" style="background:none;border:none;color:var(--muted);margin-top:.8rem;cursor:pointer;font-family:'Cairo',sans-serif;font-size:.88rem">إلغاء</button>
+      <button onclick="closeAdmin()" style="background:none;border:none;color:var(--muted);margin-top:.8rem;cursor:pointer;font-family:'Cairo',sans-serif;font-size:.88rem;display:block;width:100%">إلغاء</button>
     </div>
   </div>
   <div id="admDash" style="display:none;flex-direction:column;flex:1;overflow:hidden">
@@ -580,10 +334,7 @@ main{padding:1.25rem 1rem;}
         <button class="adm-tab active" id="aTabW" onclick="switchAdminTab('w')">💰 طلبات السحب</button>
         <button class="adm-tab" id="aTabG" onclick="switchAdminTab('g')">🎮 إدارة الألعاب</button>
       </div>
-      <div id="aPanelW">
-        <div class="adm-title">📋 طلبات السحب</div>
-        <div id="admReqs"><div class="adm-empty">جاري التحميل...</div></div>
-      </div>
+      <div id="aPanelW"><div class="adm-title">📋 طلبات السحب</div><div id="admReqs"><div class="adm-empty">جاري التحميل...</div></div></div>
       <div id="aPanelG" style="display:none">
         <div class="adm-title">➕ إضافة لعبة</div>
         <div style="display:flex;gap:.4rem;margin-bottom:.9rem">
@@ -592,27 +343,17 @@ main{padding:1.25rem 1rem;}
         </div>
         <div class="adm-form-row">
           <label class="adm-form-lbl">صورة اللعبة (اختياري)</label>
-          <div class="img-upload-box" id="imgUploadBox" onclick="G('newGameImg').click()">
+          <div class="img-upload-box" onclick="G('newGameImg').click()">
             <input type="file" id="newGameImg" accept="image/*" onchange="previewGameImg(this)" onclick="event.stopPropagation()">
-            <img id="imgPreview" class="img-preview" alt="معاينة الصورة">
-            <div class="img-placeholder" id="imgPlaceholder">
-              <span>🖼️</span>
-              اضغط لرفع صورة اللعبة
-            </div>
+            <img id="imgPreview" class="img-preview" alt="">
+            <div class="img-placeholder" id="imgPlaceholder"><span>🖼️</span>اضغط لرفع صورة اللعبة</div>
           </div>
         </div>
-        <div class="adm-form-row">
-          <label class="adm-form-lbl">اسم اللعبة</label>
-          <input class="adm-inp rtl" type="text" id="newGameName" placeholder="مثال: Subway Surfers">
-        </div>
-        <div class="adm-form-row" id="rowUrl">
-          <label class="adm-form-lbl">رابط اللعبة</label>
-          <input class="adm-inp" type="url" id="newGameUrl" placeholder="https://...">
-        </div>
+        <div class="adm-form-row"><label class="adm-form-lbl">اسم اللعبة</label><input class="adm-inp rtl" type="text" id="newGameName" placeholder="مثال: Subway Surfers"></div>
+        <div class="adm-form-row" id="rowUrl"><label class="adm-form-lbl">رابط اللعبة</label><input class="adm-inp" type="url" id="newGameUrl" placeholder="https://..."></div>
         <div class="adm-form-row" id="rowIframe" style="display:none">
           <label class="adm-form-lbl">كود iframe</label>
           <textarea class="adm-inp" id="newGameIframe" rows="3" style="resize:vertical" placeholder='<iframe src="https://..."></iframe>'></textarea>
-          <div style="font-size:.7rem;color:var(--muted);margin-top:.2rem">💡 سيتم استخراج src تلقائياً</div>
         </div>
         <button class="adm-add" id="addBtn" onclick="adminAddGame()">➕ إضافة اللعبة</button>
         <div class="w-err" id="addErr" style="margin-bottom:.7rem"></div>
@@ -623,7 +364,7 @@ main{padding:1.25rem 1rem;}
   </div>
 </div>
 
-<!-- ═══ HEADER ═══ -->
+<!-- HEADER -->
 <header>
   <div class="logo">WIN<span>TUBE</span></div>
   <div class="search-bar">
@@ -638,7 +379,7 @@ main{padding:1.25rem 1rem;}
   <button class="hbtn hbtn-red"  id="btnA" onclick="openAdmin()"    style="display:none">🛡️ أدمن</button>
 </header>
 
-<!-- ═══ CATEGORIES ═══ -->
+<!-- CATEGORIES -->
 <div class="categories">
   <button class="cat-btn active" id="catHome" onclick="goHome(this)">🔥 رائج</button>
   <button class="cat-btn" onclick="searchCat('تعليم',this)">📚 تعليم</button>
@@ -651,38 +392,30 @@ main{padding:1.25rem 1rem;}
   <button class="cat-btn" onclick="searchCat('أخبار',this)">📰 أخبار</button>
 </div>
 
-<!-- ═══ HOME (trending + games) ═══ -->
+<!-- HOME -->
 <main id="secHome">
   <div class="section-title">🔥 الفيديوهات الرائجة</div>
   <div class="loading" id="ldHome"><div class="spinner"></div><p>جاري التحميل...</p></div>
   <div class="empty-st" id="emHome"><div class="icon">🎬</div><p>لا توجد نتائج</p></div>
   <div class="video-grid" id="gridHome"></div>
-  <div class="lm-wrap" id="lmHome" style="display:none">
-    <button class="lm-btn" onclick="loadMoreHome()">تحميل المزيد</button>
-  </div>
-  <!-- Games -->
+  <div class="lm-wrap" id="lmHome" style="display:none"><button class="lm-btn" onclick="loadMoreHome()">تحميل المزيد</button></div>
   <div id="gamesStrip" style="margin-top:2.5rem">
-    <div class="section-title">
-      🎮 الألعاب
-      <span style="font-size:.72rem;font-weight:400;color:var(--muted);margin-right:.4rem">اكسب <strong style="color:var(--purple)">50 نقطة</strong> من كل لعبة يومياً</span>
-    </div>
+    <div class="section-title">🎮 الألعاب <span style="font-size:.72rem;font-weight:400;color:var(--muted);margin-right:.4rem">اكسب <strong style="color:var(--purple)">50 نقطة</strong> يومياً</span></div>
     <div class="games-grid" id="gGrid"></div>
     <div class="empty-st" id="gEmpty" style="display:none"><div class="icon">🎮</div><p>لا توجد ألعاب بعد</p></div>
   </div>
 </main>
 
-<!-- ═══ SEARCH RESULTS ═══ -->
+<!-- SEARCH -->
 <main id="secSearch" style="display:none">
   <div class="section-title" id="searchTitle">نتائج البحث</div>
   <div class="loading" id="ldSearch"><div class="spinner"></div><p>جاري التحميل...</p></div>
   <div class="empty-st" id="emSearch"><div class="icon">🎬</div><p>لا توجد نتائج</p></div>
   <div class="video-grid" id="gridSearch"></div>
-  <div class="lm-wrap" id="lmSearch" style="display:none">
-    <button class="lm-btn" onclick="loadMoreSearch()">تحميل المزيد</button>
-  </div>
+  <div class="lm-wrap" id="lmSearch" style="display:none"><button class="lm-btn" onclick="loadMoreSearch()">تحميل المزيد</button></div>
 </main>
 
-<!-- ═══ VIDEO MODAL ═══ -->
+<!-- VIDEO MODAL -->
 <div class="modal-ov" id="modalOv">
   <div class="modal">
     <div class="modal-hdr">
@@ -690,638 +423,399 @@ main{padding:1.25rem 1rem;}
       <div class="modal-title" id="modalTitle"></div>
       <div class="pts-ctr">
         <div class="t-ring">
-          <svg width="36" height="36" viewBox="0 0 38 38">
-            <circle class="ring-bg" cx="19" cy="19" r="16"/>
-            <circle class="ring-fill" id="ringFill" cx="19" cy="19" r="16"/>
-          </svg>
+          <svg width="36" height="36" viewBox="0 0 38 38"><circle class="ring-bg" cx="19" cy="19" r="16"/><circle class="ring-fill" id="ringFill" cx="19" cy="19" r="16"/></svg>
           <div class="t-num" id="tNum">30</div>
         </div>
-        <div class="pts-info">
-          <div class="pts-lbl">نقاطك المكتسبة</div>
-          <div class="pts-val" id="modalPts">0 نقطة</div>
-        </div>
+        <div class="pts-info"><div class="pts-lbl">نقاطك</div><div class="pts-val" id="modalPts">0 نقطة</div></div>
       </div>
     </div>
     <div class="iframe-wrap">
-      <div id="ytPCWrap" style="position:absolute;inset:0;width:100%;height:100%"></div>
-      <div class="pause-ind" id="pauseInd">
-        <div class="pause-icon">⏸</div>
-        <div class="pause-lbl">العداد متوقف — شغّل الفيديو لكسب النقاط</div>
-      </div>
+      <div id="ytPCWrap"></div>
+      <div class="pause-ind" id="pauseInd"><div class="pause-icon">⏸</div><div class="pause-lbl">العداد متوقف — شغّل الفيديو لكسب النقاط</div></div>
     </div>
     <div class="modal-desc" id="modalDesc"></div>
   </div>
 </div>
 
-<!-- ═══ GAME OVERLAY ═══ -->
+<!-- GAME OVERLAY -->
 <div class="game-ov-full" id="gameOv">
   <button class="g-close" id="closeGame">✕</button>
-  <div class="g-topbar">
-    <div class="g-title-badge" id="gTitle">لعبة</div>
-    <div class="g-pts-badge" id="gPts">0 / 50 نقطة</div>
-  </div>
-  <div class="g-iframe">
-    <iframe id="gFrame" allowfullscreen allow="autoplay;fullscreen"></iframe>
-  </div>
+  <div class="g-topbar"><div class="g-title-badge" id="gTitle">لعبة</div><div class="g-pts-badge" id="gPts">0 / 50 نقطة</div></div>
+  <div class="g-iframe"><iframe id="gFrame" allowfullscreen allow="autoplay;fullscreen"></iframe></div>
 </div>
 
-<!-- ═══ TOASTS ═══ -->
-<div class="toast" id="toast">+2 نقطة 🎉</div>
+<div class="toast" id="toast"></div>
 <div class="g-toast" id="gToast">+1 نقطة 🎮</div>
 
-<!-- ═══ MOBILE BOTTOM BAR ═══ -->
+<!-- MOBILE BAR -->
 <div class="mob-bar" id="mobBar">
   <button class="mob-bar-btn gold" id="mobBtnW" onclick="openWithdraw()">💰 سحب النقاط</button>
-  <button class="mob-bar-btn red"  id="mobBtnA" onclick="openAdmin()">🛡️ لوحة الأدمن</button>
+  <button class="mob-bar-btn red"  id="mobBtnA" onclick="openAdmin()">🛡️ الأدمن</button>
 </div>
 
 <script>
-/* ════════════════════════════════════════════
-   CONFIG
-════════════════════════════════════════════ */
-var YT_KEY     = 'AIzaSyDNK9EJ5IQ2dFLBn1jUk1hslgOwwTBdvJ0';
-var FB_CFG     = {apiKey:'AIzaSyCOV-2qbB6eFEU-myiTjlXbcE-bWhuqLQs',authDomain:'wintube-8bcaa.firebaseapp.com',projectId:'wintube-8bcaa',storageBucket:'wintube-8bcaa.firebasestorage.app',messagingSenderId:'459173658209',appId:'1:459173658209:web:d1e5ddf04ecf548cc67420'};
-var ADMIN_PASS = 'Hernios66@';
-var START_PTS  = 100, EARN_AMT = 2, EARN_EVERY = 30;
-var GAME_CAP   = 50,  GAME_SEC = 120;
-var MIN_W      = 5000, PTS_USD = 1000;
+// ═══════════════════════════════════════
+// CONFIG
+// ═══════════════════════════════════════
+var YT_KEY='AIzaSyDNK9EJ5IQ2dFLBn1jUk1hslgOwwTBdvJ0';
+var FB_CFG={apiKey:'AIzaSyCOV-2qbB6eFEU-myiTjlXbcE-bWhuqLQs',authDomain:'wintube-8bcaa.firebaseapp.com',projectId:'wintube-8bcaa',storageBucket:'wintube-8bcaa.firebasestorage.app',messagingSenderId:'459173658209',appId:'1:459173658209:web:d1e5ddf04ecf548cc67420'};
+var ADMIN_PASS='Hernios66@';
+var START_PTS=100, EARN_AMT=2, EARN_EVERY=30, GAME_CAP=50, GAME_SEC=120, PTS_USD=1000, MIN_W=5000;
 
-/* ════════════════════════════════════════════
-   STATE  (all global — no IIFE, no scoping)
-════════════════════════════════════════════ */
-var _auth, _db;
-var currentUser  = null;
-var userPoints   = 0;
-var adminUnlocked= false;
-var gameSrcMode  = 'url';
-var gCache       = {};   // {gameId: dailyPts}
+// ═══════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════
+var _auth=null, _db=null;
+var currentUser=null, userPoints=0, adminUnlocked=false, gameSrcMode='url';
+var gCache={};
+var CIRC=101, tSecs=EARN_EVERY, wInt=null, playing=false;
+var ytPlayer=null, ytReady=false, ytPending=null;
+var gInt=null, gElapsed=0, activeGid=null;
+var homeToken='', searchToken='', searchQuery='';
+var GICONS=['🎮','🕹️','👾','🏆','⚔️','🧩','🚀','🎯','🏎️','⚽','🎲','🃏'];
 
-// video timer
-var CIRC = 101, tSecs = EARN_EVERY, wInt = null, playing = false;
-var ytPlayer = null, ytCbs = [];
-
-// game timer
-var gInt = null, gElapsed = 0, activeGid = null;
-
-// pagination
-var homeToken = '', searchToken = '', searchQuery = '';
-
-/* ════════════════════════════════════════════
-   HELPERS
-════════════════════════════════════════════ */
-function G(id){ return document.getElementById(id); }
+// ═══════════════════════════════════════
+// HELPERS
+// ═══════════════════════════════════════
+function G(id){return document.getElementById(id);}
 function fmt(n){if(!n)return'';n=+n;return n>=1e6?(n/1e6).toFixed(1)+'M':n>=1e3?(n/1e3).toFixed(1)+'K':String(n);}
 function durFmt(iso){if(!iso)return'';var m=iso.match(/PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?/);if(!m)return'';var h=+m[1]||0,mn=+m[2]||0,s=+m[3]||0,p=function(x){return String(x).padStart(2,'0');};return h?h+':'+p(mn)+':'+p(s):mn+':'+p(s);}
 function ago(d){var s=Math.floor((Date.now()-new Date(d))/1000);if(s<60)return'الآن';if(s<3600)return Math.floor(s/60)+'د';if(s<86400)return Math.floor(s/3600)+'س';if(s<2592000)return Math.floor(s/86400)+'ي';return Math.floor(s/2592000)+'ش';}
 function todayK(){var d=new Date();return d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();}
 function loadSc(src){return new Promise(function(ok,err){var s=document.createElement('script');s.src=src;s.onload=ok;s.onerror=function(){err(new Error('fail:'+src));};document.head.appendChild(s);});}
+function authErrMsg(c){var m={'auth/user-not-found':'البريد غير مسجّل','auth/wrong-password':'كلمة المرور خاطئة','auth/invalid-credential':'البريد أو كلمة المرور غير صحيحة','auth/email-already-in-use':'هذا البريد مستخدم مسبقاً','auth/invalid-email':'بريد إلكتروني غير صالح','auth/weak-password':'كلمة المرور ضعيفة جداً (6 أحرف+)','auth/network-request-failed':'تحقق من اتصال الإنترنت','auth/too-many-requests':'تجاوزت عدد المحاولات، انتظر قليلاً','auth/popup-blocked':'السماح بالنوافذ المنبثقة','auth/popup-closed-by-user':'أغلقت نافذة Google','auth/cancelled-popup-request':'تم إلغاء الطلب','auth/unauthorized-domain':'النطاق غير مصرح — أضف النطاق في Firebase Console → Authentication → Authorized Domains','auth/operation-not-allowed':'هذه الطريقة غير مفعّلة في Firebase Console'};return m[c]||('خطأ: '+c);}
 
-/* ════════════════════════════════════════════
-   RING
-════════════════════════════════════════════ */
-function drawRing(){
-  var f=G('ringFill'), n=G('tNum'); if(!f||!n)return;
-  var r=tSecs/EARN_EVERY, c=r>.6?'#22c55e':r>.3?'#f59e0b':'#ff2d2d';
-  f.style.strokeDashoffset=CIRC*(1-r); f.style.stroke=c;
-  n.style.color=c; n.textContent=tSecs;
-}
+// ═══════════════════════════════════════
+// RING
+// ═══════════════════════════════════════
+function drawRing(){var f=G('ringFill'),n=G('tNum');if(!f||!n)return;var r=tSecs/EARN_EVERY,c=r>.6?'#22c55e':r>.3?'#f59e0b':'#ff2d2d';f.style.strokeDashoffset=CIRC*(1-r);f.style.stroke=c;n.style.color=c;n.textContent=tSecs;}
 drawRing();
 
-/* ════════════════════════════════════════════
-   AUTH UI
-════════════════════════════════════════════ */
-function switchTab(t){
-  G('fLogin').style.display=t==='login'?'':'none';
-  G('fReg').style.display=t==='reg'?'':'none';
-  G('tabLogin').classList.toggle('active',t==='login');
-  G('tabReg').classList.toggle('active',t==='reg');
+// ═══════════════════════════════════════
+// AUTH UI
+// ═══════════════════════════════════════
+function switchTab(t){G('fLogin').style.display=t==='login'?'':'none';G('fReg').style.display=t==='reg'?'':'none';G('tabLogin').classList.toggle('active',t==='login');G('tabReg').classList.toggle('active',t==='reg');G('authErr').textContent='';}
+
+// ═══════════════════════════════════════
+// AUTH FUNCTIONS (global — check _auth internally)
+// ═══════════════════════════════════════
+function doLogin(){
+  if(!_auth){G('authErr').textContent='جاري التحميل...';return;}
+  var em=G('lEmail').value.trim(), pw=G('lPass').value;
+  if(!em||!pw){G('authErr').textContent='يرجى ملء جميع الحقول';return;}
   G('authErr').textContent='';
+  var btn=G('btnLogin'); btn.disabled=true; btn.textContent='جاري الدخول...';
+  _auth.signInWithEmailAndPassword(em,pw)
+    .then(function(){btn.disabled=false;btn.textContent='دخول ←';})
+    .catch(function(e){
+      btn.disabled=false; btn.textContent='دخول ←';
+      G('authErr').textContent = authErrMsg(e.code) + ' [' + (e.code||e.message) + ']';
+    });
 }
 
-/* ════════════════════════════════════════════
-   POINTS (global wrappers — safe before Firebase)
-════════════════════════════════════════════ */
-function savePoints(){
-  if(!_db||!currentUser)return;
-  _db.collection('users').doc(currentUser.uid).update({points:userPoints}).catch(function(){});
-}
-function updateHeader(){
-  if(!currentUser)return;
-  G('hPts').textContent=userPoints;
-  var n=currentUser.displayName||currentUser.email.split('@')[0];
-  G('hName').textContent=n; G('hAvatar').textContent=n[0].toUpperCase();
+function doRegister(){
+  if(!_auth){G('authErr').textContent='جاري التحميل...';return;}
+  var nm=G('rName').value.trim(), em=G('rEmail').value.trim(), pw=G('rPass').value;
+  if(!nm||!em||!pw){G('authErr').textContent='يرجى ملء جميع الحقول';return;}
+  if(pw.length<6){G('authErr').textContent='كلمة المرور 6 أحرف على الأقل';return;}
+  G('authErr').textContent='';
+  var btn=G('btnReg'); btn.disabled=true; btn.textContent='جاري الإنشاء...';
+  _auth.createUserWithEmailAndPassword(em,pw)
+    .then(function(c){return c.user.updateProfile({displayName:nm});})
+    .then(function(){btn.disabled=false;btn.textContent='إنشاء الحساب ←';})
+    .catch(function(e){
+      btn.disabled=false; btn.textContent='إنشاء الحساب ←';
+      G('authErr').textContent = authErrMsg(e.code) + ' [' + (e.code||e.message) + ']';
+    });
 }
 
-/* ════════════════════════════════════════════
-   NAVIGATION
-════════════════════════════════════════════ */
+function doSignOut(){
+  if(!_auth)return;
+  if(!confirm('تسجيل الخروج؟'))return;
+  stopWTimer(); closeVideoModal(); _auth.signOut();
+}
+
+function doGoogle(){
+  if(!_auth){G('authErr').textContent='جاري التحميل...';return;}
+  var btn=G('btnGoogle'); btn.disabled=true; btn.textContent='جاري الاتصال...';
+  G('authErr').textContent='';
+  var provider=new firebase.auth.GoogleAuthProvider();
+  provider.setCustomParameters({prompt:'select_account'});
+  var isMobile=/Android|iPhone|iPad/i.test(navigator.userAgent);
+  if(isMobile){
+    _auth.signInWithRedirect(provider);
+  } else {
+    _auth.signInWithPopup(provider)
+      .then(function(){btn.disabled=false;btn.textContent='متابعة مع Google';})
+      .catch(function(e){G('authErr').textContent=authErrMsg(e.code);btn.disabled=false;btn.textContent='متابعة مع Google';});
+  }
+}
+
+// ═══════════════════════════════════════
+// POINTS
+// ═══════════════════════════════════════
+function savePoints(){if(!_db||!currentUser)return;_db.collection('users').doc(currentUser.uid).update({points:userPoints}).catch(function(){});}
+function updateHeader(){if(!currentUser)return;G('hPts').textContent=userPoints;var n=currentUser.displayName||currentUser.email.split('@')[0];G('hName').textContent=n;G('hAvatar').textContent=n[0].toUpperCase();}
+
+// ═══════════════════════════════════════
+// NAV
+// ═══════════════════════════════════════
 function setCat(el){document.querySelectorAll('.cat-btn').forEach(function(b){b.classList.remove('active');});if(el)el.classList.add('active');}
+function goHome(btn){setCat(btn||G('catHome'));G('secSearch').style.display='none';G('secHome').style.display='';}
+function gotoGames(btn){goHome(null);setCat(btn);setTimeout(function(){var el=G('gamesStrip');if(el)el.scrollIntoView({behavior:'smooth',block:'start'});},80);}
+function doSearch(){var q=G('searchInput').value.trim();if(!q)return;searchCat(q,null);}
+function searchCat(q,btn){setCat(btn);searchQuery=q;searchToken='';G('secHome').style.display='none';G('secSearch').style.display='';var L={تعليم:'📚 تعليم',تكنولوجيا:'💻 تكنولوجيا',رياضة:'⚽ رياضة',موسيقى:'🎵 موسيقى',طبخ:'🍳 طبخ',سفر:'✈️ سفر',أخبار:'📰 أخبار'};G('searchTitle').textContent=L[q]||('🔍 "'+q+'"');fetchSearch(q,'',false);}
 
-function goHome(btn){
-  setCat(btn||G('catHome'));
-  G('secSearch').style.display='none';
-  G('secHome').style.display='';
-}
-function gotoGames(btn){
-  goHome(null); setCat(btn);
-  setTimeout(function(){var el=G('gamesStrip');if(el)el.scrollIntoView({behavior:'smooth',block:'start'});},80);
-}
-function doSearch(){
-  var q=G('searchInput').value.trim(); if(!q)return;
-  searchCat(q, null);
-}
-function searchCat(q, btn){
-  setCat(btn); searchQuery=q; searchToken='';
-  G('secHome').style.display='none';
-  G('secSearch').style.display='';
-  var L={تعليم:'📚 تعليم',تكنولوجيا:'💻 تكنولوجيا',رياضة:'⚽ رياضة',موسيقى:'🎵 موسيقى',طبخ:'🍳 طبخ',سفر:'✈️ سفر',أخبار:'📰 أخبار'};
-  G('searchTitle').textContent=L[q]||('🔍 "'+q+'"');
-  fetchSearch(q,'',false);
-}
-
-/* ════════════════════════════════════════════
-   YOUTUBE FETCH
-════════════════════════════════════════════ */
+// ═══════════════════════════════════════
+// YOUTUBE FETCH
+// ═══════════════════════════════════════
 var BASE='https://www.googleapis.com/youtube/v3/';
-
-function fetchHome(token, append){
+function fetchHome(token,append){
   if(!append){G('ldHome').style.display='block';G('emHome').style.display='none';G('gridHome').innerHTML='';}
   fetch(BASE+'videos?part=snippet,contentDetails,statistics&chart=mostPopular&regionCode=SA&hl=ar&maxResults=16&pageToken='+(token||'')+'&key='+YT_KEY)
-    .then(function(r){return r.json();})
-    .then(function(d){
-      G('ldHome').style.display='none';
-      if(d.error)throw new Error(d.error.message);
-      homeToken=d.nextPageToken||'';
-      if(d.items&&d.items.length)renderCards(d.items,'gridHome');
-      else if(!append)G('emHome').style.display='block';
-      G('lmHome').style.display=homeToken?'block':'none';
-    })
+    .then(function(r){return r.json();}).then(function(d){G('ldHome').style.display='none';if(d.error)throw new Error(d.error.message);homeToken=d.nextPageToken||'';if(d.items&&d.items.length)renderCards(d.items,'gridHome');else if(!append)G('emHome').style.display='block';G('lmHome').style.display=homeToken?'block':'none';})
     .catch(function(e){G('ldHome').style.display='none';G('gridHome').innerHTML='<div style="color:#ff6b6b;padding:2rem;grid-column:1/-1;text-align:center">⚠️ '+e.message+'</div>';});
 }
-
-function fetchSearch(q, token, append){
+function fetchSearch(q,token,append){
   if(!append){G('ldSearch').style.display='block';G('emSearch').style.display='none';G('gridSearch').innerHTML='';}
   fetch(BASE+'search?part=snippet&q='+encodeURIComponent(q)+'&type=video&maxResults=16&pageToken='+(token||'')+'&key='+YT_KEY)
-    .then(function(r){return r.json();})
-    .then(function(sd){
-      if(sd.error)throw new Error(sd.error.message);
-      var ids=(sd.items||[]).map(function(i){return i.id.videoId;}).filter(Boolean);
-      searchToken=sd.nextPageToken||'';
-      if(!ids.length){G('ldSearch').style.display='none';if(!append)G('emSearch').style.display='block';G('lmSearch').style.display='none';return;}
-      return fetch(BASE+'videos?part=snippet,contentDetails,statistics&id='+ids.join(',')+'&key='+YT_KEY)
-        .then(function(r){return r.json();})
-        .then(function(vd){
-          G('ldSearch').style.display='none';
-          if(vd.items&&vd.items.length)renderCards(vd.items,'gridSearch');
-          G('lmSearch').style.display=searchToken?'block':'none';
-        });
-    })
+    .then(function(r){return r.json();}).then(function(sd){if(sd.error)throw new Error(sd.error.message);var ids=(sd.items||[]).map(function(i){return i.id.videoId;}).filter(Boolean);searchToken=sd.nextPageToken||'';if(!ids.length){G('ldSearch').style.display='none';if(!append)G('emSearch').style.display='block';G('lmSearch').style.display='none';return;}return fetch(BASE+'videos?part=snippet,contentDetails,statistics&id='+ids.join(',')+'&key='+YT_KEY).then(function(r){return r.json();}).then(function(vd){G('ldSearch').style.display='none';if(vd.items&&vd.items.length)renderCards(vd.items,'gridSearch');G('lmSearch').style.display=searchToken?'block':'none';});})
     .catch(function(e){G('ldSearch').style.display='none';G('gridSearch').innerHTML='<div style="color:#ff6b6b;padding:2rem;grid-column:1/-1;text-align:center">⚠️ '+e.message+'</div>';});
 }
-
-function renderCards(items, gridId){
+function renderCards(items,gridId){
   var grid=G(gridId);
   items.forEach(function(item){
-    var s=item.snippet;
-    var th=(s.thumbnails&&(s.thumbnails.high||s.thumbnails.medium)||{}).url||'';
-    var d=durFmt(item.contentDetails&&item.contentDetails.duration);
-    var vid=typeof item.id==='string'?item.id:(item.id&&item.id.videoId)||'';
-    var views=item.statistics&&item.statistics.viewCount?fmt(item.statistics.viewCount)+' مشاهدة':'';
-    var card=document.createElement('div'); card.className='video-card';
+    var s=item.snippet,th=(s.thumbnails&&(s.thumbnails.high||s.thumbnails.medium)||{}).url||'',d=durFmt(item.contentDetails&&item.contentDetails.duration),vid=typeof item.id==='string'?item.id:(item.id&&item.id.videoId)||'',views=item.statistics&&item.statistics.viewCount?fmt(item.statistics.viewCount)+' مشاهدة':'';
+    var card=document.createElement('div');card.className='video-card';
     card.innerHTML='<div class="thumb-wrap"><img src="'+th+'" alt="" loading="lazy"><div class="play-ov"><div class="play-btn"><svg width="20" height="20" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div>'+(d?'<div class="duration">'+d+'</div>':'')+'</div><div class="card-info"><div class="card-title">'+s.title+'</div><div class="card-meta"><span class="channel-name">'+s.channelTitle+'</span><span>'+views+(views?' • ':'')+ago(s.publishedAt)+'</span></div></div>';
-    (function(id,t,dc){ card.onclick=function(){ openVideoModal(id,t,dc); }; })(vid, s.title, s.description||'');
+    (function(id,t,dc){card.onclick=function(){openVideoModal(id,t,dc);};})(vid,s.title,s.description||'');
     grid.appendChild(card);
   });
 }
+function loadMoreHome(){if(homeToken)fetchHome(homeToken,true);}
+function loadMoreSearch(){if(searchToken)fetchSearch(searchQuery,searchToken,true);}
 
-function loadMoreHome(){ if(homeToken)fetchHome(homeToken,true); }
-function loadMoreSearch(){ if(searchToken)fetchSearch(searchQuery,searchToken,true); }
-
-/* ════════════════════════════════════════════
-   VIDEO MODAL
-════════════════════════════════════════════ */
-function openVideoModal(vid, title, desc){
-  if(!currentUser){ G('authOv').classList.remove('hidden'); return; }
-  G('modalTitle').textContent=title;
-  G('modalDesc').textContent=desc;
-  G('modalPts').textContent=userPoints+' نقطة';
-  G('modalOv').classList.add('open');
-  playing=false; G('pauseInd').classList.remove('on');
-  startWTimer();
-  // Small delay so modal is fully rendered before iframe loads
-  setTimeout(function(){ createYTPlayer(vid); }, 100);
+// ═══════════════════════════════════════
+// VIDEO MODAL
+// ═══════════════════════════════════════
+function openVideoModal(vid,title,desc){
+  if(!currentUser){G('authOv').classList.remove('hidden');return;}
+  G('modalTitle').textContent=title;G('modalDesc').textContent=desc;G('modalPts').textContent=userPoints+' نقطة';
+  G('modalOv').classList.add('open');playing=false;G('pauseInd').classList.remove('on');
+  startWTimer();setTimeout(function(){createYTPlayer(vid);},150);
 }
-
 function closeVideoModal(){
-  G('modalOv').classList.remove('open');
-  stopWTimer();
-  G('pauseInd').classList.remove('on');
+  G('modalOv').classList.remove('open');stopWTimer();G('pauseInd').classList.remove('on');
   if(ytPlayer){try{ytPlayer.stopVideo();ytPlayer.destroy();}catch(e){}ytPlayer=null;}
   G('ytPCWrap').innerHTML='';
 }
 
-/* ════════════════════════════════════════════
-   WATCH TIMER
-════════════════════════════════════════════ */
-function startWTimer(){
-  stopWTimer(); tSecs=EARN_EVERY; drawRing();
-  wInt=setInterval(function(){
-    if(!playing)return;
-    tSecs--; drawRing();
-    if(tSecs<=0){
-      tSecs=EARN_EVERY;
-      userPoints+=EARN_AMT; savePoints(); updateHeader();
-      G('modalPts').textContent=userPoints+' نقطة';
-      var pv=G('modalPts'); pv.classList.remove('flash'); void pv.offsetWidth; pv.classList.add('flash');
-      setTimeout(function(){pv.classList.remove('flash');},700);
-      showToast('+'+EARN_AMT+' نقطة 🎉','rgba(34,197,94,.95)');
-    }
-  },1000);
-}
+// ═══════════════════════════════════════
+// WATCH TIMER
+// ═══════════════════════════════════════
+function startWTimer(){stopWTimer();tSecs=EARN_EVERY;drawRing();wInt=setInterval(function(){if(!playing)return;tSecs--;drawRing();if(tSecs<=0){tSecs=EARN_EVERY;userPoints+=EARN_AMT;savePoints();updateHeader();G('modalPts').textContent=userPoints+' نقطة';var pv=G('modalPts');pv.classList.remove('flash');void pv.offsetWidth;pv.classList.add('flash');setTimeout(function(){pv.classList.remove('flash');},700);showToast('+'+EARN_AMT+' نقطة 🎉','rgba(34,197,94,.95)');}},1000);}
 function stopWTimer(){clearInterval(wInt);wInt=null;playing=false;tSecs=EARN_EVERY;drawRing();}
 function setPlaying(v){playing=v;G('pauseInd').classList.toggle('on',!v);}
 
-/* ════════════════════════════════════════════
-   YT IFRAME API — detects play/pause for timer
-════════════════════════════════════════════ */
-// Load YT script once
-(function(){
-  var s=document.createElement('script');
-  s.src='https://www.youtube.com/iframe_api';
-  document.head.appendChild(s);
-})();
-
-var ytReady=false;
-var ytPending=null;
-window.onYouTubeIframeAPIReady=function(){
-  ytReady=true;
-  if(ytPending){ buildPlayer(ytPending); ytPending=null; }
-};
+// ═══════════════════════════════════════
+// YT API
+// ═══════════════════════════════════════
+window.onYouTubeIframeAPIReady=function(){ytReady=true;if(ytPending){buildPlayer(ytPending);ytPending=null;}};
+(function(){var s=document.createElement('script');s.src='https://www.youtube.com/iframe_api';document.head.appendChild(s);})();
 
 function createYTPlayer(videoId){
-  // Destroy previous player
-  if(ytPlayer){
-    try{ytPlayer.stopVideo();ytPlayer.destroy();}catch(e){}
-    ytPlayer=null;
-  }
-  // Fresh container div — YT.Player replaces the div with iframe
-  var wrap=G('ytPCWrap');
-  wrap.innerHTML='';
-  var div=document.createElement('div');
-  div.id='ytInner';
-  wrap.appendChild(div);
-
-  if(ytReady){
-    buildPlayer(videoId);
-  } else {
-    ytPending=videoId;
-  }
+  if(ytPlayer){try{ytPlayer.stopVideo();ytPlayer.destroy();}catch(e){}ytPlayer=null;}
+  var wrap=G('ytPCWrap');wrap.innerHTML='';
+  var div=document.createElement('div');div.id='ytInner';wrap.appendChild(div);
+  if(ytReady){buildPlayer(videoId);}else{ytPending=videoId;}
 }
-
 function buildPlayer(videoId){
   var wrap=G('ytPCWrap');
-  // Get actual pixel size — use parent modal size if wrap not yet painted
-  var w=wrap.offsetWidth  || G('modalOv').offsetWidth  || 360;
-  var h=wrap.offsetHeight || Math.round(w*9/16) || 200;
-
-  ytPlayer=new YT.Player('ytInner',{
-    videoId: videoId,
-    width:  w,
-    height: h,
-    playerVars:{
-      autoplay:1, rel:0, modestbranding:1,
-      playsinline:1, fs:1, controls:1
-    },
-    events:{
-      onReady: function(e){ e.target.playVideo(); },
-      onStateChange: function(e){
-        var S=YT.PlayerState;
-        if(e.data===S.PLAYING){
-          setPlaying(true);
-        } else if(e.data===S.PAUSED || e.data===S.ENDED || e.data===S.BUFFERING){
-          setPlaying(false);
-        }
-      }
-    }
-  });
+  var w=wrap.offsetWidth||G('modalOv').offsetWidth||360;
+  var h=wrap.offsetHeight||Math.round(w*9/16)||200;
+  ytPlayer=new YT.Player('ytInner',{videoId:videoId,width:w,height:h,playerVars:{autoplay:1,rel:0,modestbranding:1,playsinline:1,fs:1,controls:1},events:{onReady:function(e){e.target.playVideo();},onStateChange:function(e){var S=YT.PlayerState;if(e.data===S.PLAYING)setPlaying(true);else if(e.data===S.PAUSED||e.data===S.ENDED||e.data===S.BUFFERING)setPlaying(false);}}});
 }
 
-/* ════════════════════════════════════════════
-   TOAST
-════════════════════════════════════════════ */
-function showToast(msg, bg){
-  var t=G('toast'); t.textContent=msg;
-  if(bg)t.style.background=bg;
-  t.classList.add('show'); setTimeout(function(){t.classList.remove('show');},1900);
-}
+// ═══════════════════════════════════════
+// TOAST
+// ═══════════════════════════════════════
+function showToast(msg,bg){var t=G('toast');t.textContent=msg;if(bg)t.style.background=bg;t.classList.add('show');setTimeout(function(){t.classList.remove('show');},1900);}
 
-/* ════════════════════════════════════════════
-   GAME OVERLAY
-════════════════════════════════════════════ */
-function openGameOverlay(gameId, gameName, gameUrl){
+// ═══════════════════════════════════════
+// GAME OVERLAY
+// ═══════════════════════════════════════
+function openGameOverlay(gameId,gameName,gameUrl){
   if(!currentUser){G('authOv').classList.remove('hidden');return;}
-  var pts=gCache[gameId]||0;
-  activeGid=gameId;
-  G('gTitle').textContent=gameName;
-  G('gPts').textContent=pts+' / '+GAME_CAP+' نقطة';
-  G('gFrame').src=gameUrl;
-  G('gameOv').classList.add('open');
-  startGTimer(pts);
+  var pts=gCache[gameId]||0;activeGid=gameId;
+  G('gTitle').textContent=gameName;G('gPts').textContent=pts+' / '+GAME_CAP+' نقطة';
+  G('gFrame').src=gameUrl;G('gameOv').classList.add('open');startGTimer(pts);
 }
-
-function closeGameOverlay(){
-  stopGTimer();
-  G('gameOv').classList.remove('open');
-  G('gFrame').src='';
-  activeGid=null;
-  loadGamesGrid();
-}
-
+function closeGameOverlay(){stopGTimer();G('gameOv').classList.remove('open');G('gFrame').src='';activeGid=null;loadGamesGrid();}
 function startGTimer(startPts){
-  stopGTimer(); var pts=startPts; gElapsed=0;
-  gInt=setInterval(function(){
-    if(pts>=GAME_CAP){stopGTimer();G('gPts').textContent='✅ اكتملت نقاط اليوم!';return;}
-    gElapsed++;
-    if(gElapsed>=GAME_SEC){
-      gElapsed=0; pts++; gCache[activeGid]=pts;
-      userPoints++; savePoints(); updateHeader();
-      if(_db&&currentUser) saveGameDayPts(activeGid,pts);
-      G('gPts').textContent=pts+' / '+GAME_CAP+' نقطة';
-      var t=G('gToast'); t.classList.add('show'); setTimeout(function(){t.classList.remove('show');},1900);
-    }
-  },1000);
+  stopGTimer();var pts=startPts;gElapsed=0;
+  gInt=setInterval(function(){if(pts>=GAME_CAP){stopGTimer();G('gPts').textContent='✅ اكتملت نقاط اليوم!';return;}gElapsed++;if(gElapsed>=GAME_SEC){gElapsed=0;pts++;gCache[activeGid]=pts;userPoints++;savePoints();updateHeader();if(_db&&currentUser)saveGameDayPts(activeGid,pts);G('gPts').textContent=pts+' / '+GAME_CAP+' نقطة';var t=G('gToast');t.classList.add('show');setTimeout(function(){t.classList.remove('show');},1900);}},1000);
 }
 function stopGTimer(){clearInterval(gInt);gInt=null;gElapsed=0;}
 
-/* ════════════════════════════════════════════
-   GAMES DB HELPERS
-════════════════════════════════════════════ */
-function getGameDayPts(gameId,cb){
-  if(!_db||!currentUser){cb(0);return;}
-  _db.collection('users').doc(currentUser.uid).collection('gdp').doc(todayK()+'_'+gameId).get()
-    .then(function(s){cb(s.exists?(s.data().pts||0):0);}).catch(function(){cb(0);});
-}
-function saveGameDayPts(gameId,pts){
-  if(!_db||!currentUser)return;
-  _db.collection('users').doc(currentUser.uid).collection('gdp').doc(todayK()+'_'+gameId).set({pts:pts,gid:gameId,date:todayK()});
-}
+// ═══════════════════════════════════════
+// GAMES DB
+// ═══════════════════════════════════════
+function getGameDayPts(gameId,cb){if(!_db||!currentUser){cb(0);return;}_db.collection('users').doc(currentUser.uid).collection('gdp').doc(todayK()+'_'+gameId).get().then(function(s){cb(s.exists?(s.data().pts||0):0);}).catch(function(){cb(0);});}
+function saveGameDayPts(gameId,pts){if(!_db||!currentUser)return;_db.collection('users').doc(currentUser.uid).collection('gdp').doc(todayK()+'_'+gameId).set({pts:pts,gid:gameId,date:todayK()});}
 
-/* ════════════════════════════════════════════
-   GAMES GRID
-════════════════════════════════════════════ */
-var GICONS=['🎮','🕹️','👾','🏆','⚔️','🧩','🚀','🎯','🏎️','⚽','🎲','🃏'];
-
+// ═══════════════════════════════════════
+// GAMES GRID
+// ═══════════════════════════════════════
 function loadGamesGrid(){
-  if(!_db){ return; }
-  var grid=G('gGrid'), empty=G('gEmpty');
+  if(!_db)return;
+  var grid=G('gGrid'),empty=G('gEmpty');
   grid.innerHTML='<div class="loading" style="display:block"><div class="spinner"></div><p>جاري التحميل...</p></div>';
   empty.style.display='none';
   _db.collection('games').orderBy('createdAt','asc').get().then(function(snap){
-    grid.innerHTML='';
-    if(snap.empty){empty.style.display='block';return;}
-    var list=[]; snap.forEach(function(d){list.push({id:d.id,d:d.data()});});
-    // If no user logged in, skip pts lookup and render with 0
-    if(!currentUser){
-      list.forEach(function(g){ gCache[g.id]=0; });
-      renderGamesGrid(list);
-      return;
-    }
-    // User logged in — fetch daily pts for each game
+    grid.innerHTML='';if(snap.empty){empty.style.display='block';return;}
+    var list=[];snap.forEach(function(d){list.push({id:d.id,d:d.data()});});
+    if(!currentUser){list.forEach(function(g){gCache[g.id]=0;});renderGamesGrid(list);return;}
     var pend=list.length;
-    list.forEach(function(g){
-      getGameDayPts(g.id,function(pts){
-        gCache[g.id]=pts; if(--pend===0)renderGamesGrid(list);
-      });
-    });
-  }).catch(function(e){
-    grid.innerHTML='<p style="color:var(--muted);padding:2rem;text-align:center">⚠️ '+e.message+'</p>';
-    console.error('loadGamesGrid error:', e);
-  });
+    list.forEach(function(g){getGameDayPts(g.id,function(pts){gCache[g.id]=pts;if(--pend===0)renderGamesGrid(list);});});
+  }).catch(function(e){G('gGrid').innerHTML='<p style="color:var(--muted);padding:2rem;text-align:center">⚠️ '+e.message+'</p>';});
 }
-
 function renderGamesGrid(list){
-  var grid=G('gGrid'); grid.innerHTML='';
+  var grid=G('gGrid');grid.innerHTML='';
   list.forEach(function(g,i){
-    var pts=gCache[g.id]||0, pct=Math.min(100,Math.round(pts/GAME_CAP*100)), maxed=pts>=GAME_CAP;
-    var card=document.createElement('div'); card.className='game-card';
-    card.innerHTML=
-      '<div class="game-thumb" style="background:'+(g.d.img?'#000':'linear-gradient(135deg,#1a0533,#2d0a5c)')+'">'+
-        (g.d.img?'<img src="'+g.d.img+'" style="width:100%;height:100%;object-fit:cover;display:block;" alt="">':'<div class="game-icon">'+GICONS[i%GICONS.length]+'</div>')+
-        '<div class="game-ov"><div class="game-play">▶</div></div>'+
-      '</div>'+
-      '<span'<span class="game-cap-badge'+(maxed?' maxed':'')+'">'+( maxed?'✓ اكتمل':pts+'/'+GAME_CAP)+'</span>'+
-      '<div class="game-info">'+
-        '<div class="game-name">'+g.d.name+'</div>'+
-        '<div class="game-bar-wrap">'+
-          '<div class="game-bar-bg"><div class="game-bar-fill" style="width:'+pct+'%"></div></div>'+
-          '<div class="game-bar-lbl">'+(maxed?'<span style="color:var(--green)">اكتمل</span>':pts+'/'+GAME_CAP)+'</div>'+
-        '</div>'+
-      '</div>';
+    var pts=gCache[g.id]||0,pct=Math.min(100,Math.round(pts/GAME_CAP*100)),maxed=pts>=GAME_CAP;
+    var card=document.createElement('div');card.className='game-card';
+    var thumbBg=g.d.img?'background:#000':'background:linear-gradient(135deg,#1a0533,#2d0a5c)';
+    var thumbContent=g.d.img?'<img src="'+g.d.img+'" style="width:100%;height:100%;object-fit:cover;display:block;" alt="">':'<div class="game-icon">'+GICONS[i%GICONS.length]+'</div>';
+    card.innerHTML='<div class="game-thumb" style="'+thumbBg+'">'+thumbContent+'<div class="game-ov"><div class="game-play">▶</div></div></div><span class="game-cap-badge'+(maxed?' maxed':'')+'">'+( maxed?'✓ اكتمل':pts+'/'+GAME_CAP)+'</span><div class="game-info"><div class="game-name">'+g.d.name+'</div><div class="game-bar-wrap"><div class="game-bar-bg"><div class="game-bar-fill" style="width:'+pct+'%"></div></div><div class="game-bar-lbl">'+(maxed?'<span style="color:var(--green)">اكتمل</span>':pts+'/'+GAME_CAP)+'</div></div></div>';
     (function(id,name,url){card.onclick=function(){openGameOverlay(id,name,url);};})(g.id,g.d.name,g.d.url);
     grid.appendChild(card);
   });
 }
 
-/* ════════════════════════════════════════════
-   ADMIN GAMES
-════════════════════════════════════════════ */
-function switchGameSrc(t){
-  gameSrcMode=t;
-  var u=t==='url';
-  G('rowUrl').style.display=u?'':'none';
-  G('rowIframe').style.display=u?'none':'';
-  G('srcUrl').classList.toggle('active',u);
-  G('srcIframe').classList.toggle('active',!u);
-}
-
+// ═══════════════════════════════════════
+// IMAGE UPLOAD
+// ═══════════════════════════════════════
 function previewGameImg(input){
-  var file=input.files[0]; if(!file)return;
+  var file=input.files[0];if(!file)return;
   var reader=new FileReader();
-  reader.onload=function(e){
-    // Resize to max 400px wide thumbnail
-    var img=new Image();
-    img.onload=function(){
-      var canvas=document.createElement('canvas');
-      var MAX=400; var scale=Math.min(1,MAX/img.width);
-      canvas.width=Math.round(img.width*scale);
-      canvas.height=Math.round(img.height*scale);
-      canvas.getContext('2d').drawImage(img,0,0,canvas.width,canvas.height);
-      var data=canvas.toDataURL('image/jpeg',0.75);
-      G('imgPreview').src=data;
-      G('imgPreview').style.display='block';
-      G('imgPlaceholder').style.display='none';
-    };
-    img.src=e.target.result;
-  };
+  reader.onload=function(e){var img=new Image();img.onload=function(){var c=document.createElement('canvas'),MAX=400,sc=Math.min(1,MAX/img.width);c.width=Math.round(img.width*sc);c.height=Math.round(img.height*sc);c.getContext('2d').drawImage(img,0,0,c.width,c.height);var data=c.toDataURL('image/jpeg',.75);G('imgPreview').src=data;G('imgPreview').style.display='block';G('imgPlaceholder').style.display='none';};img.src=e.target.result;};
   reader.readAsDataURL(file);
 }
+function resetGameImgUpload(){G('newGameImg').value='';G('imgPreview').src='';G('imgPreview').style.display='none';G('imgPlaceholder').style.display='';}
 
-function resetGameImgUpload(){
-  G('newGameImg').value='';
-  G('imgPreview').src='';
-  G('imgPreview').style.display='none';
-  G('imgPlaceholder').style.display='';
+// ═══════════════════════════════════════
+// ADMIN GAMES
+// ═══════════════════════════════════════
+function switchGameSrc(t){
+  gameSrcMode=t;var u=t==='url';
+  G('rowUrl').style.display=u?'':'none';G('rowIframe').style.display=u?'none':'';
+  G('srcUrl').classList.toggle('active',u);G('srcIframe').classList.toggle('active',!u);
 }
-
 function adminAddGame(){
   if(!_db)return;
-  var name=G('newGameName').value.trim(), err=G('addErr'), btn=G('addBtn'), url='';
-  if(gameSrcMode==='iframe'){
-    var code=G('newGameIframe').value.trim();
-    if(!code){err.textContent='أدخل كود iframe';return;}
-    var m=code.match(/src=["'"]([^"']+)["']/i);
-    if(!m){err.textContent='لم يتم العثور على src';return;}
-    url=m[1];
-  } else { url=G('newGameUrl').value.trim(); }
+  var name=G('newGameName').value.trim(),err=G('addErr'),btn=G('addBtn'),url='';
+  if(gameSrcMode==='iframe'){var code=G('newGameIframe').value.trim();if(!code){err.textContent='أدخل كود iframe';return;}var m=code.match(/src=["']([^"']+)["']/i);if(!m){err.textContent='لم يتم العثور على src';return;}url=m[1];}
+  else{url=G('newGameUrl').value.trim();}
   if(!name){err.textContent='أدخل اسم اللعبة';return;}
   if(!url||!url.startsWith('http')){err.textContent='أدخل رابطاً صحيحاً';return;}
-  // Get image (optional)
-  var imgData = G('imgPreview').style.display==='none' ? '' : (G('imgPreview').src||'');
+  var imgData=G('imgPreview').style.display==='none'?'':(G('imgPreview').src||'');
   err.textContent='';btn.disabled=true;btn.textContent='جاري الإضافة...';
   var doc={name:name,url:url,createdAt:firebase.firestore.FieldValue.serverTimestamp()};
-  if(imgData) doc.img=imgData;
+  if(imgData)doc.img=imgData;
   _db.collection('games').add(doc)
-    .then(function(){
-      G('newGameName').value='';G('newGameUrl').value='';G('newGameIframe').value='';
-      resetGameImgUpload();
-      btn.disabled=false;btn.textContent='➕ إضافة اللعبة';err.textContent='';
-      loadAdminGamesList();loadGamesGrid();
-    })
+    .then(function(){G('newGameName').value='';G('newGameUrl').value='';G('newGameIframe').value='';resetGameImgUpload();btn.disabled=false;btn.textContent='➕ إضافة اللعبة';err.textContent='';loadAdminGamesList();loadGamesGrid();})
     .catch(function(e){err.textContent='خطأ: '+e.message;btn.disabled=false;btn.textContent='➕ إضافة اللعبة';});
 }
-
-function adminDeleteGame(id){
-  if(!_db||!confirm('حذف هذه اللعبة نهائياً؟'))return;
-  _db.collection('games').doc(id).delete().then(function(){loadAdminGamesList();loadGamesGrid();}).catch(function(e){alert('خطأ: '+e.message);});
-}
-
+function adminDeleteGame(id){if(!_db||!confirm('حذف هذه اللعبة نهائياً؟'))return;_db.collection('games').doc(id).delete().then(function(){loadAdminGamesList();loadGamesGrid();}).catch(function(e){alert('خطأ: '+e.message);});}
 function loadAdminGamesList(){
   if(!_db)return;
-  var el=G('admGames'); el.innerHTML='<div class="adm-empty">جاري التحميل...</div>';
+  var el=G('admGames');el.innerHTML='<div class="adm-empty">جاري التحميل...</div>';
   _db.collection('games').orderBy('createdAt','asc').get().then(function(snap){
     if(snap.empty){el.innerHTML='<div class="adm-empty">لا توجد ألعاب</div>';return;}
     el.innerHTML='';
-    snap.forEach(function(doc){
-      var d=doc.data(),id=doc.id;
-      el.innerHTML+='<div class="adm-game-item">'+(d.img?'<img src="'+d.img+'" style="width:48px;height:48px;object-fit:cover;border-radius:7px;flex-shrink:0;">':'<div style="width:48px;height:48px;background:linear-gradient(135deg,#1a0533,#2d0a5c);border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:1.4rem;flex-shrink:0;">🎮</div>')+'<div style="min-width:0;flex:1;margin:0 .7rem"><div class="adm-game-name">'+d.name+'</div><div class="adm-game-url">'+d.url+'</div></div><button class="adm-game-del" onclick="adminDeleteGame(\''+id+'\')">🗑️ حذف</button></div>';
-    });
+    snap.forEach(function(doc){var d=doc.data(),id=doc.id;var thumb=d.img?'<img src="'+d.img+'" style="width:48px;height:48px;object-fit:cover;border-radius:7px;flex-shrink:0;">':'<div style="width:48px;height:48px;background:linear-gradient(135deg,#1a0533,#2d0a5c);border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:1.4rem;flex-shrink:0;">🎮</div>';el.innerHTML+='<div class="adm-game-item">'+thumb+'<div style="min-width:0;flex:1;margin:0 .7rem"><div class="adm-game-name">'+d.name+'</div><div class="adm-game-url">'+d.url+'</div></div><button class="adm-game-del" onclick="adminDeleteGame(\''+id+'\')">🗑️ حذف</button></div>';});
   }).catch(function(e){el.innerHTML='<div class="adm-empty">خطأ: '+e.message+'</div>';});
 }
 
-/* ════════════════════════════════════════════
-   FIREBASE INIT
-════════════════════════════════════════════ */
+// ═══════════════════════════════════════
+// FIREBASE INIT
+// ═══════════════════════════════════════
 loadSc('https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js')
   .then(function(){return loadSc('https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js');})
   .then(function(){return loadSc('https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js');})
   .then(function(){
-    firebase.initializeApp(FB_CFG);
-    _auth=firebase.auth();
+    try { firebase.app(); } catch(e) { firebase.initializeApp(FB_CFG); }
+    _auth = firebase.auth();
     _auth.useDeviceLanguage();
-    _db=firebase.firestore();
+    _db = firebase.firestore();
+    console.log('✅ Firebase ready');
+    // Enable auth buttons
+    ['btnLogin','btnReg','btnGoogle'].forEach(function(id){
+      var b=G(id); if(b){b.disabled=false; b.style.opacity='1';}
+    });
+    var fs=G('fbStatus'); if(fs) fs.textContent='';
 
-    ;
-      return msgs[c]||('خطأ: '+c);
-    }
+    // Handle Google redirect result (mobile)
+    _auth.getRedirectResult().catch(function(e){
+      if(e.code&&e.code!=='auth/no-current-user') G('authErr').textContent=authErrMsg(e.code);
+      var btn=G('btnGoogle');if(btn){btn.disabled=false;btn.textContent='متابعة مع Google';}
+    });
 
-    /* ── Auth state ── */
     _auth.onAuthStateChanged(function(user){
       if(user){
         currentUser=user;
         _db.collection('users').doc(user.uid).get().then(function(snap){
-          if(snap.exists) userPoints=snap.data().points||0;
-          else { _db.collection('users').doc(user.uid).set({name:user.displayName||'مستخدم',email:user.email,points:START_PTS,createdAt:firebase.firestore.FieldValue.serverTimestamp()}); userPoints=START_PTS; }
+          if(snap.exists)userPoints=snap.data().points||0;
+          else{_db.collection('users').doc(user.uid).set({name:user.displayName||'مستخدم',email:user.email,points:START_PTS,createdAt:firebase.firestore.FieldValue.serverTimestamp()});userPoints=START_PTS;}
           updateHeader();
           G('authOv').classList.add('hidden');
-          G('btnW').style.display=''; G('btnA').style.display='';
-          G('mobBtnW').setAttribute('data-show','1');
-          G('mobBtnA').setAttribute('data-show','1');
+          G('btnW').style.display='';G('btnA').style.display='';
+          G('mobBtnW').setAttribute('data-show','1');G('mobBtnA').setAttribute('data-show','1');
           loadGamesGrid();
         }).catch(function(){userPoints=0;updateHeader();G('authOv').classList.add('hidden');});
       } else {
-        currentUser=null; userPoints=0; stopWTimer();
+        currentUser=null;userPoints=0;stopWTimer();
         G('authOv').classList.remove('hidden');
-        G('btnW').style.display='none'; G('btnA').style.display='none';
-        G('mobBtnW').removeAttribute('data-show');
-        G('mobBtnA').removeAttribute('data-show');
-        // Also load games for logged-out users (pts=0, no Firestore pts lookup)
+        G('btnW').style.display='none';G('btnA').style.display='none';
+        G('mobBtnW').removeAttribute('data-show');G('mobBtnA').removeAttribute('data-show');
         loadGamesGrid();
       }
     });
 
-    // Handle Google redirect result (mobile)
-    _auth.getRedirectResult().then(function(result){
-      if(result&&result.user){}
-    }).catch(function(e){
-      if(e.code&&e.code!=='auth/no-current-user') G('authErr').textContent=authErrMsg(e.code);
-    });
-
-    /* ── Withdraw ── */
+    // WITHDRAW
     window.openWithdraw=function(){
       if(!currentUser)return;
-      G('wPts').textContent=userPoints; G('wUsd').textContent=(userPoints/PTS_USD).toFixed(2);
-      G('wForm').style.display=''; G('wOK').style.display='none';
-      G('wErr').textContent=''; G('wAmt').value=''; G('wAddr').value=''; G('wMethod').value=''; G('wCalc').textContent='';
-      // load history
-      _db.collection('withdrawals').where('uid','==',currentUser.uid).orderBy('createdAt','desc').limit(10).get().then(function(snap){
-        var h=''; snap.forEach(function(doc){var r=doc.data();h+='<div class="req-item"><div><div style="font-weight:700;font-size:.78rem;color:var(--yellow)">'+r.method+'</div><div style="font-size:.72rem;color:var(--muted)">'+r.points+' نقطة = $'+r.usd+'</div></div><span class="req-badge '+(r.status||'pending')+'">'+(r.status==='pending'?'⏳ انتظار':r.status==='approved'?'✅ مقبول':'❌ مرفوض')+'</span></div>';});
-        G('wHist').innerHTML=h||'';
-      }).catch(function(){});
+      G('wPts').textContent=userPoints;G('wUsd').textContent=(userPoints/PTS_USD).toFixed(2);
+      G('wForm').style.display='';G('wOK').style.display='none';G('wErr').textContent='';G('wAmt').value='';G('wAddr').value='';G('wMethod').value='';G('wCalc').textContent='';
+      _db.collection('withdrawals').where('uid','==',currentUser.uid).orderBy('createdAt','desc').limit(10).get().then(function(snap){var h='';snap.forEach(function(doc){var r=doc.data();h+='<div class="req-item"><div><div style="font-weight:700;font-size:.78rem;color:var(--yellow)">'+r.method+'</div><div style="font-size:.72rem;color:var(--muted)">'+r.points+' نقطة = $'+r.usd+'</div></div><span class="req-badge '+(r.status||'pending')+'">'+(r.status==='pending'?'⏳ انتظار':r.status==='approved'?'✅ مقبول':'❌ مرفوض')+'</span></div>';});G('wHist').innerHTML=h||'';}).catch(function(){});
       G('wOv').classList.add('open');
     };
     window.closeWithdraw=function(){G('wOv').classList.remove('open');};
-    window.updateWalletPlaceholder=function(){
-      var m=G('wMethod').value, l=G('wAddrLbl'), i=G('wAddr');
-      if(m==='Mastercard'){l.textContent='رقم البطاقة';i.placeholder='XXXX XXXX XXXX XXXX';}
-      else if(m){l.textContent='عنوان المحفظة';i.placeholder='أدخل عنوان '+m;}
-      else{l.textContent='عنوان المحفظة';i.placeholder='أدخل العنوان';}
-    };
+    window.updateWalletPlaceholder=function(){var m=G('wMethod').value,l=G('wAddrLbl'),i=G('wAddr');if(m==='Mastercard'){l.textContent='رقم البطاقة';i.placeholder='XXXX XXXX XXXX XXXX';}else if(m){l.textContent='عنوان المحفظة';i.placeholder='أدخل عنوان '+m;}};
     window.calcWithdraw=function(){var v=parseInt(G('wAmt').value)||0;G('wCalc').textContent=v>0?'≈ $'+(v/PTS_USD).toFixed(2):'';};
     window.submitWithdraw=function(){
-      var method=G('wMethod').value, addr=G('wAddr').value.trim(), amt=parseInt(G('wAmt').value)||0;
-      var errEl=G('wErr'), btn=G('wBtn');
-      if(!method){errEl.textContent='اختر طريقة السحب';return;}
-      if(!addr){errEl.textContent='أدخل العنوان';return;}
-      if(amt<MIN_W){errEl.textContent='الحد الأدنى 5000 نقطة';return;}
-      if(amt>userPoints){errEl.textContent='رصيدك غير كافٍ';return;}
-      if(amt%1000!==0){errEl.textContent='يجب أن يكون مضاعفاً لـ 1000';return;}
-      errEl.textContent=''; btn.disabled=true; btn.textContent='جاري الإرسال...';
+      var method=G('wMethod').value,addr=G('wAddr').value.trim(),amt=parseInt(G('wAmt').value)||0,errEl=G('wErr'),btn=G('wBtn');
+      if(!method){errEl.textContent='اختر طريقة السحب';return;}if(!addr){errEl.textContent='أدخل العنوان';return;}
+      if(amt<MIN_W){errEl.textContent='الحد الأدنى 5000 نقطة';return;}if(amt>userPoints){errEl.textContent='رصيدك غير كافٍ';return;}if(amt%1000!==0){errEl.textContent='يجب أن يكون مضاعفاً لـ 1000';return;}
+      errEl.textContent='';btn.disabled=true;btn.textContent='جاري الإرسال...';
       _db.collection('withdrawals').add({uid:currentUser.uid,name:currentUser.displayName||'',email:currentUser.email,method:method,address:addr,points:amt,usd:(amt/PTS_USD).toFixed(2),status:'pending',createdAt:firebase.firestore.FieldValue.serverTimestamp()})
         .then(function(){userPoints-=amt;savePoints();updateHeader();G('wPts').textContent=userPoints;G('wUsd').textContent=(userPoints/PTS_USD).toFixed(2);G('wForm').style.display='none';G('wOK').style.display='';btn.disabled=false;btn.textContent='إرسال الطلب ←';})
         .catch(function(e){errEl.textContent='خطأ: '+e.message;btn.disabled=false;btn.textContent='إرسال الطلب ←';});
     };
 
-    /* ── Admin ── */
-    window.openAdmin=function(){
-      adminUnlocked=false;
-      G('admPass').value=''; G('admErr').textContent='';
-      G('admLogin').style.display='flex'; G('admDash').style.display='none';
-      G('admOv').classList.add('open');
-    };
-    window.closeAdmin=function(){G('admOv').classList.remove('open');adminUnlocked=false;};
-    window.checkAdminPass=function(){
-      if(G('admPass').value===ADMIN_PASS){
-        adminUnlocked=true;
-        G('admLogin').style.display='none'; G('admDash').style.display='flex';
-        loadAdminReqs();
-      } else G('admErr').textContent='كلمة المرور غير صحيحة';
-    };
-    window.switchAdminTab=function(t){
-      var isW=t==='w';
-      G('aPanelW').style.display=isW?'':'none'; G('aPanelG').style.display=isW?'none':'';
-      G('aTabW').classList.toggle('active',isW); G('aTabG').classList.toggle('active',!isW);
-      if(!isW)loadAdminGamesList();
-    };
+    // ADMIN
+    window.openAdmin=function(){G('admPass').value='';G('admErr').textContent='';G('admLogin').style.display='flex';G('admDash').style.display='none';G('admOv').classList.add('open');};
+    window.closeAdmin=function(){G('admOv').classList.remove('open');};
+    window.checkAdminPass=function(){if(G('admPass').value===ADMIN_PASS){G('admLogin').style.display='none';G('admDash').style.display='flex';loadAdminReqs();}else G('admErr').textContent='كلمة المرور غير صحيحة';};
+    window.switchAdminTab=function(t){var isW=t==='w';G('aPanelW').style.display=isW?'':'none';G('aPanelG').style.display=isW?'none':'';G('aTabW').classList.toggle('active',isW);G('aTabG').classList.toggle('active',!isW);if(!isW)loadAdminGamesList();};
     window.adminAction=function(did,status,uid,pts){
-      if(!adminUnlocked)return;
       if(!confirm('هل تريد '+(status==='approved'?'قبول':'رفض')+' هذا الطلب؟'))return;
-      var batch=_db.batch();
-      batch.update(_db.collection('withdrawals').doc(did),{status:status});
+      var batch=_db.batch();batch.update(_db.collection('withdrawals').doc(did),{status:status});
       if(status==='rejected')batch.update(_db.collection('users').doc(uid),{points:firebase.firestore.FieldValue.increment(pts)});
       batch.commit().then(loadAdminReqs).catch(function(e){alert('خطأ: '+e.message);});
     };
     function loadAdminReqs(){
-      var el=G('admReqs'); el.innerHTML='<div class="adm-empty">جاري التحميل...</div>';
+      var el=G('admReqs');el.innerHTML='<div class="adm-empty">جاري التحميل...</div>';
       _db.collection('withdrawals').orderBy('createdAt','desc').limit(50).get().then(function(snap){
         if(snap.empty){el.innerHTML='<div class="adm-empty">لا توجد طلبات</div>';return;}
         el.innerHTML='';
@@ -1334,112 +828,19 @@ loadSc('https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js')
         });
       }).catch(function(e){el.innerHTML='<div class="adm-empty">خطأ: '+e.message+'</div>';});
     }
+  }).catch(function(e){G('authErr').textContent='فشل تحميل Firebase: '+e.message;});
 
+// ═══════════════════════════════════════
+// EVENT WIRING
+// ═══════════════════════════════════════
+G('closeVid').addEventListener('click',closeVideoModal);
+G('modalOv').addEventListener('click',function(e){if(e.target===G('modalOv'))closeVideoModal();});
+G('closeGame').addEventListener('click',closeGameOverlay);
 
-
-  }).catch(function(e){ G('authErr').textContent='فشل تحميل Firebase: '+e.message; });
-
-/* ════════════════════════════════════════════
-   PRE-FIREBASE STUBS (overridden above after load)
-════════════════════════════════════════════ */
-/* ════════════════════════════════════════════
-   AUTH FUNCTIONS — global, check _auth internally
-════════════════════════════════════════════ */
-function authErrMsg(c){
-  var m={
-    'auth/user-not-found':'البريد غير مسجّل',
-    'auth/wrong-password':'كلمة المرور خاطئة',
-    'auth/invalid-credential':'البريد أو كلمة المرور غير صحيحة',
-    'auth/email-already-in-use':'هذا البريد مستخدم مسبقاً',
-    'auth/invalid-email':'بريد إلكتروني غير صالح',
-    'auth/weak-password':'كلمة المرور ضعيفة (6 أحرف+)',
-    'auth/network-request-failed':'تحقق من اتصال الإنترنت',
-    'auth/too-many-requests':'تجاوزت عدد المحاولات، انتظر قليلاً',
-    'auth/popup-blocked':'السماح بالنوافذ المنبثقة في المتصفح',
-    'auth/popup-closed-by-user':'أغلقت نافذة Google',
-    'auth/cancelled-popup-request':'تم إلغاء الطلب'
-  };
-  return m[c]||('خطأ: '+c);
-}
-
-function doLogin(){
-  if(!_auth){G('authErr').textContent='جاري التحميل، انتظر لحظة...';return;}
-  var em=G('lEmail').value.trim(), pw=G('lPass').value;
-  if(!em||!pw){G('authErr').textContent='يرجى ملء جميع الحقول';return;}
-  G('authErr').textContent='';
-  var btn=G('btnLogin'); btn.disabled=true; btn.textContent='جاري الدخول...';
-  _auth.signInWithEmailAndPassword(em, pw)
-    .then(function(){ btn.disabled=false; btn.textContent='دخول ←'; })
-    .catch(function(e){
-      G('authErr').textContent=authErrMsg(e.code);
-      btn.disabled=false; btn.textContent='دخول ←';
-    });
-}
-
-function doRegister(){
-  if(!_auth){G('authErr').textContent='جاري التحميل، انتظر لحظة...';return;}
-  var nm=G('rName').value.trim(), em=G('rEmail').value.trim(), pw=G('rPass').value;
-  if(!nm||!em||!pw){G('authErr').textContent='يرجى ملء جميع الحقول';return;}
-  if(pw.length<6){G('authErr').textContent='كلمة المرور 6 أحرف على الأقل';return;}
-  G('authErr').textContent='';
-  var btn=G('btnReg'); btn.disabled=true; btn.textContent='جاري الإنشاء...';
-  _auth.createUserWithEmailAndPassword(em, pw)
-    .then(function(c){ return c.user.updateProfile({displayName:nm}); })
-    .then(function(){ btn.disabled=false; btn.textContent='إنشاء الحساب ←'; })
-    .catch(function(e){
-      G('authErr').textContent=authErrMsg(e.code);
-      btn.disabled=false; btn.textContent='إنشاء الحساب ←';
-    });
-}
-
-function doSignOut(){
-  if(!_auth)return;
-  if(!confirm('تسجيل الخروج؟'))return;
-  stopWTimer(); closeVideoModal(); _auth.signOut();
-}
-
-function doGoogle(){
-  if(!_auth){G('authErr').textContent='جاري التحميل، انتظر لحظة...';return;}
-  var btn=G('btnGoogle');
-  btn.disabled=true; btn.textContent='جاري الاتصال...';
-  G('authErr').textContent='';
-  var provider=new firebase.auth.GoogleAuthProvider();
-  provider.setCustomParameters({prompt:'select_account'});
-  var isMobile=/Android|iPhone|iPad/i.test(navigator.userAgent);
-  if(isMobile){
-    _auth.signInWithRedirect(provider);
-  } else {
-    _auth.signInWithPopup(provider)
-      .then(function(){ btn.disabled=false; btn.textContent='متابعة مع Google'; })
-      .catch(function(e){
-        G('authErr').textContent=authErrMsg(e.code);
-        btn.disabled=false; btn.textContent='متابعة مع Google';
-      });
-  }
-}
-window.openWithdraw      = function(){};
-window.closeWithdraw     = function(){G('wOv').classList.remove('open');};
-window.updateWalletPlaceholder = function(){};
-window.calcWithdraw      = function(){};
-window.submitWithdraw    = function(){};
-window.openAdmin         = function(){};
-window.closeAdmin        = function(){G('admOv').classList.remove('open');};
-window.checkAdminPass    = function(){};
-window.adminAction       = function(){};
-window.switchAdminTab    = function(){};
-// adminAddGame, adminDeleteGame, switchGameSrc are global functions — no stubs needed
-
-/* ════════════════════════════════════════════
-   BUTTON WIRING (after DOM ready — script is at bottom)
-════════════════════════════════════════════ */
-G('closeVid').addEventListener('click', closeVideoModal);
-G('modalOv').addEventListener('click', function(e){ if(e.target===G('modalOv')) closeVideoModal(); });
-G('closeGame').addEventListener('click', closeGameOverlay);
-
-/* ════════════════════════════════════════════
-   START
-════════════════════════════════════════════ */
-fetchHome('', false);
+// ═══════════════════════════════════════
+// START
+// ═══════════════════════════════════════
+fetchHome('',false);
 </script>
 </body>
 </html>
