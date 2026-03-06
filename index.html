@@ -438,6 +438,24 @@ main{padding:1.25rem 1rem;}
   .card-title{font-size:.82rem;}
   .logo{font-size:1.35rem;}
 }
+
+/* ── GAME IMAGE UPLOAD ── */
+.img-upload-box{
+  border:2px dashed var(--border);border-radius:10px;
+  padding:1rem;text-align:center;cursor:pointer;
+  transition:border-color .2s;position:relative;overflow:hidden;
+  background:#0a0a0a;
+}
+.img-upload-box:hover{border-color:var(--red);}
+.img-upload-box input[type=file]{
+  position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;
+}
+.img-preview{
+  width:100%;aspect-ratio:16/9;object-fit:cover;
+  border-radius:8px;display:none;
+}
+.img-placeholder{color:var(--muted);font-size:.82rem;padding:.5rem 0;}
+.img-placeholder span{display:block;font-size:1.8rem;margin-bottom:.3rem;}
 </style>
 </head>
 <body>
@@ -542,6 +560,17 @@ main{padding:1.25rem 1rem;}
         <div style="display:flex;gap:.4rem;margin-bottom:.9rem">
           <button class="adm-tab active" id="srcUrl" onclick="switchGameSrc('url')">🔗 رابط</button>
           <button class="adm-tab" id="srcIframe" onclick="switchGameSrc('iframe')">🖼️ iframe</button>
+        </div>
+        <div class="adm-form-row">
+          <label class="adm-form-lbl">صورة اللعبة (اختياري)</label>
+          <div class="img-upload-box" id="imgUploadBox" onclick="G('newGameImg').click()">
+            <input type="file" id="newGameImg" accept="image/*" onchange="previewGameImg(this)" onclick="event.stopPropagation()">
+            <img id="imgPreview" class="img-preview" alt="معاينة الصورة">
+            <div class="img-placeholder" id="imgPlaceholder">
+              <span>🖼️</span>
+              اضغط لرفع صورة اللعبة
+            </div>
+          </div>
         </div>
         <div class="adm-form-row">
           <label class="adm-form-lbl">اسم اللعبة</label>
@@ -1047,11 +1076,11 @@ function renderGamesGrid(list){
     var pts=gCache[g.id]||0, pct=Math.min(100,Math.round(pts/GAME_CAP*100)), maxed=pts>=GAME_CAP;
     var card=document.createElement('div'); card.className='game-card';
     card.innerHTML=
-      '<div class="game-thumb">'+
-        '<div class="game-icon">'+GICONS[i%GICONS.length]+'</div>'+
+      '<div class="game-thumb" style="background:'+(g.d.img?'#000':'linear-gradient(135deg,#1a0533,#2d0a5c)')+'">'+
+        (g.d.img?'<img src="'+g.d.img+'" style="width:100%;height:100%;object-fit:cover;display:block;" alt="">':'<div class="game-icon">'+GICONS[i%GICONS.length]+'</div>')+
         '<div class="game-ov"><div class="game-play">▶</div></div>'+
       '</div>'+
-      '<span class="game-cap-badge'+(maxed?' maxed':'')+'">'+( maxed?'✓ اكتمل':pts+'/'+GAME_CAP)+'</span>'+
+      '<span'<span class="game-cap-badge'+(maxed?' maxed':'')+'">'+( maxed?'✓ اكتمل':pts+'/'+GAME_CAP)+'</span>'+
       '<div class="game-info">'+
         '<div class="game-name">'+g.d.name+'</div>'+
         '<div class="game-bar-wrap">'+
@@ -1076,21 +1105,59 @@ function switchGameSrc(t){
   G('srcIframe').classList.toggle('active',!u);
 }
 
+function previewGameImg(input){
+  var file=input.files[0]; if(!file)return;
+  var reader=new FileReader();
+  reader.onload=function(e){
+    // Resize to max 400px wide thumbnail
+    var img=new Image();
+    img.onload=function(){
+      var canvas=document.createElement('canvas');
+      var MAX=400; var scale=Math.min(1,MAX/img.width);
+      canvas.width=Math.round(img.width*scale);
+      canvas.height=Math.round(img.height*scale);
+      canvas.getContext('2d').drawImage(img,0,0,canvas.width,canvas.height);
+      var data=canvas.toDataURL('image/jpeg',0.75);
+      G('imgPreview').src=data;
+      G('imgPreview').style.display='block';
+      G('imgPlaceholder').style.display='none';
+    };
+    img.src=e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+function resetGameImgUpload(){
+  G('newGameImg').value='';
+  G('imgPreview').src='';
+  G('imgPreview').style.display='none';
+  G('imgPlaceholder').style.display='';
+}
+
 function adminAddGame(){
   if(!_db)return;
   var name=G('newGameName').value.trim(), err=G('addErr'), btn=G('addBtn'), url='';
   if(gameSrcMode==='iframe'){
     var code=G('newGameIframe').value.trim();
     if(!code){err.textContent='أدخل كود iframe';return;}
-    var m=code.match(/src=["']([^"']+)["']/i);
+    var m=code.match(/src=["'"]([^"']+)["']/i);
     if(!m){err.textContent='لم يتم العثور على src';return;}
     url=m[1];
   } else { url=G('newGameUrl').value.trim(); }
   if(!name){err.textContent='أدخل اسم اللعبة';return;}
   if(!url||!url.startsWith('http')){err.textContent='أدخل رابطاً صحيحاً';return;}
+  // Get image (optional)
+  var imgData = G('imgPreview').style.display==='none' ? '' : (G('imgPreview').src||'');
   err.textContent='';btn.disabled=true;btn.textContent='جاري الإضافة...';
-  _db.collection('games').add({name:name,url:url,createdAt:firebase.firestore.FieldValue.serverTimestamp()})
-    .then(function(){G('newGameName').value='';G('newGameUrl').value='';G('newGameIframe').value='';btn.disabled=false;btn.textContent='➕ إضافة اللعبة';err.textContent='';loadAdminGamesList();loadGamesGrid();})
+  var doc={name:name,url:url,createdAt:firebase.firestore.FieldValue.serverTimestamp()};
+  if(imgData) doc.img=imgData;
+  _db.collection('games').add(doc)
+    .then(function(){
+      G('newGameName').value='';G('newGameUrl').value='';G('newGameIframe').value='';
+      resetGameImgUpload();
+      btn.disabled=false;btn.textContent='➕ إضافة اللعبة';err.textContent='';
+      loadAdminGamesList();loadGamesGrid();
+    })
     .catch(function(e){err.textContent='خطأ: '+e.message;btn.disabled=false;btn.textContent='➕ إضافة اللعبة';});
 }
 
@@ -1107,7 +1174,7 @@ function loadAdminGamesList(){
     el.innerHTML='';
     snap.forEach(function(doc){
       var d=doc.data(),id=doc.id;
-      el.innerHTML+='<div class="adm-game-item"><div style="min-width:0;flex:1"><div class="adm-game-name">🎮 '+d.name+'</div><div class="adm-game-url">'+d.url+'</div></div><button class="adm-game-del" onclick="adminDeleteGame(\''+id+'\')">🗑️ حذف</button></div>';
+      el.innerHTML+='<div class="adm-game-item">'+(d.img?'<img src="'+d.img+'" style="width:48px;height:48px;object-fit:cover;border-radius:7px;flex-shrink:0;">':'<div style="width:48px;height:48px;background:linear-gradient(135deg,#1a0533,#2d0a5c);border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:1.4rem;flex-shrink:0;">🎮</div>')+'<div style="min-width:0;flex:1;margin:0 .7rem"><div class="adm-game-name">'+d.name+'</div><div class="adm-game-url">'+d.url+'</div></div><button class="adm-game-del" onclick="adminDeleteGame(\''+id+'\')">🗑️ حذف</button></div>';
     });
   }).catch(function(e){el.innerHTML='<div class="adm-empty">خطأ: '+e.message+'</div>';});
 }
@@ -1244,10 +1311,7 @@ loadSc('https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js')
       }).catch(function(e){el.innerHTML='<div class="adm-empty">خطأ: '+e.message+'</div>';});
     }
 
-    /* expose admin game functions */
-    window.adminAddGame  = adminAddGame;
-    window.adminDeleteGame = adminDeleteGame;
-    window.switchGameSrc = switchGameSrc;
+
 
   }).catch(function(e){ G('authErr').textContent='فشل تحميل Firebase: '+e.message; });
 
@@ -1267,9 +1331,7 @@ window.closeAdmin        = function(){G('admOv').classList.remove('open');};
 window.checkAdminPass    = function(){};
 window.adminAction       = function(){};
 window.switchAdminTab    = function(){};
-window.adminAddGame      = function(){};
-window.adminDeleteGame   = function(){};
-window.switchGameSrc     = switchGameSrc;
+// adminAddGame, adminDeleteGame, switchGameSrc are global functions — no stubs needed
 
 /* ════════════════════════════════════════════
    BUTTON WIRING (after DOM ready — script is at bottom)
