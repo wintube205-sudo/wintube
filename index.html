@@ -1220,20 +1220,7 @@ loadSc('https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js')
     _auth.useDeviceLanguage();
     _db=firebase.firestore();
 
-    function errMsg(c){
-      var msgs={
-        'auth/user-not-found':'البريد غير مسجّل',
-        'auth/wrong-password':'كلمة المرور خاطئة',
-        'auth/invalid-credential':'البريد أو كلمة المرور غير صحيحة',
-        'auth/email-already-in-use':'هذا البريد مستخدم مسبقاً',
-        'auth/invalid-email':'بريد إلكتروني غير صالح',
-        'auth/weak-password':'كلمة المرور ضعيفة (6 أحرف على الأقل)',
-        'auth/network-request-failed':'تحقق من اتصال الإنترنت',
-        'auth/too-many-requests':'تم تجاوز عدد المحاولات، انتظر قليلاً',
-        'auth/popup-blocked':'السماح بالنوافذ المنبثقة في المتصفح',
-        'auth/popup-closed-by-user':'تم إغلاق نافذة Google',
-        'auth/cancelled-popup-request':'تم إلغاء الطلب'
-      };
+    ;
       return msgs[c]||('خطأ: '+c);
     }
 
@@ -1262,57 +1249,11 @@ loadSc('https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js')
       }
     });
 
-    /* ── Auth actions ── */
-    window.doLogin=function(){
-      var em=G('lEmail').value.trim(), pw=G('lPass').value;
-      if(!em||!pw){G('authErr').textContent='يرجى ملء جميع الحقول';return;}
-      G('authErr').textContent='';
-      var btn=G('btnLogin'); btn.disabled=true; btn.textContent='جاري الدخول...';
-      _auth.signInWithEmailAndPassword(em,pw)
-        .then(function(){ btn.disabled=false; btn.textContent='دخول ←'; })
-        .catch(function(e){
-          G('authErr').textContent=errMsg(e.code);
-          btn.disabled=false; btn.textContent='دخول ←';
-        });
-    };
-    window.doRegister=function(){
-      var nm=G('rName').value.trim(), em=G('rEmail').value.trim(), pw=G('rPass').value;
-      if(!nm||!em||!pw){G('authErr').textContent='يرجى ملء جميع الحقول';return;}
-      if(pw.length<6){G('authErr').textContent='كلمة المرور 6 أحرف على الأقل';return;}
-      G('authErr').textContent='';
-      var btn=G('btnReg'); btn.disabled=true; btn.textContent='جاري الإنشاء...';
-      _auth.createUserWithEmailAndPassword(em,pw)
-        .then(function(c){ return c.user.updateProfile({displayName:nm}); })
-        .then(function(){ btn.disabled=false; btn.textContent='إنشاء الحساب ←'; })
-        .catch(function(e){
-          G('authErr').textContent=errMsg(e.code);
-          btn.disabled=false; btn.textContent='إنشاء الحساب ←';
-        });
-    };
-    window.doSignOut=function(){if(!confirm('تسجيل الخروج؟'))return;stopWTimer();closeVideoModal();_auth.signOut();};
-
-    window.doGoogle=function(){
-      var btn=G('btnGoogle');
-      btn.disabled=true; btn.textContent='جاري الاتصال...';
-      G('authErr').textContent='';
-      var provider=new firebase.auth.GoogleAuthProvider();
-      provider.setCustomParameters({prompt:'select_account'});
-      // Use redirect on mobile, popup on desktop
-      var isMobile=/Android|iPhone|iPad/i.test(navigator.userAgent);
-      var method = isMobile ? _auth.signInWithRedirect(provider) : _auth.signInWithPopup(provider);
-      method
-        .then(function(){ btn.disabled=false; btn.textContent='متابعة مع Google'; })
-        .catch(function(e){
-          G('authErr').textContent=errMsg(e.code);
-          btn.disabled=false; btn.textContent='متابعة مع Google';
-        });
-    };
-
-    // Handle redirect result (for mobile Google sign-in)
+    // Handle Google redirect result (mobile)
     _auth.getRedirectResult().then(function(result){
-      if(result&&result.user){ /* onAuthStateChanged will handle it */ }
+      if(result&&result.user){}
     }).catch(function(e){
-      if(e.code&&e.code!=='auth/no-current-user') G('authErr').textContent=errMsg(e.code);
+      if(e.code&&e.code!=='auth/no-current-user') G('authErr').textContent=authErrMsg(e.code);
     });
 
     /* ── Withdraw ── */
@@ -1401,10 +1342,81 @@ loadSc('https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js')
 /* ════════════════════════════════════════════
    PRE-FIREBASE STUBS (overridden above after load)
 ════════════════════════════════════════════ */
-window.doLogin    = function(){G('authErr').textContent='جاري تحميل Firebase...';};
-window.doRegister = function(){G('authErr').textContent='جاري تحميل Firebase...';};
-window.doSignOut  = function(){};
-window.doGoogle   = function(){G('authErr').textContent='جاري تحميل Firebase...';};
+/* ════════════════════════════════════════════
+   AUTH FUNCTIONS — global, check _auth internally
+════════════════════════════════════════════ */
+function authErrMsg(c){
+  var m={
+    'auth/user-not-found':'البريد غير مسجّل',
+    'auth/wrong-password':'كلمة المرور خاطئة',
+    'auth/invalid-credential':'البريد أو كلمة المرور غير صحيحة',
+    'auth/email-already-in-use':'هذا البريد مستخدم مسبقاً',
+    'auth/invalid-email':'بريد إلكتروني غير صالح',
+    'auth/weak-password':'كلمة المرور ضعيفة (6 أحرف+)',
+    'auth/network-request-failed':'تحقق من اتصال الإنترنت',
+    'auth/too-many-requests':'تجاوزت عدد المحاولات، انتظر قليلاً',
+    'auth/popup-blocked':'السماح بالنوافذ المنبثقة في المتصفح',
+    'auth/popup-closed-by-user':'أغلقت نافذة Google',
+    'auth/cancelled-popup-request':'تم إلغاء الطلب'
+  };
+  return m[c]||('خطأ: '+c);
+}
+
+function doLogin(){
+  if(!_auth){G('authErr').textContent='جاري التحميل، انتظر لحظة...';return;}
+  var em=G('lEmail').value.trim(), pw=G('lPass').value;
+  if(!em||!pw){G('authErr').textContent='يرجى ملء جميع الحقول';return;}
+  G('authErr').textContent='';
+  var btn=G('btnLogin'); btn.disabled=true; btn.textContent='جاري الدخول...';
+  _auth.signInWithEmailAndPassword(em, pw)
+    .then(function(){ btn.disabled=false; btn.textContent='دخول ←'; })
+    .catch(function(e){
+      G('authErr').textContent=authErrMsg(e.code);
+      btn.disabled=false; btn.textContent='دخول ←';
+    });
+}
+
+function doRegister(){
+  if(!_auth){G('authErr').textContent='جاري التحميل، انتظر لحظة...';return;}
+  var nm=G('rName').value.trim(), em=G('rEmail').value.trim(), pw=G('rPass').value;
+  if(!nm||!em||!pw){G('authErr').textContent='يرجى ملء جميع الحقول';return;}
+  if(pw.length<6){G('authErr').textContent='كلمة المرور 6 أحرف على الأقل';return;}
+  G('authErr').textContent='';
+  var btn=G('btnReg'); btn.disabled=true; btn.textContent='جاري الإنشاء...';
+  _auth.createUserWithEmailAndPassword(em, pw)
+    .then(function(c){ return c.user.updateProfile({displayName:nm}); })
+    .then(function(){ btn.disabled=false; btn.textContent='إنشاء الحساب ←'; })
+    .catch(function(e){
+      G('authErr').textContent=authErrMsg(e.code);
+      btn.disabled=false; btn.textContent='إنشاء الحساب ←';
+    });
+}
+
+function doSignOut(){
+  if(!_auth)return;
+  if(!confirm('تسجيل الخروج؟'))return;
+  stopWTimer(); closeVideoModal(); _auth.signOut();
+}
+
+function doGoogle(){
+  if(!_auth){G('authErr').textContent='جاري التحميل، انتظر لحظة...';return;}
+  var btn=G('btnGoogle');
+  btn.disabled=true; btn.textContent='جاري الاتصال...';
+  G('authErr').textContent='';
+  var provider=new firebase.auth.GoogleAuthProvider();
+  provider.setCustomParameters({prompt:'select_account'});
+  var isMobile=/Android|iPhone|iPad/i.test(navigator.userAgent);
+  if(isMobile){
+    _auth.signInWithRedirect(provider);
+  } else {
+    _auth.signInWithPopup(provider)
+      .then(function(){ btn.disabled=false; btn.textContent='متابعة مع Google'; })
+      .catch(function(e){
+        G('authErr').textContent=authErrMsg(e.code);
+        btn.disabled=false; btn.textContent='متابعة مع Google';
+      });
+  }
+}
 window.openWithdraw      = function(){};
 window.closeWithdraw     = function(){G('wOv').classList.remove('open');};
 window.updateWalletPlaceholder = function(){};
