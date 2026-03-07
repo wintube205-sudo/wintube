@@ -760,7 +760,10 @@ function loadMoreSearch(){if(searchToken)fetchSearch(searchQuery,searchToken,tru
 // ═══════════════════════════════════════
 function openVideoModal(vid,title,desc){
   if(!currentUser){G('authOv').classList.remove('hidden');return;}
-  G('modalTitle').textContent=title;G('modalDesc').textContent=desc;G('modalPts').textContent=userPoints+' نقطة';
+  G('modalTitle').textContent=title;
+  G('modalDesc').textContent=desc;
+  G('modalPts').textContent=userPoints+' نقطة';
+  updateHeader(); // sync header before opening modal
   G('modalOv').classList.add('open');playing=false;G('pauseInd').classList.remove('on');
   startWTimer(); createYTPlayer(vid);
 }
@@ -770,6 +773,8 @@ function closeVideoModal(){
   G('pauseInd').classList.remove('on');
   if(_ytPlayer){ try{ _ytPlayer.stopVideo(); _ytPlayer.destroy(); }catch(e){} _ytPlayer=null; }
   G('ytPCWrap').innerHTML = '';
+  // تحديث الهيدر بالنقاط الحالية بعد إغلاق الفيديو
+  updateHeader();
 }
 
 // ═══════════════════════════════════════
@@ -830,10 +835,15 @@ function _buildYTPlayer(videoId){
       modestbranding: 1
     },
     events: {
-      onReady: function(e){ e.target.playVideo(); },
+      onReady: function(e){
+        e.target.playVideo();
+        // Force playing=true on mobile where onStateChange may not fire
+        setTimeout(function(){ setPlaying(true); }, 1500);
+      },
       onStateChange: function(e){
-        if(e.data === YT.PlayerState.PLAYING) setPlaying(true);
-        else if(e.data === YT.PlayerState.PAUSED || e.data === YT.PlayerState.ENDED) setPlaying(false);
+        // 1=PLAYING, 3=BUFFERING(count as playing), 2=PAUSED, 0=ENDED, 5=CUED
+        if(e.data === 1 || e.data === 3) setPlaying(true);
+        else if(e.data === 0 || e.data === 2) setPlaying(false);
       },
       onError: function(e){
         // If error, fall back to direct iframe
