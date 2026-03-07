@@ -635,6 +635,15 @@ function closeVideoModal(){
 // ═══════════════════════════════════════
 // WATCH TIMER
 // ═══════════════════════════════════════
+function drawRing(){
+  var n=G('tNum'), f=G('ringFill');
+  if(n) n.textContent=tSecs;
+  if(f){
+    var offset=CIRC*(1-(tSecs/EARN_EVERY));
+    f.style.strokeDashoffset=offset;
+    f.style.stroke=tSecs>20?'#22c55e':tSecs>10?'#f59e0b':'#ef4444';
+  }
+}
 function startWTimer(){stopWTimer();tSecs=EARN_EVERY;drawRing();wInt=setInterval(function(){if(!playing)return;tSecs--;drawRing();if(tSecs<=0){tSecs=EARN_EVERY;userPoints+=EARN_AMT;savePoints();updateHeader();G('modalPts').textContent=userPoints+' نقطة';var pv=G('modalPts');pv.classList.remove('flash');void pv.offsetWidth;pv.classList.add('flash');setTimeout(function(){pv.classList.remove('flash');},700);showToast('+'+EARN_AMT+' نقطة 🎉','rgba(34,197,94,.95)');}},1000);}
 function stopWTimer(){clearInterval(wInt);wInt=null;playing=false;tSecs=EARN_EVERY;drawRing();}
 function setPlaying(v){playing=v;G('pauseInd').classList.toggle('on',!v);}
