@@ -689,27 +689,28 @@ function secureAddPoint(source){
   if(!_db||!currentUser) return false;
   var now = Date.now();
   var last = source==='game' ? lastGamePointTime : lastVidPointTime;
-  var THIRTY = 30000; // 30 ثانية
+  // استخدم 28 ثانية بدل 30 لتعويض انحراف setInterval
+  var THRESHOLD = 28000;
 
-  if(now - last < THIRTY){
-    console.warn('⛔ محاولة غش مكشوفة! مصدر:', source, 'فرق:', (now-last)+'ms');
+  if(now - last < THRESHOLD){
+    console.warn('⛔ محاولة غش — مصدر:', source, 'فرق:', Math.round((now-last)/1000)+'s');
     return false;
   }
 
-  // تحديث الوقت محلياً
+  // تحديث الوقت والنقاط محلياً فوراً (للعرض)
   if(source==='game') lastGamePointTime = now;
   else lastVidPointTime = now;
+  userPoints++;
+  updateHeader();
 
-  // Firebase increment مباشرة (لا يمكن التلاعب به من المتصفح)
+  // مزامنة مع Firebase في الخلفية
   _db.collection('users').doc(currentUser.uid).update({
     points: firebase.firestore.FieldValue.increment(1)
-  }).then(function(){
-    // مزامنة القيمة المحلية
-    userPoints++;
-    updateHeader();
-    console.log('✅ نقطة مضافة — مصدر:', source);
   }).catch(function(e){
-    console.error('خطأ في إضافة النقطة:', e);
+    // إذا فشل Firebase، تراجع عن النقطة محلياً
+    userPoints--;
+    updateHeader();
+    console.error('خطأ Firebase:', e.message);
   });
 
   return true;
@@ -985,14 +986,6 @@ loadSc('https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js')
     _auth.useDeviceLanguage();
     _db = firebase.firestore();
     console.log('✅ Firebase ready');
-    // Lock userPoints against direct console manipulation
-    var _pts = userPoints;
-    try {
-      _securePointsInit(
-        function(){ return _pts; },
-        function(v){ _pts = v; }
-      );
-    } catch(e){}
 
 
 
