@@ -107,38 +107,33 @@ main{padding:1.25rem 1rem;}
 .a-err{color:var(--red);font-size:.82rem;margin-top:.75rem;min-height:1.2em;text-align:center;}
 
 /* VIDEO MODAL */
-.modal-ov{position:fixed;inset:0;background:rgba(0,0,0,.97);z-index:1000;display:none;align-items:center;justify-content:center;padding:0;}
+.modal-ov{position:fixed;inset:0;z-index:1000;display:none;flex-direction:column;background:#000;}
 .modal-ov.open{display:flex;}
-.modal{
-  background:var(--card);border:1px solid var(--border);
-  width:100%;max-width:860px;
-  display:flex;flex-direction:column;overflow:hidden;
-  border-radius:16px;margin:.75rem;
-  max-height:calc(100dvh - 1.5rem);
-}
-.modal-hdr{display:flex;align-items:center;gap:.7rem;padding:.85rem 1.1rem;border-bottom:1px solid var(--border);flex-shrink:0;}
+.modal{width:100%;height:100%;display:flex;flex-direction:column;overflow:hidden;}
+.modal-hdr{display:flex;align-items:center;gap:.7rem;padding:.7rem .9rem;border-bottom:1px solid var(--border);flex-shrink:0;background:#111;}
 .close-btn{background:#1a1a1a;border:1px solid var(--border);color:#fff;width:36px;height:36px;border-radius:50%;cursor:pointer;font-size:1.05rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background .2s;}
 .close-btn:hover{background:var(--red);border-color:var(--red);}
-.modal-title{flex:1;font-size:.88rem;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0;}
-.pts-ctr{display:flex;align-items:center;gap:.55rem;flex-shrink:0;}
-.t-ring{position:relative;width:36px;height:36px;flex-shrink:0;}
+.modal-title{flex:1;font-size:.85rem;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0;color:var(--text);}
+.pts-ctr{display:flex;align-items:center;gap:.5rem;flex-shrink:0;}
+.t-ring{position:relative;width:34px;height:34px;flex-shrink:0;}
 .t-ring svg{transform:rotate(-90deg);}
 .ring-bg{fill:none;stroke:#1e1e1e;stroke-width:3;}
 .ring-fill{fill:none;stroke-width:3;stroke-linecap:round;stroke-dasharray:101;stroke-dashoffset:0;transition:stroke-dashoffset .8s,stroke .3s;stroke:#22c55e;}
-.t-num{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:.68rem;font-weight:700;color:#22c55e;}
+.t-num{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:.66rem;font-weight:700;color:#22c55e;}
 .pts-info{text-align:right;}
-.pts-lbl{font-size:.65rem;color:var(--muted);}
-.pts-val{font-size:.88rem;font-weight:700;color:var(--green);}
+.pts-lbl{font-size:.62rem;color:var(--muted);}
+.pts-val{font-size:.85rem;font-weight:700;color:var(--green);}
 .pts-val.flash{animation:flashG .6s;}
 @keyframes flashG{0%,100%{color:var(--green);}50%{color:#fff;text-shadow:0 0 12px #22c55e;}}
-.iframe-wrap{position:relative;width:100%;padding-bottom:56.25%;background:#000;overflow:hidden;flex-shrink:0;}
+.iframe-wrap{flex:1;position:relative;background:#000;overflow:hidden;}
 .iframe-wrap #ytPCWrap{position:absolute;top:0;left:0;width:100%;height:100%;}
-.iframe-wrap #ytPCWrap iframe{position:absolute;top:0;left:0;width:100%;height:100%;border:none;display:block;}
-.pause-ind{position:absolute;top:0;left:0;right:0;background:rgba(0,0,0,.75);display:none;flex-direction:row;align-items:center;justify-content:center;gap:.5rem;z-index:2;padding:.45rem .8rem;pointer-events:none;}
+.iframe-wrap #ytPCWrap #ytInnerDiv,.iframe-wrap #ytPCWrap iframe{position:absolute;top:0;left:0;width:100%!important;height:100%!important;border:none;}
+.iframe-wrap #ytPCWrap iframe{position:absolute;top:0;left:0;width:100%;height:100%;border:none;}
+.pause-ind{position:absolute;top:0;left:0;right:0;background:rgba(0,0,0,.8);display:none;flex-direction:row;align-items:center;justify-content:center;gap:.5rem;z-index:5;padding:.4rem .8rem;pointer-events:none;}
 .pause-ind.on{display:flex;}
-.pause-icon{font-size:1.1rem;line-height:1;}
-.pause-lbl{font-size:.78rem;color:#f0f0f0;font-weight:600;white-space:nowrap;}
-.modal-desc{padding:.75rem 1.1rem;font-size:.78rem;color:var(--muted);max-height:70px;overflow-y:auto;flex-shrink:0;border-top:1px solid var(--border);}
+.pause-icon{font-size:1rem;}
+.pause-lbl{font-size:.75rem;color:#f0f0f0;font-weight:600;white-space:nowrap;}
+.modal-desc{padding:.6rem .9rem;font-size:.76rem;color:var(--muted);max-height:60px;overflow-y:auto;flex-shrink:0;border-top:1px solid var(--border);background:#111;}
 
 /* GAME OVERLAY */
 .game-ov-full{position:fixed;inset:0;z-index:1500;background:#000;display:none;flex-direction:column;}
@@ -232,8 +227,8 @@ main{padding:1.25rem 1rem;}
   .video-grid{grid-template-columns:repeat(2,1fr);gap:.6rem;}
   .games-grid{grid-template-columns:repeat(2,1fr);gap:.6rem;}
   main{padding:.75rem;}
-  .modal{margin:0;border-radius:14px 14px 0 0;max-height:97dvh;height:auto;}
-  .modal-ov{align-items:center;}
+  
+  
 }
 @media(max-width:420px){
   .video-grid{grid-template-columns:1fr;}
@@ -255,6 +250,8 @@ main{padding:1.25rem 1rem;}
 
 @keyframes spin{to{transform:rotate(360deg);}}
 </style>
+<!-- YT IFrame API -->
+<script src="https://www.youtube.com/iframe_api"></script>
 </head>
 <body>
 
@@ -490,7 +487,7 @@ var _auth=null, _db=null;
 var currentUser=null, userPoints=0, adminUnlocked=false, gameSrcMode='url';
 var gCache={};
 var CIRC=101, tSecs=EARN_EVERY, wInt=null, playing=false;
-var ytPlayer=null, ytReady=false, ytPending=null;
+var ytPlayer=null;
 var gInt=null, gElapsed=0, activeGid=null;
 var homeToken='', searchToken='', searchQuery='';
 var GICONS=['🎮','🕹️','👾','🏆','⚔️','🧩','🚀','🎯','🏎️','⚽','🎲','🃏'];
@@ -631,7 +628,7 @@ function closeVideoModal(){
   G('modalOv').classList.remove('open');
   stopWTimer();
   G('pauseInd').classList.remove('on');
-  ytPlayer = null;
+  if(_ytPlayer){ try{ _ytPlayer.stopVideo(); _ytPlayer.destroy(); }catch(e){} _ytPlayer=null; }
   G('ytPCWrap').innerHTML = '';
 }
 
@@ -643,20 +640,55 @@ function stopWTimer(){clearInterval(wInt);wInt=null;playing=false;tSecs=EARN_EVE
 function setPlaying(v){playing=v;G('pauseInd').classList.toggle('on',!v);}
 
 // ═══════════════════════════════════════
-// VIDEO PLAYER
+// VIDEO PLAYER — YT IFrame API
 // ═══════════════════════════════════════
+var _ytPlayer = null;
+var _ytReady = false;
+var _ytPendingId = null;
+
+window.onYouTubeIframeAPIReady = function(){
+  _ytReady = true;
+  if(_ytPendingId){ _buildYTPlayer(_ytPendingId); _ytPendingId = null; }
+};
+
 function createYTPlayer(videoId){
-  var wrap = G('ytPCWrap');
-  wrap.innerHTML = '';
-  var iframe = document.createElement('iframe');
-  iframe.src = 'https://www.youtube-nocookie.com/embed/' + videoId +
-    '?autoplay=1&rel=0&playsinline=1&fs=1&modestbranding=1';
-  iframe.setAttribute('allowfullscreen','1');
-  iframe.setAttribute('allow','autoplay; fullscreen; encrypted-media; picture-in-picture');
-  iframe.style.cssText = 'position:absolute;top:0;left:0;width:100%;height:100%;border:none;display:block;';
-  wrap.appendChild(iframe);
-  ytPlayer = iframe;
-  setPlaying(true);
+  // Destroy old player
+  if(_ytPlayer){ try{ _ytPlayer.destroy(); }catch(e){} _ytPlayer=null; }
+  G('ytPCWrap').innerHTML = '<div id="ytInnerDiv"></div>';
+
+  if(_ytReady){
+    _buildYTPlayer(videoId);
+  } else {
+    _ytPendingId = videoId;
+  }
+}
+
+function _buildYTPlayer(videoId){
+  _ytPlayer = new YT.Player('ytInnerDiv', {
+    videoId: videoId,
+    playerVars: {
+      autoplay: 1,
+      playsinline: 1,
+      rel: 0,
+      fs: 1,
+      modestbranding: 1
+    },
+    events: {
+      onReady: function(e){ e.target.playVideo(); },
+      onStateChange: function(e){
+        if(e.data === YT.PlayerState.PLAYING) setPlaying(true);
+        else if(e.data === YT.PlayerState.PAUSED || e.data === YT.PlayerState.ENDED) setPlaying(false);
+      },
+      onError: function(e){
+        // If error, fall back to direct iframe
+        G('ytPCWrap').innerHTML =
+          '<iframe src="https://www.youtube.com/embed/'+videoId+'?autoplay=1&playsinline=1&rel=0" '+
+          'allow="autoplay;fullscreen" allowfullscreen '+
+          'style="position:absolute;top:0;left:0;width:100%;height:100%;border:none;"></iframe>';
+        setPlaying(true);
+      }
+    }
+  });
 }
 
 // ═══════════════════════════════════════
