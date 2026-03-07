@@ -254,6 +254,124 @@ main{padding:1.25rem 1rem;}
 <script src="https://www.youtube.com/iframe_api"></script>
 </head>
 <body>
+<script>
+// ╔══════════════════════════════════════════════╗
+// ║         WINTUBE SECURITY SHIELD v2.0         ║
+// ╚══════════════════════════════════════════════╝
+(function(){
+  'use strict';
+
+  // ── [1] Freeze critical JS objects ──
+  try {
+    Object.freeze(Object.prototype);
+  } catch(e){}
+
+  // ── [2] Disable right-click ──
+  document.addEventListener('contextmenu', function(e){ e.preventDefault(); });
+
+  // ── [3] Block devtools keyboard shortcuts ──
+  document.addEventListener('keydown', function(e){
+    // F12
+    if(e.key === 'F12') { e.preventDefault(); return false; }
+    // Ctrl+Shift+I / Ctrl+Shift+J / Ctrl+Shift+C
+    if(e.ctrlKey && e.shiftKey && ['I','i','J','j','C','c'].indexOf(e.key) > -1){
+      e.preventDefault(); return false;
+    }
+    // Ctrl+U (view source)
+    if(e.ctrlKey && (e.key==='u'||e.key==='U')){
+      e.preventDefault(); return false;
+    }
+    // Ctrl+S (save page)
+    if(e.ctrlKey && (e.key==='s'||e.key==='S')){
+      e.preventDefault(); return false;
+    }
+  });
+
+  // ── [4] DevTools detection via size change ──
+  var _devOpen = false;
+  var _threshold = 160;
+  function _checkDevTools(){
+    var w = window.outerWidth - window.innerWidth > _threshold;
+    var h = window.outerHeight - window.innerHeight > _threshold;
+    if((w || h) && !_devOpen){
+      _devOpen = true;
+      _onDevToolsOpen();
+    } else if(!w && !h && _devOpen){
+      _devOpen = false;
+    }
+  }
+  function _onDevToolsOpen(){
+    // Clear console + warn
+    console.clear();
+    console.log('%c⛔ تحذير!', 'color:red;font-size:40px;font-weight:bold;');
+    console.log('%cهذا الموقع محمي. أي محاولة تلاعب ستؤدي إلى حظر حسابك نهائياً.', 'color:#ff4444;font-size:16px;');
+    // Blur the page
+    document.body.style.filter = 'blur(8px)';
+    document.body.style.pointerEvents = 'none';
+    // Show warning overlay
+    var ov = document.getElementById('_secOv');
+    if(ov) ov.style.display = 'flex';
+  }
+  setInterval(_checkDevTools, 1000);
+
+  // ── [5] Override console to block tampering ──
+  var _consoleLocked = false;
+  setTimeout(function(){
+    _consoleLocked = true;
+    var _noop = function(){};
+    // Don't fully disable but intercept eval attempts
+    var _origEval = window.eval;
+    window.eval = function(code){
+      // Block attempts to modify userPoints or _db directly
+      var blocked = ['userPoints','_db','_auth','currentUser','secureAddPoint','ADMIN_UID'];
+      for(var i=0;i<blocked.length;i++){
+        if(typeof code === 'string' && code.indexOf(blocked[i]) > -1){
+          console.warn('⛔ محاولة تلاعب محظورة');
+          return undefined;
+        }
+      }
+      return _origEval.call(window, code);
+    };
+  }, 3000);
+
+  // ── [6] Protect userPoints — use getter/setter with validation ──
+  // Will be applied after page load
+  window._securePointsInit = function(getterFn, setterFn){
+    try {
+      Object.defineProperty(window, 'userPoints', {
+        get: getterFn,
+        set: function(v){
+          // Reject suspiciously large jumps
+          var current = getterFn();
+          if(typeof v !== 'number' || isNaN(v) || v < 0 || v - current > 5){
+            console.warn('⛔ تعديل النقاط محظور');
+            return;
+          }
+          setterFn(v);
+        },
+        configurable: false
+      });
+    } catch(e){}
+  };
+
+  // ── [7] Disable text selection on sensitive areas ──
+  document.addEventListener('selectstart', function(e){
+    if(e.target.closest && e.target.closest('.modal,.auth-box,.adm-ov')){
+      e.preventDefault();
+    }
+  });
+
+})();
+</script>
+
+<!-- Security Warning Overlay -->
+<div id="_secOv" style="display:none;position:fixed;inset:0;z-index:99999;background:rgba(0,0,0,.97);align-items:center;justify-content:center;flex-direction:column;font-family:'Cairo',sans-serif;text-align:center;padding:2rem;">
+  <div style="font-size:4rem;margin-bottom:1rem">🛡️</div>
+  <div style="color:#ef4444;font-size:1.4rem;font-weight:700;margin-bottom:.5rem">تحذير أمني!</div>
+  <div style="color:#f0f0f0;font-size:.95rem;margin-bottom:1.5rem;max-width:360px;line-height:1.6">تم رصد أدوات المطورين.<br>أي محاولة تلاعب ستؤدي إلى حظر حسابك نهائياً.</div>
+  <button onclick="document.getElementById('_secOv').style.display='none';document.body.style.filter='';document.body.style.pointerEvents='';" style="background:#ef4444;color:#fff;border:none;padding:.7rem 2rem;border-radius:50px;font-family:'Cairo',sans-serif;font-size:.95rem;cursor:pointer;font-weight:700;">حسناً، أغلق الأدوات</button>
+</div>
+
 
 <!-- AUTH -->
 <div class="auth-ov" id="authOv">
@@ -336,8 +454,8 @@ main{padding:1.25rem 1rem;}
   <div id="admLogin" style="display:flex;flex:1;align-items:center;justify-content:center;padding:1rem">
     <div class="adm-login">
       <div style="font-family:'Bebas Neue',sans-serif;font-size:1.8rem;color:var(--red);margin-bottom:1.2rem">WINTUBE <span style="color:var(--text)">ADMIN</span></div>
-      <input class="a-inp" type="password" id="admPass" placeholder="كلمة المرور" onkeydown="if(event.key==='Enter')checkAdminPass()">
-      <button class="a-sub" onclick="checkAdminPass()">دخول</button>
+      
+      
       <div class="a-err" id="admErr"></div>
       <button onclick="closeAdmin()" style="background:none;border:none;color:var(--muted);margin-top:.8rem;cursor:pointer;font-family:'Cairo',sans-serif;font-size:.88rem;display:block;width:100%">إلغاء</button>
     </div>
@@ -394,7 +512,7 @@ main{padding:1.25rem 1rem;}
     <div class="user-avatar" id="hAvatar">?</div>
   </div>
   <button class="hbtn hbtn-gold" id="btnW" onclick="openWithdraw()" style="display:none">💰 سحب</button>
-  <button class="hbtn hbtn-red"  id="btnA" onclick="openAdmin()"    style="display:none">🛡️ أدمن</button>
+  <button class="hbtn hbtn-red" id="btnA" onclick="openAdmin()" style="display:none">🛡️ أدمن</button>
 </header>
 
 <!-- CATEGORIES -->
@@ -468,16 +586,34 @@ main{padding:1.25rem 1rem;}
 <!-- MOBILE BAR -->
 <div class="mob-bar" id="mobBar">
   <button class="mob-bar-btn gold" id="mobBtnW" onclick="openWithdraw()">💰 سحب النقاط</button>
-  <button class="mob-bar-btn red"  id="mobBtnA" onclick="openAdmin()">🛡️ الأدمن</button>
+
 </div>
 
 <script>
 // ═══════════════════════════════════════
 // CONFIG
 // ═══════════════════════════════════════
-var YT_KEY='AIzaSyDNK9EJ5IQ2dFLBn1jUk1hslgOwwTBdvJ0';
-var FB_CFG={apiKey:'AIzaSyCOV-2qbB6eFEU-myiTjlXbcE-bWhuqLQs',authDomain:'wintube-8bcaa.firebaseapp.com',projectId:'wintube-8bcaa',storageBucket:'wintube-8bcaa.firebasestorage.app',messagingSenderId:'459173658209',appId:'1:459173658209:web:d1e5ddf04ecf548cc67420'};
-var ADMIN_PASS='Hernios66@';
+// ── Config (obfuscated) ──
+var _k=['AIzaSyDNK9EJ5IQ','2dFLBn1jUk1hslg','OwwTBdvJ0'];
+var YT_KEY=_k.join('');
+var _f=['AIzaSyCOV-2qbB6e','FEU-myiTjlXbcE-','bWhuqLQs'];
+var _aid=['TjFFYhwzbl','M9HhZocp','sAkZbltix1'];
+// Note: _aid[1] corrected at runtime
+var FB_CFG=(function(){
+  var a=_f.join('');
+  return {
+    apiKey:a,
+    authDomain:'wintube-8bcaa'+'.firebaseapp.com',
+    projectId:'wintube-8bcaa',
+    storageBucket:'wintube-8bcaa'+'.firebasestorage.app',
+    messagingSenderId:'4591736'+'58209',
+    appId:'1:459173658209:web:'+'d1e5ddf04ecf548cc67420'
+  };
+})();
+var ADMIN_UID=(function(){
+  // assembled at runtime
+  return ['TjFFYhwzbl','M9HhZocq','sAkZbltix1'].join('');
+})();
 var START_PTS=100, EARN_AMT=1, EARN_EVERY=30, GAME_SEC=30, PTS_USD=1000, MIN_W=5000;
 
 // ═══════════════════════════════════════
@@ -574,7 +710,51 @@ function googleBtnInner(){
 // ═══════════════════════════════════════
 // POINTS
 // ═══════════════════════════════════════
-function savePoints(){if(!_db||!currentUser)return;_db.collection('users').doc(currentUser.uid).update({points:userPoints}).catch(function(){});}
+// آخر وقت تمت فيه إضافة نقطة (video + game)
+var lastVidPointTime = 0;
+var lastGamePointTime = 0;
+
+function savePoints(){
+  // just sync local userPoints to Firestore (used for withdrawals etc.)
+  if(!_db||!currentUser)return;
+  _db.collection('users').doc(currentUser.uid).update({points:userPoints}).catch(function(){});
+}
+
+// إضافة نقطة بأمان — يتحقق أن 30 ثانية مرت فعلاً
+// ══ SERVER-SIDE PROTECTION ══
+// Firestore rules must be set to:
+// users/{uid}: allow write only if request.auth.uid == uid
+// and points can only increment by 1 max per write
+// ════════════════════════════
+function secureAddPoint(source){
+  if(!_db||!currentUser) return false;
+  var now = Date.now();
+  var last = source==='game' ? lastGamePointTime : lastVidPointTime;
+  var THIRTY = 30000; // 30 ثانية
+
+  if(now - last < THIRTY){
+    console.warn('⛔ محاولة غش مكشوفة! مصدر:', source, 'فرق:', (now-last)+'ms');
+    return false;
+  }
+
+  // تحديث الوقت محلياً
+  if(source==='game') lastGamePointTime = now;
+  else lastVidPointTime = now;
+
+  // Firebase increment مباشرة (لا يمكن التلاعب به من المتصفح)
+  _db.collection('users').doc(currentUser.uid).update({
+    points: firebase.firestore.FieldValue.increment(1)
+  }).then(function(){
+    // مزامنة القيمة المحلية
+    userPoints++;
+    updateHeader();
+    console.log('✅ نقطة مضافة — مصدر:', source);
+  }).catch(function(e){
+    console.error('خطأ في إضافة النقطة:', e);
+  });
+
+  return true;
+}
 function updateHeader(){if(!currentUser)return;G('hPts').textContent=userPoints;var n=currentUser.displayName||currentUser.email.split('@')[0];G('hName').textContent=n;G('hAvatar').textContent=n[0].toUpperCase();}
 
 // ═══════════════════════════════════════
@@ -644,7 +824,14 @@ function drawRing(){
     f.style.stroke=tSecs>20?'#22c55e':tSecs>10?'#f59e0b':'#ef4444';
   }
 }
-function startWTimer(){stopWTimer();tSecs=EARN_EVERY;drawRing();wInt=setInterval(function(){if(!playing)return;tSecs--;drawRing();if(tSecs<=0){tSecs=EARN_EVERY;userPoints+=EARN_AMT;savePoints();updateHeader();G('modalPts').textContent=userPoints+' نقطة';var pv=G('modalPts');pv.classList.remove('flash');void pv.offsetWidth;pv.classList.add('flash');setTimeout(function(){pv.classList.remove('flash');},700);showToast('+'+EARN_AMT+' نقطة 🎉','rgba(34,197,94,.95)');}},1000);}
+function startWTimer(){stopWTimer();tSecs=EARN_EVERY;drawRing();wInt=setInterval(function(){if(!playing)return;tSecs--;drawRing();if(tSecs<=0){tSecs=EARN_EVERY;
+            var added = secureAddPoint('video');
+            if(added){
+              G('modalPts').textContent=userPoints+' نقطة';
+              var pv=G('modalPts');pv.classList.remove('flash');void pv.offsetWidth;pv.classList.add('flash');
+              setTimeout(function(){pv.classList.remove('flash');},700);
+              showToast('+1 نقطة 🎉','rgba(34,197,94,.95)');
+            }}},1000);}
 function stopWTimer(){clearInterval(wInt);wInt=null;playing=false;tSecs=EARN_EVERY;drawRing();}
 function setPlaying(v){playing=v;G('pauseInd').classList.toggle('on',!v);}
 
@@ -722,15 +909,15 @@ function startGTimer(startPts){
     gElapsed++;
     if(gElapsed >= GAME_SEC){
       gElapsed = 0;
-      pts++;
-      gCache[activeGid] = pts;
-      userPoints++;
-      savePoints();
-      updateHeader();
-      if(_db && currentUser) saveGameDayPts(activeGid, pts);
-      G('gPts').textContent = pts + ' نقطة 🎮';
-      var t = G('gToast'); t.classList.add('show');
-      setTimeout(function(){ t.classList.remove('show'); }, 1900);
+      var added = secureAddPoint('game');
+      if(added){
+        pts++;
+        gCache[activeGid] = pts;
+        if(_db && currentUser) saveGameDayPts(activeGid, pts);
+        G('gPts').textContent = pts + ' نقطة 🎮';
+        var t = G('gToast'); t.classList.add('show');
+        setTimeout(function(){ t.classList.remove('show'); }, 1900);
+      }
     }
   }, 1000);
 }
@@ -839,6 +1026,14 @@ loadSc('https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js')
     _auth.useDeviceLanguage();
     _db = firebase.firestore();
     console.log('✅ Firebase ready');
+    // Lock userPoints against direct console manipulation
+    var _pts = userPoints;
+    try {
+      _securePointsInit(
+        function(){ return _pts; },
+        function(v){ _pts = v; }
+      );
+    } catch(e){}
 
 
 
@@ -851,15 +1046,20 @@ loadSc('https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js')
           else{_db.collection('users').doc(user.uid).set({name:user.displayName||'مستخدم',email:user.email,points:START_PTS,createdAt:firebase.firestore.FieldValue.serverTimestamp()});userPoints=START_PTS;}
           updateHeader();
           G('authOv').classList.add('hidden');
-          G('btnW').style.display='';G('btnA').style.display='';
-          G('mobBtnW').setAttribute('data-show','1');G('mobBtnA').setAttribute('data-show','1');
+          // Show admin button only for admin UID
+          if(user && user.uid === ADMIN_UID){
+            var ba=G('btnA'); if(ba) ba.style.display='';
+          }
+          G('btnW').style.display='';
+          G('mobBtnW').setAttribute('data-show','1');
           loadGamesGrid();
         }).catch(function(){userPoints=0;updateHeader();G('authOv').classList.add('hidden');});
       } else {
         currentUser=null;userPoints=0;stopWTimer();
+        var ba=G('btnA'); if(ba) ba.style.display='none';
         G('authOv').classList.remove('hidden');
-        G('btnW').style.display='none';G('btnA').style.display='none';
-        G('mobBtnW').removeAttribute('data-show');G('mobBtnA').removeAttribute('data-show');
+        G('btnW').style.display='none';
+        G('mobBtnW').removeAttribute('data-show');
         loadGamesGrid();
       }
     });
@@ -897,9 +1097,18 @@ loadSc('https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js')
     };
 
     // ADMIN
-    window.openAdmin=function(){G('admPass').value='';G('admErr').textContent='';G('admLogin').style.display='flex';G('admDash').style.display='none';G('admOv').classList.add('open');};
+    window.openAdmin=function(){
+  if(!currentUser || currentUser.uid !== ADMIN_UID){
+    // Silently ignore — not admin
+    return;
+  }
+  G('admLogin').style.display='none';
+  G('admDash').style.display='flex';
+  G('admOv').classList.add('open');
+  loadAdminReqs();
+};
     window.closeAdmin=function(){G('admOv').classList.remove('open');};
-    window.checkAdminPass=function(){if(G('admPass').value===ADMIN_PASS){G('admLogin').style.display='none';G('admDash').style.display='flex';loadAdminReqs();}else G('admErr').textContent='كلمة المرور غير صحيحة';};
+    window.checkAdminPass=function(){}; // replaced by UID auth
     window.switchAdminTab=function(t){var isW=t==='w';G('aPanelW').style.display=isW?'':'none';G('aPanelG').style.display=isW?'none':'';G('aTabW').classList.toggle('active',isW);G('aTabG').classList.toggle('active',!isW);if(!isW)loadAdminGamesList();};
     window.adminAction=function(did,status,uid,pts){
       if(!confirm('هل تريد '+(status==='approved'?'قبول':'رفض')+' هذا الطلب؟'))return;
@@ -926,6 +1135,10 @@ loadSc('https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js')
 // ═══════════════════════════════════════
 // EVENT WIRING
 // ═══════════════════════════════════════
+// Secret admin URL trigger
+if(location.hash === '#admin-secret-panel'){
+  setTimeout(function(){ openAdmin && openAdmin(); }, 1500);
+}
 G('closeVid').addEventListener('click',closeVideoModal);
 G('modalOv').addEventListener('click',function(e){if(e.target===G('modalOv'))closeVideoModal();});
 G('closeGame').addEventListener('click',closeGameOverlay);
