@@ -694,9 +694,22 @@ var lastVidPointTime = 0;
 var lastGamePointTime = 0;
 
 function savePoints(){
-  // just sync local userPoints to Firestore (used for withdrawals etc.)
+  // Sync local points to Firestore — only called for withdrawal deduction
   if(!_db||!currentUser)return;
-  _db.collection('users').doc(currentUser.uid).update({points:userPoints}).catch(function(){});
+  _db.collection('users').doc(currentUser.uid).update({points:userPoints}).catch(function(e){
+    console.error('savePoints error:', e.message);
+  });
+}
+// Refresh points from Firestore (called on page load after auth)
+function refreshPointsFromDB(){
+  if(!_db||!currentUser)return;
+  _db.collection('users').doc(currentUser.uid).get().then(function(snap){
+    if(snap.exists){
+      userPoints = snap.data().points || 0;
+      updateHeader();
+      var mp = G('modalPts'); if(mp) mp.textContent = userPoints + ' نقطة';
+    }
+  }).catch(function(){});
 }
 
 // إضافة نقطة بأمان — يتحقق أن 30 ثانية مرت فعلاً
@@ -1021,8 +1034,16 @@ loadSc('https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js')
       if(user){
         currentUser=user;
         _db.collection('users').doc(user.uid).get().then(function(snap){
-          if(snap.exists)userPoints=snap.data().points||0;
-          else{_db.collection('users').doc(user.uid).set({name:user.displayName||'مستخدم',email:user.email,points:START_PTS,createdAt:firebase.firestore.FieldValue.serverTimestamp()});userPoints=START_PTS;}
+          if(snap.exists){ userPoints=snap.data().points||0; }
+          else{
+            _db.collection('users').doc(user.uid).set({
+              name:user.displayName||'مستخدم',
+              email:user.email,
+              points:START_PTS,
+              createdAt:firebase.firestore.FieldValue.serverTimestamp()
+            });
+            userPoints=START_PTS;
+          }
           updateHeader();
           G('authOv').classList.add('hidden');
           // Show admin button only for admin UID
@@ -1097,6 +1118,8 @@ loadSc('https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js')
     };
     function loadAdminReqs(){
       var el=G('admReqs');el.innerHTML='<div class="adm-empty">جاري التحميل...</div>';
+      // NOTE: Firestore rules must allow admin UID to read all withdrawals
+      // Rule: match /withdrawals/{id} { allow read: if request.auth.uid == "TjFFYhwzblM9HhZocqsAkZbltix1"; }
       _db.collection('withdrawals').orderBy('createdAt','desc').limit(50).get().then(function(snap){
         if(snap.empty){el.innerHTML='<div class="adm-empty">لا توجد طلبات</div>';return;}
         el.innerHTML='';
@@ -1114,6 +1137,16 @@ loadSc('https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js')
 // ═══════════════════════════════════════
 // EVENT WIRING
 // ═══════════════════════════════════════
+// Refresh points when user returns to tab (fixes disappearing points)
+document.addEventListener('visibilitychange', function(){
+  if(document.visibilityState === 'visible' && currentUser) {
+    refreshPointsFromDB();
+  }
+});
+window.addEventListener('focus', function(){
+  if(currentUser) refreshPointsFromDB();
+});
+
 // Secret admin URL trigger
 if(location.hash === '#admin-secret-panel'){
   setTimeout(function(){ openAdmin && openAdmin(); }, 1500);
