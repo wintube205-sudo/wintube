@@ -1137,11 +1137,20 @@ loadSc('https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js')
 // ═══════════════════════════════════════
 // EVENT WIRING
 // ═══════════════════════════════════════
-// Refresh points when user returns to tab (fixes disappearing points)
+// إيقاف الفيديو عند مغادرة الصفحة أو فتح تاب آخر
 document.addEventListener('visibilitychange', function(){
-  if(document.visibilityState === 'visible' && currentUser) {
-    refreshPointsFromDB();
+  if(document.visibilityState === 'hidden'){
+    // أوقف الفيديو
+    if(_ytPlayer){ try{ _ytPlayer.pauseVideo(); }catch(e){} }
+    setPlaying(false);
+  } else {
+    // عند العودة: حدّث النقاط من Firebase
+    if(currentUser) refreshPointsFromDB();
   }
+});
+window.addEventListener('blur', function(){
+  if(_ytPlayer){ try{ _ytPlayer.pauseVideo(); }catch(e){} }
+  setPlaying(false);
 });
 window.addEventListener('focus', function(){
   if(currentUser) refreshPointsFromDB();
