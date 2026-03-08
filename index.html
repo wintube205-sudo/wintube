@@ -217,6 +217,15 @@ main{padding:1.25rem 1rem;}
 .img-placeholder{color:var(--muted);font-size:.82rem;padding:.5rem 0;}
 .img-placeholder span{display:block;font-size:1.8rem;margin-bottom:.3rem;}
 
+
+/* ═══ AD CONTAINERS ═══ */
+.ad-slot{width:100%;overflow:hidden;text-align:center;background:transparent;margin:0.75rem 0;display:block;}
+.ad-slot-banner{width:100%;min-height:60px;}
+.ad-slot-mid{width:100%;min-height:250px;}
+.ad-label{font-size:.6rem;color:var(--muted);text-align:center;margin-bottom:2px;letter-spacing:1px;text-transform:uppercase;}
+@media(max-width:767px){
+  .ad-slot-banner{min-height:50px;}
+}
 /* MOBILE */
 @media(max-width:767px){
   header{height:auto;padding:.55rem .75rem;flex-wrap:wrap;gap:.45rem;}
@@ -254,15 +263,6 @@ main{padding:1.25rem 1rem;}
 <!-- YT IFrame API -->
 <script src="https://www.youtube.com/iframe_api"></script>
 
-<!-- ═══════════════════════════════════
-     إعلانات HilltopAds
-════════════════════════════════════ -->
-<script type="text/javascript" src="//data527.click/f0a41fa00cf50b1a0813/f62c1b69b8/?placementName=default"></script>
-
-<!-- ═══════════════════════════════════
-     إعلانات Adsterra
-════════════════════════════════════ -->
-<script src="https://pl28874602.effectivegatecpm.com/12/bc/27/12bc27a1c3f3ac66a08b09f43e2ef789.js"></script>
 </head>
 <body>
 <script>
@@ -498,6 +498,12 @@ main{padding:1.25rem 1rem;}
   <button class="cat-btn" onclick="searchCat('أخبار',this)">📰 أخبار</button>
 </div>
 
+<!-- ══ إعلان Adsterra ══ -->
+<div class="ad-slot ad-slot-banner" style="padding:.3rem 1rem">
+  <div class="ad-label">إعلان</div>
+  <script src="https://pl28874602.effectivegatecpm.com/12/bc/27/12bc27a1c3f3ac66a08b09f43e2ef789.js"></script>
+</div>
+
 <!-- HOME -->
 <main id="secHome">
   <div class="section-title">🔥 الفيديوهات الرائجة</div>
@@ -505,7 +511,14 @@ main{padding:1.25rem 1rem;}
   <div class="empty-st" id="emHome"><div class="icon">🎬</div><p>لا توجد نتائج</p></div>
   <div class="video-grid" id="gridHome"></div>
   <div class="lm-wrap" id="lmHome" style="display:none"><button class="lm-btn" onclick="loadMoreHome()">تحميل المزيد</button></div>
-  <div id="gamesStrip" style="margin-top:2.5rem">
+
+  <!-- ══ إعلان Adsterra (بين الفيديوهات والألعاب) ══ -->
+<div class="ad-slot" style="padding:.3rem 1rem;margin:1rem 0">
+  <div class="ad-label">إعلان</div>
+  <script src="https://pl28874602.effectivegatecpm.com/12/bc/27/12bc27a1c3f3ac66a08b09f43e2ef789.js"></script>
+</div>
+
+<div id="gamesStrip" style="margin-top:2.5rem">
     <div class="section-title">🎮 الألعاب <span style="font-size:.72rem;font-weight:400;color:var(--muted);margin-right:.4rem">اكسب نقاطاً لا محدودة يومياً 🎮</span></div>
     <div class="games-grid" id="gGrid"></div>
     <div class="empty-st" id="gEmpty" style="display:none"><div class="icon">🎮</div><p>لا توجد ألعاب بعد</p></div>
@@ -519,6 +532,7 @@ main{padding:1.25rem 1rem;}
   <div class="empty-st" id="emSearch"><div class="icon">🎬</div><p>لا توجد نتائج</p></div>
   <div class="video-grid" id="gridSearch"></div>
   <div class="lm-wrap" id="lmSearch" style="display:none"><button class="lm-btn" onclick="loadMoreSearch()">تحميل المزيد</button></div>
+
 </main>
 
 <!-- VIDEO MODAL -->
@@ -1180,5 +1194,7 @@ G('closeGame').addEventListener('click',closeGameOverlay);
 // ═══════════════════════════════════════
 fetchHome('',false);
 </script>
+<!-- ══ HilltopAds Pop-under / Push ══ -->
+<script type="text/javascript" src="//data527.click/f0a41fa00cf50b1a0813/f62c1b69b8/?placementName=default" async></script>
 </body>
 </html>
