@@ -217,15 +217,35 @@ main{padding:1.25rem 1rem;}
 .img-placeholder{color:var(--muted);font-size:.82rem;padding:.5rem 0;}
 .img-placeholder span{display:block;font-size:1.8rem;margin-bottom:.3rem;}
 
-
 /* ═══ AD CONTAINERS ═══ */
-.ad-slot{width:100%;overflow:hidden;text-align:center;background:transparent;margin:0.75rem 0;display:block;}
-.ad-slot-banner{width:100%;min-height:60px;}
-.ad-slot-mid{width:100%;min-height:250px;}
-.ad-label{font-size:.6rem;color:var(--muted);text-align:center;margin-bottom:2px;letter-spacing:1px;text-transform:uppercase;}
+.ad-wrapper {
+    width: 100%;
+    max-width: 100vw;
+    margin: 1rem auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+    z-index: 10; /* لحماية النوافذ المنبثقة والهيدر */
+    background: transparent;
+    box-sizing: border-box;
+}
+.ad-wrapper iframe, .ad-wrapper > div {
+    max-width: 100% !important; /* يمنع الإعلانات من تخطي عرض الشاشة */
+}
+.ad-label {
+    font-size: .6rem;
+    color: var(--muted);
+    text-align: center;
+    margin-bottom: 4px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
 /* MOBILE */
 @media(max-width:767px){
-  .ad-slot-banner{min-height:50px;}
   header{height:auto;padding:.55rem .75rem;flex-wrap:wrap;gap:.45rem;}
   .logo{font-size:1.5rem;order:1;}
   .user-panel{order:2;margin-right:auto;}
@@ -235,8 +255,6 @@ main{padding:1.25rem 1rem;}
   .video-grid{grid-template-columns:repeat(2,1fr);gap:.6rem;}
   .games-grid{grid-template-columns:repeat(2,1fr);gap:.6rem;}
   main{padding:.75rem;}
-  
-  
 }
 @media(max-width:420px){
   .video-grid{grid-template-columns:1fr;}
@@ -256,9 +274,7 @@ main{padding:1.25rem 1rem;}
   .mob-bar-btn[data-show]{display:flex;}
 }
 
-
 </style>
-<!-- YT IFrame API -->
 <script src="https://www.youtube.com/iframe_api"></script>
 
 </head>
@@ -269,31 +285,20 @@ main{padding:1.25rem 1rem;}
 // ╚══════════════════════════════════════════════╝
 (function(){
   'use strict';
-
-  // ── [1] Object.freeze removed — breaks Firebase ──
-
-  // ── [2] Disable right-click ──
   document.addEventListener('contextmenu', function(e){ e.preventDefault(); });
-
-  // ── [3] Block devtools keyboard shortcuts ──
   document.addEventListener('keydown', function(e){
-    // F12
     if(e.key === 'F12') { e.preventDefault(); return false; }
-    // Ctrl+Shift+I / Ctrl+Shift+J / Ctrl+Shift+C
     if(e.ctrlKey && e.shiftKey && ['I','i','J','j','C','c'].indexOf(e.key) > -1){
       e.preventDefault(); return false;
     }
-    // Ctrl+U (view source)
     if(e.ctrlKey && (e.key==='u'||e.key==='U')){
       e.preventDefault(); return false;
     }
-    // Ctrl+S (save page)
     if(e.ctrlKey && (e.key==='s'||e.key==='S')){
       e.preventDefault(); return false;
     }
   });
 
-  // ── [4] DevTools detection via size change ──
   var _devOpen = false;
   var _threshold = 160;
   function _checkDevTools(){
@@ -310,11 +315,9 @@ main{padding:1.25rem 1rem;}
     console.clear();
     console.log('%c⛔ تحذير!', 'color:red;font-size:40px;font-weight:bold;');
     console.log('%cهذا الموقع محمي. أي محاولة تلاعب ستؤدي إلى حظر حسابك نهائياً.', 'color:#ff4444;font-size:16px;');
-    // Blur ONLY non-ad content (لا تؤثر على iframes الإعلانات)
     var adIds = ['wt-ad-zone-1','wt-ad-zone-2','wt-ad-zone-3','wt-aads-wrap','wt-adsterra-top','wt-hilltop-mid'];
     document.body.style.filter = 'blur(8px)';
     document.body.style.pointerEvents = 'none';
-    // استثناء حاويات الإعلانات من التأثير
     adIds.forEach(function(id){
       var el = document.getElementById(id);
       if(el){ el.style.filter='none'; el.style.pointerEvents='auto'; }
@@ -324,19 +327,14 @@ main{padding:1.25rem 1rem;}
   }
   setInterval(_checkDevTools, 1000);
 
-  // ── [5] eval override removed (breaks Firebase) ──
-
-  // ── [7] Disable text selection on sensitive areas ──
   document.addEventListener('selectstart', function(e){
     if(e.target.closest && e.target.closest('.modal,.auth-box,.adm-ov')){
       e.preventDefault();
     }
   });
-
 })();
 </script>
 
-<!-- Security Warning Overlay -->
 <div id="_secOv" style="display:none;position:fixed;inset:0;z-index:99999;background:rgba(0,0,0,.97);align-items:center;justify-content:center;flex-direction:column;font-family:'Cairo',sans-serif;text-align:center;padding:2rem;">
   <div style="font-size:4rem;margin-bottom:1rem">🛡️</div>
   <div style="color:#ef4444;font-size:1.4rem;font-weight:700;margin-bottom:.5rem">تحذير أمني!</div>
@@ -344,8 +342,6 @@ main{padding:1.25rem 1rem;}
   <button onclick="document.getElementById('_secOv').style.display='none';document.body.style.filter='';document.body.style.pointerEvents='';" style="background:#ef4444;color:#fff;border:none;padding:.7rem 2rem;border-radius:50px;font-family:'Cairo',sans-serif;font-size:.95rem;cursor:pointer;font-weight:700;">حسناً، أغلق الأدوات</button>
 </div>
 
-
-<!-- AUTH -->
 <div class="auth-ov" id="authOv">
   <div class="auth-box">
     <div class="auth-logo">WIN<span>TUBE</span></div>
@@ -375,7 +371,6 @@ main{padding:1.25rem 1rem;}
   </div>
 </div>
 
-<!-- WITHDRAW -->
 <div class="w-ov" id="wOv">
   <div class="w-box">
     <div class="w-title">💰 سحب النقاط</div>
@@ -421,13 +416,10 @@ main{padding:1.25rem 1rem;}
   </div>
 </div>
 
-<!-- ADMIN -->
 <div class="adm-ov" id="admOv">
   <div id="admLogin" style="display:none;flex:1;align-items:center;justify-content:center;padding:1rem">
     <div class="adm-login">
       <div style="font-family:'Bebas Neue',sans-serif;font-size:1.8rem;color:var(--red);margin-bottom:1.2rem">WINTUBE <span style="color:var(--text)">ADMIN</span></div>
-      
-      
       <div class="a-err" id="admErr"></div>
       <button onclick="closeAdmin()" style="background:none;border:none;color:var(--muted);margin-top:.8rem;cursor:pointer;font-family:'Cairo',sans-serif;font-size:.88rem;display:block;width:100%">إلغاء</button>
     </div>
@@ -472,7 +464,6 @@ main{padding:1.25rem 1rem;}
   </div>
 </div>
 
-<!-- HEADER -->
 <header>
   <div class="logo">WIN<span>TUBE</span></div>
   <div class="search-bar">
@@ -487,7 +478,6 @@ main{padding:1.25rem 1rem;}
   <button class="hbtn hbtn-red" id="btnA" onclick="openAdmin()" style="display:none">🛡️ أدمن</button>
 </header>
 
-<!-- CATEGORIES -->
 <div class="categories">
   <button class="cat-btn active" id="catHome" onclick="goHome(this)">🔥 رائج</button>
   <button class="cat-btn" onclick="searchCat('تعليم',this)">📚 تعليم</button>
@@ -500,34 +490,21 @@ main{padding:1.25rem 1rem;}
   <button class="cat-btn" onclick="searchCat('أخبار',this)">📰 أخبار</button>
 </div>
 
-<!-- ╔══════════════════════════════════════════╗ -->
-<!-- ║  AD ZONE 1 — AADS (Crypto Banner)       ║ -->
-<!-- ╚══════════════════════════════════════════╝ -->
-<div id="wt-ad-zone-1" style="width:100%;padding:.4rem 1rem;box-sizing:border-box;background:transparent;">
-  <div style="font-size:.55rem;color:#444;text-align:center;letter-spacing:1px;margin-bottom:4px;text-transform:uppercase;">Advertisement</div>
+<div id="wt-ad-zone-1" class="ad-wrapper">
+  <div class="ad-label">Advertisement</div>
   <div id="wt-aads-wrap" style="width:100%;text-align:center;">
-    <iframe data-aa='2429937'
-      src='//acceptable.a-ads.com/2429937/?size=Adaptive'
-      style='border:0;padding:0;width:100%;max-width:728px;min-height:90px;height:auto;overflow:hidden;display:block;margin:0 auto;'
-      scrolling='no' sandbox='allow-scripts allow-same-origin allow-popups'></iframe>
-    <a target="_blank" rel="noopener"
-      style="display:block;font-size:10px;color:#444;text-align:center;margin-top:2px;text-decoration:none;"
-      href="https://aads.com/campaigns/new/?source_id=2429937&source_type=ad_unit&partner=2429937">Advertise here</a>
+    <iframe data-aa='2429937' src='//acceptable.a-ads.com/2429937/?size=Adaptive' style='border:0;padding:0;width:100%;max-width:728px;min-height:90px;height:auto;overflow:hidden;display:block;margin:0 auto;' scrolling='no' sandbox='allow-scripts allow-same-origin allow-popups'></iframe>
+    <a target="_blank" rel="noopener" style="display:block;font-size:10px;color:#444;text-align:center;margin-top:2px;text-decoration:none;" href="https://aads.com/campaigns/new/?source_id=2429937&source_type=ad_unit&partner=2429937">Advertise here</a>
   </div>
 </div>
 
-<!-- ╔══════════════════════════════════════════╗ -->
-<!-- ║  AD ZONE 2 — Adsterra (Banner/Native)   ║ -->
-<!-- ╚══════════════════════════════════════════╝ -->
-<div id="wt-ad-zone-2" style="width:100%;padding:.4rem 1rem;box-sizing:border-box;background:transparent;min-height:70px;">
-  <div style="font-size:.55rem;color:#444;text-align:center;letter-spacing:1px;margin-bottom:4px;text-transform:uppercase;">Advertisement</div>
+<div id="wt-ad-zone-2" class="ad-wrapper" style="min-height:70px;">
+  <div class="ad-label">Advertisement</div>
   <div id="wt-adsterra-top" style="width:100%;overflow:hidden;text-align:center;min-height:60px;">
-    <script data-cfasync="false" async
-      src="https://pl28874602.effectivegatecpm.com/12/bc/27/12bc27a1c3f3ac66a08b09f43e2ef789.js"></script>
+    <script data-cfasync="false" async src="https://pl28874602.effectivegatecpm.com/12/bc/27/12bc27a1c3f3ac66a08b09f43e2ef789.js"></script>
   </div>
 </div>
 
-<!-- HOME -->
 <main id="secHome">
   <div class="section-title">🔥 الفيديوهات الرائجة</div>
   <div class="loading" id="ldHome"><div class="spinner"></div><p>جاري التحميل...</p></div>
@@ -535,14 +512,10 @@ main{padding:1.25rem 1rem;}
   <div class="video-grid" id="gridHome"></div>
   <div class="lm-wrap" id="lmHome" style="display:none"><button class="lm-btn" onclick="loadMoreHome()">تحميل المزيد</button></div>
 
-  <!-- ╔══════════════════════════════════════════╗ -->
-  <!-- ║  AD ZONE 3 — HilltopAds (Native/Banner) ║ -->
-  <!-- ╚══════════════════════════════════════════╝ -->
-  <div id="wt-ad-zone-3" style="width:100%;padding:.4rem 0;box-sizing:border-box;background:transparent;min-height:60px;margin:1rem 0;">
-    <div style="font-size:.55rem;color:#444;text-align:center;letter-spacing:1px;margin-bottom:4px;text-transform:uppercase;">Advertisement</div>
+  <div id="wt-ad-zone-3" class="ad-wrapper" style="min-height:60px;">
+    <div class="ad-label">Advertisement</div>
     <div id="wt-hilltop-mid" style="width:100%;overflow:hidden;text-align:center;min-height:60px;">
-      <script data-cfasync="false" type="text/javascript"
-        src="//data527.click/f0a41fa00cf50b1a0813/f62c1b69b8/?placementName=inpage"></script>
+      <script data-cfasync="false" type="text/javascript" src="//data527.click/f0a41fa00cf50b1a0813/f62c1b69b8/?placementName=inpage"></script>
     </div>
   </div>
 
@@ -553,17 +526,14 @@ main{padding:1.25rem 1rem;}
   </div>
 </main>
 
-<!-- SEARCH -->
 <main id="secSearch" style="display:none">
   <div class="section-title" id="searchTitle">نتائج البحث</div>
   <div class="loading" id="ldSearch"><div class="spinner"></div><p>جاري التحميل...</p></div>
   <div class="empty-st" id="emSearch"><div class="icon">🎬</div><p>لا توجد نتائج</p></div>
   <div class="video-grid" id="gridSearch"></div>
   <div class="lm-wrap" id="lmSearch" style="display:none"><button class="lm-btn" onclick="loadMoreSearch()">تحميل المزيد</button></div>
-
 </main>
 
-<!-- VIDEO MODAL -->
 <div class="modal-ov" id="modalOv">
   <div class="modal">
     <div class="modal-hdr">
@@ -585,7 +555,6 @@ main{padding:1.25rem 1rem;}
   </div>
 </div>
 
-<!-- GAME OVERLAY -->
 <div class="game-ov-full" id="gameOv">
   <button class="g-close" id="closeGame">✕</button>
   <div class="g-topbar"><div class="g-title-badge" id="gTitle">لعبة</div><div class="g-pts-badge" id="gPts">0 نقطة 🎮</div></div>
@@ -595,17 +564,14 @@ main{padding:1.25rem 1rem;}
 <div class="toast" id="toast"></div>
 <div class="g-toast" id="gToast">+1 نقطة 🎮</div>
 
-<!-- MOBILE BAR -->
 <div class="mob-bar" id="mobBar">
   <button class="mob-bar-btn gold" id="mobBtnW" onclick="openWithdraw()">💰 سحب النقاط</button>
-
 </div>
 
 <script>
 // ═══════════════════════════════════════
 // CONFIG
 // ═══════════════════════════════════════
-// ── Config (obfuscated) ──
 var _k=['AIzaSyDNK9EJ5IQ','2dFLBn1jUk1hslg','OwwTBdvJ0'];
 var YT_KEY=_k.join('');
 var _f=['AIzaSyCOV-2qbB6e','FEU-myiTjlXbcE-','bWhuqLQs'];
@@ -621,7 +587,6 @@ var FB_CFG=(function(){
   };
 })();
 var ADMIN_UID=(function(){
-  // assembled at runtime
   return ['TjFFYhwzbl','M9HhZocq','sAkZbltix1'].join('');
 })();
 var START_PTS=100, EARN_AMT=1, EARN_EVERY=30, GAME_SEC=30, PTS_USD=1000, MIN_W=5000;
@@ -692,7 +657,6 @@ function doRegister(){
   _auth.createUserWithEmailAndPassword(em,pw)
     .then(function(c){
       return c.user.updateProfile({displayName:nm}).then(function(){
-        // Create Firestore doc immediately with correct name
         if(_db){
           _db.collection('users').doc(c.user.uid).set({
             name:nm, email:em, points:START_PTS,
@@ -729,7 +693,6 @@ function doGoogle(){
   G('authErr').textContent='';
   var provider=new firebase.auth.GoogleAuthProvider();
   provider.setCustomParameters({prompt:'select_account'});
-  // Always use popup (redirect causes button to get stuck)
   _auth.signInWithPopup(provider)
     .then(function(){
       btn.disabled=false;
@@ -756,18 +719,15 @@ function switchTab(t){
 // ═══════════════════════════════════════
 // POINTS
 // ═══════════════════════════════════════
-// آخر وقت تمت فيه إضافة نقطة (video + game)
 var lastVidPointTime = 0;
 var lastGamePointTime = 0;
 
 function savePoints(){
-  // Sync local points to Firestore — only called for withdrawal deduction
   if(!_db||!currentUser)return;
   _db.collection('users').doc(currentUser.uid).update({points:userPoints}).catch(function(e){
     console.error('savePoints error:', e.message);
   });
 }
-// Refresh points from Firestore (called on page load after auth)
 function refreshPointsFromDB(){
   if(!_db||!currentUser)return;
   _db.collection('users').doc(currentUser.uid).get().then(function(snap){
@@ -779,35 +739,24 @@ function refreshPointsFromDB(){
   }).catch(function(){});
 }
 
-// إضافة نقطة بأمان — يتحقق أن 30 ثانية مرت فعلاً
-// ══ SERVER-SIDE PROTECTION ══
-// Firestore rules must be set to:
-// users/{uid}: allow write only if request.auth.uid == uid
-// and points can only increment by 1 max per write
-// ════════════════════════════
 function secureAddPoint(source){
   if(!_db||!currentUser) return false;
   var now = Date.now();
   var last = source==='game' ? lastGamePointTime : lastVidPointTime;
-  // استخدم 28 ثانية بدل 30 لتعويض انحراف setInterval
   var THRESHOLD = 28000;
 
   if(now - last < THRESHOLD){
-    console.warn('⛔ محاولة غش — مصدر:', source, 'فرق:', Math.round((now-last)/1000)+'s');
     return false;
   }
 
-  // تحديث الوقت والنقاط محلياً فوراً (للعرض)
   if(source==='game') lastGamePointTime = now;
   else lastVidPointTime = now;
   userPoints++;
   updateHeader();
 
-  // مزامنة مع Firebase في الخلفية
   _db.collection('users').doc(currentUser.uid).update({
     points: firebase.firestore.FieldValue.increment(1)
   }).catch(function(e){
-    // إذا فشل Firebase، تراجع عن النقطة محلياً
     userPoints--;
     updateHeader();
     console.error('خطأ Firebase:', e.message);
@@ -863,7 +812,7 @@ function openVideoModal(vid,title,desc){
   G('modalTitle').textContent=title;
   G('modalDesc').textContent=desc;
   G('modalPts').textContent=userPoints+' نقطة';
-  updateHeader(); // sync header before opening modal
+  updateHeader();
   G('modalOv').classList.add('open');playing=false;G('pauseInd').classList.remove('on');
   startWTimer(); createYTPlayer(vid);
 }
@@ -873,7 +822,6 @@ function closeVideoModal(){
   G('pauseInd').classList.remove('on');
   if(_ytPlayer){ try{ _ytPlayer.stopVideo(); _ytPlayer.destroy(); }catch(e){} _ytPlayer=null; }
   G('ytPCWrap').innerHTML = '';
-  // تحديث الهيدر بالنقاط الحالية بعد إغلاق الفيديو
   updateHeader();
 }
 
@@ -913,7 +861,6 @@ window.onYouTubeIframeAPIReady = function(){
 };
 
 function createYTPlayer(videoId){
-  // Destroy old player
   if(_ytPlayer){ try{ _ytPlayer.destroy(); }catch(e){} _ytPlayer=null; }
   G('ytPCWrap').innerHTML = '<div id="ytInnerDiv"></div>';
 
@@ -937,16 +884,13 @@ function _buildYTPlayer(videoId){
     events: {
       onReady: function(e){
         e.target.playVideo();
-        // Force playing=true on mobile where onStateChange may not fire
         setTimeout(function(){ setPlaying(true); }, 1500);
       },
       onStateChange: function(e){
-        // 1=PLAYING, 3=BUFFERING(count as playing), 2=PAUSED, 0=ENDED, 5=CUED
         if(e.data === 1 || e.data === 3) setPlaying(true);
         else if(e.data === 0 || e.data === 2) setPlaying(false);
       },
       onError: function(e){
-        // If error, fall back to direct iframe
         G('ytPCWrap').innerHTML =
           '<iframe src="https://www.youtube.com/embed/'+videoId+'?autoplay=1&playsinline=1&rel=0" '+
           'allow="autoplay;fullscreen" allowfullscreen '+
@@ -1095,7 +1039,6 @@ loadSc('https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js')
     _auth = firebase.auth();
     _auth.useDeviceLanguage();
     _db = firebase.firestore();
-    console.log('✅ Firebase ready');
 
     _auth.onAuthStateChanged(function(user){
       if(user){
@@ -1113,7 +1056,6 @@ loadSc('https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js')
           }
           updateHeader();
           G('authOv').classList.add('hidden');
-          // Show admin button only for admin UID
           if(user && user.uid === ADMIN_UID){
             var ba=G('btnA'); if(ba) ba.style.display='';
           }
@@ -1136,19 +1078,15 @@ loadSc('https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js')
       if(!currentUser)return;
       G('wPts').textContent=userPoints;G('wUsd').textContent=(userPoints/PTS_USD).toFixed(2);
       G('wForm').style.display='';G('wOK').style.display='none';G('wErr').textContent='';G('wAmt').value='';G('wAddr').value='';G('wMethod').value='';G('wCalc').textContent='';
-      // Composite index required: uid ASC + createdAt DESC
-      // Fallback: if index not ready, fetch without orderBy then sort client-side
       var wRef = _db.collection('withdrawals').where('uid','==',currentUser.uid);
       wRef.orderBy('createdAt','desc').limit(10).get()
         .then(function(snap){ _renderWHist(snap); })
         .catch(function(){
-          // Index not ready — fallback without orderBy
           wRef.limit(10).get().then(function(snap){ _renderWHist(snap); }).catch(function(){});
         });
       function _renderWHist(snap){
         var h='';
         var docs=[];snap.forEach(function(d){docs.push(d);});
-        // Sort client-side if needed
         docs.sort(function(a,b){
           var ta=a.data().createdAt&&a.data().createdAt.seconds||0;
           var tb=b.data().createdAt&&b.data().createdAt.seconds||0;
@@ -1189,17 +1127,13 @@ loadSc('https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js')
 
     // ADMIN
     window.openAdmin=function(){
-  if(!currentUser || currentUser.uid !== ADMIN_UID){
-    // Silently ignore — not admin
-    return;
-  }
-  G('admLogin').style.display='none';
-  G('admDash').style.display='flex';
-  G('admOv').classList.add('open');
-  loadAdminReqs();
-};
+      if(!currentUser || currentUser.uid !== ADMIN_UID){ return; }
+      G('admLogin').style.display='none';
+      G('admDash').style.display='flex';
+      G('admOv').classList.add('open');
+      loadAdminReqs();
+    };
     window.closeAdmin=function(){G('admOv').classList.remove('open');};
-    window.checkAdminPass=function(){}; // replaced by UID auth
     window.switchAdminTab=function(t){var isW=t==='w';G('aPanelW').style.display=isW?'':'none';G('aPanelG').style.display=isW?'none':'';G('aTabW').classList.toggle('active',isW);G('aTabG').classList.toggle('active',!isW);if(!isW)loadAdminGamesList();};
     window.adminAction=function(did,status,uid,pts){
       if(!confirm('هل تريد '+(status==='approved'?'قبول':'رفض')+' هذا الطلب؟'))return;
@@ -1209,8 +1143,6 @@ loadSc('https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js')
     };
     function loadAdminReqs(){
       var el=G('admReqs');el.innerHTML='<div class="adm-empty">جاري التحميل...</div>';
-      // NOTE: Firestore rules must allow admin UID to read all withdrawals
-      // Rule: match /withdrawals/{id} { allow read: if request.auth.uid == "TjFFYhwzblM9HhZocqsAkZbltix1"; }
       _db.collection('withdrawals').orderBy('createdAt','desc').limit(50).get().then(function(snap){
         if(snap.empty){el.innerHTML='<div class="adm-empty">لا توجد طلبات</div>';return;}
         el.innerHTML='';
@@ -1228,14 +1160,11 @@ loadSc('https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js')
 // ═══════════════════════════════════════
 // EVENT WIRING
 // ═══════════════════════════════════════
-// إيقاف الفيديو عند مغادرة الصفحة أو فتح تاب آخر
 document.addEventListener('visibilitychange', function(){
   if(document.visibilityState === 'hidden'){
-    // أوقف الفيديو
     if(_ytPlayer){ try{ _ytPlayer.pauseVideo(); }catch(e){} }
     setPlaying(false);
   } else {
-    // عند العودة: حدّث النقاط من Firebase
     if(currentUser) refreshPointsFromDB();
   }
 });
@@ -1247,7 +1176,6 @@ window.addEventListener('focus', function(){
   if(currentUser) refreshPointsFromDB();
 });
 
-// Secret admin URL trigger
 if(location.hash === '#admin-secret-panel'){
   setTimeout(function(){ openAdmin && openAdmin(); }, 1500);
 }
@@ -1255,13 +1183,8 @@ G('closeVid').addEventListener('click',closeVideoModal);
 G('modalOv').addEventListener('click',function(e){if(e.target===G('modalOv'))closeVideoModal();});
 G('closeGame').addEventListener('click',closeGameOverlay);
 
-// ═══════════════════════════════════════
-// START
-// ═══════════════════════════════════════
 fetchHome('',false);
 </script>
-<!-- ══ HilltopAds Pop-under / Push ══ -->
-<!-- HilltopAds Pop/Push — global -->
 <script data-cfasync="false" async type="text/javascript" src="//data527.click/f0a41fa00cf50b1a0813/f62c1b69b8/?placementName=default"></script>
 </body>
-        </html>
+</html>
