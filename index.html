@@ -223,11 +223,9 @@ main{padding:1.25rem 1rem;}
 .ad-slot-banner{width:100%;min-height:60px;}
 .ad-slot-mid{width:100%;min-height:250px;}
 .ad-label{font-size:.6rem;color:var(--muted);text-align:center;margin-bottom:2px;letter-spacing:1px;text-transform:uppercase;}
-@media(max-width:767px){
-  .ad-slot-banner{min-height:50px;}
-}
 /* MOBILE */
 @media(max-width:767px){
+  .ad-slot-banner{min-height:50px;}
   header{height:auto;padding:.55rem .75rem;flex-wrap:wrap;gap:.45rem;}
   .logo{font-size:1.5rem;order:1;}
   .user-panel{order:2;margin-right:auto;}
@@ -662,18 +660,32 @@ function doRegister(){
   G('authErr').textContent='';
   var btn=G('btnReg'); btn.disabled=true; btn.textContent='جاري الإنشاء...';
   _auth.createUserWithEmailAndPassword(em,pw)
-    .then(function(c){return c.user.updateProfile({displayName:nm});})
-    .then(function(){btn.disabled=false;btn.textContent='إنشاء الحساب ←';})
+    .then(function(c){
+      return c.user.updateProfile({displayName:nm}).then(function(){
+        // Create Firestore doc immediately with correct name
+        if(_db){
+          _db.collection('users').doc(c.user.uid).set({
+            name:nm, email:em, points:START_PTS,
+            createdAt:firebase.firestore.FieldValue.serverTimestamp()
+          }).catch(function(){});
+        }
+      });
+    })
+    .then(function(){btn.disabled=false;btn.textContent='إنشاء الحساب ←';G('authErr').style.color='#22c55e';G('authErr').textContent='✅ تم إنشاء الحساب!';})
     .catch(function(e){
       btn.disabled=false; btn.textContent='إنشاء الحساب ←';
-      G('authErr').textContent = authErrMsg(e.code) + ' [' + (e.code||e.message) + ']';
+      G('authErr').style.color='';
+      G('authErr').textContent = authErrMsg(e.code);
     });
 }
 
 function doSignOut(){
   if(!_auth)return;
   if(!confirm('تسجيل الخروج؟'))return;
-  stopWTimer(); closeVideoModal(); _auth.signOut();
+  stopWTimer(); closeVideoModal();
+  _auth.signOut().then(function(){
+    G('hPts').textContent='0'; G('hName').textContent='—'; G('hAvatar').textContent='?';
+  });
 }
 
 function doGoogle(){
@@ -929,7 +941,7 @@ function openGameOverlay(gameId,gameName,gameUrl){
   G('gTitle').textContent=gameName;G('gPts').textContent=pts+' نقطة 🎮';
   G('gFrame').src=gameUrl;G('gameOv').classList.add('open');startGTimer(pts);
 }
-function closeGameOverlay(){stopGTimer();G('gameOv').classList.remove('open');G('gFrame').src='';activeGid=null;loadGamesGrid();}
+function closeGameOverlay(){stopGTimer();G('gameOv').classList.remove('open');G('gFrame').src='';activeGid=null;updateHeader();loadGamesGrid();}
 function startGTimer(startPts){
   stopGTimer();
   var pts = startPts; gElapsed = 0;
@@ -986,8 +998,8 @@ function renderGamesGrid(list){
       '<div class="game-thumb" style="'+thumbBg+'">'+
         thumbContent+
         '<div class="game-ov"><div class="game-play">▶</div></div>'+
+        '<span class="game-cap-badge">'+pts+' نقطة</span>'+
       '</div>'+
-      '<span class="game-cap-badge">'+pts+' نقطة</span>'+
       '<div class="game-info">'+
         '<div class="game-name">'+g.d.name+'</div>'+
         '<div class="game-bar-lbl" style="font-size:.72rem;color:var(--muted);padding:.2rem .65rem 0">اللعب لا محدود ✓</div>'+
@@ -1197,4 +1209,4 @@ fetchHome('',false);
 <!-- ══ HilltopAds Pop-under / Push ══ -->
 <script type="text/javascript" src="//data527.click/f0a41fa00cf50b1a0813/f62c1b69b8/?placementName=default" async></script>
 </body>
-</html>
+        </html>
