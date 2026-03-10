@@ -256,12 +256,7 @@ main{padding:1.25rem 1rem;}
   .mob-bar-btn.red{background:linear-gradient(135deg,#ef4444,#b91c1c);}
   .mob-bar-btn[data-show]{display:flex;}
 }
-
-
 </style>
-<!-- YT IFrame API -->
-<script src="https://www.youtube.com/iframe_api"></script>
-
 </head>
 <body>
 <script>
@@ -344,7 +339,6 @@ main{padding:1.25rem 1rem;}
 })();
 </script>
 
-<!-- Security Warning Overlay -->
 <div id="_secOv" style="display:none;position:fixed;inset:0;z-index:99999;background:rgba(0,0,0,.97);align-items:center;justify-content:center;flex-direction:column;font-family:'Cairo',sans-serif;text-align:center;padding:2rem;">
   <div style="font-size:4rem;margin-bottom:1rem">🛡️</div>
   <div style="color:#ef4444;font-size:1.4rem;font-weight:700;margin-bottom:.5rem">تحذير أمني!</div>
@@ -353,7 +347,6 @@ main{padding:1.25rem 1rem;}
 </div>
 
 
-<!-- AUTH -->
 <div class="auth-ov" id="authOv">
   <div class="auth-box">
     <div class="auth-logo">WIN<span>TUBE</span></div>
@@ -383,7 +376,6 @@ main{padding:1.25rem 1rem;}
   </div>
 </div>
 
-<!-- WITHDRAW -->
 <div class="w-ov" id="wOv">
   <div class="w-box">
     <div class="w-title">💰 سحب النقاط</div>
@@ -429,7 +421,6 @@ main{padding:1.25rem 1rem;}
   </div>
 </div>
 
-<!-- ADMIN -->
 <div class="adm-ov" id="admOv">
   <div id="admLogin" style="display:none;flex:1;align-items:center;justify-content:center;padding:1rem">
     <div class="adm-login">
@@ -480,7 +471,6 @@ main{padding:1.25rem 1rem;}
   </div>
 </div>
 
-<!-- HEADER -->
 <header>
   <div class="logo">WIN<span>TUBE</span></div>
   <div class="search-bar">
@@ -495,7 +485,6 @@ main{padding:1.25rem 1rem;}
   <button class="hbtn hbtn-red" id="btnA" onclick="openAdmin()" style="display:none">🛡️ أدمن</button>
 </header>
 
-<!-- CATEGORIES -->
 <div class="categories">
   <button class="cat-btn active" id="catHome" onclick="goHome(this)">🔥 رائج</button>
   <button class="cat-btn" onclick="searchCat('تعليم',this)">📚 تعليم</button>
@@ -508,9 +497,6 @@ main{padding:1.25rem 1rem;}
   <button class="cat-btn" onclick="searchCat('أخبار',this)">📰 أخبار</button>
 </div>
 
-<!-- ╔══════════════════════════════════════════╗ -->
-<!-- ║  AD ZONE 1 — AADS (Crypto Banner)       ║ -->
-<!-- ╚══════════════════════════════════════════╝ -->
 <div id="wt-ad-zone-1" style="width:100%;padding:.4rem 1rem;box-sizing:border-box;background:transparent;">
   <div style="font-size:.55rem;color:#444;text-align:center;letter-spacing:1px;margin-bottom:4px;text-transform:uppercase;">Advertisement</div>
   <div id="wt-aads-wrap" style="width:100%;text-align:center;">
@@ -524,9 +510,6 @@ main{padding:1.25rem 1rem;}
   </div>
 </div>
 
-<!-- ╔══════════════════════════════════════════╗ -->
-<!-- ║  AD ZONE 2 — Adsterra (Banner/Native)   ║ -->
-<!-- ╚══════════════════════════════════════════╝ -->
 <div id="wt-ad-zone-2" style="width:100%;padding:.4rem 1rem;box-sizing:border-box;background:transparent;min-height:70px;">
   <div style="font-size:.55rem;color:#444;text-align:center;letter-spacing:1px;margin-bottom:4px;text-transform:uppercase;">Advertisement</div>
   <div id="wt-adsterra-top" style="width:100%;overflow:hidden;text-align:center;min-height:60px;">
@@ -535,7 +518,6 @@ main{padding:1.25rem 1rem;}
   </div>
 </div>
 
-<!-- HOME -->
 <main id="secHome">
   <div class="section-title">🔥 الفيديوهات الرائجة</div>
   <div class="loading" id="ldHome"><div class="spinner"></div><p>جاري التحميل...</p></div>
@@ -543,9 +525,6 @@ main{padding:1.25rem 1rem;}
   <div class="video-grid" id="gridHome"></div>
   <div class="lm-wrap" id="lmHome" style="display:none"><button class="lm-btn" onclick="loadMoreHome()">تحميل المزيد</button></div>
 
-  <!-- ╔══════════════════════════════════════════╗ -->
-  <!-- ║  AD ZONE 3 — HilltopAds (Native/Banner) ║ -->
-  <!-- ╚══════════════════════════════════════════╝ -->
   <div id="wt-ad-zone-3" style="width:100%;padding:.4rem 0;box-sizing:border-box;background:transparent;min-height:60px;margin:1rem 0;">
     <div style="font-size:.55rem;color:#444;text-align:center;letter-spacing:1px;margin-bottom:4px;text-transform:uppercase;">Advertisement</div>
     <div id="wt-hilltop-mid" style="width:100%;overflow:hidden;text-align:center;min-height:60px;">
@@ -561,7 +540,6 @@ main{padding:1.25rem 1rem;}
   </div>
 </main>
 
-<!-- SEARCH -->
 <main id="secSearch" style="display:none">
   <div class="section-title" id="searchTitle">نتائج البحث</div>
   <div class="loading" id="ldSearch"><div class="spinner"></div><p>جاري التحميل...</p></div>
@@ -571,7 +549,6 @@ main{padding:1.25rem 1rem;}
 
 </main>
 
-<!-- VIDEO MODAL -->
 <div class="modal-ov" id="modalOv">
   <div class="modal">
     <div class="modal-hdr">
@@ -593,7 +570,6 @@ main{padding:1.25rem 1rem;}
   </div>
 </div>
 
-<!-- GAME OVERLAY -->
 <div class="game-ov-full" id="gameOv">
   <button class="g-close" id="closeGame">✕</button>
   <div class="g-topbar"><div class="g-title-badge" id="gTitle">لعبة</div><div class="g-pts-badge" id="gPts">0 نقطة 🎮</div></div>
@@ -603,7 +579,6 @@ main{padding:1.25rem 1rem;}
 <div class="toast" id="toast"></div>
 <div class="g-toast" id="gToast">+1 نقطة 🎮</div>
 
-<!-- MOBILE BAR -->
 <div class="mob-bar" id="mobBar">
   <button class="mob-bar-btn gold" id="mobBtnW" onclick="openWithdraw()">💰 سحب النقاط</button>
 
@@ -918,8 +893,17 @@ function stopWTimer(){clearInterval(wInt);wInt=null;playing=false;tSecs=EARN_EVE
 function setPlaying(v){playing=v;G('pauseInd').classList.toggle('on',!v);}
 
 // ═══════════════════════════════════════
-// VIDEO PLAYER — YT IFrame API
+// VIDEO PLAYER — YT IFrame API (FIXED DYNAMIC LOAD)
 // ═══════════════════════════════════════
+var _ytTag = document.createElement('script');
+_ytTag.src = "https://www.youtube.com/iframe_api";
+var _firstScript = document.getElementsByTagName('script')[0];
+if(_firstScript) {
+  _firstScript.parentNode.insertBefore(_ytTag, _firstScript);
+} else {
+  document.head.appendChild(_ytTag);
+}
+
 var _ytPlayer = null;
 var _ytReady = false;
 var _ytPendingId = null;
@@ -1302,8 +1286,6 @@ G('closeGame').addEventListener('click',closeGameOverlay);
 // ═══════════════════════════════════════
 fetchHome('',false);
 </script>
-<!-- ══ HilltopAds Pop-under / Push ══ -->
-<!-- HilltopAds Pop/Push — global -->
 <script data-cfasync="false" async type="text/javascript" src="//data527.click/f0a41fa00cf50b1a0813/f62c1b69b8/?placementName=default"></script>
 </body>
 </html>
