@@ -256,7 +256,79 @@ main{padding:1.25rem 1rem;}
   .mob-bar-btn.red{background:linear-gradient(135deg,#ef4444,#b91c1c);}
   .mob-bar-btn[data-show]{display:flex;}
 }
+
+
+
+/* ═══ REGION SELECTOR ═══ */
+.region-bar{display:flex;align-items:center;gap:.4rem;padding:.4rem 1rem;background:rgba(255,255,255,.02);border-bottom:1px solid var(--border);overflow-x:auto;scrollbar-width:none;}
+.region-bar::-webkit-scrollbar{display:none;}
+.region-btn{background:transparent;border:1px solid var(--border);color:var(--muted);padding:.28rem .7rem;border-radius:50px;cursor:pointer;font-family:'Cairo',sans-serif;font-size:.75rem;white-space:nowrap;transition:all .2s;flex-shrink:0;}
+.region-btn:hover,.region-btn.active{background:rgba(255,45,45,.12);border-color:var(--red);color:#fff;}
+.region-lbl{font-size:.7rem;color:var(--muted);flex-shrink:0;margin-left:.3rem;}
+
+/* ═══ LEADERBOARD ═══ */
+.lb-ov{position:fixed;inset:0;background:rgba(0,0,0,.97);z-index:8000;display:none;align-items:center;justify-content:center;padding:1rem;}
+.lb-ov.open{display:flex;}
+.lb-box{background:var(--card);border:1px solid var(--border);border-radius:18px;width:100%;max-width:420px;max-height:88vh;overflow:hidden;display:flex;flex-direction:column;}
+.lb-head{background:linear-gradient(135deg,#1a0533,#2d0a5c);padding:1.2rem 1.2rem .9rem;text-align:center;flex-shrink:0;}
+.lb-title{font-family:'Bebas Neue',sans-serif;font-size:1.8rem;letter-spacing:3px;color:#fff;}
+.lb-sub{font-size:.75rem;color:rgba(255,255,255,.5);margin-top:.2rem;}
+.lb-close{position:absolute;top:.8rem;left:.8rem;background:rgba(255,255,255,.1);border:none;color:#fff;width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:.95rem;}
+.lb-body{flex:1;overflow-y:auto;padding:1rem;}
+.lb-row{display:flex;align-items:center;gap:.75rem;padding:.65rem .8rem;border-radius:10px;margin-bottom:.4rem;background:rgba(255,255,255,.03);border:1px solid transparent;transition:all .2s;}
+.lb-row.me{background:rgba(255,45,45,.06);border-color:rgba(255,45,45,.2);}
+.lb-rank{width:28px;text-align:center;font-size:.85rem;font-weight:800;flex-shrink:0;}
+.lb-rank.gold{color:#f59e0b;}
+.lb-rank.silver{color:#94a3b8;}
+.lb-rank.bronze{color:#cd7c37;}
+.lb-av{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--red),#ff8c00);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.85rem;flex-shrink:0;}
+.lb-name{flex:1;font-size:.85rem;font-weight:600;}
+.lb-pts{font-size:.82rem;font-weight:800;color:var(--yellow);}
+.lb-loading{text-align:center;padding:2.5rem;color:var(--muted);}
+
+/* ═══ REFERRAL ═══ */
+.ref-box{background:rgba(34,197,94,.06);border:1px solid rgba(34,197,94,.2);border-radius:10px;padding:.75rem 1rem;margin-top:.8rem;}
+.ref-title{font-size:.78rem;color:var(--green);font-weight:700;margin-bottom:.45rem;}
+.ref-link-row{display:flex;gap:.4rem;align-items:center;}
+.ref-link-inp{flex:1;background:#0a0a0a;border:1px solid var(--border);color:#aaa;padding:.45rem .7rem;border-radius:7px;font-size:.72rem;direction:ltr;text-align:left;outline:none;}
+.ref-copy{background:var(--green);border:none;color:#fff;padding:.45rem .75rem;border-radius:7px;font-family:'Cairo',sans-serif;font-size:.75rem;font-weight:700;cursor:pointer;white-space:nowrap;flex-shrink:0;}
+.ref-note{font-size:.68rem;color:var(--muted);margin-top:.4rem;}
+
+/* ═══ PRIVACY POLICY ═══ */
+.pp-ov{position:fixed;inset:0;background:rgba(0,0,0,.97);z-index:9500;display:none;align-items:center;justify-content:center;padding:1rem;overflow-y:auto;}
+.pp-ov.open{display:flex;}
+.pp-box{background:var(--card);border:1px solid var(--border);border-radius:18px;width:100%;max-width:600px;max-height:90vh;overflow-y:auto;padding:1.8rem 1.5rem;}
+.pp-title{font-family:'Bebas Neue',sans-serif;font-size:1.8rem;color:var(--red);letter-spacing:2px;margin-bottom:.3rem;}
+.pp-date{font-size:.72rem;color:var(--muted);margin-bottom:1.2rem;}
+.pp-h{font-size:.95rem;font-weight:800;color:var(--yellow);margin:1.2rem 0 .4rem;}
+.pp-p{font-size:.83rem;color:#ccc;line-height:1.8;margin-bottom:.5rem;}
+.pp-close-btn{width:100%;background:var(--red);border:none;color:#fff;padding:.75rem;border-radius:10px;font-family:'Cairo',sans-serif;font-size:.92rem;font-weight:700;cursor:pointer;margin-top:1.2rem;}
+
+/* ═══ ABOUT ═══ */
+.about-ov{position:fixed;inset:0;background:rgba(0,0,0,.97);z-index:9500;display:none;align-items:center;justify-content:center;padding:1rem;}
+.about-ov.open{display:flex;}
+.about-box{background:var(--card);border:1px solid var(--border);border-radius:18px;width:100%;max-width:480px;padding:2rem 1.5rem;text-align:center;}
+.about-logo{font-family:'Bebas Neue',sans-serif;font-size:2.5rem;color:var(--red);letter-spacing:4px;}
+.about-logo span{color:var(--text);}
+.about-tagline{color:var(--muted);font-size:.88rem;margin:.3rem 0 1.5rem;}
+.about-stat{background:#0d0d0d;border:1px solid var(--border);border-radius:10px;padding:.8rem;text-align:center;}
+.about-stat-val{font-size:1.4rem;font-weight:800;color:var(--yellow);}
+.about-stat-lbl{font-size:.7rem;color:var(--muted);margin-top:.1rem;}
+.about-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.6rem;margin-bottom:1.2rem;}
+.about-p{font-size:.82rem;color:#bbb;line-height:1.8;margin-bottom:.8rem;text-align:right;}
+.about-close{width:100%;background:var(--card);border:1px solid var(--border);color:var(--text);padding:.7rem;border-radius:10px;font-family:'Cairo',sans-serif;font-size:.9rem;cursor:pointer;margin-top:.5rem;}
+
+/* ═══ FOOTER ═══ */
+footer{background:#060606;border-top:1px solid var(--border);padding:1.2rem 1rem;text-align:center;margin-top:2rem;}
+.footer-links{display:flex;justify-content:center;gap:1.2rem;flex-wrap:wrap;margin-bottom:.7rem;}
+.footer-link{color:var(--muted);font-size:.78rem;cursor:pointer;transition:color .2s;background:none;border:none;font-family:'Cairo',sans-serif;}
+.footer-link:hover{color:var(--red);}
+.footer-copy{font-size:.7rem;color:#333;}
+
 </style>
+<!-- YT IFrame API -->
+<script src="https://www.youtube.com/iframe_api"></script>
+
 </head>
 <body>
 <script>
@@ -339,6 +411,7 @@ main{padding:1.25rem 1rem;}
 })();
 </script>
 
+<!-- Security Warning Overlay -->
 <div id="_secOv" style="display:none;position:fixed;inset:0;z-index:99999;background:rgba(0,0,0,.97);align-items:center;justify-content:center;flex-direction:column;font-family:'Cairo',sans-serif;text-align:center;padding:2rem;">
   <div style="font-size:4rem;margin-bottom:1rem">🛡️</div>
   <div style="color:#ef4444;font-size:1.4rem;font-weight:700;margin-bottom:.5rem">تحذير أمني!</div>
@@ -347,6 +420,7 @@ main{padding:1.25rem 1rem;}
 </div>
 
 
+<!-- AUTH -->
 <div class="auth-ov" id="authOv">
   <div class="auth-box">
     <div class="auth-logo">WIN<span>TUBE</span></div>
@@ -370,12 +444,14 @@ main{padding:1.25rem 1rem;}
       <input class="a-inp" type="text" id="rName" placeholder="الاسم" autocomplete="name">
       <input class="a-inp" type="email" id="rEmail" placeholder="البريد الإلكتروني" autocomplete="email">
       <input class="a-inp" type="password" id="rPass" placeholder="كلمة المرور (6 أحرف+)" autocomplete="new-password">
+      <input class="a-inp" type="text" id="rRef" placeholder="كود الإحالة (اختياري)" style="direction:ltr;text-align:left;">
       <button class="a-sub" id="btnReg" onclick="doRegister()">إنشاء الحساب ←</button>
     </div>
     <div class="a-err" id="authErr"></div>
   </div>
 </div>
 
+<!-- WITHDRAW -->
 <div class="w-ov" id="wOv">
   <div class="w-box">
     <div class="w-title">💰 سحب النقاط</div>
@@ -410,6 +486,14 @@ main{padding:1.25rem 1rem;}
         <button class="w-sub" id="wBtn" onclick="submitWithdraw()">إرسال الطلب ←</button>
         <button class="w-cancel" onclick="closeWithdraw()">إلغاء</button>
       </div>
+      <div class="ref-box" id="refBoxW">
+        <div class="ref-title">🎁 رابط الإحالة — ادعُ أصدقاءك واكسب 50 نقطة لكل صديق!</div>
+        <div class="ref-link-row">
+          <input class="ref-link-inp" id="refLinkInp" readonly value="جاري التحميل...">
+          <button class="ref-copy" onclick="copyRefLink()">نسخ 📋</button>
+        </div>
+        <div class="ref-note">عند تسجيل صديقك بكودك، يحصل هو على 150 نقطة وأنت على 50 نقطة مجاناً</div>
+      </div>
       <div class="w-err" id="wErr"></div>
     </div>
     <div id="wOK" style="display:none;text-align:center;padding:1.5rem 0">
@@ -421,6 +505,7 @@ main{padding:1.25rem 1rem;}
   </div>
 </div>
 
+<!-- ADMIN -->
 <div class="adm-ov" id="admOv">
   <div id="admLogin" style="display:none;flex:1;align-items:center;justify-content:center;padding:1rem">
     <div class="adm-login">
@@ -471,6 +556,7 @@ main{padding:1.25rem 1rem;}
   </div>
 </div>
 
+<!-- HEADER -->
 <header>
   <div class="logo">WIN<span>TUBE</span></div>
   <div class="search-bar">
@@ -485,6 +571,18 @@ main{padding:1.25rem 1rem;}
   <button class="hbtn hbtn-red" id="btnA" onclick="openAdmin()" style="display:none">🛡️ أدمن</button>
 </header>
 
+<!-- REGION BAR -->
+<div class="region-bar">
+  <span class="region-lbl">📍</span>
+  <button class="region-btn active" id="rgIQ" onclick="setRegion('IQ',this)">🇮🇶 العراق</button>
+  <button class="region-btn" id="rgSA" onclick="setRegion('SA',this)">🇸🇦 السعودية</button>
+  <button class="region-btn" id="rgEG" onclick="setRegion('EG',this)">🇪🇬 مصر</button>
+  <button class="region-btn" id="rgUS" onclick="setRegion('US',this)">🌍 عالمي</button>
+  <button class="region-btn" id="rgTR" onclick="setRegion('TR',this)">🇹🇷 تركيا</button>
+  <button class="region-btn" style="margin-right:auto;border-color:var(--purple);color:var(--purple);" onclick="openLeaderboard()">🏆 المتصدرون</button>
+</div>
+
+<!-- CATEGORIES -->
 <div class="categories">
   <button class="cat-btn active" id="catHome" onclick="goHome(this)">🔥 رائج</button>
   <button class="cat-btn" onclick="searchCat('تعليم',this)">📚 تعليم</button>
@@ -495,8 +593,13 @@ main{padding:1.25rem 1rem;}
   <button class="cat-btn" onclick="searchCat('سفر',this)">✈️ سفر</button>
   <button class="cat-btn" id="catGames" onclick="gotoGames(this)">🎮 ألعاب</button>
   <button class="cat-btn" onclick="searchCat('أخبار',this)">📰 أخبار</button>
+  <button class="cat-btn" onclick="searchCat('أفلام',this)">🎬 أفلام</button>
+  <button class="cat-btn" onclick="searchCat('صحة',this)">💪 صحة</button>
 </div>
 
+<!-- ╔══════════════════════════════════════════╗ -->
+<!-- ║  AD ZONE 1 — AADS (Crypto Banner)       ║ -->
+<!-- ╚══════════════════════════════════════════╝ -->
 <div id="wt-ad-zone-1" style="width:100%;padding:.4rem 1rem;box-sizing:border-box;background:transparent;">
   <div style="font-size:.55rem;color:#444;text-align:center;letter-spacing:1px;margin-bottom:4px;text-transform:uppercase;">Advertisement</div>
   <div id="wt-aads-wrap" style="width:100%;text-align:center;">
@@ -510,6 +613,9 @@ main{padding:1.25rem 1rem;}
   </div>
 </div>
 
+<!-- ╔══════════════════════════════════════════╗ -->
+<!-- ║  AD ZONE 2 — Adsterra (Banner/Native)   ║ -->
+<!-- ╚══════════════════════════════════════════╝ -->
 <div id="wt-ad-zone-2" style="width:100%;padding:.4rem 1rem;box-sizing:border-box;background:transparent;min-height:70px;">
   <div style="font-size:.55rem;color:#444;text-align:center;letter-spacing:1px;margin-bottom:4px;text-transform:uppercase;">Advertisement</div>
   <div id="wt-adsterra-top" style="width:100%;overflow:hidden;text-align:center;min-height:60px;">
@@ -518,6 +624,7 @@ main{padding:1.25rem 1rem;}
   </div>
 </div>
 
+<!-- HOME -->
 <main id="secHome">
   <div class="section-title">🔥 الفيديوهات الرائجة</div>
   <div class="loading" id="ldHome"><div class="spinner"></div><p>جاري التحميل...</p></div>
@@ -525,6 +632,9 @@ main{padding:1.25rem 1rem;}
   <div class="video-grid" id="gridHome"></div>
   <div class="lm-wrap" id="lmHome" style="display:none"><button class="lm-btn" onclick="loadMoreHome()">تحميل المزيد</button></div>
 
+  <!-- ╔══════════════════════════════════════════╗ -->
+  <!-- ║  AD ZONE 3 — HilltopAds (Native/Banner) ║ -->
+  <!-- ╚══════════════════════════════════════════╝ -->
   <div id="wt-ad-zone-3" style="width:100%;padding:.4rem 0;box-sizing:border-box;background:transparent;min-height:60px;margin:1rem 0;">
     <div style="font-size:.55rem;color:#444;text-align:center;letter-spacing:1px;margin-bottom:4px;text-transform:uppercase;">Advertisement</div>
     <div id="wt-hilltop-mid" style="width:100%;overflow:hidden;text-align:center;min-height:60px;">
@@ -540,6 +650,7 @@ main{padding:1.25rem 1rem;}
   </div>
 </main>
 
+<!-- SEARCH -->
 <main id="secSearch" style="display:none">
   <div class="section-title" id="searchTitle">نتائج البحث</div>
   <div class="loading" id="ldSearch"><div class="spinner"></div><p>جاري التحميل...</p></div>
@@ -549,6 +660,7 @@ main{padding:1.25rem 1rem;}
 
 </main>
 
+<!-- VIDEO MODAL -->
 <div class="modal-ov" id="modalOv">
   <div class="modal">
     <div class="modal-hdr">
@@ -570,6 +682,7 @@ main{padding:1.25rem 1rem;}
   </div>
 </div>
 
+<!-- GAME OVERLAY -->
 <div class="game-ov-full" id="gameOv">
   <button class="g-close" id="closeGame">✕</button>
   <div class="g-topbar"><div class="g-title-badge" id="gTitle">لعبة</div><div class="g-pts-badge" id="gPts">0 نقطة 🎮</div></div>
@@ -579,6 +692,85 @@ main{padding:1.25rem 1rem;}
 <div class="toast" id="toast"></div>
 <div class="g-toast" id="gToast">+1 نقطة 🎮</div>
 
+
+<!-- ╔══════════════════════════╗ -->
+<!-- ║  LEADERBOARD OVERLAY    ║ -->
+<!-- ╚══════════════════════════╝ -->
+<div class="lb-ov" id="lbOv">
+  <div class="lb-box" style="position:relative;">
+    <button class="lb-close" onclick="closeLeaderboard()">✕</button>
+    <div class="lb-head">
+      <div class="lb-title">🏆 المتصدرون</div>
+      <div class="lb-sub">أعلى 10 مستخدمين نقاطاً</div>
+    </div>
+    <div class="lb-body" id="lbBody">
+      <div class="lb-loading">⏳ جاري التحميل...</div>
+    </div>
+  </div>
+</div>
+
+<!-- ╔══════════════════════════╗ -->
+<!-- ║  PRIVACY POLICY         ║ -->
+<!-- ╚══════════════════════════╝ -->
+<div class="pp-ov" id="ppOv">
+  <div class="pp-box">
+    <div class="pp-title">سياسة الخصوصية</div>
+    <div class="pp-date">آخر تحديث: مارس 2026</div>
+
+    <div class="pp-h">1. المعلومات التي نجمعها</div>
+    <p class="pp-p">نجمع معلومات الحساب (الاسم، البريد الإلكتروني) عند التسجيل. لا نجمع بيانات الدفع — يتم التحقق يدوياً من طلبات السحب.</p>
+
+    <div class="pp-h">2. كيف نستخدم بياناتك</div>
+    <p class="pp-p">تُستخدم بياناتك فقط لتشغيل الحساب وحساب النقاط ومعالجة طلبات السحب. لا نبيع أي بيانات لأطراف ثالثة.</p>
+
+    <div class="pp-h">3. الإعلانات</div>
+    <p class="pp-p">يستخدم الموقع شبكات إعلانية خارجية (Adsterra، HilltopAds، AADS، AdMaven) قد تستخدم ملفات تعريف الارتباط (Cookies) لعرض إعلانات مخصصة.</p>
+
+    <div class="pp-h">4. نظام النقاط</div>
+    <p class="pp-p">النقاط المكتسبة من مشاهدة الفيديوهات والألعاب يتم تخزينها في Firebase. الحد الأدنى للسحب 5000 نقطة = $5. تحتفظ الإدارة بحق رفض أي طلب مشبوه.</p>
+
+    <div class="pp-h">5. الأمان</div>
+    <p class="pp-p">نستخدم Firebase Authentication وFirestore لتأمين البيانات. يُمنع أي محاولة تلاعب وسيؤدي إلى حظر الحساب نهائياً.</p>
+
+    <div class="pp-h">6. تواصل معنا</div>
+    <p class="pp-p">لأي استفسار يخص الخصوصية، يمكنك التواصل من خلال صفحة الموقع على GitHub.</p>
+
+    <button class="pp-close-btn" onclick="closePP()">✅ فهمت</button>
+  </div>
+</div>
+
+<!-- ╔══════════════════════════╗ -->
+<!-- ║  ABOUT OVERLAY          ║ -->
+<!-- ╚══════════════════════════╝ -->
+<div class="about-ov" id="aboutOv">
+  <div class="about-box">
+    <div class="about-logo">WIN<span>TUBE</span></div>
+    <div class="about-tagline">شاهد • العب • اكسب</div>
+    <div class="about-stats">
+      <div class="about-stat"><div class="about-stat-val" id="statUsers">—</div><div class="about-stat-lbl">مستخدم</div></div>
+      <div class="about-stat"><div class="about-stat-val">∞</div><div class="about-stat-lbl">فيديو</div></div>
+      <div class="about-stat"><div class="about-stat-val">4</div><div class="about-stat-lbl">شركة إعلانية</div></div>
+    </div>
+    <p class="about-p">WinTube هو موقع عراقي يتيح لك مشاهدة الفيديوهات وكسب النقاط وتحويلها إلى أموال حقيقية عبر طرق الدفع المتعددة المتاحة في العراق.</p>
+    <p class="about-p">كل 30 ثانية مشاهدة = نقطة واحدة. كل 1000 نقطة = $1 دولار أمريكي.</p>
+    <button class="about-close" onclick="G('aboutOv').classList.remove('open')">إغلاق</button>
+  </div>
+</div>
+
+<!-- ╔══════════════════════════╗ -->
+<!-- ║  FOOTER                 ║ -->
+<!-- ╚══════════════════════════╝ -->
+<footer id="siteFooter">
+  <div class="footer-links">
+    <button class="footer-link" onclick="G('aboutOv').classList.add('open');loadAboutStats()">عن WinTube</button>
+    <button class="footer-link" onclick="G('ppOv').classList.add('open')">سياسة الخصوصية</button>
+    <button class="footer-link" onclick="openLeaderboard()">🏆 المتصدرون</button>
+    <button class="footer-link" onclick="currentUser&&openWithdraw()">💰 كيف تسحب؟</button>
+  </div>
+  <div class="footer-copy">© 2026 WinTube — جميع الحقوق محفوظة</div>
+</footer>
+
+<!-- MOBILE BAR -->
 <div class="mob-bar" id="mobBar">
   <button class="mob-bar-btn gold" id="mobBtnW" onclick="openWithdraw()">💰 سحب النقاط</button>
 
@@ -675,11 +867,13 @@ function doRegister(){
   _auth.createUserWithEmailAndPassword(em,pw)
     .then(function(c){
       return c.user.updateProfile({displayName:nm}).then(function(){
-        // Create Firestore doc immediately with correct name
         if(_db){
           _db.collection('users').doc(c.user.uid).set({
             name:nm, email:em, points:START_PTS,
             createdAt:firebase.firestore.FieldValue.serverTimestamp()
+          }).then(function(){
+            // تحقق من كود الإحالة بعد إنشاء المستند
+            checkReferral(c.user);
           }).catch(function(){});
         }
       });
@@ -815,7 +1009,7 @@ function searchCat(q,btn){setCat(btn);searchQuery=q;searchToken='';G('secHome').
 var BASE='https://www.googleapis.com/youtube/v3/';
 function fetchHome(token,append){
   if(!append){G('ldHome').style.display='block';G('emHome').style.display='none';G('gridHome').innerHTML='';}
-  fetch(BASE+'videos?part=snippet,contentDetails,statistics&chart=mostPopular&regionCode=SA&hl=ar&maxResults=16&pageToken='+(token||'')+'&key='+YT_KEY)
+  fetch(BASE+'videos?part=snippet,contentDetails,statistics&chart=mostPopular&regionCode='+currentRegion+'&hl=ar&maxResults=16&pageToken='+(token||'')+'&key='+YT_KEY)
     .then(function(r){return r.json();}).then(function(d){G('ldHome').style.display='none';if(d.error)throw new Error(d.error.message);homeToken=d.nextPageToken||'';if(d.items&&d.items.length)renderCards(d.items,'gridHome');else if(!append)G('emHome').style.display='block';G('lmHome').style.display=homeToken?'block':'none';})
     .catch(function(e){G('ldHome').style.display='none';G('gridHome').innerHTML='<div style="color:#ff6b6b;padding:2rem;grid-column:1/-1;text-align:center">⚠️ '+e.message+'</div>';});
 }
@@ -888,22 +1082,14 @@ function startWTimer(){stopWTimer();tSecs=EARN_EVERY;drawRing();wInt=setInterval
               var pv=G('modalPts');pv.classList.remove('flash');void pv.offsetWidth;pv.classList.add('flash');
               setTimeout(function(){pv.classList.remove('flash');},700);
               showToast('+1 نقطة 🎉','rgba(34,197,94,.95)');
+              sendNotif('WinTube 🎉', 'كسبت نقطة جديدة! رصيدك: '+userPoints+' نقطة');
             }}},1000);}
 function stopWTimer(){clearInterval(wInt);wInt=null;playing=false;tSecs=EARN_EVERY;drawRing();}
 function setPlaying(v){playing=v;G('pauseInd').classList.toggle('on',!v);}
 
 // ═══════════════════════════════════════
-// VIDEO PLAYER — YT IFrame API (FIXED DYNAMIC LOAD)
+// VIDEO PLAYER — YT IFrame API
 // ═══════════════════════════════════════
-var _ytTag = document.createElement('script');
-_ytTag.src = "https://www.youtube.com/iframe_api";
-var _firstScript = document.getElementsByTagName('script')[0];
-if(_firstScript) {
-  _firstScript.parentNode.insertBefore(_ytTag, _firstScript);
-} else {
-  document.head.appendChild(_ytTag);
-}
-
 var _ytPlayer = null;
 var _ytReady = false;
 var _ytPendingId = null;
@@ -1139,13 +1325,15 @@ loadSc('https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js')
           }
           updateHeader();
           G('authOv').classList.add('hidden');
-          // Show admin button only for admin UID
           if(user && user.uid === ADMIN_UID){
             var ba=G('btnA'); if(ba) ba.style.display='';
           }
           G('btnW').style.display='';
           G('mobBtnW').setAttribute('data-show','1');
           loadGamesGrid();
+          // إعداد الإحالة والإشعارات
+          initRefLink();
+          requestNotifPermission();
         }).catch(function(){userPoints=0;updateHeader();G('authOv').classList.add('hidden');});
       } else {
         currentUser=null;userPoints=0;stopWTimer();
@@ -1278,14 +1466,147 @@ if(location.hash === '#admin-secret-panel'){
   setTimeout(function(){ openAdmin && openAdmin(); }, 1500);
 }
 G('closeVid').addEventListener('click',closeVideoModal);
+G('lbOv').addEventListener('click',function(e){if(e.target===G('lbOv'))closeLeaderboard();});
+G('ppOv').addEventListener('click',function(e){if(e.target===G('ppOv'))closePP();});
+G('aboutOv').addEventListener('click',function(e){if(e.target===G('aboutOv'))G('aboutOv').classList.remove('open');});
 G('modalOv').addEventListener('click',function(e){if(e.target===G('modalOv'))closeVideoModal();});
 G('closeGame').addEventListener('click',closeGameOverlay);
+
+
+// ═══════════════════════════════════════
+// REGION SELECTOR
+// ═══════════════════════════════════════
+var currentRegion = 'IQ';
+function setRegion(code, btn){
+  currentRegion = code;
+  document.querySelectorAll('.region-btn').forEach(function(b){ b.classList.remove('active'); });
+  if(btn) btn.classList.add('active');
+  goHome(G('catHome'));
+  fetchHome('', false);
+}
+
+// ═══════════════════════════════════════
+// LEADERBOARD
+// ═══════════════════════════════════════
+function openLeaderboard(){
+  G('lbOv').classList.add('open');
+  loadLeaderboard();
+}
+function closeLeaderboard(){ G('lbOv').classList.remove('open'); }
+function loadLeaderboard(){
+  if(!_db){ G('lbBody').innerHTML='<div class="lb-loading">سجّل دخولك أولاً</div>'; return; }
+  G('lbBody').innerHTML='<div class="lb-loading">⏳ جاري التحميل...</div>';
+  _db.collection('users').orderBy('points','desc').limit(10).get()
+    .then(function(snap){
+      if(snap.empty){ G('lbBody').innerHTML='<div class="lb-loading">لا توجد بيانات بعد</div>'; return; }
+      var html='', rank=0;
+      snap.forEach(function(doc){
+        rank++;
+        var d=doc.data();
+        var name=d.name||d.email||'مستخدم';
+        var pts=d.points||0;
+        var av=name[0].toUpperCase();
+        var rankClass=rank===1?'gold':rank===2?'silver':rank===3?'bronze':'';
+        var rankIcon=rank===1?'🥇':rank===2?'🥈':rank===3?'🥉':rank;
+        var isMe=currentUser&&doc.id===currentUser.uid?' me':'';
+        html+='<div class="lb-row'+isMe+'">'
+          +'<div class="lb-rank '+rankClass+'">'+rankIcon+'</div>'
+          +'<div class="lb-av">'+av+'</div>'
+          +'<div class="lb-name">'+name+(isMe?' <span style="font-size:.65rem;color:var(--red)">(أنت)</span>':'')+'</div>'
+          +'<div class="lb-pts">'+pts.toLocaleString()+' ⭐</div>'
+          +'</div>';
+      });
+      G('lbBody').innerHTML=html;
+    })
+    .catch(function(e){ G('lbBody').innerHTML='<div class="lb-loading">⚠️ '+e.message+'</div>'; });
+}
+
+// ═══════════════════════════════════════
+// PRIVACY POLICY
+// ═══════════════════════════════════════
+function closePP(){ G('ppOv').classList.remove('open'); }
+
+// ═══════════════════════════════════════
+// ABOUT STATS
+// ═══════════════════════════════════════
+function loadAboutStats(){
+  if(!_db) return;
+  _db.collection('users').get().then(function(s){
+    G('statUsers').textContent = s.size + '+';
+  }).catch(function(){});
+}
+
+// ═══════════════════════════════════════
+// REFERRAL SYSTEM
+// ═══════════════════════════════════════
+var myRefCode = '';
+function getRefCode(uid){
+  // كود مختصر من الـ UID
+  return uid.substring(0,8).toUpperCase();
+}
+function buildRefLink(code){
+  return location.origin + location.pathname + '?ref=' + code;
+}
+function copyRefLink(){
+  var val = G('refLinkInp').value;
+  if(navigator.clipboard){ navigator.clipboard.writeText(val).then(function(){ showToast('✅ تم نسخ الرابط!','rgba(34,197,94,.95)'); }); }
+  else{ G('refLinkInp').select(); document.execCommand('copy'); showToast('✅ تم النسخ','rgba(34,197,94,.95)'); }
+}
+function initRefLink(){
+  if(!currentUser) return;
+  myRefCode = getRefCode(currentUser.uid);
+  var link = buildRefLink(myRefCode);
+  var inp = G('refLinkInp');
+  if(inp) inp.value = link;
+}
+function checkReferral(newUser){
+  // استخراج كود الإحالة من URL أو حقل التسجيل
+  var urlRef = new URLSearchParams(location.search).get('ref') || '';
+  var formRef = (G('rRef') && G('rRef').value.trim()) || '';
+  var refCode = (urlRef || formRef).toUpperCase();
+  if(!refCode || !_db) return;
+  // البحث عن صاحب الكود
+  _db.collection('users').get().then(function(snap){
+    snap.forEach(function(doc){
+      if(doc.id !== newUser.uid && getRefCode(doc.id) === refCode){
+        // المُحيل يحصل على 50 نقطة
+        _db.collection('users').doc(doc.id).update({
+          points: firebase.firestore.FieldValue.increment(50)
+        }).catch(function(){});
+        // المُحال يحصل على 150 نقطة إضافية
+        _db.collection('users').doc(newUser.uid).update({
+          points: firebase.firestore.FieldValue.increment(50)
+        }).catch(function(){});
+      }
+    });
+  }).catch(function(){});
+}
+
+// ═══════════════════════════════════════
+// PUSH NOTIFICATIONS (Browser)
+// ═══════════════════════════════════════
+function requestNotifPermission(){
+  if(!('Notification' in window)) return;
+  if(Notification.permission === 'default'){
+    setTimeout(function(){
+      Notification.requestPermission().then(function(p){
+        if(p==='granted') showToast('🔔 ستصلك إشعارات النقاط!','rgba(168,85,247,.95)');
+      });
+    }, 5000); // بعد 5 ثوان من الدخول
+  }
+}
+function sendNotif(title, body){
+  if(Notification.permission !== 'granted') return;
+  try{ new Notification(title, { body: body, icon: 'https://wintube205-sudo.github.io/favicon.ico' }); }catch(e){}
+}
 
 // ═══════════════════════════════════════
 // START
 // ═══════════════════════════════════════
 fetchHome('',false);
 </script>
+<!-- ══ HilltopAds Pop-under / Push ══ -->
+<!-- HilltopAds Pop/Push — global -->
 <script data-cfasync="false" async type="text/javascript" src="//data527.click/f0a41fa00cf50b1a0813/f62c1b69b8/?placementName=default"></script>
 </body>
 </html>
