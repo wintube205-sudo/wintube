@@ -1083,6 +1083,7 @@ function startWTimer(){stopWTimer();tSecs=EARN_EVERY;drawRing();wInt=setInterval
               setTimeout(function(){pv.classList.remove('flash');},700);
               showToast('+1 نقطة 🎉','rgba(34,197,94,.95)');
               sendNotif('WinTube 🎉', 'كسبت نقطة جديدة! رصيدك: '+userPoints+' نقطة');
+              syncLeaderboard();
             }}},1000);}
 function stopWTimer(){clearInterval(wInt);wInt=null;playing=false;tSecs=EARN_EVERY;drawRing();}
 function setPlaying(v){playing=v;G('pauseInd').classList.toggle('on',!v);}
@@ -1331,9 +1332,10 @@ loadSc('https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js')
           G('btnW').style.display='';
           G('mobBtnW').setAttribute('data-show','1');
           loadGamesGrid();
-          // إعداد الإحالة والإشعارات
+          // إعداد الإحالة والإشعارات والـ leaderboard
           initRefLink();
           requestNotifPermission();
+          syncLeaderboard();
         }).catch(function(){userPoints=0;updateHeader();G('authOv').classList.add('hidden');});
       } else {
         currentUser=null;userPoints=0;stopWTimer();
@@ -1467,6 +1469,13 @@ if(location.hash === '#admin-secret-panel'){
 }
 G('closeVid').addEventListener('click',closeVideoModal);
 G('lbOv').addEventListener('click',function(e){if(e.target===G('lbOv'))closeLeaderboard();});
+// إذا الصفحة مبهمة وأُغلق DevTools — إزالة تلقائية
+document.addEventListener('click', function(){
+  if(document.body.style.filter==='blur(8px)' && !document.getElementById('_secOv').style.display.includes('flex')){
+    document.body.style.filter='';
+    document.body.style.pointerEvents='';
+  }
+});
 G('ppOv').addEventListener('click',function(e){if(e.target===G('ppOv'))closePP();});
 G('aboutOv').addEventListener('click',function(e){if(e.target===G('aboutOv'))G('aboutOv').classList.remove('open');});
 G('modalOv').addEventListener('click',function(e){if(e.target===G('modalOv'))closeVideoModal();});
@@ -1494,31 +1503,43 @@ function openLeaderboard(){
 }
 function closeLeaderboard(){ G('lbOv').classList.remove('open'); }
 function loadLeaderboard(){
-  if(!_db){ G('lbBody').innerHTML='<div class="lb-loading">سجّل دخولك أولاً</div>'; return; }
   G('lbBody').innerHTML='<div class="lb-loading">⏳ جاري التحميل...</div>';
-  _db.collection('users').orderBy('points','desc').limit(10).get()
+  if(!_db){G('lbBody').innerHTML='<div class="lb-loading">سجّل دخولك أولاً</div>';return;}
+  _db.collection('leaderboard').get()
     .then(function(snap){
-      if(snap.empty){ G('lbBody').innerHTML='<div class="lb-loading">لا توجد بيانات بعد</div>'; return; }
-      var html='', rank=0;
-      snap.forEach(function(doc){
-        rank++;
-        var d=doc.data();
-        var name=d.name||d.email||'مستخدم';
-        var pts=d.points||0;
+      if(snap.empty){
+        if(currentUser) syncLeaderboard();
+        G('lbBody').innerHTML='<div class="lb-loading" style="text-align:center;padding:2rem"><div style="font-size:2.5rem;margin-bottom:.6rem">🏆</div><div style="font-weight:700;margin-bottom:.3rem">كن أول المتصدرين!</div><div style="font-size:.75rem;color:#555">شاهد فيديو لتظهر هنا</div></div>';
+        return;
+      }
+      var rows=[];
+      snap.forEach(function(doc){rows.push({id:doc.id,d:doc.data()});});
+      rows.sort(function(a,b){return(b.d.points||0)-(a.d.points||0);});
+      rows=rows.slice(0,10);
+      var html='';
+      rows.forEach(function(item,idx){
+        var rank=idx+1,name=item.d.name||'مستخدم',pts=item.d.points||0;
         var av=name[0].toUpperCase();
-        var rankClass=rank===1?'gold':rank===2?'silver':rank===3?'bronze':'';
-        var rankIcon=rank===1?'🥇':rank===2?'🥈':rank===3?'🥉':rank;
-        var isMe=currentUser&&doc.id===currentUser.uid?' me':'';
-        html+='<div class="lb-row'+isMe+'">'
-          +'<div class="lb-rank '+rankClass+'">'+rankIcon+'</div>'
-          +'<div class="lb-av">'+av+'</div>'
-          +'<div class="lb-name">'+name+(isMe?' <span style="font-size:.65rem;color:var(--red)">(أنت)</span>':'')+'</div>'
-          +'<div class="lb-pts">'+pts.toLocaleString()+' ⭐</div>'
-          +'</div>';
+        var rc=rank===1?'gold':rank===2?'silver':rank===3?'bronze':'';
+        var ri=rank===1?'🥇':rank===2?'🥈':rank===3?'🥉':rank;
+        var me=currentUser&&item.id===currentUser.uid?' me':'';
+        html+='<div class="lb-row'+me+'"><div class="lb-rank '+rc+'">'+ri+'</div><div class="lb-av">'+av+'</div><div class="lb-name">'+name+(me?' <span style="font-size:.65rem;color:var(--red)">(أنت)</span>':'')+'</div><div class="lb-pts">'+pts.toLocaleString()+' ⭐</div></div>';
       });
-      G('lbBody').innerHTML=html;
+      G('lbBody').innerHTML=html||'<div class="lb-loading">لا يوجد</div>';
     })
-    .catch(function(e){ G('lbBody').innerHTML='<div class="lb-loading">⚠️ '+e.message+'</div>'; });
+    .catch(function(e){
+      G('lbBody').innerHTML='<div class="lb-loading" style="text-align:center;padding:1.5rem"><div style="font-size:1.8rem">⚠️</div><div style="font-size:.8rem;margin-top:.4rem">تأكد من Firestore Rules</div><div style="font-size:.65rem;color:#555;direction:ltr;margin-top:.3rem">'+e.message+'</div></div>';
+    });
+}
+
+// يُستدعى كل مرة تتغير النقاط — يكتب في leaderboard العامة
+function syncLeaderboard(){
+  if(!_db||!currentUser) return;
+  var name=currentUser.displayName||currentUser.email.split('@')[0]||'مستخدم';
+  _db.collection('leaderboard').doc(currentUser.uid).set({
+    name:name, points:userPoints,
+    updatedAt:firebase.firestore.FieldValue.serverTimestamp()
+  }).catch(function(){});
 }
 
 // ═══════════════════════════════════════
