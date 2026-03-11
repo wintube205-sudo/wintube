@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>لعبة سيارات كلاسيكية</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #2c3e50;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow: hidden;
+            touch-action: none; /* لمنع التمرير عند اللمس */
+        }
+
+        #gameArea {
+            position: relative;
+            width: 100%;
+            max-width: 400px;
+            height: 100vh;
+            max-height: 600px;
+            background-color: #7f8c8d;
+            border: 5px solid #bdc3c7;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+            overflow: hidden;
+        }
+
+        canvas {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+
+        #scoreBoard {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+            background: rgba(0, 0, 0, 0.6);
+            padding: 8px 15px;
+            border-radius: 5px;
+            z-index: 10;
+        }
+
+        .screen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.85);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            z-index: 20;
+            text-align: center;
+        }
+
+        h1 {
+            color: #e74c3c;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px #000;
+            font-size: 28px;
+        }
+        
+        p {
+            font-size: 16px;
+            margin-bottom: 10px;
+            color: #ecf0f1;
+        }
+
+        button {
+            padding: 15px 30px;
+            font-size: 18px;
+            font-weight: bold;
+            color: white;
+            background-color: #3498db;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+            margin-top: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+        }
+
+        button:hover {
+            background-color: #2980b9;
+        }
+
+        #gameOverScreen {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="gameArea">
+        <div id="scoreBoard">النتيجة: <span id="score">0</span></div>
+        
+        <canvas id="gameCanvas" width="400" height="600"></canvas>
+
+        <div id="startScreen" class="screen">
+            <h1>سباق السيارات الكلاسيكي</h1>
+            <p>💻 <b>للحاسوب:</b> استخدم الأسهم يمين/يسار</p>
+            <p>📱 <b>للهاتف:</b> المس النصف الأيمن أو الأيسر للشاشة</p>
+            <button onclick="startGame()">ابدأ اللعبة</button>
+        </div>
+
+        <div id="gameOverScreen" class="screen">
+            <h1>انتهت اللعبة!</h1>
+            <p>لقد جمعت: <span id="finalScore" style="color: #f1c40f; font-weight: bold; font-size: 24px;">0</span> نقطة</p>
+            <button onclick="startGame()">العب مرة أخرى</button>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        const scoreElement = document.getElementById('score');
+        const finalScoreElement = document.getElementById('finalScore');
+        const startScreen = document.getElementById('startScreen');
+        const gameOverScreen = document.getElementById('gameOverScreen');
+        const gameArea = document.getElementById('gameArea');
+
+        let animationId;
+        let score = 0;
+        let speed = 5;
+        let keys = { ArrowLeft: false, ArrowRight: false };
+        let isGameRunning = false;
+
+        // إعدادات سيارة اللاعب
+        const player = {
+            x: 175,
+            y: 500,
+            width: 50,
+            height: 80,
+            color: '#e74c3c',
+            speed: 7
+        };
+
+        let enemies = [];
+        let lines = [];
+
+        // --- التحكم بواسطة لوحة المفاتيح ---
+        document.addEventListener('keydown', (e) => {
+            if(e.key === 'ArrowLeft' || e.key === 'ArrowRight') keys[e.key] = true;
+        });
+
+        document.addEventListener('keyup', (e) => {
+            if(e.key === 'ArrowLeft' || e.key === 'ArrowRight') keys[e.key] = false;
+        });
+
+        // --- التحكم بواسطة اللمس (للهواتف) ---
+        gameArea.addEventListener('touchstart', handleTouch, {passive: false});
+        gameArea.addEventListener('touchmove', handleTouch, {passive: false});
+        gameArea.addEventListener('touchend', stopTouch);
+
+        function handleTouch(e) {
+            if (!isGameRunning) return;
+            e.preventDefault(); 
+            const touch = e.touches[0];
+            const rect = gameArea.getBoundingClientRect();
+            const touchX = touch.clientX - rect.left;
+            
+            // إذا كان اللمس في النصف الأيسر
+            if (touchX < rect.width / 2) {
+                keys.ArrowLeft = true;
+                keys.ArrowRight = false;
+            } else {
+                // إذا كان اللمس في النصف الأيمن
+                keys.ArrowRight = true;
+                keys.ArrowLeft = false;
+            }
+        }
+
+        function stopTouch(e) {
+            keys.ArrowLeft = false;
+            keys.ArrowRight = false;
+        }
+
+        // تهيئة خطوط الطريق
+        function initLines() {
+            lines = [];
+            for (let i = 0; i < 6; i++) {
+                lines.push({ y: i * 120 });
+            }
+        }
+
+        // إنشاء سيارة عدو جديدة
+        function spawnEnemy() {
+            let enemyX = Math.random() * (canvas.width - 50);
+            // منع تداخل السيارات الجديدة
+            enemies.push({
+                x: enemyX,
+                y: -100,
+                width: 50,
+                height: 80,
+                color: ['#3498db', '#f1c40f', '#9b59b6', '#2ecc71', '#1abc9c'][Math.floor(Math.random() * 5)]
+            });
+        }
+
+        // رسم سيارة
+        function drawCar(car) {
+            ctx.fillStyle = car.color;
+            // رسم الهيكل الأساسي بانحناء
+            ctx.beginPath();
+            ctx.roundRect(car.x, car.y, car.width, car.height, 10);
+            ctx.fill();
+            
+            // رسم النوافذ
+            ctx.fillStyle = '#2c3e50';
+            ctx.fillRect(car.x + 10, car.y + 15, car.width - 20, 20); // نافذة أمامية
+            ctx.fillRect(car.x + 10, car.y + 50, car.width - 20, 15); // نافذة خلفية
+            
+            // أضواء أمامية
+            ctx.fillStyle = car.color === '#e74c3c' ? '#f1c40f' : '#fff'; // أضواء صفراء للاعب، بيضاء للأعداء
+            ctx.beginPath();
+            ctx.arc(car.x + 12, car.y + 5, 4, 0, Math.PI * 2);
+            ctx.arc(car.x + car.width - 12, car.y + 5, 4, 0, Math.PI * 2);
+            ctx.fill();
+
+            // رسم العجلات
+            ctx.fillStyle = '#111';
+            ctx.beginPath();
+            ctx.roundRect(car.x - 4, car.y + 15, 6, 20, 3);
+            ctx.roundRect(car.x + car.width - 2, car.y + 15, 6, 20, 3);
+            ctx.roundRect(car.x - 4, car.y + 50, 6, 20, 3);
+            ctx.roundRect(car.x + car.width - 2, car.y + 50, 6, 20, 3);
+            ctx.fill();
+        }
+
+        // تحديث حالة اللعبة
+        function update() {
+            // تحريك اللاعب
+            if (keys.ArrowLeft && player.x > 10) player.x -= player.speed;
+            if (keys.ArrowRight && player.x < canvas.width - player.width - 10) player.x += player.speed;
+
+            // تحريك خطوط الطريق
+            for (let i = 0; i < lines.length; i++) {
+                lines[i].y += speed;
+                if (lines[i].y > canvas.height) {
+                    lines[i].y -= canvas.height + 120;
+                }
+            }
+
+            // تحريك الأعداء
+            for (let i = 0; i < enemies.length; i++) {
+                let enemy = enemies[i];
+                enemy.y += speed * 0.8; // الأعداء أبطأ قليلاً من الطريق لإعطاء إحساس بالتجاوز
+
+                // التحقق من التصادم (تم تقليل مساحة التصادم قليلاً لتكون اللعبة أعدل)
+                let margin = 5; 
+                if (player.x + margin < enemy.x + enemy.width - margin &&
+                    player.x + player.width - margin > enemy.x + margin &&
+                    player.y + margin < enemy.y + enemy.height - margin &&
+                    player.y + player.height - margin > enemy.y + margin) {
+                    gameOver();
+                }
+
+                // إزالة الأعداء الذين تجاوزوا الشاشة وزيادة النتيجة
+                if (enemy.y > canvas.height) {
+                    enemies.splice(i, 1);
+                    score += 10;
+                    scoreElement.innerText = score;
+                    
+                    // زيادة السرعة تدريجياً لزيادة الصعوبة
+                    if (score % 50 === 0 && speed < 15) speed += 0.8;
+                    i--;
+                }
+            }
+
+            // إضافة أعداء جدد بشكل عشوائي (احتمالية تزيد مع السرعة)
+            let spawnRate = 0.02 + (speed * 0.001);
+            if (Math.random() < spawnRate && enemies.length < 3) {
+                // التأكد من وجود مسافة بين الأعداء
+                let canSpawn = true;
+                if(enemies.length > 0) {
+                    let lastEnemy = enemies[enemies.length - 1];
+                    if(lastEnemy.y < 150) canSpawn = false; 
+                }
+                
+                if(canSpawn) spawnEnemy();
+            }
+        }
+
+        // رسم كل شيء على الشاشة
+        function draw() {
+            // مسح الشاشة (رسم الاسفلت)
+            ctx.fillStyle = '#34495e';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // رسم حواف الطريق (عشب)
+            ctx.fillStyle = '#27ae60';
+            ctx.fillRect(0, 0, 20, canvas.height);
+            ctx.fillRect(canvas.width - 20, 0, 20, canvas.height);
+
+            // رسم خطوط الطريق البيضاء والمتقطعة
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+            for (let i = 0; i < lines.length; i++) {
+                ctx.fillRect(canvas.width / 2 - 5, lines[i].y, 10, 60);
+                
+                // خطوط جانبية
+                ctx.fillRect(30, lines[i].y, 5, 40);
+                ctx.fillRect(canvas.width - 35, lines[i].y, 5, 40);
+            }
+
+            // رسم الأعداء
+            for (let i = 0; i < enemies.length; i++) {
+                drawCar(enemies[i]);
+            }
+            // رسم اللاعب
+            drawCar(player);
+        }
+
+        // الحلقة الرئيسية للعبة
+        function gameLoop() {
+            if (!isGameRunning) return;
+            update();
+            draw();
+            animationId = requestAnimationFrame(gameLoop);
+        }
+
+        // بدء اللعبة
+        function startGame() {
+            startScreen.style.display = 'none';
+            gameOverScreen.style.display = 'none';
+            score = 0;
+            speed = 6;
+            scoreElement.innerText = score;
+            player.x = canvas.width / 2 - player.width / 2;
+            enemies = [];
+            keys = { ArrowLeft: false, ArrowRight: false };
+            initLines();
+            isGameRunning = true;
+            
+            // إضافة أول عدو مباشرة
+            spawnEnemy();
+
+            cancelAnimationFrame(animationId);
+            gameLoop();
+        }
+
+        // إنهاء اللعبة
+        function gameOver() {
+            isGameRunning = false;
+            cancelAnimationFrame(animationId);
+            finalScoreElement.innerText = score;
+            gameOverScreen.style.display = 'flex';
+        }
+    </script>
+</body>
+</html>
+
+
