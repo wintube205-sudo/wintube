@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>لعبة مطابقة الأيقونات - نسخة الغروب</title>
+    <style>
+        :root {
+            --primary-color: #ff7675;
+            --accent-color: #fdcb6e;
+            /* خلفية الغروب */
+            --bg-image: url('https://images.unsplash.com/photo-1472214103451-9374bd1c798e?q=80&w=2070&auto=format&fit=crop');
+            --tile-bg: #ffffff;
+            --slot-bg: rgba(0, 0, 0, 0.7); /* لون الخانات أسود شفاف */
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #2d3436;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+            touch-action: manipulation;
+        }
+
+        #game-container {
+            width: 100%;
+            max-width: 500px;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            background-image: var(--bg-image);
+            background-size: cover;
+            background-position: center;
+        }
+
+        /* طبقة تدرج لوني لتعزيز شكل الغروب */
+        #game-container::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(to bottom, rgba(108, 92, 231, 0.2), rgba(214, 48, 49, 0.2));
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        header {
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(0, 0, 0, 0.4);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            z-index: 30;
+            backdrop-filter: blur(8px);
+            color: white;
+            border-bottom: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .level-badge {
+            background: linear-gradient(135deg, #d63031, #e17055);
+            color: white;
+            padding: 5px 18px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 18px;
+            box-shadow: 0 0 10px rgba(214, 48, 49, 0.5);
+        }
+
+        #board {
+            flex-grow: 1;
+            position: relative;
+            padding: 20px;
+            z-index: 10;
+        }
+
+        .tile {
+            position: absolute;
+            width: 65px;
+            height: 75px;
+            background: var(--tile-bg);
+            border-radius: 14px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 36px;
+            /* ظل قوي لجعل البلاطة تبدو زاهية وبارزة */
+            box-shadow: 0 6px 0 #dfe6e9, 0 12px 25px rgba(0,0,0,0.4);
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 5;
+            border: 2px solid #fff;
+        }
+
+        .tile:active {
+            transform: scale(0.9);
+        }
+
+        .tile.blocked {
+            filter: brightness(0.4) saturate(0.5);
+            pointer-events: none;
+            box-shadow: 0 4px 0 #636e72, 0 5px 10px rgba(0,0,0,0.3);
+        }
+
+        footer {
+            height: 150px;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-top: 2px solid rgba(255, 255, 255, 0.1);
+            z-index: 30;
+            backdrop-filter: blur(10px);
+        }
+
+        #slots-container {
+            display: flex;
+            gap: 8px;
+            background: var(--slot-bg); /* اللون الأسود المطلوب */
+            padding: 12px;
+            border-radius: 18px;
+            width: 92%;
+            height: 85px;
+            justify-content: center;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+        }
+
+        .slot {
+            width: 52px;
+            height: 72px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 32px;
+            color: white;
+            border: 1px dashed rgba(255, 255, 255, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .slot:not(:empty) {
+            background: white;
+            border: none;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+
+        .modal {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.92);
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            z-index: 100;
+            backdrop-filter: blur(15px);
+        }
+
+        button {
+            padding: 16px 60px;
+            font-size: 24px;
+            background: linear-gradient(135deg, #e17055, #d63031);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            margin-top: 30px;
+            font-weight: bold;
+            box-shadow: 0 10px 20px rgba(214, 48, 49, 0.4);
+        }
+    </style>
+</head>
+<body>
+
+    <div id="game-container">
+        <header>
+            <div class="level-badge">المستوى <span id="level-num">1</span></div>
+            <div style="font-weight: bold; font-size: 18px; text-shadow: 0 2px 4px rgba(0,0,0,0.5);">النقاط: <span id="score">0</span></div>
+        </header>
+
+        <div id="board"></div>
+
+        <footer>
+            <div id="slots-container">
+                <div class="slot"></div><div class="slot"></div><div class="slot"></div>
+                <div class="slot"></div><div class="slot"></div><div class="slot"></div>
+                <div class="slot"></div>
+            </div>
+        </footer>
+
+        <div id="msg-modal" class="modal">
+            <h1 id="modal-title" style="color: var(--accent-color); font-size: 45px;">مذهل!</h1>
+            <p id="modal-desc" style="font-size: 20px; opacity: 0.9;">أنت تتقدم بسرعة!</p>
+            <button id="modal-btn" onclick="handleModalAction()">انطلق</button>
+        </div>
+    </div>
+
+    <script>
+        // أيقونات زاهية تتناسب مع الخلفية
+        const allEmojis = ['🍓', '🍒', '🍕', '🍩', '🍦', '🍔', '🍇', '🍉', '🍋', '🥑', '🍍', '🍑', '🥨', '🍪', '🍣', '🍭', '🌈', '💎'];
+        let currentLevel = 1;
+        let score = 0;
+        let slots = [];
+        const maxSlots = 7;
+
+        function initLevel(level) {
+            const board = document.getElementById('board');
+            board.innerHTML = '';
+            slots = [];
+            updateSlotsUI();
+            document.getElementById('msg-modal').style.display = 'none';
+
+            // زيادة التحدي بزيادة عدد الأيقونات
+            const numGroups = 4 + Math.floor(level * 1.5); 
+            const iconsInPlay = Math.min(allEmojis.length, 5 + level);
+            let gameEmojis = [];
+            for (let i = 0; i < numGroups; i++) {
+                const emoji = allEmojis[i % iconsInPlay];
+                gameEmojis.push(emoji, emoji, emoji);
+            }
+            gameEmojis.sort(() => Math.random() - 0.5);
+
+            gameEmojis.forEach((emoji, index) => {
+                const tile = document.createElement('div');
+                tile.className = 'tile';
+                tile.innerText = emoji;
+                
+                // تحديد موقع الأيقونة
+                const x = 20 + Math.random() * (board.clientWidth - 100);
+                const y = 20 + Math.random() * (board.clientHeight - 130);
+                
+                tile.style.left = `${x}px`;
+                tile.style.top = `${y}px`;
+                tile.style.zIndex = index;
+                tile.dataset.emoji = emoji;
+                tile.onclick = () => selectTile(tile);
+                board.appendChild(tile);
+            });
+            checkBlockers();
+        }
+
+        function checkBlockers() {
+            const tiles = Array.from(document.querySelectorAll('.tile:not(.selected)'));
+            tiles.forEach((t1, i) => {
+                let isBlocked = false;
+                const r1 = t1.getBoundingClientRect();
+                for (let j = i + 1; j < tiles.length; j++) {
+                    const r2 = tiles[j].getBoundingClientRect();
+                    // كشف التداخل
+                    if (!(r1.right < r2.left + 8 || r1.left > r2.right - 8 || r1.bottom < r2.top + 8 || r1.top > r2.bottom - 8)) {
+                        isBlocked = true; 
+                        break;
+                    }
+                }
+                t1.classList.toggle('blocked', isBlocked);
+            });
+        }
+
+        function selectTile(tile) {
+            if (tile.classList.contains('blocked') || slots.length >= maxSlots) return;
+            tile.classList.add('selected');
+            tile.style.display = 'none';
+            slots.push(tile.dataset.emoji);
+            slots.sort(); 
+            updateSlotsUI();
+            checkMatches();
+            setTimeout(checkBlockers, 100);
+        }
+
+        function updateSlotsUI() {
+            const slotElements = document.querySelectorAll('.slot');
+            slotElements.forEach((slot, i) => {
+                slot.innerText = slots[i] || '';
+                // تحسين الشكل عند الامتلاء
+                if (slots[i]) {
+                    slot.style.background = "white";
+                    slot.style.color = "black";
+                } else {
+                    slot.style.background = "rgba(255, 255, 255, 0.1)";
+                }
+            });
+        }
+
+        function checkMatches() {
+            const counts = {};
+            slots.forEach(e => counts[e] = (counts[e] || 0) + 1);
+            for (let e in counts) {
+                if (counts[e] === 3) {
+                    setTimeout(() => {
+                        slots = slots.filter(item => item !== e);
+                        score += (20 * currentLevel);
+                        document.getElementById('score').innerText = score;
+                        updateSlotsUI();
+                        if (document.querySelectorAll('.tile:not(.selected)').length === 0 && slots.length === 0) {
+                            showModal('مستوى رائع!', `تم إنجاز المستوى ${currentLevel} بنجاح`, 'المستوى التالي');
+                        }
+                    }, 300);
+                    return;
+                }
+            }
+            if (slots.length >= maxSlots) {
+                showModal('انتهت اللعبة!', 'امتلأت الخانات بالكامل.', 'حاول مرة أخرى');
+            }
+        }
+
+        function showModal(t, d, b) {
+            document.getElementById('modal-title').innerText = t;
+            document.getElementById('modal-desc').innerText = d;
+            document.getElementById('modal-btn').innerText = b;
+            document.getElementById('msg-modal').style.display = 'flex';
+        }
+
+        function handleModalAction() {
+            const btn = document.getElementById('modal-btn').innerText;
+            if (btn === 'المستوى التالي') currentLevel++;
+            document.getElementById('level-num').innerText = currentLevel;
+            initLevel(currentLevel);
+        }
+
+        window.onload = () => initLevel(1);
+    </script>
+</body>
+</html>
+
