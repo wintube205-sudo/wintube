@@ -3,16 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>لعبة مطابقة الأيقونات - حفظ سحابي لكل لاعب</title>
-    <!-- استيراد مكتبات Firebase -->
-    <script src="https://www.gstatic.com/firebasejs/11.6.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/11.6.1/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore-compat.js"></script>
+    <title>لعبة مطابقة البلاطات</title>
     <style>
         :root {
             --bg-image: url('https://images.unsplash.com/photo-1472214103451-9374bd1c798e?q=80&w=2070&auto=format&fit=crop');
             --tile-bg: #ffffff;
-            --slot-bg: rgba(0, 0, 0, 0.85); /* الخانات السوداء المطلوبة */
+            --slot-bg: rgba(0, 0, 0, 0.85); /* الخانات السوداء */
         }
 
         body {
@@ -20,6 +16,7 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             display: flex; flex-direction: column; align-items: center;
             height: 100vh; overflow: hidden; touch-action: manipulation;
+            user-select: none; /* منع تحديد النص بالغلط */
         }
 
         #game-container {
@@ -36,53 +33,56 @@
 
         .level-badge {
             background: linear-gradient(135deg, #ff7675, #d63031);
-            padding: 5px 15px; border-radius: 20px; font-weight: bold;
+            padding: 6px 18px; border-radius: 20px; font-weight: bold; font-size: 18px;
             box-shadow: 0 4px 10px rgba(214, 48, 49, 0.4);
         }
+
+        .score-badge { font-weight: bold; font-size: 18px; }
 
         #board { flex-grow: 1; position: relative; padding: 20px; z-index: 10; }
 
         .tile {
-            position: absolute; width: 65px; height: 75px; background: var(--tile-bg);
+            position: absolute; width: 60px; height: 70px; background: var(--tile-bg);
             border-radius: 12px; display: flex; justify-content: center; align-items: center;
-            font-size: 34px; box-shadow: 0 6px 0 #bdc3c7, 0 12px 20px rgba(0,0,0,0.3);
+            font-size: 35px; box-shadow: 0 6px 0 #bdc3c7, 0 10px 15px rgba(0,0,0,0.3);
             cursor: pointer; z-index: 5; border: 2px solid #fff;
+            transition: transform 0.1s;
         }
 
-        .tile.blocked { filter: brightness(0.4) grayscale(0.8); pointer-events: none; }
+        .tile:active { transform: translateY(4px); box-shadow: 0 2px 0 #bdc3c7; }
+
+        .tile.blocked { filter: brightness(0.5) grayscale(0.6); pointer-events: none; }
 
         footer {
-            height: 140px; background: rgba(0, 0, 0, 0.7);
+            height: 130px; background: rgba(0, 0, 0, 0.7);
             display: flex; flex-direction: column; justify-content: center; align-items: center;
             z-index: 50; backdrop-filter: blur(15px);
         }
 
         #slots-container {
-            display: flex; gap: 8px; background: var(--slot-bg); padding: 12px;
-            border-radius: 18px; width: 90%; height: 75px; justify-content: center;
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            display: flex; gap: 6px; background: var(--slot-bg); padding: 10px;
+            border-radius: 15px; width: 92%; height: 75px; justify-content: center;
+            border: 1px solid rgba(255, 255, 255, 0.2); box-sizing: border-box;
         }
 
         .slot {
-            width: 48px; height: 65px; background: rgba(255, 255, 255, 0.05);
-            border-radius: 10px; display: flex; justify-content: center; align-items: center;
-            font-size: 28px; border: 1px dashed rgba(255, 255, 255, 0.2);
+            width: calc(100% / 7); max-width: 50px; height: 100%; background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px; display: flex; justify-content: center; align-items: center;
+            font-size: 30px; border: 1px dashed rgba(255, 255, 255, 0.2);
         }
 
         .slot:not(:empty) { background: white; border: none; box-shadow: 0 4px 8px rgba(0,0,0,0.4); color: black;}
 
         .modal {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.92); display: none; flex-direction: column;
+            background: rgba(0,0,0,0.9); display: none; flex-direction: column;
             justify-content: center; align-items: center; color: white; z-index: 100;
         }
 
         button {
-            padding: 15px 50px; font-size: 22px; background: linear-gradient(135deg, #ff7675, #d63031);
-            color: white; border: none; border-radius: 40px; cursor: pointer; margin-top: 20px; font-weight: bold;
+            padding: 15px 40px; font-size: 20px; background: linear-gradient(135deg, #ff7675, #d63031);
+            color: white; border: none; border-radius: 30px; cursor: pointer; margin-top: 20px; font-weight: bold;
         }
-
-        #status-bar { color: #888; font-size: 11px; margin-top: 5px; }
     </style>
 </head>
 <body>
@@ -90,7 +90,7 @@
     <div id="game-container">
         <header>
             <div class="level-badge">المستوى <span id="level-num">1</span></div>
-            <div style="font-weight: bold;">النقاط: <span id="score">0</span></div>
+            <div class="score-badge">النقاط: <span id="score">0</span></div>
         </header>
 
         <div id="board"></div>
@@ -101,7 +101,6 @@
                 <div class="slot"></div><div class="slot"></div><div class="slot"></div>
                 <div class="slot"></div>
             </div>
-            <div id="status-bar">جاري المزامنة...</div>
         </footer>
 
         <div id="msg-modal" class="modal">
@@ -112,76 +111,27 @@
     </div>
 
     <script>
-        // إعدادات Firebase والبيانات العالمية الموفرة من البيئة
-        const firebaseConfig = JSON.parse(__firebase_config);
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'tile-match-game';
-        
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.firestore();
-        const auth = firebase.auth();
-
-        const emojis = ['🍓', '🍒', '🍕', '🍩', '🍦', '🍔', '🍇', '🍉', '🍋', '🥑', '🍍', '🍑', '🍣', '🍫', '🍭', '💎', '🌈', '🔥'];
+        const emojis = ['🍓', '🍒', '🍕', '🍩', '🍦', '🍔', '🍇', '🍉', '🍋', '🥑', '🍍', '🍑', '🍣', '🍫', '🍭', '💎', '🌸', '🔥'];
         let currentLevel = 1;
         let score = 0;
         let slots = [];
-        let userId = null;
 
-        // بدء المصادقة وحفظ التقدم
-        async function startApp() {
-            try {
-                // تسجيل دخول مجهول لإنشاء ID فريد لكل مستخدم
-                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-                    await auth.signInWithCustomToken(__initial_auth_token);
-                } else {
-                    await auth.signInAnonymously();
-                }
-
-                auth.onAuthStateChanged(async (user) => {
-                    if (user) {
-                        userId = user.uid;
-                        await loadUserData();
-                        initLevel(currentLevel);
-                    }
-                });
-            } catch (error) {
-                console.error("Auth Error", error);
-                initLevel(1); // ابدأ المستوى 1 إذا فشل الاتصال
-            }
+        // دالة لتحميل التقدم من ذاكرة الهاتف
+        function loadProgress() {
+            const savedLevel = localStorage.getItem('tileMatchLevel');
+            const savedScore = localStorage.getItem('tileMatchScore');
+            
+            if (savedLevel) currentLevel = parseInt(savedLevel);
+            if (savedScore) score = parseInt(savedScore);
+            
+            document.getElementById('level-num').innerText = currentLevel;
+            document.getElementById('score').innerText = score;
         }
 
-        async function saveUserData() {
-            if (!userId) return;
-            const status = document.getElementById('status-bar');
-            status.innerText = "جاري حفظ تقدمك...";
-            try {
-                // استخدام المسار الإلزامي لحفظ بيانات المستخدم الخاصة
-                const userDoc = db.doc(`artifacts/${appId}/users/${userId}/gameData/progress`);
-                await userDoc.set({
-                    level: currentLevel,
-                    score: score,
-                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
-                }, { merge: true });
-                status.innerText = "تم حفظ مستواك سحابياً ✅";
-            } catch (err) {
-                status.innerText = "خطأ في الحفظ السحابي ❌";
-            }
-        }
-
-        async function loadUserData() {
-            if (!userId) return;
-            try {
-                const userDoc = db.doc(`artifacts/${appId}/users/${userId}/gameData/progress`);
-                const docSnap = await userDoc.get();
-                if (docSnap.exists) {
-                    const data = docSnap.data();
-                    currentLevel = data.level || 1;
-                    score = data.score || 0;
-                    document.getElementById('level-num').innerText = currentLevel;
-                    document.getElementById('score').innerText = score;
-                }
-            } catch (err) {
-                console.error("Load Error", err);
-            }
+        // دالة لحفظ التقدم في ذاكرة الهاتف
+        function saveProgress() {
+            localStorage.setItem('tileMatchLevel', currentLevel);
+            localStorage.setItem('tileMatchScore', score);
         }
 
         function initLevel(level) {
@@ -191,21 +141,29 @@
             updateSlotsUI();
             document.getElementById('msg-modal').style.display = 'none';
 
-            const numGroups = 4 + Math.floor(level * 1.2); 
-            const iconsInPlay = Math.min(emojis.length, 5 + level);
+            // زيادة عدد البلاطات كلما تقدم في المستوى
+            const numGroups = 4 + Math.floor(level * 1.5); 
+            const iconsInPlay = Math.min(emojis.length, 4 + level);
             let pool = [];
             for (let i = 0; i < numGroups; i++) {
                 const e = emojis[i % iconsInPlay];
-                pool.push(e, e, e);
+                pool.push(e, e, e); // ثلاث حبات من كل شكل
             }
-            pool.sort(() => Math.random() - 0.5);
+            pool.sort(() => Math.random() - 0.5); // خلط البلاطات
 
+            const boardRect = board.getBoundingClientRect();
+            
             pool.forEach((emoji, idx) => {
                 const tile = document.createElement('div');
                 tile.className = 'tile';
                 tile.innerText = emoji;
-                tile.style.left = (15 + Math.random() * (board.clientWidth - 85)) + 'px';
-                tile.style.top = (15 + Math.random() * (board.clientHeight - 100)) + 'px';
+                
+                // توزيع عشوائي داخل إطار اللعب
+                const maxX = boardRect.width - 70;
+                const maxY = boardRect.height - 80;
+                
+                tile.style.left = (10 + Math.random() * maxX) + 'px';
+                tile.style.top = (10 + Math.random() * maxY) + 'px';
                 tile.style.zIndex = idx;
                 tile.dataset.emoji = emoji;
                 tile.onclick = () => selectTile(tile);
@@ -221,7 +179,8 @@
                 const r1 = t1.getBoundingClientRect();
                 for (let j = i + 1; j < tiles.length; j++) {
                     const r2 = tiles[j].getBoundingClientRect();
-                    if (!(r1.right < r2.left + 8 || r1.left > r2.right - 8 || r1.bottom < r2.top + 8 || r1.top > r2.bottom - 8)) {
+                    // فحص إذا كانت البلاطة مغطاة ببلاطة أخرى فوقها
+                    if (!(r1.right < r2.left + 15 || r1.left > r2.right - 15 || r1.bottom < r2.top + 15 || r1.top > r2.bottom - 15)) {
                         isBlocked = true; break;
                     }
                 }
@@ -234,10 +193,10 @@
             tile.classList.add('selected');
             tile.style.display = 'none';
             slots.push(tile.dataset.emoji);
-            slots.sort(); 
+            slots.sort(); // ترتيب لتسهيل المطابقة
             updateSlotsUI();
             checkMatches();
-            setTimeout(checkBlockers, 100);
+            setTimeout(checkBlockers, 50);
         }
 
         function updateSlotsUI() {
@@ -249,41 +208,58 @@
             const counts = {};
             slots.forEach(e => counts[e] = (counts[e] || 0) + 1);
             for (let e in counts) {
-                if (counts[e] === 3) {
+                if (counts[e] === 3) { // إذا جمع 3 متشابهة
                     setTimeout(() => {
                         slots = slots.filter(item => item !== e);
                         score += 50;
                         document.getElementById('score').innerText = score;
+                        saveProgress(); // حفظ النقاط فوراً
                         updateSlotsUI();
+                        
+                        // فحص الفوز
                         if (document.querySelectorAll('.tile:not(.selected)').length === 0 && slots.length === 0) {
-                            showModal('رائع!', 'أنهيت المستوى بنجاح', 'المستوى التالي');
+                            showModal('رائع جداً!', 'لقد أنهيت المستوى بنجاح', 'المستوى التالي', 'win');
                         }
                     }, 300);
                     return;
                 }
             }
-            if (slots.length >= 7) showModal('انتهى المكان!', 'حاول مرة أخرى لتنظيف اللوحة', 'إعادة المحاولة');
+            // فحص الخسارة (امتلاء الخانات)
+            if (slots.length >= 7) {
+                showModal('خسارة!', 'امتلات الخانات، حاول مرة أخرى', 'إعادة المستوى', 'lose');
+            }
         }
 
-        function showModal(t, d, b) {
-            document.getElementById('modal-title').innerText = t;
-            document.getElementById('modal-desc').innerText = d;
-            document.getElementById('modal-btn').innerText = b;
+        let currentModalState = 'win';
+        function showModal(title, desc, btnText, state) {
+            currentModalState = state;
+            document.getElementById('modal-title').innerText = title;
+            document.getElementById('modal-title').style.color = state === 'win' ? '#55efc4' : '#ff7675';
+            document.getElementById('modal-desc').innerText = desc;
+            document.getElementById('modal-btn').innerText = btnText;
             document.getElementById('msg-modal').style.display = 'flex';
         }
 
-        async function handleModalAction() {
-            if (document.getElementById('modal-btn').innerText === 'المستوى التالي') {
+        function handleModalAction() {
+            if (currentModalState === 'win') {
                 currentLevel++;
-                await saveUserData();
+                saveProgress(); // حفظ المستوى الجديد
+            } else {
+                // إذا خسر، يتم تفريغ الخانات وإعادة نفس المستوى
+                slots = [];
             }
             document.getElementById('level-num').innerText = currentLevel;
             initLevel(currentLevel);
         }
 
-        startApp();
+        // تشغيل اللعبة عند فتح الصفحة
+        window.onload = () => {
+            loadProgress();
+            initLevel(currentLevel);
+        };
     </script>
 </body>
 </html>
+
 
 
