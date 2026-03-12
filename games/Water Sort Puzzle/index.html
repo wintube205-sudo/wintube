@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لغز فرز المياه المطوّر</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        :root {
+            --bg-deep-blue: #0a192f;
+            --tube-border: rgba(255, 255, 255, 0.5);
+            --tube-bg: rgba(255, 255, 255, 0.05);
+        }
+
+        body {
+            background: radial-gradient(circle at center, #1e40af 0%, #0a192f 100%);
+            height: 100vh;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            color: white;
+            user-select: none;
+            touch-action: manipulation;
+        }
+
+        .game-header {
+            padding: 20px;
+            text-align: center;
+        }
+
+        .level-badge {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 5px 20px;
+            border-radius: 20px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+
+        #game-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            padding: 20px;
+            max-width: 500px;
+            margin-top: 20px;
+        }
+
+        .tube {
+            width: 48px;
+            height: 170px;
+            border: 3px solid var(--tube-border);
+            border-bottom-left-radius: 24px;
+            border-bottom-right-radius: 24px;
+            position: relative;
+            cursor: pointer;
+            background: var(--tube-bg);
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s;
+            display: flex;
+            flex-direction: column-reverse;
+            padding-bottom: 2px;
+            overflow: hidden;
+        }
+
+        .tube.selected {
+            transform: translateY(-25px);
+            border-color: #fff;
+            box-shadow: 0 10px 25px rgba(255, 255, 255, 0.3);
+        }
+
+        .water-layer {
+            width: 100%;
+            height: 24%;
+            margin-bottom: 1%;
+            border-radius: 2px;
+            box-shadow: inset 0 0 10px rgba(255,255,255,0.2);
+            transition: height 0.3s ease;
+            position: relative;
+        }
+
+        /* توهج الألوان */
+        .water-layer::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.2) 50%, rgba(255,255,255,0) 100%);
+        }
+
+        .btn-group {
+            margin-top: auto;
+            margin-bottom: 40px;
+            display: flex;
+            gap: 15px;
+        }
+
+        .game-btn {
+            background: white;
+            color: #1e40af;
+            padding: 12px 25px;
+            border-radius: 15px;
+            font-weight: 800;
+            box-shadow: 0 4px 0 #bfdbfe;
+            transition: all 0.1s;
+        }
+
+        .game-btn:active {
+            transform: translateY(4px);
+            box-shadow: 0 0 0 #bfdbfe;
+        }
+
+        .overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(10, 25, 47, 0.9);
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            backdrop-filter: blur(8px);
+        }
+
+        /* تعريف ألوان زاهية وواضحة جداً */
+        .color-1 { background-color: #FF0000; } /* أحمر ناري */
+        .color-2 { background-color: #00FF00; } /* أخضر فسفوري */
+        .color-3 { background-color: #0084FF; } /* أزرق سماوي */
+        .color-4 { background-color: #FFFF00; } /* أصفر فاقع */
+        .color-5 { background-color: #FF00FF; } /* فوشي */
+        .color-6 { background-color: #00FFFF; } /* فيروزي */
+        .color-7 { background-color: #FF8000; } /* برتقالي */
+        .color-8 { background-color: #FFFFFF; } /* أبيض ناصع */
+    </style>
+</head>
+<body>
+
+    <div class="game-header">
+        <h1 class="text-2xl font-black mb-2 tracking-widest">WATER SORT</h1>
+        <div class="level-badge">المستوى <span id="level-display">1</span></div>
+    </div>
+
+    <div id="game-container"></div>
+
+    <div class="btn-group">
+        <button class="game-btn" onclick="resetGame()">إعادة</button>
+        <button class="game-btn" style="background: #fbbf24; color: #78350f; box-shadow: 0 4px 0 #d97706;" onclick="skipLevel()">تخطي</button>
+    </div>
+
+    <div id="win-overlay" class="overlay">
+        <div class="text-6xl mb-4">🏆</div>
+        <h2 class="text-3xl font-bold mb-6">مستوى رائع!</h2>
+        <button class="game-btn text-xl px-12 py-5" onclick="nextLevel()">المستوى التالي</button>
+    </div>
+
+    <script>
+        // ألوان زاهية مخصصة
+        const BRIGHT_COLORS = [
+            '#FF0040', // أحمر
+            '#22FF22', // أخضر
+            '#00D9FF', // أزرق
+            '#FFEA00', // أصفر
+            '#FF00FF', // وردي
+            '#FF8800', // برتقالي
+            '#9D00FF', // بنفسجي
+            '#00FFCC'  // تركواز
+        ];
+
+        let state = {
+            level: 1,
+            tubes: [],
+            selected: null,
+            isWinning: false
+        };
+
+        // محرك الصوت (Web Audio API) لتوليد صوت صب مياه
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        
+        function playPourSound() {
+            const oscillator = audioCtx.createOscillator();
+            const gainNode = audioCtx.createGain();
+
+            oscillator.type = 'sine';
+            oscillator.frequency.setValueAtTime(400, audioCtx.currentTime);
+            oscillator.frequency.exponentialRampToValueAtTime(100, audioCtx.currentTime + 0.3);
+
+            gainNode.gain.setValueAtTime(0.2, audioCtx.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
+
+            oscillator.connect(gainNode);
+            gainNode.connect(audioCtx.destination);
+
+            oscillator.start();
+            oscillator.stop(audioCtx.currentTime + 0.3);
+        }
+
+        function playPopSound() {
+            const oscillator = audioCtx.createOscillator();
+            const gainNode = audioCtx.createGain();
+            oscillator.type = 'square';
+            oscillator.frequency.setValueAtTime(150, audioCtx.currentTime);
+            gainNode.gain.setValueAtTime(0.05, audioCtx.currentTime);
+            oscillator.connect(gainNode);
+            gainNode.connect(audioCtx.destination);
+            oscillator.start();
+            oscillator.stop(audioCtx.currentTime + 0.05);
+        }
+
+        // حفظ وتحميل المستوى
+        function save() { localStorage.setItem('ws_level', state.level); }
+        function load() { 
+            const l = localStorage.getItem('ws_level');
+            if(l) state.level = parseInt(l);
+        }
+
+        function initLevel() {
+            load();
+            document.getElementById('level-display').innerText = state.level;
+            document.getElementById('win-overlay').style.display = 'none';
+            state.selected = null;
+            state.isWinning = false;
+
+            const colorCount = Math.min(3 + Math.floor(state.level / 3), BRIGHT_COLORS.length);
+            const emptyTubes = 2;
+            
+            let pool = [];
+            for(let i=0; i<colorCount; i++) {
+                for(let j=0; j<4; j++) pool.push(BRIGHT_COLORS[i]);
+            }
+
+            // Shuffle pool
+            for (let i = pool.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [pool[i], pool[j]] = [pool[j], pool[i]];
+            }
+
+            state.tubes = [];
+            for(let i=0; i<colorCount; i++) {
+                state.tubes.push(pool.slice(i*4, (i+1)*4));
+            }
+            for(let i=0; i<emptyTubes; i++) state.tubes.push([]);
+
+            render();
+        }
+
+        function render() {
+            const container = document.getElementById('game-container');
+            container.innerHTML = '';
+
+            state.tubes.forEach((colors, idx) => {
+                const tube = document.createElement('div');
+                tube.className = `tube ${state.selected === idx ? 'selected' : ''}`;
+                tube.onclick = () => onTubeClick(idx);
+
+                colors.forEach(c => {
+                    const layer = document.createElement('div');
+                    layer.className = 'water-layer';
+                    layer.style.backgroundColor = c;
+                    // إضافة توهج بسيط لكل طبقة
+                    layer.style.boxShadow = `0 0 10px ${c}66`; 
+                    tube.appendChild(layer);
+                });
+
+                container.appendChild(tube);
+            });
+        }
+
+        function onTubeClick(idx) {
+            if(state.isWinning) return;
+
+            if(state.selected === null) {
+                if(state.tubes[idx].length > 0) {
+                    state.selected = idx;
+                    playPopSound();
+                }
+            } else {
+                if(state.selected === idx) {
+                    state.selected = null;
+                } else {
+                    pour(state.selected, idx);
+                    state.selected = null;
+                }
+            }
+            render();
+        }
+
+        function pour(fromIdx, toIdx) {
+            const from = state.tubes[fromIdx];
+            const to = state.tubes[toIdx];
+
+            if(from.length === 0 || to.length >= 4) return;
+
+            const color = from[from.length - 1];
+            if(to.length > 0 && to[to.length - 1] !== color) return;
+
+            // حساب كم قطعة يمكن نقلها
+            let count = 0;
+            for(let i = from.length-1; i>=0; i--) {
+                if(from[i] === color && (to.length + count) < 4) {
+                    count++;
+                } else break;
+            }
+
+            // تنفيذ النقل
+            for(let i=0; i<count; i++) {
+                to.push(from.pop());
+            }
+
+            playPourSound();
+            checkWin();
+        }
+
+        function checkWin() {
+            const won = state.tubes.every(t => {
+                if(t.length === 0) return true;
+                if(t.length === 4) return t.every(c => c === t[0]);
+                return false;
+            });
+
+            if(won) {
+                state.isWinning = true;
+                setTimeout(() => {
+                    document.getElementById('win-overlay').style.display = 'flex';
+                }, 500);
+            }
+        }
+
+        function nextLevel() {
+            state.level++;
+            save();
+            initLevel();
+        }
+
+        function skipLevel() {
+            if(confirm("هل تريد تخطي هذا المستوى؟")) nextLevel();
+        }
+
+        function resetGame() {
+            initLevel();
+        }
+
+        // بدء اللعبة
+        window.onload = initLevel;
+    </script>
+</body>
+</html>
+
