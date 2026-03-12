@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>مغامرة تحطيم القوالب المطورة</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@700;900&display=swap');
+
+        :root {
+            --neon-blue: #00d2ff;
+            --neon-pink: #ff007f;
+            --bg-color: #050b18;
+        }
+
+        body {
+            margin: 0;
+            background-color: var(--bg-color);
+            color: white;
+            font-family: 'Tajawal', sans-serif;
+            overflow: hidden;
+            touch-action: none;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100vh;
+            width: 100vw;
+        }
+
+        #game-container {
+            position: relative;
+            width: 95vw;
+            max-width: 500px;
+            height: 65vh;
+            margin-top: 10px;
+            border: 3px solid var(--neon-blue);
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0, 210, 255, 0.2);
+            background: linear-gradient(180deg, #0a192f 0%, #050b18 100%);
+            overflow: hidden;
+        }
+
+        canvas {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+
+        .ui-panel {
+            width: 95vw;
+            max-width: 500px;
+            display: flex;
+            justify-content: space-between;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            border-bottom: 2px solid rgba(0, 210, 255, 0.2);
+            margin-top: 10px;
+            border-radius: 10px;
+        }
+
+        .stat-box { text-align: center; }
+        .stat-label { font-size: 0.7rem; color: var(--neon-blue); display: block; }
+        .stat-value { font-size: 1.2rem; font-weight: 900; }
+
+        .overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(5, 11, 24, 0.95);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .btn {
+            background: var(--neon-blue);
+            color: #000;
+            padding: 12px 40px;
+            border-radius: 50px;
+            font-weight: bold;
+            font-size: 1.2rem;
+            margin-top: 20px;
+            cursor: pointer;
+            box-shadow: 0 0 15px var(--neon-blue);
+            border: none;
+        }
+
+        .hidden { display: none !important; }
+
+        #controls-hint {
+            margin-top: auto;
+            margin-bottom: 20px;
+            color: rgba(255,255,255,0.4);
+            font-size: 0.8rem;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="ui-panel">
+        <div class="stat-box">
+            <span class="stat-label">المستوى</span>
+            <span id="level-val" class="stat-value">1</span>
+        </div>
+        <div class="stat-box">
+            <span class="stat-label">النقاط</span>
+            <span id="score-val" class="stat-value">0</span>
+        </div>
+        <div class="stat-box">
+            <span class="stat-label">الأرواح</span>
+            <span id="lives-val" class="stat-value">❤️ ❤️ ❤️</span>
+        </div>
+    </div>
+
+    <div id="game-container">
+        <canvas id="gameCanvas"></canvas>
+
+        <div id="start-screen" class="overlay">
+            <h1 class="text-4xl font-black mb-2" style="color: var(--neon-blue)">تحطيم القوالب PRO</h1>
+            <p class="text-gray-400 text-sm px-6">فيزياء واقعية وتحديات متقدمة</p>
+            <div id="save-msg" class="text-yellow-400 text-xs mt-3 hidden">تم استعادة مستواك السابق!</div>
+            <button class="btn" onclick="startGame()">ابدأ اللعب</button>
+        </div>
+
+        <div id="msg-screen" class="overlay hidden">
+            <h1 id="msg-title" class="text-3xl font-black mb-2">رائع!</h1>
+            <p id="msg-body" class="mb-4">انتقلت للمستوى التالي</p>
+            <button id="msg-btn" class="btn" onclick="nextLevel()">استمرار</button>
+        </div>
+    </div>
+
+    <div id="controls-hint">اسحب لليمين واليسار للتحكم باللوح</div>
+
+    <script>
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        const container = document.getElementById('game-container');
+
+        // حالة اللعبة
+        let gameActive = false;
+        let score = 0;
+        let level = 1;
+        let lives = 3;
+
+        // عناصر اللعبة
+        let ball, paddle, bricks = [];
+        
+        // إعدادات مرنة
+        let ballRadius = 8;
+        let paddleHeight = 12;
+        let paddleWidth;
+        let brickRowCount;
+        let brickColumnCount = 6;
+        let brickPadding = 8;
+        let brickOffsetTop = 40;
+        let brickOffsetLeft = 15;
+
+        // صوت افتراضي بسيط
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        function playTone(freq, dur) {
+            try {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.frequency.value = freq;
+                gain.gain.value = 0.05;
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start();
+                setTimeout(() => osc.stop(), dur);
+            } catch(e) {}
+        }
+
+        function resize() {
+            canvas.width = container.clientWidth;
+            canvas.height = container.clientHeight;
+            if (gameActive) initPositions(); 
+        }
+
+        window.addEventListener('resize', resize);
+        resize();
+
+        function saveProgress() {
+            localStorage.setItem('brick_pro_level', level);
+            localStorage.setItem('brick_pro_score', score);
+        }
+
+        function loadProgress() {
+            const sLevel = localStorage.getItem('brick_pro_level');
+            const sScore = localStorage.getItem('brick_pro_score');
+            if (sLevel) {
+                level = parseInt(sLevel);
+                score = parseInt(sScore) || 0;
+                document.getElementById('save-msg').classList.remove('hidden');
+                updateUI();
+            }
+        }
+
+        function initPositions() {
+            // الصعوبة تزيد بتصغير اللوح وزيادة عدد القوالب
+            paddleWidth = Math.max(60, 110 - (level * 6)); 
+            brickRowCount = Math.min(8, 3 + Math.floor(level / 2));
+            
+            paddle = {
+                x: (canvas.width - paddleWidth) / 2,
+                y: canvas.height - paddleHeight - 15,
+                width: paddleWidth,
+                height: paddleHeight
+            };
+
+            const baseSpeed = 3 + (level * 0.5); // زيادة السرعة تدريجياً
+            ball = {
+                x: canvas.width / 2,
+                y: paddle.y - ballRadius - 1,
+                dx: baseSpeed * (Math.random() > 0.5 ? 1 : -1),
+                dy: -baseSpeed,
+                speed: baseSpeed
+            };
+
+            createBricks();
+            updateUI();
+        }
+
+        function createBricks() {
+            const availableWidth = canvas.width - (brickOffsetLeft * 2);
+            const actualBrickWidth = (availableWidth - (brickPadding * (brickColumnCount - 1))) / brickColumnCount;
+            
+            bricks = [];
+            for (let c = 0; c < brickColumnCount; c++) {
+                bricks[c] = [];
+                for (let r = 0; r < brickRowCount; r++) {
+                    bricks[c][r] = { 
+                        x: 0, 
+                        y: 0, 
+                        status: 1, 
+                        color: `hsl(${(r * 30 + level * 20) % 360}, 75%, 55%)` 
+                    };
+                }
+            }
+        }
+
+        function updateUI() {
+            document.getElementById('level-val').innerText = level;
+            document.getElementById('score-val').innerText = score;
+            document.getElementById('lives-val').innerText = "❤️ ".repeat(Math.max(0, lives));
+        }
+
+        // تحكم اللمس والماوس المحسن
+        function movePaddle(clientX) {
+            const rect = canvas.getBoundingClientRect();
+            const x = clientX - rect.left;
+            paddle.x = x - paddle.width / 2;
+            if (paddle.x < 0) paddle.x = 0;
+            if (paddle.x > canvas.width - paddle.width) paddle.x = canvas.width - paddle.width;
+        }
+
+        container.addEventListener('touchmove', (e) => {
+            e.preventDefault();
+            movePaddle(e.touches[0].clientX);
+        }, {passive: false});
+
+        container.addEventListener('mousemove', (e) => movePaddle(e.clientX));
+
+        function startGame() {
+            document.getElementById('start-screen').classList.add('hidden');
+            lives = 3;
+            initPositions();
+            gameActive = true;
+            requestAnimationFrame(draw);
+        }
+
+        function nextLevel() {
+            document.getElementById('msg-screen').classList.add('hidden');
+            level++;
+            saveProgress();
+            initPositions();
+            gameActive = true;
+            requestAnimationFrame(draw);
+        }
+
+        function drawBall() {
+            ctx.beginPath();
+            ctx.arc(ball.x, ball.y, ballRadius, 0, Math.PI * 2);
+            ctx.fillStyle = "#fff";
+            ctx.shadowBlur = 12;
+            ctx.shadowColor = "#fff";
+            ctx.fill();
+            ctx.closePath();
+            ctx.shadowBlur = 0;
+        }
+
+        function drawPaddle() {
+            ctx.beginPath();
+            ctx.roundRect(paddle.x, paddle.y, paddle.width, paddle.height, 6);
+            ctx.fillStyle = "#00d2ff";
+            ctx.shadowBlur = 15;
+            ctx.shadowColor = "#00d2ff";
+            ctx.fill();
+            ctx.closePath();
+            ctx.shadowBlur = 0;
+        }
+
+        function drawBricks() {
+            const availableWidth = canvas.width - (brickOffsetLeft * 2);
+            const actualBrickWidth = (availableWidth - (brickPadding * (brickColumnCount - 1))) / brickColumnCount;
+            
+            for (let c = 0; c < brickColumnCount; c++) {
+                for (let r = 0; r < brickRowCount; r++) {
+                    const b = bricks[c][r];
+                    if (b.status === 1) {
+                        const bx = c * (actualBrickWidth + brickPadding) + brickOffsetLeft;
+                        const by = r * (18 + brickPadding) + brickOffsetTop;
+                        b.x = bx;
+                        b.y = by;
+                        ctx.beginPath();
+                        ctx.roundRect(bx, by, actualBrickWidth, 18, 4);
+                        ctx.fillStyle = b.color;
+                        ctx.fill();
+                        ctx.closePath();
+                    }
+                }
+            }
+        }
+
+        function collisionDetection() {
+            const availableWidth = canvas.width - (brickOffsetLeft * 2);
+            const actualBrickWidth = (availableWidth - (brickPadding * (brickColumnCount - 1))) / brickColumnCount;
+
+            for (let c = 0; c < brickColumnCount; c++) {
+                for (let r = 0; r < brickRowCount; r++) {
+                    const b = bricks[c][r];
+                    if (b.status === 1) {
+                        if (ball.x + ballRadius > b.x && ball.x - ballRadius < b.x + actualBrickWidth && 
+                            ball.y + ballRadius > b.y && ball.y - ballRadius < b.y + 18) {
+                            
+                            ball.dy = -ball.dy;
+                            b.status = 0;
+                            score += 15;
+                            playTone(400 + (r * 50), 40);
+                            updateUI();
+                            
+                            // تحقق من الفوز
+                            if (bricks.flat().every(bk => bk.status === 0)) {
+                                gameActive = false;
+                                playTone(800, 150);
+                                showMessage("أحسنت!", `اكتمل المستوى ${level}`, "التالي", nextLevel);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        function showMessage(title, body, btnText, callback) {
+            const screen = document.getElementById('msg-screen');
+            document.getElementById('msg-title').innerText = title;
+            document.getElementById('msg-body').innerText = body;
+            const btn = document.getElementById('msg-btn');
+            btn.innerText = btnText;
+            btn.onclick = callback;
+            screen.classList.remove('hidden');
+        }
+
+        function draw() {
+            if (!gameActive) return;
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            drawBricks();
+            drawBall();
+            drawPaddle();
+            collisionDetection();
+
+            // ارتداد من الجوانب
+            if (ball.x + ball.dx > canvas.width - ballRadius || ball.x + ball.dx < ballRadius) {
+                ball.dx = -ball.dx;
+                playTone(220, 20);
+            }
+            
+            // ارتداد من السقف
+            if (ball.y + ball.dy < ballRadius) {
+                ball.dy = -ball.dy;
+                playTone(220, 20);
+            } 
+            // السقوط أو الارتداد من اللوح
+            else if (ball.y + ball.dy > paddle.y - ballRadius) {
+                if (ball.x > paddle.x && ball.x < paddle.x + paddle.width) {
+                    
+                    // --- فيزياء واقعية (Directional Bounce) ---
+                    // حساب نقطة الاصطدام بالنسبة لمركز اللوح
+                    let collidePoint = ball.x - (paddle.x + paddle.width / 2);
+                    // تحويلها لنسبة بين -1 و 1
+                    collidePoint = collidePoint / (paddle.width / 2);
+                    // حساب الزاوية (بحد أقصى 60 درجة)
+                    let angle = collidePoint * (Math.PI / 3);
+                    
+                    ball.dx = ball.speed * Math.sin(angle);
+                    ball.dy = -ball.speed * Math.cos(angle);
+                    
+                    playTone(350, 40);
+                } else if (ball.y + ball.dy > canvas.height) {
+                    lives--;
+                    updateUI();
+                    if (lives <= 0) {
+                        gameActive = false;
+                        saveProgress();
+                        showMessage("للأسف!", "انتهت الأرواح المتاحة", "حاول مجدداً", () => location.reload());
+                    } else {
+                        // إعادة الكرة للوسط مؤقتاً
+                        ball.x = canvas.width / 2;
+                        ball.y = paddle.y - ballRadius - 5;
+                        ball.dy = -ball.speed;
+                        ball.dx = ball.speed * (Math.random() > 0.5 ? 1 : -1);
+                    }
+                }
+            }
+
+            ball.x += ball.dx;
+            ball.y += ball.dy;
+
+            requestAnimationFrame(draw);
+        }
+
+        loadProgress();
+    </script>
+</body>
+</html>
+
+
