@@ -325,10 +325,23 @@ footer{background:#060606;border-top:1px solid var(--border);padding:1.2rem 1rem
 .footer-link:hover{color:var(--red);}
 .footer-copy{font-size:.7rem;color:#333;}
 
-</style>
-<!-- YT IFrame API -->
-<script src="https://www.youtube.com/iframe_api"></script>
 
+/* ═══ INTERSTITIAL AD OVERLAY ═══ */
+.iad-ov{position:fixed;inset:0;z-index:99000;background:rgba(0,0,0,.97);display:none;flex-direction:column;align-items:center;justify-content:center;font-family:'Cairo',sans-serif;}
+.iad-ov.open{display:flex;}
+.iad-top{width:100%;max-width:600px;display:flex;align-items:center;justify-content:space-between;padding:.6rem 1rem;background:rgba(255,255,255,.04);border-bottom:1px solid rgba(255,255,255,.08);}
+.iad-label{font-size:.72rem;color:#aaa;letter-spacing:.5px;}
+.iad-countdown{display:flex;align-items:center;gap:.5rem;}
+.iad-num{font-size:.85rem;font-weight:800;color:var(--yellow);min-width:18px;text-align:center;}
+.iad-skip{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:#fff;padding:.32rem .9rem;border-radius:50px;font-family:'Cairo',sans-serif;font-size:.75rem;cursor:pointer;transition:all .2s;display:none;}
+.iad-skip.show{display:inline-block;}
+.iad-skip:hover{background:var(--red);border-color:var(--red);}
+.iad-body{width:100%;max-width:600px;min-height:250px;display:flex;align-items:center;justify-content:center;padding:1rem;position:relative;}
+.iad-body iframe{width:100%;min-height:250px;border:none;display:block;}
+.iad-progress{position:absolute;bottom:0;left:0;height:3px;background:var(--red);transition:width 1s linear;border-radius:0 2px 2px 0;}
+.iad-bottom{width:100%;max-width:600px;text-align:center;padding:.5rem;font-size:.65rem;color:#444;}
+
+</style>
 </head>
 <body>
 <script>
@@ -659,6 +672,27 @@ footer{background:#060606;border-top:1px solid var(--border);padding:1.2rem 1rem
   <div class="lm-wrap" id="lmSearch" style="display:none"><button class="lm-btn" onclick="loadMoreSearch()">تحميل المزيد</button></div>
 
 </main>
+
+
+<!-- ╔═══════════════════════════════╗ -->
+<!-- ║  INTERSTITIAL AD OVERLAY     ║ -->
+<!-- ╚═══════════════════════════════╝ -->
+<div class="iad-ov" id="iadOv">
+  <div class="iad-top">
+    <span class="iad-label">📢 إعلان</span>
+    <div class="iad-countdown">
+      <span style="font-size:.72rem;color:#888">يمكن التخطي بعد</span>
+      <span class="iad-num" id="iadNum">10</span>
+      <span style="font-size:.72rem;color:#888">ثانية</span>
+      <button class="iad-skip" id="iadSkip" onclick="skipAd()">تخطي ←</button>
+    </div>
+  </div>
+  <div class="iad-body">
+    <div id="iadContent" style="width:100%;text-align:center;"></div>
+    <div class="iad-progress" id="iadProg" style="width:100%;"></div>
+  </div>
+  <div class="iad-bottom">الإعلانات تدعم المنصة وتساعدنا في توفير المكافآت للمستخدمين</div>
+</div>
 
 <!-- VIDEO MODAL -->
 <div class="modal-ov" id="modalOv">
@@ -1046,20 +1080,27 @@ function loadMoreSearch(){if(searchToken)fetchSearch(searchQuery,searchToken,tru
 // ═══════════════════════════════════════
 function openVideoModal(vid,title,desc){
   if(!currentUser){G('authOv').classList.remove('hidden');return;}
-  G('modalTitle').textContent=title;
-  G('modalDesc').textContent=desc;
-  G('modalPts').textContent=userPoints+' نقطة';
-  updateHeader(); // sync header before opening modal
-  G('modalOv').classList.add('open');playing=false;G('pauseInd').classList.remove('on');
-  startWTimer(); createYTPlayer(vid);
+  // اعرض إعلان 10 ثوان أولاً، ثم افتح الفيديو
+  showInterstitialAd(function(){
+    G('modalTitle').textContent=title;
+    G('modalDesc').textContent=desc;
+    G('modalPts').textContent=userPoints+' نقطة';
+    updateHeader();
+    G('modalOv').classList.add('open');
+    G('pauseInd').classList.remove('on');
+    _loadVideoIframe(vid);
+    startWTimer();
+    startAdRepeatTimer('video');
+  });
 }
 function closeVideoModal(){
   G('modalOv').classList.remove('open');
   stopWTimer();
+  stopAdRepeatTimer();
+  setPlaying(false);
   G('pauseInd').classList.remove('on');
-  if(_ytPlayer){ try{ _ytPlayer.stopVideo(); _ytPlayer.destroy(); }catch(e){} _ytPlayer=null; }
-  G('ytPCWrap').innerHTML = '';
-  // تحديث الهيدر بالنقاط الحالية بعد إغلاق الفيديو
+  G('ytPCWrap').innerHTML='';
+  _currentVideoId='';
   updateHeader();
 }
 
@@ -1089,90 +1130,26 @@ function stopWTimer(){clearInterval(wInt);wInt=null;playing=false;tSecs=EARN_EVE
 function setPlaying(v){playing=v;G('pauseInd').classList.toggle('on',!v);}
 
 // ═══════════════════════════════════════
-// VIDEO PLAYER — YT IFrame API
+// VIDEO PLAYER — Direct iframe (reliable)
 // ═══════════════════════════════════════
-var _ytPlayer = null;
-var _ytReady = false;
-var _ytPendingId = null;
+var _ytPlayer = null; // kept for compatibility
+var _currentVideoId = '';
 
-window.onYouTubeIframeAPIReady = function(){
-  _ytReady = true;
-  if(_ytPendingId){ _buildYTPlayer(_ytPendingId); _ytPendingId = null; }
-};
-
-function createYTPlayer(videoId){
-  // Destroy old player
-  if(_ytPlayer){ try{ _ytPlayer.destroy(); }catch(e){} _ytPlayer=null; }
-  G('ytPCWrap').innerHTML = '<div id="ytInnerDiv"></div>';
-
-  if(_ytReady){
-    _buildYTPlayer(videoId);
-  } else {
-    _ytPendingId = videoId;
-  }
-}
-
-function _buildYTPlayer(videoId){
-  // Fallback timer — إذا بقي الفيديو أسود بعد 4 ثوان نستخدم iframe مباشر
-  var _fbTimer = setTimeout(function(){
-    if(!playing){
-      console.log('YT Player timeout — switching to iframe fallback');
-      _useFallbackIframe(videoId);
-    }
-  }, 8000);
-
-  try {
-    _ytPlayer = new YT.Player('ytInnerDiv', {
-      videoId: videoId,
-      playerVars: {
-        autoplay: 1,
-        playsinline: 1,
-        rel: 0,
-        fs: 1,
-        modestbranding: 1,
-        enablejsapi: 1,
-        origin: location.origin
-      },
-      events: {
-        onReady: function(e){
-          clearTimeout(_fbTimer);
-          e.target.playVideo();
-          // بدأ التشغيل فوراً
-          setTimeout(function(){ setPlaying(true); }, 300);
-        },
-        onStateChange: function(e){
-          // 1=playing, 3=buffering
-          if(e.data === 1 || e.data === 3){
-            clearTimeout(_fbTimer);
-            setPlaying(true);
-          }
-          // 0=ended, 2=paused
-          else if(e.data === 0 || e.data === 2){
-            setPlaying(false);
-          }
-          // -1=unstarted, 5=cued — لا تغير الحالة
-        },
-        onError: function(e){
-          clearTimeout(_fbTimer);
-          _useFallbackIframe(videoId);
-        }
-      }
-    });
-  } catch(err){
-    clearTimeout(_fbTimer);
-    _useFallbackIframe(videoId);
-  }
-}
-
-function _useFallbackIframe(videoId){
-  setPlaying(true);
-  if(_ytPlayer){ try{ _ytPlayer.destroy(); }catch(e){} _ytPlayer=null; }
+function _loadVideoIframe(videoId){
+  _currentVideoId = videoId;
   G('ytPCWrap').innerHTML =
-    '<iframe src="https://www.youtube.com/embed/'+videoId+
-    '?autoplay=1&playsinline=1&rel=0&fs=1&modestbranding=1" '+
-    'allow="autoplay; fullscreen; encrypted-media; picture-in-picture" '+
-    'allowfullscreen frameborder="0" '+
-    'style="position:absolute;top:0;left:0;width:100%;height:100%;border:none;"></iframe>';
+    '<iframe id="ytMainIframe" '
+    +'src="https://www.youtube-nocookie.com/embed/'+videoId
+    +'?autoplay=1&playsinline=1&rel=0&fs=1&modestbranding=1&iv_load_policy=3" '
+    +'allow="autoplay; fullscreen; encrypted-media; picture-in-picture; accelerometer; gyroscope" '
+    +'allowfullscreen frameborder="0" '
+    +'style="position:absolute;top:0;left:0;width:100%;height:100%;border:none;"></iframe>';
+  // انتظر 1.5 ثانية ثم ابدأ العداد (وقت كافٍ لتحميل الفيديو)
+  setTimeout(function(){
+    if(G('modalOv') && G('modalOv').classList.contains('open')){
+      setPlaying(true);
+    }
+  }, 1500);
 }
 
 // ═══════════════════════════════════════
@@ -1185,11 +1162,18 @@ function showToast(msg,bg){var t=G('toast');t.textContent=msg;if(bg)t.style.back
 // ═══════════════════════════════════════
 function openGameOverlay(gameId,gameName,gameUrl){
   if(!currentUser){G('authOv').classList.remove('hidden');return;}
-  var pts=gCache[gameId]||0;activeGid=gameId;
-  G('gTitle').textContent=gameName;G('gPts').textContent=pts+' نقطة 🎮';
-  G('gFrame').src=gameUrl;G('gameOv').classList.add('open');startGTimer(pts);
+  // إعلان 10 ثوان قبل اللعبة
+  showInterstitialAd(function(){
+    var pts=gCache[gameId]||0; activeGid=gameId;
+    G('gTitle').textContent=gameName;
+    G('gPts').textContent=pts+' نقطة 🎮';
+    G('gFrame').src=gameUrl;
+    G('gameOv').classList.add('open');
+    startGTimer(pts);
+    startAdRepeatTimer('game');
+  });
 }
-function closeGameOverlay(){stopGTimer();G('gameOv').classList.remove('open');G('gFrame').src='';activeGid=null;updateHeader();loadGamesGrid();}
+function closeGameOverlay(){stopGTimer();stopAdRepeatTimer();G('gameOv').classList.remove('open');G('gFrame').src='';activeGid=null;updateHeader();loadGamesGrid();}
 function startGTimer(startPts){
   stopGTimer();
   var pts = startPts; gElapsed = 0;
@@ -1452,35 +1436,27 @@ loadSc('https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js')
 // إيقاف الفيديو عند مغادرة الصفحة أو فتح تاب آخر
 document.addEventListener('visibilitychange', function(){
   if(document.visibilityState === 'hidden'){
-    // التاب مخفي — أوقف الفيديو والعداد
-    if(_ytPlayer){ try{ _ytPlayer.pauseVideo(); }catch(e){} }
+    // التاب مخفي — أوقف العداد فقط (الـ iframe يتوقف تلقائياً)
     setPlaying(false);
   } else {
-    // عاد المستخدم — استمر بالتشغيل إذا كان الفيديو يعمل
+    // عاد المستخدم للتاب
     if(currentUser) refreshPointsFromDB();
-    if(_ytPlayer){
-      try{
-        var state = _ytPlayer.getPlayerState();
-        // إذا كان يعمل قبل المغادرة، أعد التشغيل
-        if(state === 2 || state === -1){
-          _ytPlayer.playVideo();
-        }
-      }catch(e){}
+    // استمر العداد إذا كان الفيديو مفتوحاً
+    if(G('modalOv').classList.contains('open') && _currentVideoId){
+      setTimeout(function(){ setPlaying(true); }, 800);
     }
   }
 });
 window.addEventListener('blur', function(){
-  // تجاهل blur عند الضغط على iframe اليوتيوب
-  // فقط أوقف عند الانتقال لتاب ثاني (visibilitychange يتكفل بذلك)
-  setTimeout(function(){
-    if(document.visibilityState === 'hidden'){
-      if(_ytPlayer){ try{ _ytPlayer.pauseVideo(); }catch(e){} }
-      setPlaying(false);
-    }
-  }, 200);
+  // لا تفعل شيئاً هنا — visibilitychange يتكفل بالإيقاف الحقيقي
+  // blur يحدث عادةً عند الضغط على الـ iframe وهذا طبيعي
 });
 window.addEventListener('focus', function(){
   if(currentUser) refreshPointsFromDB();
+  // استمر العداد إذا الفيديو مفتوح
+  if(G('modalOv').classList.contains('open') && _currentVideoId){
+    setTimeout(function(){ setPlaying(true); }, 500);
+  }
 });
 
 // Secret admin URL trigger
@@ -1639,6 +1615,114 @@ function requestNotifPermission(){
 function sendNotif(title, body){
   if(Notification.permission !== 'granted') return;
   try{ new Notification(title, { body: body, icon: 'https://wintube205-sudo.github.io/favicon.ico' }); }catch(e){}
+}
+
+
+// ═══════════════════════════════════════
+// INTERSTITIAL ADS SYSTEM
+// ═══════════════════════════════════════
+var _iadTimer = null;
+var _iadSeconds = 10;
+var _iadCallback = null;       // ما يُشغَّل بعد الإعلان
+var _iadInterval5m = null;     // مؤقت كل 5 دقائق
+var IAD_DURATION = 10;         // ثوان العرض
+var IAD_REPEAT = 300;          // كل 5 دقائق (300 ثانية)
+
+// محتوى الإعلان — يتبدّل دورياً بين الشبكات
+var _iadContents = [
+  // AADS iframe
+  '<iframe data-aa="2429937" src="//acceptable.a-ads.com/2429937/?size=Adaptive" style="width:100%;min-height:250px;border:none;" scrolling="no"></iframe>',
+  // Adsterra script placeholder (inline)
+  '<div style="min-height:250px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:1rem">'
+  +'<div style="font-size:3rem">📢</div>'
+  +'<div style="color:#666;font-size:.85rem">جاري تحميل الإعلان...</div>'
+  +'<script data-cfasync="false" src="https://pl28874602.effectivegatecpm.com/12/bc/27/12bc27a1c3f3ac66a08b09f43e2ef789.js"><\/script>'
+  +'</div>',
+];
+var _iadIndex = 0;
+
+function showInterstitialAd(callback){
+  _iadCallback = callback || null;
+  _iadSeconds = IAD_DURATION;
+
+  // اختر محتوى الإعلان
+  var adHtml = _iadContents[_iadIndex % _iadContents.length];
+  _iadIndex++;
+  G('iadContent').innerHTML = adHtml;
+
+  // العداد التنازلي
+  G('iadNum').textContent = _iadSeconds;
+  G('iadSkip').classList.remove('show');
+  G('iadProg').style.transition = 'none';
+  G('iadProg').style.width = '100%';
+
+  G('iadOv').classList.add('open');
+
+  // شريط التقدم
+  setTimeout(function(){
+    G('iadProg').style.transition = 'width '+IAD_DURATION+'s linear';
+    G('iadProg').style.width = '0%';
+  }, 50);
+
+  clearInterval(_iadTimer);
+  _iadTimer = setInterval(function(){
+    _iadSeconds--;
+    G('iadNum').textContent = _iadSeconds;
+    if(_iadSeconds <= 5){
+      G('iadSkip').classList.add('show');
+    }
+    if(_iadSeconds <= 0){
+      clearInterval(_iadTimer);
+      _closeAd();
+    }
+  }, 1000);
+}
+
+function skipAd(){
+  if(_iadSeconds > 5) return; // لا يمكن التخطي قبل 5 ثوان
+  clearInterval(_iadTimer);
+  _closeAd();
+}
+
+function _closeAd(){
+  G('iadOv').classList.remove('open');
+  G('iadContent').innerHTML = '';
+  clearInterval(_iadTimer);
+  if(_iadCallback){
+    var cb = _iadCallback;
+    _iadCallback = null;
+    cb();
+  }
+}
+
+// مؤقت الإعلان كل 5 دقائق أثناء التشغيل
+function startAdRepeatTimer(context){
+  stopAdRepeatTimer();
+  _iadInterval5m = setInterval(function(){
+    // فقط إذا كان المستخدم يشاهد/يلعب فعلاً
+    var isVideo = context==='video' && G('modalOv').classList.contains('open');
+    var isGame  = context==='game'  && G('gameOv').classList.contains('open');
+    if(!isVideo && !isGame){ stopAdRepeatTimer(); return; }
+
+    // أوقف العداد مؤقتاً
+    if(context==='video') setPlaying(false);
+    if(context==='game')  stopGTimer();
+
+    showInterstitialAd(function(){
+      // استمر بعد الإعلان
+      if(context==='video' && G('modalOv').classList.contains('open')){
+        setTimeout(function(){ setPlaying(true); }, 500);
+      }
+      if(context==='game' && G('gameOv').classList.contains('open') && activeGid){
+        startGTimer(gCache[activeGid]||0);
+      }
+    });
+  }, IAD_REPEAT * 1000);
+}
+
+function stopAdRepeatTimer(){
+  clearInterval(_iadInterval5m);
+  _iadInterval5m = null;
 }
 
 // ═══════════════════════════════════════
