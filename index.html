@@ -1119,7 +1119,7 @@ function _buildYTPlayer(videoId){
       console.log('YT Player timeout — switching to iframe fallback');
       _useFallbackIframe(videoId);
     }
-  }, 4000);
+  }, 8000);
 
   try {
     _ytPlayer = new YT.Player('ytInnerDiv', {
@@ -1137,15 +1137,20 @@ function _buildYTPlayer(videoId){
         onReady: function(e){
           clearTimeout(_fbTimer);
           e.target.playVideo();
-          setTimeout(function(){ setPlaying(true); }, 800);
+          // بدأ التشغيل فوراً
+          setTimeout(function(){ setPlaying(true); }, 300);
         },
         onStateChange: function(e){
+          // 1=playing, 3=buffering
           if(e.data === 1 || e.data === 3){
             clearTimeout(_fbTimer);
             setPlaying(true);
-          } else if(e.data === 0 || e.data === 2){
+          }
+          // 0=ended, 2=paused
+          else if(e.data === 0 || e.data === 2){
             setPlaying(false);
           }
+          // -1=unstarted, 5=cued — لا تغير الحالة
         },
         onError: function(e){
           clearTimeout(_fbTimer);
@@ -1447,17 +1452,32 @@ loadSc('https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js')
 // إيقاف الفيديو عند مغادرة الصفحة أو فتح تاب آخر
 document.addEventListener('visibilitychange', function(){
   if(document.visibilityState === 'hidden'){
-    // أوقف الفيديو
+    // التاب مخفي — أوقف الفيديو والعداد
     if(_ytPlayer){ try{ _ytPlayer.pauseVideo(); }catch(e){} }
     setPlaying(false);
   } else {
-    // عند العودة: حدّث النقاط من Firebase
+    // عاد المستخدم — استمر بالتشغيل إذا كان الفيديو يعمل
     if(currentUser) refreshPointsFromDB();
+    if(_ytPlayer){
+      try{
+        var state = _ytPlayer.getPlayerState();
+        // إذا كان يعمل قبل المغادرة، أعد التشغيل
+        if(state === 2 || state === -1){
+          _ytPlayer.playVideo();
+        }
+      }catch(e){}
+    }
   }
 });
 window.addEventListener('blur', function(){
-  if(_ytPlayer){ try{ _ytPlayer.pauseVideo(); }catch(e){} }
-  setPlaying(false);
+  // تجاهل blur عند الضغط على iframe اليوتيوب
+  // فقط أوقف عند الانتقال لتاب ثاني (visibilitychange يتكفل بذلك)
+  setTimeout(function(){
+    if(document.visibilityState === 'hidden'){
+      if(_ytPlayer){ try{ _ytPlayer.pauseVideo(); }catch(e){} }
+      setPlaying(false);
+    }
+  }, 200);
 });
 window.addEventListener('focus', function(){
   if(currentUser) refreshPointsFromDB();
