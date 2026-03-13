@@ -662,6 +662,24 @@ footer{background:#060606;border-top:1px solid var(--border);padding:1.2rem 1rem
 </div>
 
 
+
+
+<!-- CATEGORIES -->
+<div class="categories">
+  <button class="cat-btn active" id="catHome" onclick="goHome(this)">🔥 رائج</button>
+  <button class="cat-btn" onclick="searchCat('تعليم',this)">📚 تعليم</button>
+  <button class="cat-btn" onclick="searchCat('تكنولوجيا',this)">💻 تكنولوجيا</button>
+  <button class="cat-btn" onclick="searchCat('رياضة',this)">⚽ رياضة</button>
+  <button class="cat-btn" onclick="searchCat('موسيقى',this)">🎵 موسيقى</button>
+  <button class="cat-btn" onclick="searchCat('طبخ',this)">🍳 طبخ</button>
+  <button class="cat-btn" onclick="searchCat('سفر',this)">✈️ سفر</button>
+  <button class="cat-btn" id="catGames" onclick="gotoGames(this)">🎮 ألعاب</button>
+  <button class="cat-btn" onclick="searchCat('أخبار',this)">📰 أخبار</button>
+  <button class="cat-btn" onclick="searchCat('أفلام',this)">🎬 أفلام</button>
+  <button class="cat-btn" onclick="searchCat('صحة',this)">💪 صحة</button>
+  <button class="cat-btn" id="catRewards" onclick="gotoRewards(this)">💎 كسب النقاط</button>
+</div>
+
 <!-- ╔═══════════════════════════════════════╗ -->
 <!-- ║  CPA BANNER — أكمل العرض واكسب       ║ -->
 <!-- ╚═══════════════════════════════════════╝ -->
@@ -680,30 +698,75 @@ footer{background:#060606;border-top:1px solid var(--border);padding:1.2rem 1rem
   </div>
 </div>
 
-<!-- CATEGORIES -->
-<div class="categories">
-  <button class="cat-btn active" id="catHome" onclick="goHome(this)">🔥 رائج</button>
-  <button class="cat-btn" onclick="searchCat('تعليم',this)">📚 تعليم</button>
-  <button class="cat-btn" onclick="searchCat('تكنولوجيا',this)">💻 تكنولوجيا</button>
-  <button class="cat-btn" onclick="searchCat('رياضة',this)">⚽ رياضة</button>
-  <button class="cat-btn" onclick="searchCat('موسيقى',this)">🎵 موسيقى</button>
-  <button class="cat-btn" onclick="searchCat('طبخ',this)">🍳 طبخ</button>
-  <button class="cat-btn" onclick="searchCat('سفر',this)">✈️ سفر</button>
-  <button class="cat-btn" id="catGames" onclick="gotoGames(this)">🎮 ألعاب</button>
-  <button class="cat-btn" onclick="searchCat('أخبار',this)">📰 أخبار</button>
-  <button class="cat-btn" onclick="searchCat('أفلام',this)">🎬 أفلام</button>
-  <button class="cat-btn" onclick="searchCat('صحة',this)">💪 صحة</button>
-  <button class="cat-btn" id="catRewards" onclick="gotoRewards(this)">💎 كسب النقاط</button>
+<!-- ╔══════════════════════════════════════════╗ -->
+<!-- ║  AD ZONE 2 — Adsterra (Banner/Native)   ║ -->
+<!-- ╚══════════════════════════════════════════╝ -->
+<div id="wt-ad-zone-2" style="width:100%;padding:.4rem 1rem;box-sizing:border-box;background:transparent;min-height:70px;">
+  <div style="font-size:.55rem;color:#444;text-align:center;letter-spacing:1px;margin-bottom:4px;text-transform:uppercase;">Advertisement</div>
+  <div id="wt-adsterra-top" style="width:100%;overflow:hidden;text-align:center;min-height:60px;">
+    <script data-cfasync="false" src="https://pl28874602.effectivegatecpm.com/12/bc/27/12bc27a1c3f3ac66a08b09f43e2ef789.js"></script>
+  </div>
 </div>
 
+<!-- HOME -->
+<main id="secHome">
+  <div class="section-title">🔥 الفيديوهات الرائجة</div>
+  <div class="loading" id="ldHome"><div class="spinner"></div><p>جاري التحميل...</p></div>
+  <div class="empty-st" id="emHome"><div class="icon">🎬</div><p>لا توجد نتائج</p></div>
+  <div class="video-grid" id="gridHome"></div>
+  <div class="lm-wrap" id="lmHome" style="display:none"><button class="lm-btn" onclick="loadMoreHome()">تحميل المزيد</button></div>
 
+  <!-- AD ZONE 3 — HilltopAds -->
+  <div id="wt-ad-zone-3" style="width:100%;padding:.4rem 0;box-sizing:border-box;background:transparent;min-height:60px;margin:1rem 0;">
+    <div style="font-size:.55rem;color:#444;text-align:center;letter-spacing:1px;margin-bottom:4px;text-transform:uppercase;">Advertisement</div>
+    <div id="wt-hilltop-mid" style="width:100%;overflow:hidden;text-align:center;min-height:60px;">
+      <script data-cfasync="false" type="text/javascript" src="//data527.click/f0a41fa00cf50b1a0813/f62c1b69b8/?placementName=inpage"></script>
+    </div>
+  </div>
+
+  <div id="gamesStrip" style="margin-top:2.5rem">
+    <div class="section-title">🎮 الألعاب <span style="font-size:.72rem;font-weight:400;color:var(--muted);margin-right:.4rem">اكسب نقاطاً لا محدودة يومياً 🎮</span></div>
+    <div class="games-grid" id="gGrid"></div>
+    <div class="empty-st" id="gEmpty" style="display:none"><div class="icon">🎮</div><p>لا توجد ألعاب بعد</p></div>
+  </div>
+</main>
+
+<!-- SEARCH -->
+<main id="secSearch" style="display:none">
+  <div class="section-title" id="searchTitle">نتائج البحث</div>
+  <div class="loading" id="ldSearch"><div class="spinner"></div><p>جاري التحميل...</p></div>
+  <div class="empty-st" id="emSearch"><div class="icon">🎬</div><p>لا توجد نتائج</p></div>
+  <div class="video-grid" id="gridSearch"></div>
+  <div class="lm-wrap" id="lmSearch" style="display:none"><button class="lm-btn" onclick="loadMoreSearch()">تحميل المزيد</button></div>
+</main>
+
+<!-- REWARDS -->
+<main id="secRewards" style="display:none">
+  <div class="rw-hero">
+    <span class="rw-hero-icon">💎</span>
+    <div class="rw-hero-title">كسب النقاط</div>
+    <div class="rw-hero-sub">أكمل المهام واكسب نقاطاً إضافية</div>
+    <div class="rw-balance">⭐ <span id="rwBal">0</span> نقطة في رصيدك</div>
+  </div>
+
+  <div class="rw-offer-card" id="rwMainCard">
+    <div class="rw-offer-head">
+      <div class="rw-offer-icon purple">🎬</div>
+      <div class="rw-offer-info">
+        <div class="rw-offer-name">شاهد إعلاناً واكسب</div>
+        <div class="rw-offer-desc">أكمل العرض أو المهمة واحصل على نقاط فورية.<br>يمكنك تكراره كل 5 دقائق!</div>
+      </div>
+      <div class="rw-offer-reward">
+        <div class="rw-offer-pts">100</div>
+        <div class="rw-offer-pts-lbl">نقطة</div>
+      </div>
+    </div>
     <div class="rw-timer-bar"><div class="rw-timer-fill" id="rwTimerFill" style="width:100%"></div></div>
     <button class="rw-offer-btn" id="rwMainBtn" onclick="startCPAOffer()">
       <span>▶</span> شاهد الإعلان واكسب 100 نقطة
     </button>
   </div>
 
-  <!-- ═══ عروض ثانوية ═══ -->
   <div class="rw-offer-card">
     <div class="rw-offer-head">
       <div class="rw-offer-icon gold">📺</div>
@@ -743,7 +806,7 @@ footer{background:#060606;border-top:1px solid var(--border);padding:1.2rem 1rem
       <div class="rw-offer-icon purple">👥</div>
       <div class="rw-offer-info">
         <div class="rw-offer-name">دعوة الأصدقاء</div>
-        <div class="rw-offer-desc">لكل صديق يسجل بكودك: أنت تحصل 50 نقطة وهو 150 نقطة مجاناً</div>
+        <div class="rw-offer-desc">لكل صديق يسجل بكودك: أنت 50 نقطة وهو 150 نقطة</div>
       </div>
       <div class="rw-offer-reward">
         <div class="rw-offer-pts">50</div>
@@ -755,7 +818,6 @@ footer{background:#060606;border-top:1px solid var(--border);padding:1.2rem 1rem
     </button>
   </div>
 
-  <!-- كيف يعمل -->
   <div class="rw-how">
     <div class="rw-how-title">💡 كيف يعمل نظام النقاط؟</div>
     <div class="rw-how-step"><div class="rw-how-num">1</div><div class="rw-how-text">اضغط "شاهد الإعلان" — سيفتح عرض في نافذة جديدة</div></div>
@@ -763,7 +825,6 @@ footer{background:#060606;border-top:1px solid var(--border);padding:1.2rem 1rem
     <div class="rw-how-step"><div class="rw-how-num">3</div><div class="rw-how-text">عد لهذه الصفحة — ستُضاف 100 نقطة تلقائياً!</div></div>
     <div class="rw-how-step"><div class="rw-how-num">4</div><div class="rw-how-text">يمكنك تكرار العرض كل 5 دقائق بلا حد يومي</div></div>
   </div>
-
 </main>
 
 <!-- Rewards Points Popup -->
@@ -772,6 +833,26 @@ footer{background:#060606;border-top:1px solid var(--border);padding:1.2rem 1rem
     <div class="rw-pts-pop-num">+100 ⭐</div>
     <div class="rw-pts-pop-lbl">تمت إضافة النقاط!</div>
   </div>
+</div>
+
+<!-- ╔═══════════════════════════════╗ -->
+<!-- ║  INTERSTITIAL AD OVERLAY     ║ -->
+<!-- ╚═══════════════════════════════╝ -->
+<div class="iad-ov" id="iadOv">
+  <div class="iad-top">
+    <span class="iad-label">📢 إعلان</span>
+    <div class="iad-countdown">
+      <span style="font-size:.72rem;color:#888">يمكن التخطي بعد</span>
+      <span class="iad-num" id="iadNum">10</span>
+      <span style="font-size:.72rem;color:#888">ثانية</span>
+      <button class="iad-skip" id="iadSkip" onclick="skipAd()">تخطي ←</button>
+    </div>
+  </div>
+  <div class="iad-body">
+    <div id="iadContent" style="width:100%;text-align:center;"></div>
+    <div class="iad-progress" id="iadProg" style="width:100%;"></div>
+  </div>
+  <div class="iad-bottom">الإعلانات تدعم المنصة وتساعدنا في توفير المكافآت للمستخدمين</div>
 </div>
 
 <!-- VIDEO MODAL -->
