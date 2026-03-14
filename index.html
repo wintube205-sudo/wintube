@@ -466,7 +466,7 @@ footer{background:#060606;border-top:1px solid var(--border);padding:1.2rem 1rem
     console.log('%c⛔ تحذير!', 'color:red;font-size:40px;font-weight:bold;');
     console.log('%cهذا الموقع محمي. أي محاولة تلاعب ستؤدي إلى حظر حسابك نهائياً.', 'color:#ff4444;font-size:16px;');
     // Blur ONLY non-ad content (لا تؤثر على iframes الإعلانات)
-    var adIds = ['wt-ad-zone-2','wt-ad-zone-3','wt-adsterra-top','wt-hilltop-mid','cpaBannerHome'];
+    var adIds = ['wt-ad-zone-2','wt-ad-zone-3','wt-adsterra-top','wt-hilltop-mid','cpaBannerHome','adWatchBanner'];
     document.body.style.filter = 'blur(8px)';
     document.body.style.pointerEvents = 'none';
     // استثناء حاويات الإعلانات من التأثير
@@ -699,6 +699,24 @@ footer{background:#060606;border-top:1px solid var(--border);padding:1.2rem 1rem
   </div>
 </div>
 
+<!-- ╔═══════════════════════════════════════╗ -->
+<!-- ║  AD WATCH BANNER — 20 نقطة           ║ -->
+<!-- ╚═══════════════════════════════════════╝ -->
+<div class="cpa-banner" id="adWatchBanner">
+  <div class="cpa-banner-inner" style="background:linear-gradient(135deg,#1a1a00,#3d2e00,#1a1a00);border-color:rgba(245,158,11,.35);" onclick="openAdWatch()">
+    <div class="cpa-banner-icon" style="background:linear-gradient(135deg,#92400e,#f59e0b);">📺</div>
+    <div class="cpa-banner-text">
+      <div class="cpa-banner-title" id="adWatchTitle">شاهد إعلان واربح 20 نقطة</div>
+      <div class="cpa-banner-sub">شاهد إعلاناً قصيراً واحصل على 20 نقطة — بلا حدود!</div>
+    </div>
+    <div class="cpa-banner-pts">
+      <div class="cpa-banner-pts-num" style="color:#f59e0b;">+20</div>
+      <div class="cpa-banner-pts-lbl">نقطة</div>
+    </div>
+    <span class="cpa-banner-arrow" style="color:rgba(245,158,11,.7);">‹</span>
+  </div>
+</div>
+
 <!-- ╔══════════════════════════════════════════╗ -->
 <!-- ║  AD ZONE 2 — Adsterra (Banner/Native)   ║ -->
 <!-- ╚══════════════════════════════════════════╝ -->
@@ -763,8 +781,25 @@ footer{background:#060606;border-top:1px solid var(--border);padding:1.2rem 1rem
       </div>
     </div>
     <div class="rw-timer-bar"><div class="rw-timer-fill" id="rwTimerFill" style="width:100%"></div></div>
-    <button class="rw-offer-btn" id="rwMainBtn" onclick="window.open('https://data527.click/157e3c68fbf89e3c57fe/2b05fea27e/?placementName=default','_blank','noopener')">
-      <span>▶</span> افتح الرابط الذكي واكسب 50 نقطة
+    <button class="rw-offer-btn" id="rwMainBtn" onclick="openSmartOffer()">
+      <span>▶</span> افتح الرابط واكسب 50 نقطة
+    </button>
+  </div>
+
+  <div class="rw-offer-card">
+    <div class="rw-offer-head">
+      <div class="rw-offer-icon" style="background:linear-gradient(135deg,#92400e,#f59e0b);">📺</div>
+      <div class="rw-offer-info">
+        <div class="rw-offer-name">شاهد إعلان — 20 نقطة بلا حدود</div>
+        <div class="rw-offer-desc">اضغط وشاهد إعلاناً قصيراً واحصل على 20 نقطة فوراً — يمكن التكرار!</div>
+      </div>
+      <div class="rw-offer-reward">
+        <div class="rw-offer-pts" style="color:#f59e0b;">20</div>
+        <div class="rw-offer-pts-lbl">نقطة</div>
+      </div>
+    </div>
+    <button class="rw-offer-btn" style="background:linear-gradient(135deg,#92400e,#f59e0b)" onclick="openAdWatch()">
+      <span>📺</span> شاهد إعلان واربح 20 نقطة
     </button>
   </div>
 
@@ -1886,7 +1921,6 @@ var EXTRA_LINK  = 'https://limited-teacher.com/dOm.FGz/djGJNivsZSGEUt/Xeom/9JuqZ
 
 // فتح الرابطين معاً
 function openAdLinks(){
-  window.open(SMART_LINK, '_blank', 'noopener');
   window.open(EXTRA_LINK, '_blank', 'noopener');
 }
 
@@ -2051,6 +2085,113 @@ function _fmtTime(s){
   return m + ':' + (sec<10?'0':'')+sec;
 }
 
+
+// ═══════════════════════════════════════
+// AD WATCH SYSTEM — 20 نقطة بلا حدود
+// ═══════════════════════════════════════
+var AW_PTS       = 20;    // نقاط لكل مشاهدة
+var AW_MIN_SECS  = 15;    // ثواني مطلوبة
+var AW_COOLDOWN  = 60;    // ثانية بين كل مشاهدة
+var _awOpenTime  = 0;
+var _awWaiting   = false;
+var _awCoolLeft  = 0;
+var _awCoolTimer = null;
+
+function openAdWatch(){
+  if(!currentUser){ G('authOv').classList.remove('hidden'); return; }
+  if(_awWaiting){ showToast('⏳ انتظر تأكيد النقاط…'); return; }
+  if(_awCoolLeft > 0){ showToast('⏳ جاهز بعد ' + _fmtTime(_awCoolLeft)); return; }
+
+  _awOpenTime = Date.now();
+  _awWaiting  = true;
+  _setAWBtn('waiting');
+
+  window.open(EXTRA_LINK, '_blank', 'noopener');
+
+  document.addEventListener('visibilitychange', _onAWReturn);
+  window.addEventListener('focus', _onAWReturn);
+}
+
+function _onAWReturn(){
+  if(!_awWaiting) return;
+  if(document.hidden) return;
+
+  document.removeEventListener('visibilitychange', _onAWReturn);
+  window.removeEventListener('focus', _onAWReturn);
+  _awWaiting = false;
+
+  var elapsed = (Date.now() - _awOpenTime) / 1000;
+
+  if(elapsed >= AW_MIN_SECS){
+    _awardAWPoints();
+  } else {
+    var rem = Math.ceil(AW_MIN_SECS - elapsed);
+    showToast('❌ شاهد لمدة ' + AW_MIN_SECS + ' ثانية على الأقل! (ناقص ' + rem + 'ث)', '#ef4444');
+    _setAWBtn('idle');
+  }
+}
+
+function _awardAWPoints(){
+  if(!currentUser || !_db) return;
+  userPoints += AW_PTS;
+  updateHeader();
+  var rb = G('rwBal'); if(rb) rb.textContent = userPoints;
+  _db.collection('users').doc(currentUser.uid).update({
+    points: firebase.firestore.FieldValue.increment(AW_PTS)
+  }).then(function(){
+    showToast('🎉 +' + AW_PTS + ' نقطة!', '#f59e0b');
+    syncLeaderboard();
+    _startAWCooldown();
+  }).catch(function(){
+    userPoints -= AW_PTS;
+    updateHeader();
+    showToast('❌ خطأ، حاول مجدداً', '#ef4444');
+    _setAWBtn('idle');
+  });
+}
+
+function _startAWCooldown(){
+  _awCoolLeft = AW_COOLDOWN;
+  _setAWBtn('cooldown');
+  clearInterval(_awCoolTimer);
+  _awCoolTimer = setInterval(function(){
+    _awCoolLeft--;
+    if(_awCoolLeft <= 0){
+      clearInterval(_awCoolTimer);
+      _awCoolLeft = 0;
+      _setAWBtn('idle');
+    }
+  }, 1000);
+}
+
+function _setAWBtn(state){
+  var banner = G('adWatchBanner');
+  if(!banner) return;
+  var inner = banner.querySelector('.cpa-banner-inner');
+  var title = G('adWatchTitle');
+  if(state === 'idle'){
+    if(inner){ inner.style.opacity='1'; inner.style.cursor='pointer'; }
+    if(title) title.textContent = 'شاهد إعلان واربح 20 نقطة';
+  } else if(state === 'waiting'){
+    if(inner) inner.style.opacity = '0.65';
+    if(title) title.textContent = '⏳ ارجع بعد ' + AW_MIN_SECS + ' ثانية…';
+  } else if(state === 'cooldown'){
+    if(inner) inner.style.opacity = '0.6';
+    if(title) title.textContent = 'جاهز بعد ' + _awCoolLeft + ' ثانية';
+    // تحديث العنوان كل ثانية
+    clearInterval(_awCoolTimer);
+    _awCoolTimer = setInterval(function(){
+      _awCoolLeft--;
+      if(title) title.textContent = 'جاهز بعد ' + _awCoolLeft + ' ثانية';
+      if(_awCoolLeft <= 0){
+        clearInterval(_awCoolTimer);
+        _awCoolLeft = 0;
+        _setAWBtn('idle');
+      }
+    }, 1000);
+  }
+}
+
 // ═══════════════════════════════════════
 // START
 // ═══════════════════════════════════════
@@ -2065,4 +2206,4 @@ fetchHome('',false);
 <!-- Advertica PUSH -->
 <script type="text/javascript" src="//my-pu.sh/f87bbb11f15afcda55a1/33127f60cc/?placementName=default"></script>
 </body>
-  </html>
+</html>
