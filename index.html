@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="en" dir="ltr">
 <head>
 <meta charset="UTF-8">
 <meta name="e1671906fe12dcb75fecc23751123667896567cd" content="e1671906fe12dcb75fecc23751123667896567cd" />
 <meta name='admaven-placement' content='BqjsGrHaG'>
 <meta name="monetag" content="014ad3389bf7251c4d16e51475f8daeb">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0">
-<title>WinTube</title>
+<title>WinTube — Watch & Earn</title>
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=Bebas+Neue&display=swap" rel="stylesheet">
 <style>
 :root{--red:#ff2d2d;--dark:#0a0a0a;--card:#111;--border:#1e1e1e;--text:#f0f0f0;--muted:#666;--green:#22c55e;--yellow:#f59e0b;--purple:#a855f7;}
@@ -102,7 +102,7 @@ main{padding:1.25rem 1rem;}
 .auth-tabs{display:flex;gap:.4rem;margin-bottom:1rem;}
 .auth-tab{flex:1;padding:.5rem;background:transparent;border:1px solid var(--border);color:var(--muted);border-radius:8px;cursor:pointer;font-family:'Cairo',sans-serif;font-size:.85rem;transition:all .2s;}
 .auth-tab.active{background:var(--red);border-color:var(--red);color:#fff;font-weight:700;}
-.a-inp{width:100%;background:#0a0a0a;border:1px solid var(--border);color:var(--text);padding:.72rem .9rem;font-family:'Cairo',sans-serif;font-size:max(.9rem,16px);border-radius:10px;outline:none;display:block;margin-bottom:.7rem;text-align:right;transition:border-color .2s;}
+.a-inp{width:100%;background:#0a0a0a;border:1px solid var(--border);color:var(--text);padding:.72rem .9rem;font-family:'Cairo',sans-serif;font-size:max(.9rem,16px);border-radius:10px;outline:none;display:block;margin-bottom:.7rem;text-align:left;transition:border-color .2s;}
 .a-inp:focus{border-color:var(--red);}
 .a-sub{width:100%;background:var(--red);border:none;color:#fff;padding:.8rem;border-radius:10px;font-family:'Cairo',sans-serif;font-size:1rem;font-weight:700;cursor:pointer;transition:background .2s;}
 .a-sub:hover{background:#cc2424;}
@@ -123,7 +123,7 @@ main{padding:1.25rem 1rem;}
 .ring-bg{fill:none;stroke:#1e1e1e;stroke-width:3;}
 .ring-fill{fill:none;stroke-width:3;stroke-linecap:round;stroke-dasharray:101;stroke-dashoffset:0;transition:stroke-dashoffset .8s,stroke .3s;stroke:#22c55e;}
 .t-num{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:.66rem;font-weight:700;color:#22c55e;}
-.pts-info{text-align:right;}
+.pts-info{text-align:left;}
 .pts-lbl{font-size:.62rem;color:var(--muted);}
 .pts-val{font-size:.85rem;font-weight:700;color:var(--green);}
 .pts-val.flash{animation:flashG .6s;}
@@ -202,7 +202,7 @@ main{padding:1.25rem 1rem;}
 .adm-form-row{display:flex;flex-direction:column;gap:.4rem;margin-bottom:.9rem;}
 .adm-form-lbl{font-size:.78rem;color:var(--muted);}
 .adm-inp{background:#0a0a0a;border:1px solid var(--border);color:var(--text);padding:.65rem .9rem;border-radius:8px;font-family:'Cairo',sans-serif;font-size:.88rem;outline:none;width:100%;direction:ltr;text-align:left;}
-.adm-inp.rtl{direction:rtl;text-align:right;}
+.adm-inp.rtl{direction:ltr;text-align:left;}
 .adm-inp:focus{border-color:var(--red);}
 .adm-add{width:100%;background:var(--red);border:none;color:#fff;padding:.75rem;border-radius:10px;font-family:'Cairo',sans-serif;font-size:.92rem;font-weight:700;cursor:pointer;margin-top:.2rem;}
 .adm-add:disabled{background:#444;cursor:not-allowed;}
@@ -316,7 +316,7 @@ main{padding:1.25rem 1rem;}
 .about-stat-val{font-size:1.4rem;font-weight:800;color:var(--yellow);}
 .about-stat-lbl{font-size:.7rem;color:var(--muted);margin-top:.1rem;}
 .about-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.6rem;margin-bottom:1.2rem;}
-.about-p{font-size:.82rem;color:#bbb;line-height:1.8;margin-bottom:.8rem;text-align:right;}
+.about-p{font-size:.82rem;color:#bbb;line-height:1.8;margin-bottom:.8rem;text-align:left;}
 .about-close{width:100%;background:var(--card);border:1px solid var(--border);color:var(--text);padding:.7rem;border-radius:10px;font-family:'Cairo',sans-serif;font-size:.9rem;cursor:pointer;margin-top:.5rem;}
 
 /* ═══ FOOTER ═══ */
@@ -525,27 +525,27 @@ footer{background:#060606;border-top:1px solid var(--border);padding:1.2rem 1rem
   <div class="auth-box">
     <div class="auth-logo">WIN<span>TUBE</span></div>
     <div class="auth-sub">شاهد الفيديوهات واكسب نقاطك!</div>
-    <div class="bonus">🎁 احصل على <strong>100 نقطة</strong> مجاناً عند التسجيل</div>
+    <div class="bonus">🎁 احصل على <strong>100 pts</strong> مجاناً عند التسجيل</div>
     <button class="google-btn" id="btnGoogle" onclick="doGoogle()">
       <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.31-8.16 2.31-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
       متابعة مع Google
     </button>
-    <div class="auth-divider"><span>أو</span></div>
+    <div class="auth-divider"><span>or</span></div>
     <div class="auth-tabs">
-      <button class="auth-tab active" id="tabLogin" onclick="switchTab('login')">تسجيل الدخول</button>
+      <button class="auth-tab active" id="tabLogin" onclick="switchTab('login')">Sign In</button>
       <button class="auth-tab" id="tabReg" onclick="switchTab('reg')">حساب جديد</button>
     </div>
     <div id="fLogin">
-      <input class="a-inp" type="email" id="lEmail" placeholder="البريد الإلكتروني" autocomplete="email">
-      <input class="a-inp" type="password" id="lPass" placeholder="كلمة المرور" autocomplete="current-password">
-      <button class="a-sub" id="btnLogin" onclick="doLogin()">دخول ←</button>
+      <input class="a-inp" type="email" id="lEmail" placeholder="Email" autocomplete="email">
+      <input class="a-inp" type="password" id="lPass" placeholder="Password" autocomplete="current-password">
+      <button class="a-sub" id="btnLogin" onclick="doLogin()">Sign In →</button>
     </div>
     <div id="fReg" style="display:none">
-      <input class="a-inp" type="text" id="rName" placeholder="الاسم" autocomplete="name">
-      <input class="a-inp" type="email" id="rEmail" placeholder="البريد الإلكتروني" autocomplete="email">
-      <input class="a-inp" type="password" id="rPass" placeholder="كلمة المرور (6 أحرف+)" autocomplete="new-password">
+      <input class="a-inp" type="text" id="rName" placeholder="Name" autocomplete="name">
+      <input class="a-inp" type="email" id="rEmail" placeholder="Email" autocomplete="email">
+      <input class="a-inp" type="password" id="rPass" placeholder="Password (6 أحرف+)" autocomplete="new-password">
       <input class="a-inp" type="text" id="rRef" placeholder="كود الإحالة (اختياري)" style="direction:ltr;text-align:left;">
-      <button class="a-sub" id="btnReg" onclick="doRegister()">إنشاء الحساب ←</button>
+      <button class="a-sub" id="btnReg" onclick="doRegister()">Create Account →</button>
     </div>
     <div class="a-err" id="authErr"></div>
   </div>
@@ -554,16 +554,16 @@ footer{background:#060606;border-top:1px solid var(--border);padding:1.2rem 1rem
 <!-- WITHDRAW -->
 <div class="w-ov" id="wOv">
   <div class="w-box">
-    <div class="w-title">💰 سحب النقاط</div>
+    <div class="w-title">💰 Withdraw</div>
     <div class="w-bal">
-      <div><div style="font-size:.78rem;color:var(--muted)">رصيدك</div><div style="font-size:1.2rem;font-weight:800;color:var(--yellow)"><span id="wPts">0</span> نقطة</div></div>
+      <div><div style="font-size:.78rem;color:var(--muted)">رصيدك</div><div style="font-size:1.2rem;font-weight:800;color:var(--yellow)"><span id="wPts">0</span> pts</div></div>
       <div style="text-align:left"><div style="font-size:.78rem;color:var(--muted)">يساوي</div><div style="font-size:.95rem;font-weight:700;color:var(--green)">≈ $<span id="wUsd">0.00</span></div></div>
     </div>
     <div id="wForm">
-      <div style="font-size:.76rem;color:var(--muted);background:rgba(255,255,255,.03);border-radius:8px;padding:.55rem .8rem;margin-bottom:1rem">الحد الأدنى: 5000 نقطة ($5) | كل 1000 نقطة = $1</div>
-      <label class="w-lbl">طريقة الدفع</label>
+      <div style="font-size:.76rem;color:var(--muted);background:rgba(255,255,255,.03);border-radius:8px;padding:.55rem .8rem;margin-bottom:1rem">الحد الأدنى: 5000 pts ($5) | كل 1000 pts = $1</div>
+      <label class="w-lbl">Payment Method</label>
       <select class="w-sel" id="wMethod" onchange="updateWalletPlaceholder()">
-        <option value="">اختر طريقة الدفع</option>
+        <option value="">اختر Payment Method</option>
         <optgroup label="💎 كريبتو">
           <option value="USDT (TRC20)">USDT (TRC20)</option>
           <option value="BNB (BEP20)">BNB (BEP20)</option>
@@ -578,21 +578,21 @@ footer{background:#060606;border-top:1px solid var(--border);padding:1.2rem 1rem
         </optgroup>
       </select>
       <label class="w-lbl" id="wAddrLbl">عنوان المحفظة</label>
-      <input class="w-inp" type="text" id="wAddr" placeholder="أدخل العنوان">
+      <input class="w-inp" type="text" id="wAddr" placeholder="أدخل Address">
       <label class="w-lbl">عدد النقاط (مضاعفات 1000)</label>
       <input class="w-inp" type="number" id="wAmt" placeholder="مثال: 5000" min="5000" step="1000" oninput="calcWithdraw()">
       <div style="font-size:.85rem;color:var(--green);margin-bottom:.6rem" id="wCalc"></div>
       <div class="w-acts">
-        <button class="w-sub" id="wBtn" onclick="submitWithdraw()">إرسال الطلب ←</button>
-        <button class="w-cancel" onclick="closeWithdraw()">إلغاء</button>
+        <button class="w-sub" id="wBtn" onclick="submitWithdraw()">Submit Request →</button>
+        <button class="w-cancel" onclick="closeWithdraw()">Cancel</button>
       </div>
       <div class="ref-box" id="refBoxW">
-        <div class="ref-title">🎁 رابط الإحالة — ادعُ أصدقاءك واكسب 50 نقطة لكل صديق!</div>
+        <div class="ref-title">🎁 رابط الإحالة — ادعُ أصدقاءك واكسب 50 pts لكل صديق!</div>
         <div class="ref-link-row">
-          <input class="ref-link-inp" id="refLinkInp" readonly value="جاري التحميل...">
-          <button class="ref-copy" onclick="copyRefLink()">نسخ 📋</button>
+          <input class="ref-link-inp" id="refLinkInp" readonly value="Loading...">
+          <button class="ref-copy" onclick="copyRefLink()">Copy 📋</button>
         </div>
-        <div class="ref-note">عند تسجيل صديقك بكودك، يحصل هو على 150 نقطة وأنت على 50 نقطة مجاناً</div>
+        <div class="ref-note">عند تسجيل صديقك بكودك، يحصل هو على 150 pts وYou على 50 pts مجاناً</div>
       </div>
       <div class="w-err" id="wErr"></div>
     </div>
@@ -613,7 +613,7 @@ footer{background:#060606;border-top:1px solid var(--border);padding:1.2rem 1rem
       
       
       <div class="a-err" id="admErr"></div>
-      <button onclick="closeAdmin()" style="background:none;border:none;color:var(--muted);margin-top:.8rem;cursor:pointer;font-family:'Cairo',sans-serif;font-size:.88rem;display:block;width:100%">إلغاء</button>
+      <button onclick="closeAdmin()" style="background:none;border:none;color:var(--muted);margin-top:.8rem;cursor:pointer;font-family:'Cairo',sans-serif;font-size:.88rem;display:block;width:100%">Cancel</button>
     </div>
   </div>
   <div id="admDash" style="display:none;flex-direction:column;flex:1;overflow:hidden">
@@ -623,12 +623,12 @@ footer{background:#060606;border-top:1px solid var(--border);padding:1.2rem 1rem
     </div>
     <div class="adm-body">
       <div class="adm-tabs">
-        <button class="adm-tab active" id="aTabW" onclick="switchAdminTab('w')">💰 طلبات السحب</button>
-        <button class="adm-tab" id="aTabG" onclick="switchAdminTab('g')">🎮 إدارة الألعاب</button>
+        <button class="adm-tab active" id="aTabW" onclick="switchAdminTab('w')">💰 Withdrawal Requests</button>
+        <button class="adm-tab" id="aTabG" onclick="switchAdminTab('g')">🎮 Manage Games</button>
       </div>
-      <div id="aPanelW"><div class="adm-title">📋 طلبات السحب</div><div id="admReqs"><div class="adm-empty">جاري التحميل...</div></div></div>
+      <div id="aPanelW"><div class="adm-title">📋 Withdrawal Requests</div><div id="admReqs"><div class="adm-empty">Loading...</div></div></div>
       <div id="aPanelG" style="display:none">
-        <div class="adm-title">➕ إضافة لعبة</div>
+        <div class="adm-title">➕ Add Game</div>
         <div style="display:flex;gap:.4rem;margin-bottom:.9rem">
           <button class="adm-tab active" id="srcUrl" onclick="switchGameSrc('url')">🔗 رابط</button>
           <button class="adm-tab" id="srcIframe" onclick="switchGameSrc('iframe')">🖼️ iframe</button>
@@ -641,16 +641,16 @@ footer{background:#060606;border-top:1px solid var(--border);padding:1.2rem 1rem
             <div class="img-placeholder" id="imgPlaceholder"><span>🖼️</span>اضغط لرفع صورة اللعبة</div>
           </div>
         </div>
-        <div class="adm-form-row"><label class="adm-form-lbl">اسم اللعبة</label><input class="adm-inp rtl" type="text" id="newGameName" placeholder="مثال: Subway Surfers"></div>
-        <div class="adm-form-row" id="rowUrl"><label class="adm-form-lbl">رابط اللعبة</label><input class="adm-inp" type="url" id="newGameUrl" placeholder="https://..."></div>
+        <div class="adm-form-row"><label class="adm-form-lbl">Game name</label><input class="adm-inp rtl" type="text" id="newGameName" placeholder="مثال: Subway Surfers"></div>
+        <div class="adm-form-row" id="rowUrl"><label class="adm-form-lbl">Game URL</label><input class="adm-inp" type="url" id="newGameUrl" placeholder="https://..."></div>
         <div class="adm-form-row" id="rowIframe" style="display:none">
           <label class="adm-form-lbl">كود iframe</label>
           <textarea class="adm-inp" id="newGameIframe" rows="3" style="resize:vertical" placeholder='<iframe src="https://..."></iframe>'></textarea>
         </div>
         <button class="adm-add" id="addBtn" onclick="adminAddGame()">➕ إضافة اللعبة</button>
         <div class="w-err" id="addErr" style="margin-bottom:.7rem"></div>
-        <div class="adm-title" style="margin-top:1.3rem">🎮 الألعاب الحالية</div>
-        <div id="admGames"><div class="adm-empty">جاري التحميل...</div></div>
+        <div class="adm-title" style="margin-top:1.3rem">🎮 Games الحالية</div>
+        <div id="admGames"><div class="adm-empty">Loading...</div></div>
       </div>
     </div>
   </div>
@@ -661,10 +661,10 @@ footer{background:#060606;border-top:1px solid var(--border);padding:1.2rem 1rem
   <div class="logo">WIN<span>TUBE</span></div>
   <div class="search-bar">
     <button onclick="doSearch()">🔍</button>
-    <input type="text" id="searchInput" placeholder="ابحث عن أي فيديو..." onkeydown="if(event.key==='Enter')doSearch()">
+    <input type="text" id="searchInput" placeholder="Search any video..." onkeydown="if(event.key==='Enter')doSearch()">
   </div>
   <div class="user-panel" id="userPanel" onclick="doSignOut()">
-    <div><div class="user-name" id="hName">—</div><div class="user-pts">⭐ <span id="hPts">0</span> نقطة</div></div>
+    <div><div class="user-name" id="hName">—</div><div class="user-pts">⭐ <span id="hPts">0</span> pts</div></div>
     <div class="user-avatar" id="hAvatar">?</div>
   </div>
   <button class="hbtn hbtn-gold" id="btnW" onclick="openWithdraw()" style="display:none">💰 سحب</button>
@@ -674,12 +674,12 @@ footer{background:#060606;border-top:1px solid var(--border);padding:1.2rem 1rem
 <!-- REGION BAR -->
 <div class="region-bar">
   <span class="region-lbl">📍</span>
-  <button class="region-btn active" id="rgIQ" onclick="setRegion('IQ',this)">🇮🇶 العراق</button>
-  <button class="region-btn" id="rgSA" onclick="setRegion('SA',this)">🇸🇦 السعودية</button>
-  <button class="region-btn" id="rgEG" onclick="setRegion('EG',this)">🇪🇬 مصر</button>
-  <button class="region-btn" id="rgUS" onclick="setRegion('US',this)">🌍 عالمي</button>
-  <button class="region-btn" id="rgTR" onclick="setRegion('TR',this)">🇹🇷 تركيا</button>
-  <button class="region-btn" style="margin-right:auto;border-color:var(--purple);color:var(--purple);" onclick="openLeaderboard()">🏆 المتصدرون</button>
+  <button class="region-btn active" id="rgIQ" onclick="setRegion('IQ',this)">🇮🇶 Iraq</button>
+  <button class="region-btn" id="rgSA" onclick="setRegion('SA',this)">🇸🇦 Saudi</button>
+  <button class="region-btn" id="rgEG" onclick="setRegion('EG',this)">🇪🇬 Egypt</button>
+  <button class="region-btn" id="rgUS" onclick="setRegion('US',this)">🌍 Global</button>
+  <button class="region-btn" id="rgTR" onclick="setRegion('TR',this)">🇹🇷 Turkey</button>
+  <button class="region-btn" style="margin-right:auto;border-color:var(--purple);color:var(--purple);" onclick="openLeaderboard()">🏆 Leaderboard</button>
 </div>
 
 
@@ -687,10 +687,10 @@ footer{background:#060606;border-top:1px solid var(--border);padding:1.2rem 1rem
 
 <!-- CATEGORIES -->
 <div class="categories">
-  <button class="cat-btn active" id="catHome" onclick="goHome(this)">🔥 رائج</button>
-  <button class="cat-btn" onclick="searchCat('تعليم',this)">📚 تعليم</button>
-  <button class="cat-btn" onclick="searchCat('تكنولوجيا',this)">💻 تكنولوجيا</button>
-  <button class="cat-btn" onclick="searchCat('رياضة',this)">⚽ رياضة</button>
+  <button class="cat-btn active" id="catHome" onclick="goHome(this)">🔥 Trending</button>
+  <button class="cat-btn" onclick="searchCat('تعليم',this)">📚 Education</button>
+  <button class="cat-btn" onclick="searchCat('تكنولوجيا',this)">💻 Tech</button>
+  <button class="cat-btn" onclick="searchCat('رياضة',this)">⚽ Sports</button>
   <button class="cat-btn" onclick="searchCat('موسيقى',this)">🎵 موسيقى</button>
   <button class="cat-btn" onclick="searchCat('طبخ',this)">🍳 طبخ</button>
   <button class="cat-btn" onclick="searchCat('سفر',this)">✈️ سفر</button>
@@ -698,7 +698,7 @@ footer{background:#060606;border-top:1px solid var(--border);padding:1.2rem 1rem
   <button class="cat-btn" onclick="searchCat('أخبار',this)">📰 أخبار</button>
   <button class="cat-btn" onclick="searchCat('أفلام',this)">🎬 أفلام</button>
   <button class="cat-btn" onclick="searchCat('صحة',this)">💪 صحة</button>
-  <button class="cat-btn" id="catRewards" onclick="gotoRewards(this)">💎 كسب النقاط</button>
+  <button class="cat-btn" id="catRewards" onclick="gotoRewards(this)">💎 Earn Points</button>
 </div>
 
 <!-- ╔═══════════════════════════════════════╗ -->
@@ -708,30 +708,30 @@ footer{background:#060606;border-top:1px solid var(--border);padding:1.2rem 1rem
   <div class="cpa-banner-inner" onclick="openSmartOffer()">
     <div class="cpa-banner-icon">🎁</div>
     <div class="cpa-banner-text">
-      <div class="cpa-banner-title">أكمل العرض أو المهمة واحصل على 50 نقطة</div>
-      <div class="cpa-banner-sub">افتح الرابط ← انتظر 30 ثانية ← ارجع هنا وستُضاف 50 نقطة ✨</div>
+      <div class="cpa-banner-title">أكمل العرض or المهمة واحصل على 50 pts</div>
+      <div class="cpa-banner-sub">Open link ← Wait 30s ← Come back & get 50 pts ✨</div>
     </div>
     <div class="cpa-banner-pts">
       <div class="cpa-banner-pts-num">+50</div>
-      <div class="cpa-banner-pts-lbl">نقطة</div>
+      <div class="cpa-banner-pts-lbl">pts</div>
     </div>
     <span class="cpa-banner-arrow">‹</span>
   </div>
 </div>
 
 <!-- ╔═══════════════════════════════════════╗ -->
-<!-- ║  AD WATCH BANNER — 20 نقطة           ║ -->
+<!-- ║  AD WATCH BANNER — 20 pts           ║ -->
 <!-- ╚═══════════════════════════════════════╝ -->
 <div class="cpa-banner" id="adWatchBanner">
   <div class="cpa-banner-inner" style="background:linear-gradient(135deg,#1a1a00,#3d2e00,#1a1a00);border-color:rgba(245,158,11,.35);" onclick="openAdWatch()">
     <div class="cpa-banner-icon" style="background:linear-gradient(135deg,#92400e,#f59e0b);">📺</div>
     <div class="cpa-banner-text">
-      <div class="cpa-banner-title" id="adWatchTitle">شاهد إعلان واربح 20 نقطة</div>
-      <div class="cpa-banner-sub">شاهد إعلاناً قصيراً واحصل على 20 نقطة — بلا حدود!</div>
+      <div class="cpa-banner-title" id="adWatchTitle">Watch an ad & earn 20 points</div>
+      <div class="cpa-banner-sub">Watch a short ad & get 20 points — no daily limit!</div>
     </div>
     <div class="cpa-banner-pts">
       <div class="cpa-banner-pts-num" style="color:#f59e0b;">+20</div>
-      <div class="cpa-banner-pts-lbl">نقطة</div>
+      <div class="cpa-banner-pts-lbl">pts</div>
     </div>
     <span class="cpa-banner-arrow" style="color:rgba(245,158,11,.7);">‹</span>
   </div>
@@ -756,11 +756,11 @@ footer{background:#060606;border-top:1px solid var(--border);padding:1.2rem 1rem
 
 <!-- HOME -->
 <main id="secHome">
-  <div class="section-title">🔥 الفيديوهات الرائجة</div>
-  <div class="loading" id="ldHome"><div class="spinner"></div><p>جاري التحميل...</p></div>
-  <div class="empty-st" id="emHome"><div class="icon">🎬</div><p>لا توجد نتائج</p></div>
+  <div class="section-title">🔥 Trending Videos</div>
+  <div class="loading" id="ldHome"><div class="spinner"></div><p>Loading...</p></div>
+  <div class="empty-st" id="emHome"><div class="icon">🎬</div><p>No results found</p></div>
   <div class="video-grid" id="gridHome"></div>
-  <div class="lm-wrap" id="lmHome" style="display:none"><button class="lm-btn" onclick="loadMoreHome()">تحميل المزيد</button></div>
+  <div class="lm-wrap" id="lmHome" style="display:none"><button class="lm-btn" onclick="loadMoreHome()">Load More</button></div>
 
   <!-- AD ZONE 3 — HilltopAds -->
   <div id="wt-ad-zone-3" style="width:100%;padding:.4rem 0;box-sizing:border-box;background:transparent;min-height:60px;margin:1rem 0;">
@@ -771,45 +771,45 @@ footer{background:#060606;border-top:1px solid var(--border);padding:1.2rem 1rem
   </div>
 
   <div id="gamesStrip" style="margin-top:2.5rem">
-    <div class="section-title">🎮 الألعاب <span style="font-size:.72rem;font-weight:400;color:var(--muted);margin-right:.4rem">اكسب نقاطاً لا محدودة يومياً 🎮</span></div>
+    <div class="section-title">🎮 Games <span style="font-size:.72rem;font-weight:400;color:var(--muted);margin-right:.4rem">Earn unlimited points daily 🎮</span></div>
     <div class="games-grid" id="gGrid"></div>
-    <div class="empty-st" id="gEmpty" style="display:none"><div class="icon">🎮</div><p>لا توجد ألعاب بعد</p></div>
+    <div class="empty-st" id="gEmpty" style="display:none"><div class="icon">🎮</div><p>No games yet</p></div>
   </div>
 </main>
 
 <!-- SEARCH -->
 <main id="secSearch" style="display:none">
-  <div class="section-title" id="searchTitle">نتائج البحث</div>
-  <div class="loading" id="ldSearch"><div class="spinner"></div><p>جاري التحميل...</p></div>
-  <div class="empty-st" id="emSearch"><div class="icon">🎬</div><p>لا توجد نتائج</p></div>
+  <div class="section-title" id="searchTitle">Search Results</div>
+  <div class="loading" id="ldSearch"><div class="spinner"></div><p>Loading...</p></div>
+  <div class="empty-st" id="emSearch"><div class="icon">🎬</div><p>No results found</p></div>
   <div class="video-grid" id="gridSearch"></div>
-  <div class="lm-wrap" id="lmSearch" style="display:none"><button class="lm-btn" onclick="loadMoreSearch()">تحميل المزيد</button></div>
+  <div class="lm-wrap" id="lmSearch" style="display:none"><button class="lm-btn" onclick="loadMoreSearch()">Load More</button></div>
 </main>
 
 <!-- REWARDS -->
 <main id="secRewards" style="display:none">
   <div class="rw-hero">
     <span class="rw-hero-icon">💎</span>
-    <div class="rw-hero-title">كسب النقاط</div>
-    <div class="rw-hero-sub">أكمل المهام واكسب نقاطاً إضافية</div>
-    <div class="rw-balance">⭐ <span id="rwBal">0</span> نقطة في رصيدك</div>
+    <div class="rw-hero-title">Earn Points</div>
+    <div class="rw-hero-sub">Complete tasks & earn extra points</div>
+    <div class="rw-balance">⭐ <span id="rwBal">0</span> pts في رصيدك</div>
   </div>
 
   <div class="rw-offer-card" id="rwMainCard">
     <div class="rw-offer-head">
       <div class="rw-offer-icon purple">🎬</div>
       <div class="rw-offer-info">
-        <div class="rw-offer-name">الرابط الذكي — اكسب 50 نقطة</div>
-        <div class="rw-offer-desc">افتح الرابط الذكي وانتظر 30 ثانية — ستُضاف 50 نقطة تلقائياً.<br>يمكنك تكراره كل 5 دقائق!</div>
+        <div class="rw-offer-name">الرابط الذكي — اكسب 50 pts</div>
+        <div class="rw-offer-desc">افتح الرابط الذكي وانتظر 30 ثانية — ستُضاف 50 pts تلقائياً.<br>يمكنك تكراره كل 5 دقائق!</div>
       </div>
       <div class="rw-offer-reward">
         <div class="rw-offer-pts">50</div>
-        <div class="rw-offer-pts-lbl">نقطة</div>
+        <div class="rw-offer-pts-lbl">pts</div>
       </div>
     </div>
     <div class="rw-timer-bar"><div class="rw-timer-fill" id="rwTimerFill" style="width:100%"></div></div>
     <button class="rw-offer-btn" id="rwMainBtn" onclick="openSmartOffer()">
-      <span>▶</span> افتح الرابط واكسب 50 نقطة
+      <span>▶</span> افتح الرابط واكسب 50 pts
     </button>
   </div>
 
@@ -817,16 +817,16 @@ footer{background:#060606;border-top:1px solid var(--border);padding:1.2rem 1rem
     <div class="rw-offer-head">
       <div class="rw-offer-icon" style="background:linear-gradient(135deg,#92400e,#f59e0b);">📺</div>
       <div class="rw-offer-info">
-        <div class="rw-offer-name">شاهد إعلان — 20 نقطة بلا حدود</div>
-        <div class="rw-offer-desc">اضغط وشاهد إعلاناً قصيراً واحصل على 20 نقطة فوراً — يمكن التكرار!</div>
+        <div class="rw-offer-name">شاهد إعلان — 20 pts بلا حدود</div>
+        <div class="rw-offer-desc">اضغط وشاهد إعلاناً قصيراً واحصل على 20 pts فوراً — يمكن التكرار!</div>
       </div>
       <div class="rw-offer-reward">
         <div class="rw-offer-pts" style="color:#f59e0b;">20</div>
-        <div class="rw-offer-pts-lbl">نقطة</div>
+        <div class="rw-offer-pts-lbl">pts</div>
       </div>
     </div>
     <button class="rw-offer-btn" style="background:linear-gradient(135deg,#92400e,#f59e0b)" onclick="openAdWatch()">
-      <span>📺</span> شاهد إعلان واربح 20 نقطة
+      <span>📺</span> Watch an ad & earn 20 points
     </button>
   </div>
 
@@ -834,16 +834,16 @@ footer{background:#060606;border-top:1px solid var(--border);padding:1.2rem 1rem
     <div class="rw-offer-head">
       <div class="rw-offer-icon gold">📺</div>
       <div class="rw-offer-info">
-        <div class="rw-offer-name">شاهد فيديوهات عادية</div>
-        <div class="rw-offer-desc">كل 30 ثانية مشاهدة = نقطة واحدة بدون حد يومي</div>
+        <div class="rw-offer-name">Watch Regular Videos</div>
+        <div class="rw-offer-desc">كل 30 ثانية مشاهدة = pts واحدة بدون حد يومي</div>
       </div>
       <div class="rw-offer-reward">
         <div class="rw-offer-pts">1</div>
-        <div class="rw-offer-pts-lbl">نقطة/30s</div>
+        <div class="rw-offer-pts-lbl">pts/30s</div>
       </div>
     </div>
     <button class="rw-offer-btn" style="background:linear-gradient(135deg,#78350f,#d97706)" onclick="goHome(G('catHome'))">
-      <span>🔥</span> ابدأ المشاهدة الآن
+      <span>🔥</span> Start Watching Now
     </button>
   </div>
 
@@ -851,16 +851,16 @@ footer{background:#060606;border-top:1px solid var(--border);padding:1.2rem 1rem
     <div class="rw-offer-head">
       <div class="rw-offer-icon green">🎮</div>
       <div class="rw-offer-info">
-        <div class="rw-offer-name">العب الألعاب</div>
-        <div class="rw-offer-desc">كل 30 ثانية لعب = نقطة. ألعاب بلا حد يومي!</div>
+        <div class="rw-offer-name">Play Games</div>
+        <div class="rw-offer-desc">كل 30 ثانية لعب = pts. ألعاب بلا حد يومي!</div>
       </div>
       <div class="rw-offer-reward">
         <div class="rw-offer-pts">1</div>
-        <div class="rw-offer-pts-lbl">نقطة/30s</div>
+        <div class="rw-offer-pts-lbl">pts/30s</div>
       </div>
     </div>
     <button class="rw-offer-btn" style="background:linear-gradient(135deg,#4c1d95,#7c3aed)" onclick="gotoGames(G('catGames'))">
-      <span>🎮</span> العب الآن
+      <span>🎮</span> Play Now
     </button>
   </div>
 
@@ -868,25 +868,25 @@ footer{background:#060606;border-top:1px solid var(--border);padding:1.2rem 1rem
     <div class="rw-offer-head">
       <div class="rw-offer-icon purple">👥</div>
       <div class="rw-offer-info">
-        <div class="rw-offer-name">دعوة الأصدقاء</div>
-        <div class="rw-offer-desc">لكل صديق يسجل بكودك: أنت 50 نقطة وهو 150 نقطة</div>
+        <div class="rw-offer-name">Invite Friends</div>
+        <div class="rw-offer-desc">لكل صديق يسجل بكودك: You 50 pts وهو 150 pts</div>
       </div>
       <div class="rw-offer-reward">
         <div class="rw-offer-pts">50</div>
-        <div class="rw-offer-pts-lbl">نقطة/صديق</div>
+        <div class="rw-offer-pts-lbl">pts/صديق</div>
       </div>
     </div>
     <button class="rw-offer-btn" onclick="currentUser&&openWithdraw()">
-      <span>📋</span> انسخ رابط الإحالة
+      <span>📋</span> اCopy رابط الإحالة
     </button>
   </div>
 
   <div class="rw-how">
-    <div class="rw-how-title">💡 كيف يعمل نظام النقاط؟</div>
-    <div class="rw-how-step"><div class="rw-how-num">1</div><div class="rw-how-text">اضغط "افتح الرابط الذكي" — سيفتح في نافذة جديدة</div></div>
-    <div class="rw-how-step"><div class="rw-how-num">2</div><div class="rw-how-text">انتظر 30 ثانية على الأقل في النافذة الجديدة</div></div>
-    <div class="rw-how-step"><div class="rw-how-num">3</div><div class="rw-how-text">عد لهذه الصفحة — ستُضاف 50 نقطة تلقائياً!</div></div>
-    <div class="rw-how-step"><div class="rw-how-num">4</div><div class="rw-how-text">يمكنك تكرار العرض كل 5 دقائق بلا حد يومي</div></div>
+    <div class="rw-how-title">💡 How does the points system work?</div>
+    <div class="rw-how-step"><div class="rw-how-num">1</div><div class="rw-how-text">Tap "Open Smart Link" — opens in a new tab</div></div>
+    <div class="rw-how-step"><div class="rw-how-num">2</div><div class="rw-how-text">Wait at least 30 seconds in the new tab</div></div>
+    <div class="rw-how-step"><div class="rw-how-num">3</div><div class="rw-how-text">عد لهذه الصفحة — ستُضاف 50 pts تلقائياً!</div></div>
+    <div class="rw-how-step"><div class="rw-how-num">4</div><div class="rw-how-text">Repeat the offer every 5 minutes, no daily limit</div></div>
   </div>
 </main>
 
@@ -894,7 +894,7 @@ footer{background:#060606;border-top:1px solid var(--border);padding:1.2rem 1rem
 <div class="rw-toast-overlay" id="rwPopOv">
   <div class="rw-pts-pop">
     <div class="rw-pts-pop-num">+100 ⭐</div>
-    <div class="rw-pts-pop-lbl">تمت إضافة النقاط!</div>
+    <div class="rw-pts-pop-lbl">Points added!</div>
   </div>
 </div>
 
@@ -928,8 +928,8 @@ footer{background:#060606;border-top:1px solid var(--border);padding:1.2rem 1rem
 
   <!-- شريط علوي -->
   <div style="width:95%;max-width:640px;display:flex;align-items:center;justify-content:space-between;margin-bottom:.5rem;">
-    <span style="font-size:.72rem;color:#aaa;letter-spacing:.5px;">📢 إعلان مدفوع</span>
-    <button id="vastSkipBtn" onclick="skipVastAd()" style="display:none;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);color:#fff;padding:.3rem .9rem;border-radius:50px;font-family:Cairo,sans-serif;font-size:.75rem;cursor:pointer;">تخطي ›</button>
+    <span style="font-size:.72rem;color:#aaa;letter-spacing:.5px;">📢 Sponsored Ad</span>
+    <button id="vastSkipBtn" onclick="skipVastAd()" style="display:none;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);color:#fff;padding:.3rem .9rem;border-radius:50px;font-family:Cairo,sans-serif;font-size:.75rem;cursor:pointer;">Skip ›</button>
   </div>
 
   <!-- الفيديو -->
@@ -942,7 +942,7 @@ footer{background:#060606;border-top:1px solid var(--border);padding:1.2rem 1rem
   <!-- الحالة / العداد -->
   <div style="width:95%;max-width:640px;margin-top:.75rem;text-align:center;">
     <span id="ad-status" style="background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.25);border-radius:50px;padding:.38rem 1.1rem;font-size:.82rem;color:#f59e0b;display:inline-block;">
-      جاري تحميل الإعلان...
+      Loading ad...
     </span>
   </div>
 
@@ -959,12 +959,12 @@ footer{background:#060606;border-top:1px solid var(--border);padding:1.2rem 1rem
           <svg width="36" height="36" viewBox="0 0 38 38"><circle class="ring-bg" cx="19" cy="19" r="16"/><circle class="ring-fill" id="ringFill" cx="19" cy="19" r="16"/></svg>
           <div class="t-num" id="tNum">30</div>
         </div>
-        <div class="pts-info"><div class="pts-lbl">نقاطك</div><div class="pts-val" id="modalPts">0 نقطة</div></div>
+        <div class="pts-info"><div class="pts-lbl">نقاطك</div><div class="pts-val" id="modalPts">0 pts</div></div>
       </div>
     </div>
     <div class="iframe-wrap">
       <div id="ytPCWrap"></div>
-      <div class="pause-ind" id="pauseInd"><div class="pause-icon">⏸</div><div class="pause-lbl">العداد متوقف — شغّل الفيديو لكسب النقاط</div></div>
+      <div class="pause-ind" id="pauseInd"><div class="pause-icon">⏸</div><div class="pause-lbl">Timer paused — play video to earn points</div></div>
     </div>
     <div class="modal-desc" id="modalDesc"></div>
   </div>
@@ -973,12 +973,12 @@ footer{background:#060606;border-top:1px solid var(--border);padding:1.2rem 1rem
 <!-- GAME OVERLAY -->
 <div class="game-ov-full" id="gameOv">
   <button class="g-close" id="closeGame">✕</button>
-  <div class="g-topbar"><div class="g-title-badge" id="gTitle">لعبة</div><div class="g-pts-badge" id="gPts">0 نقطة 🎮</div></div>
+  <div class="g-topbar"><div class="g-title-badge" id="gTitle">لعبة</div><div class="g-pts-badge" id="gPts">0 pts 🎮</div></div>
   <div class="g-iframe"><iframe id="gFrame" allowfullscreen allow="autoplay;fullscreen"></iframe></div>
 </div>
 
 <div class="toast" id="toast"></div>
-<div class="g-toast" id="gToast">+1 نقطة 🎮</div>
+<div class="g-toast" id="gToast">+1 pts 🎮</div>
 
 
 <!-- ╔══════════════════════════╗ -->
@@ -988,11 +988,11 @@ footer{background:#060606;border-top:1px solid var(--border);padding:1.2rem 1rem
   <div class="lb-box" style="position:relative;">
     <button class="lb-close" onclick="closeLeaderboard()">✕</button>
     <div class="lb-head">
-      <div class="lb-title">🏆 المتصدرون</div>
+      <div class="lb-title">🏆 Leaderboard</div>
       <div class="lb-sub">أعلى 10 مستخدمين نقاطاً</div>
     </div>
     <div class="lb-body" id="lbBody">
-      <div class="lb-loading">⏳ جاري التحميل...</div>
+      <div class="lb-loading">⏳ Loading...</div>
     </div>
   </div>
 </div>
@@ -1002,20 +1002,20 @@ footer{background:#060606;border-top:1px solid var(--border);padding:1.2rem 1rem
 <!-- ╚══════════════════════════╝ -->
 <div class="pp-ov" id="ppOv">
   <div class="pp-box">
-    <div class="pp-title">سياسة الخصوصية</div>
+    <div class="pp-title">Privacy Policy</div>
     <div class="pp-date">آخر تحديث: مارس 2026</div>
 
     <div class="pp-h">1. المعلومات التي نجمعها</div>
-    <p class="pp-p">نجمع معلومات الحساب (الاسم، البريد الإلكتروني) عند التسجيل. لا نجمع بيانات الدفع — يتم التحقق يدوياً من طلبات السحب.</p>
+    <p class="pp-p">نجمع معلومات الحساب (Name، Email) عند التسجيل. لا نجمع بيانات الدفع — يتم التحقق يدوياً من Withdrawal Requests.</p>
 
     <div class="pp-h">2. كيف نستخدم بياناتك</div>
-    <p class="pp-p">تُستخدم بياناتك فقط لتشغيل الحساب وحساب النقاط ومعالجة طلبات السحب. لا نبيع أي بيانات لأطراف ثالثة.</p>
+    <p class="pp-p">تُستخدم بياناتك فقط لتشغيل الحساب وحساب النقاط ومعالجة Withdrawal Requests. لا نبيع أي بيانات لأطراف ثالثة.</p>
 
     <div class="pp-h">3. الإعلانات</div>
     <p class="pp-p">يستخدم الموقع شبكات إعلانية خارجية (Adsterra، HilltopAds، AADS، AdMaven) قد تستخدم ملفات تعريف الارتباط (Cookies) لعرض إعلانات مخصصة.</p>
 
     <div class="pp-h">4. نظام النقاط</div>
-    <p class="pp-p">النقاط المكتسبة من مشاهدة الفيديوهات والألعاب يتم تخزينها في Firebase. الحد الأدنى للسحب 5000 نقطة = $5. تحتفظ الإدارة بحق رفض أي طلب مشبوه.</p>
+    <p class="pp-p">النقاط المكتسبة من مشاهدة الفيديوهات والألعاب يتم تخزينها في Firebase. Minimum withdrawal 5000 pts = $5. تحتفظ الإدارة بحق Reject أي طلب مشبوه.</p>
 
     <div class="pp-h">5. الأمان</div>
     <p class="pp-p">نستخدم Firebase Authentication وFirestore لتأمين البيانات. يُمنع أي محاولة تلاعب وسيؤدي إلى حظر الحساب نهائياً.</p>
@@ -1023,7 +1023,7 @@ footer{background:#060606;border-top:1px solid var(--border);padding:1.2rem 1rem
     <div class="pp-h">6. تواصل معنا</div>
     <p class="pp-p">لأي استفسار يخص الخصوصية، يمكنك التواصل من خلال صفحة الموقع على GitHub.</p>
 
-    <button class="pp-close-btn" onclick="closePP()">✅ فهمت</button>
+    <button class="pp-close-btn" onclick="closePP()">✅ Got it</button>
   </div>
 </div>
 
@@ -1039,8 +1039,8 @@ footer{background:#060606;border-top:1px solid var(--border);padding:1.2rem 1rem
       <div class="about-stat"><div class="about-stat-val">∞</div><div class="about-stat-lbl">فيديو</div></div>
       <div class="about-stat"><div class="about-stat-val">4</div><div class="about-stat-lbl">شركة إعلانية</div></div>
     </div>
-    <p class="about-p">WinTube هو موقع عراقي يتيح لك مشاهدة الفيديوهات وكسب النقاط وتحويلها إلى أموال حقيقية عبر طرق الدفع المتعددة المتاحة في العراق.</p>
-    <p class="about-p">كل 30 ثانية مشاهدة = نقطة واحدة. كل 1000 نقطة = $1 دولار أمريكي.</p>
+    <p class="about-p">WinTube هو موقع عراقي يتيح لك مشاهدة الفيديوهات وEarn Points وتحويلها إلى أموال حقيقية عبر طرق الدفع المتعددة المتاحة في العراق.</p>
+    <p class="about-p">كل 30 ثانية مشاهدة = pts واحدة. كل 1000 pts = $1 دولار أمريكي.</p>
     <button class="about-close" onclick="G('aboutOv').classList.remove('open')">إغلاق</button>
   </div>
 </div>
@@ -1051,17 +1051,17 @@ footer{background:#060606;border-top:1px solid var(--border);padding:1.2rem 1rem
 <footer id="siteFooter">
   <div class="footer-links">
     <button class="footer-link" onclick="G('aboutOv').classList.add('open');loadAboutStats()">عن WinTube</button>
-    <button class="footer-link" onclick="G('ppOv').classList.add('open')">سياسة الخصوصية</button>
-    <button class="footer-link" onclick="openLeaderboard()">🏆 المتصدرون</button>
+    <button class="footer-link" onclick="G('ppOv').classList.add('open')">Privacy Policy</button>
+    <button class="footer-link" onclick="openLeaderboard()">🏆 Leaderboard</button>
     <button class="footer-link" onclick="currentUser&&openWithdraw()">💰 كيف تسحب؟</button>
-    <button class="footer-link" onclick="gotoRewards(G('catRewards'))">💎 كسب النقاط</button>
+    <button class="footer-link" onclick="gotoRewards(G('catRewards'))">💎 Earn Points</button>
   </div>
-  <div class="footer-copy">© 2026 WinTube — جميع الحقوق محفوظة</div>
+  <div class="footer-copy">© 2026 WinTube — All rights reserved</div>
 </footer>
 
 <!-- MOBILE BAR -->
 <div class="mob-bar" id="mobBar">
-  <button class="mob-bar-btn gold" id="mobBtnW" onclick="openWithdraw()">💰 سحب النقاط</button>
+  <button class="mob-bar-btn gold" id="mobBtnW" onclick="openWithdraw()">💰 Withdraw</button>
 
 </div>
 
@@ -1113,44 +1113,44 @@ function loadSc(src){return new Promise(function(ok,err){var s=document.createEl
 function authErrMsg(c){
   var m={
     'auth/user-not-found':'البريد غير مسجّل',
-    'auth/wrong-password':'كلمة المرور خاطئة',
-    'auth/invalid-credential':'البريد أو كلمة المرور غير صحيحة',
-    'auth/invalid-login-credentials':'البريد أو كلمة المرور غير صحيحة',
+    'auth/wrong-password':'Password خاطئة',
+    'auth/invalid-credential':'البريد or Password غير صحيحة',
+    'auth/invalid-login-credentials':'البريد or Password غير صحيحة',
     'auth/user-disabled':'هذا الحساب موقوف',
     'auth/email-already-in-use':'هذا البريد مستخدم مسبقاً',
     'auth/invalid-email':'بريد إلكتروني غير صالح',
-    'auth/weak-password':'كلمة المرور ضعيفة جداً (6 أحرف+)',
+    'auth/weak-password':'Password ضعيفة جداً (6 أحرف+)',
     'auth/network-request-failed':'تحقق من اتصال الإنترنت',
     'auth/too-many-requests':'تجاوزت عدد المحاولات، انتظر قليلاً',
     'auth/popup-blocked':'السماح بالنوافذ المنبثقة في المتصفح',
     'auth/popup-closed-by-user':'أغلقت نافذة Google',
-    'auth/cancelled-popup-request':'تم إلغاء الطلب',
+    'auth/cancelled-popup-request':'تم Cancel الطلب',
     'auth/operation-not-allowed':'طريقة الدخول غير مفعّلة في Firebase',
-    'auth/missing-password':'أدخل كلمة المرور'
+    'auth/missing-password':'أدخل Password'
   };
   return m[c]||(c||'حدث خطأ غير معروف');
 }
 
 function doLogin(){
-  if(!_auth){G('authErr').textContent='جاري التحميل...';return;}
+  if(!_auth){G('authErr').textContent='Loading...';return;}
   var em=G('lEmail').value.trim(), pw=G('lPass').value;
-  if(!em){G('authErr').textContent='أدخل البريد الإلكتروني';return;}
-  if(!pw){G('authErr').textContent='أدخل كلمة المرور';return;}
+  if(!em){G('authErr').textContent='أدخل Email';return;}
+  if(!pw){G('authErr').textContent='أدخل Password';return;}
   G('authErr').textContent='';
   var btn=G('btnLogin'); btn.disabled=true; btn.textContent='⏳ جاري الدخول...';
   _auth.signInWithEmailAndPassword(em, pw)
-    .then(function(){ btn.disabled=false; btn.textContent='دخول ←'; })
+    .then(function(){ btn.disabled=false; btn.textContent='Sign In →'; })
     .catch(function(e){
       G('authErr').textContent=authErrMsg(e.code);
-      btn.disabled=false; btn.textContent='دخول ←';
+      btn.disabled=false; btn.textContent='Sign In →';
     });
 }
 
 function doRegister(){
-  if(!_auth){G('authErr').textContent='جاري التحميل...';return;}
+  if(!_auth){G('authErr').textContent='Loading...';return;}
   var nm=G('rName').value.trim(), em=G('rEmail').value.trim(), pw=G('rPass').value;
-  if(!nm||!em||!pw){G('authErr').textContent='يرجى ملء جميع الحقول';return;}
-  if(pw.length<6){G('authErr').textContent='كلمة المرور 6 أحرف على الأقل';return;}
+  if(!nm||!em||!pw){G('authErr').textContent='Please fill in all fields';return;}
+  if(pw.length<6){G('authErr').textContent='Password 6 أحرف على الأقل';return;}
   G('authErr').textContent='';
   var btn=G('btnReg'); btn.disabled=true; btn.textContent='جاري الإنشاء...';
   _auth.createUserWithEmailAndPassword(em,pw)
@@ -1167,9 +1167,9 @@ function doRegister(){
         }
       });
     })
-    .then(function(){btn.disabled=false;btn.textContent='إنشاء الحساب ←';G('authErr').style.color='#22c55e';G('authErr').textContent='✅ تم إنشاء الحساب!';})
+    .then(function(){btn.disabled=false;btn.textContent='Create Account →';G('authErr').style.color='#22c55e';G('authErr').textContent='✅ Account created!';})
     .catch(function(e){
-      btn.disabled=false; btn.textContent='إنشاء الحساب ←';
+      btn.disabled=false; btn.textContent='Create Account →';
       G('authErr').style.color='';
       G('authErr').textContent = authErrMsg(e.code);
     });
@@ -1177,7 +1177,7 @@ function doRegister(){
 
 function doSignOut(){
   if(!_auth)return;
-  if(!confirm('تسجيل الخروج؟'))return;
+  if(!confirm('تسجيل الSign Out؟'))return;
   stopWTimer(); closeVideoModal();
   _auth.signOut().then(function(){
     G('hPts').textContent='0'; G('hName').textContent='—'; G('hAvatar').textContent='?';
@@ -1222,7 +1222,7 @@ function switchTab(t){
 // ═══════════════════════════════════════
 // POINTS
 // ═══════════════════════════════════════
-// آخر وقت تمت فيه إضافة نقطة (video + game)
+// آخر وقت تمت فيه إضافة pts (video + game)
 var lastVidPointTime = 0;
 var lastGamePointTime = 0;
 
@@ -1240,12 +1240,12 @@ function refreshPointsFromDB(){
     if(snap.exists){
       userPoints = snap.data().points || 0;
       updateHeader();
-      var mp = G('modalPts'); if(mp) mp.textContent = userPoints + ' نقطة';
+      var mp = G('modalPts'); if(mp) mp.textContent = userPoints + ' pts';
     }
   }).catch(function(){});
 }
 
-// إضافة نقطة بأمان — يتحقق أن 30 ثانية مرت فعلاً
+// إضافة pts بأمان — يتحقق أن 30 ثانية مرت فعلاً
 // ══ SERVER-SIDE PROTECTION ══
 // Firestore rules must be set to:
 // users/{uid}: allow write only if request.auth.uid == uid
@@ -1273,7 +1273,7 @@ function secureAddPoint(source){
   _db.collection('users').doc(currentUser.uid).update({
     points: firebase.firestore.FieldValue.increment(1)
   }).catch(function(e){
-    // إذا فشل Firebase، تراجع عن النقطة محلياً
+    // إذا فشل Firebase، تراجع عن الpts محلياً
     userPoints--;
     updateHeader();
     console.error('خطأ Firebase:', e.message);
@@ -1301,7 +1301,7 @@ function gotoRewards(btn){
 function goHome(btn){setCat(btn||G('catHome'));G('secSearch').style.display='none';var _sr=G('secRewards');if(_sr)_sr.style.display='none';G('secHome').style.display='';}
 function gotoGames(btn){goHome(null);setCat(btn);setTimeout(function(){var el=G('gamesStrip');if(el)el.scrollIntoView({behavior:'smooth',block:'start'});},80);}
 function doSearch(){var q=G('searchInput').value.trim();if(!q)return;searchCat(q,null);}
-function searchCat(q,btn){setCat(btn);searchQuery=q;searchToken='';G('secHome').style.display='none';var _sr2=G('secRewards');if(_sr2)_sr2.style.display='none';G('secSearch').style.display='';var L={تعليم:'📚 تعليم',تكنولوجيا:'💻 تكنولوجيا',رياضة:'⚽ رياضة',موسيقى:'🎵 موسيقى',طبخ:'🍳 طبخ',سفر:'✈️ سفر',أخبار:'📰 أخبار'};G('searchTitle').textContent=L[q]||('🔍 "'+q+'"');fetchSearch(q,'',false);}
+function searchCat(q,btn){setCat(btn);searchQuery=q;searchToken='';G('secHome').style.display='none';var _sr2=G('secRewards');if(_sr2)_sr2.style.display='none';G('secSearch').style.display='';var L={تعليم:'📚 Education',تكنولوجيا:'💻 Tech',رياضة:'⚽ Sports',موسيقى:'🎵 Music',طبخ:'🍳 Cooking',سفر:'✈️ Travel',أخبار:'📰 News'};G('searchTitle').textContent=L[q]||('🔍 "'+q+'"');fetchSearch(q,'',false);}
 
 // ═══════════════════════════════════════
 // YOUTUBE FETCH
@@ -1342,7 +1342,7 @@ function openVideoModal(vid,title,desc){
   openAdLinks(null);
   G('modalTitle').textContent=title;
   G('modalDesc').textContent=desc;
-  G('modalPts').textContent=userPoints+' نقطة';
+  G('modalPts').textContent=userPoints+' pts';
   updateHeader();
   G('modalOv').classList.add('open');
   G('pauseInd').classList.remove('on');
@@ -1376,11 +1376,11 @@ function drawRing(){
 function startWTimer(){stopWTimer();tSecs=EARN_EVERY;drawRing();wInt=setInterval(function(){if(!playing)return;tSecs--;drawRing();if(tSecs<=0){tSecs=EARN_EVERY;
             var added = secureAddPoint('video');
             if(added){
-              G('modalPts').textContent=userPoints+' نقطة';
+              G('modalPts').textContent=userPoints+' pts';
               var pv=G('modalPts');pv.classList.remove('flash');void pv.offsetWidth;pv.classList.add('flash');
               setTimeout(function(){pv.classList.remove('flash');},700);
-              showToast('+1 نقطة 🎉','rgba(34,197,94,.95)');
-              sendNotif('WinTube 🎉', 'كسبت نقطة جديدة! رصيدك: '+userPoints+' نقطة');
+              showToast('+1 pts 🎉','rgba(34,197,94,.95)');
+              sendNotif('WinTube 🎉', 'كسبت pts جديدة! رصيدك: '+userPoints+' pts');
               syncLeaderboard();
             }}},1000);}
 function stopWTimer(){clearInterval(wInt);wInt=null;playing=false;tSecs=EARN_EVERY;drawRing();}
@@ -1432,7 +1432,7 @@ function openGameOverlay(gameId,gameName,gameUrl){
   openAdLinks();
   var pts=gCache[gameId]||0; activeGid=gameId;
   G('gTitle').textContent=gameName;
-  G('gPts').textContent=pts+' نقطة 🎮';
+  G('gPts').textContent=pts+' pts 🎮';
   G('gFrame').src=gameUrl;
   G('gameOv').classList.add('open');
   startGTimer(pts);
@@ -1451,7 +1451,7 @@ function startGTimer(startPts){
         pts++;
         gCache[activeGid] = pts;
         if(_db && currentUser) saveGameDayPts(activeGid, pts);
-        G('gPts').textContent = pts + ' نقطة 🎮';
+        G('gPts').textContent = pts + ' pts 🎮';
         var t = G('gToast'); t.classList.add('show');
         setTimeout(function(){ t.classList.remove('show'); }, 1900);
       }
@@ -1472,7 +1472,7 @@ function saveGameDayPts(gameId,pts){if(!_db||!currentUser)return;_db.collection(
 function loadGamesGrid(){
   if(!_db)return;
   var grid=G('gGrid'),empty=G('gEmpty');
-  grid.innerHTML='<div class="loading" style="display:block"><div class="spinner"></div><p>جاري التحميل...</p></div>';
+  grid.innerHTML='<div class="loading" style="display:block"><div class="spinner"></div><p>Loading...</p></div>';
   empty.style.display='none';
   _db.collection('games').orderBy('createdAt','asc').get().then(function(snap){
     grid.innerHTML='';if(snap.empty){empty.style.display='block';return;}
@@ -1495,7 +1495,7 @@ function renderGamesGrid(list){
       '<div class="game-thumb" style="'+thumbBg+'">'+
         thumbContent+
         '<div class="game-ov"><div class="game-play">▶</div></div>'+
-        '<span class="game-cap-badge">'+pts+' نقطة</span>'+
+        '<span class="game-cap-badge">'+pts+' pts</span>'+
       '</div>'+
       '<div class="game-info">'+
         '<div class="game-name">'+g.d.name+'</div>'+
@@ -1530,7 +1530,7 @@ function adminAddGame(){
   var name=G('newGameName').value.trim(),err=G('addErr'),btn=G('addBtn'),url='';
   if(gameSrcMode==='iframe'){var code=G('newGameIframe').value.trim();if(!code){err.textContent='أدخل كود iframe';return;}var m=code.match(/src=["']([^"']+)["']/i);if(!m){err.textContent='لم يتم العثور على src';return;}url=m[1];}
   else{url=G('newGameUrl').value.trim();}
-  if(!name){err.textContent='أدخل اسم اللعبة';return;}
+  if(!name){err.textContent='أدخل Game name';return;}
   if(!url||!url.startsWith('http')){err.textContent='أدخل رابطاً صحيحاً';return;}
   var imgData=G('imgPreview').style.display==='none'?'':(G('imgPreview').src||'');
   err.textContent='';btn.disabled=true;btn.textContent='جاري الإضافة...';
@@ -1540,14 +1540,14 @@ function adminAddGame(){
     .then(function(){G('newGameName').value='';G('newGameUrl').value='';G('newGameIframe').value='';resetGameImgUpload();btn.disabled=false;btn.textContent='➕ إضافة اللعبة';err.textContent='';loadAdminGamesList();loadGamesGrid();})
     .catch(function(e){err.textContent='خطأ: '+e.message;btn.disabled=false;btn.textContent='➕ إضافة اللعبة';});
 }
-function adminDeleteGame(id){if(!_db||!confirm('حذف هذه اللعبة نهائياً؟'))return;_db.collection('games').doc(id).delete().then(function(){loadAdminGamesList();loadGamesGrid();}).catch(function(e){alert('خطأ: '+e.message);});}
+function adminDeleteGame(id){if(!_db||!confirm('Delete هذه اللعبة نهائياً؟'))return;_db.collection('games').doc(id).delete().then(function(){loadAdminGamesList();loadGamesGrid();}).catch(function(e){alert('خطأ: '+e.message);});}
 function loadAdminGamesList(){
   if(!_db)return;
-  var el=G('admGames');el.innerHTML='<div class="adm-empty">جاري التحميل...</div>';
+  var el=G('admGames');el.innerHTML='<div class="adm-empty">Loading...</div>';
   _db.collection('games').orderBy('createdAt','asc').get().then(function(snap){
     if(snap.empty){el.innerHTML='<div class="adm-empty">لا توجد ألعاب</div>';return;}
     el.innerHTML='';
-    snap.forEach(function(doc){var d=doc.data(),id=doc.id;var thumb=d.img?'<img src="'+d.img+'" style="width:48px;height:48px;object-fit:cover;border-radius:7px;flex-shrink:0;">':'<div style="width:48px;height:48px;background:linear-gradient(135deg,#1a0533,#2d0a5c);border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:1.4rem;flex-shrink:0;">🎮</div>';el.innerHTML+='<div class="adm-game-item">'+thumb+'<div style="min-width:0;flex:1;margin:0 .7rem"><div class="adm-game-name">'+d.name+'</div><div class="adm-game-url">'+d.url+'</div></div><button class="adm-game-del" onclick="adminDeleteGame(\''+id+'\')">🗑️ حذف</button></div>';});
+    snap.forEach(function(doc){var d=doc.data(),id=doc.id;var thumb=d.img?'<img src="'+d.img+'" style="width:48px;height:48px;object-fit:cover;border-radius:7px;flex-shrink:0;">':'<div style="width:48px;height:48px;background:linear-gradient(135deg,#1a0533,#2d0a5c);border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:1.4rem;flex-shrink:0;">🎮</div>';el.innerHTML+='<div class="adm-game-item">'+thumb+'<div style="min-width:0;flex:1;margin:0 .7rem"><div class="adm-game-name">'+d.name+'</div><div class="adm-game-url">'+d.url+'</div></div><button class="adm-game-del" onclick="adminDeleteGame(\''+id+'\')">🗑️ Delete</button></div>';});
   }).catch(function(e){el.innerHTML='<div class="adm-empty">خطأ: '+e.message+'</div>';});
 }
 
@@ -1626,8 +1626,8 @@ loadSc('https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js')
         });
         docs.forEach(function(doc){
           var r=doc.data();
-          var badge=r.status==='pending'?'⏳ انتظار':r.status==='approved'?'✅ مقبول':'❌ مرفوض';
-          h+='<div class="req-item"><div><div style="font-weight:700;font-size:.78rem;color:var(--yellow)">'+r.method+'</div><div style="font-size:.72rem;color:var(--muted)">'+r.points+' نقطة = $'+r.usd+'</div></div><span class="req-badge '+(r.status||'pending')+'">'+badge+'</span></div>';
+          var badge=r.status==='pending'?'⏳ انتظار':r.status==='approved'?'✅ Approved':'❌ Rejected';
+          h+='<div class="req-item"><div><div style="font-weight:700;font-size:.78rem;color:var(--yellow)">'+r.method+'</div><div style="font-size:.72rem;color:var(--muted)">'+r.points+' pts = $'+r.usd+'</div></div><span class="req-badge '+(r.status||'pending')+'">'+badge+'</span></div>';
         });
         G('wHist').innerHTML=h||'';
       }
@@ -1641,7 +1641,7 @@ loadSc('https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js')
       } else if(m==='Asiacell'){
         l.textContent='رقم الهاتف (آسياسيل)'; i.placeholder='077XXXXXXXX';
       } else if(m==='Zain (Eather)'){
-        l.textContent='رقم الهاتف (زين / إيثر)'; i.placeholder='078XXXXXXXX أو 079XXXXXXXX';
+        l.textContent='رقم الهاتف (زين / إيثر)'; i.placeholder='078XXXXXXXX or 079XXXXXXXX';
       } else if(m){
         l.textContent='عنوان المحفظة'; i.placeholder='أدخل عنوان '+m;
       }
@@ -1649,12 +1649,12 @@ loadSc('https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js')
     window.calcWithdraw=function(){var v=parseInt(G('wAmt').value)||0;G('wCalc').textContent=v>0?'≈ $'+(v/PTS_USD).toFixed(2):'';};
     window.submitWithdraw=function(){
       var method=G('wMethod').value,addr=G('wAddr').value.trim(),amt=parseInt(G('wAmt').value)||0,errEl=G('wErr'),btn=G('wBtn');
-      if(!method){errEl.textContent='اختر طريقة السحب';return;}if(!addr){errEl.textContent='أدخل العنوان';return;}
-      if(amt<MIN_W){errEl.textContent='الحد الأدنى 5000 نقطة';return;}if(amt>userPoints){errEl.textContent='رصيدك غير كافٍ';return;}if(amt%1000!==0){errEl.textContent='يجب أن يكون مضاعفاً لـ 1000';return;}
+      if(!method){errEl.textContent='اختر طريقة السحب';return;}if(!addr){errEl.textContent='أدخل Address';return;}
+      if(amt<MIN_W){errEl.textContent='الحد الأدنى 5000 pts';return;}if(amt>userPoints){errEl.textContent='رصيدك غير كافٍ';return;}if(amt%1000!==0){errEl.textContent='يجب أن يكون مضاعفاً لـ 1000';return;}
       errEl.textContent='';btn.disabled=true;btn.textContent='جاري الإرسال...';
       _db.collection('withdrawals').add({uid:currentUser.uid,name:currentUser.displayName||'',email:currentUser.email,method:method,address:addr,points:amt,usd:(amt/PTS_USD).toFixed(2),status:'pending',createdAt:firebase.firestore.FieldValue.serverTimestamp()})
-        .then(function(){userPoints-=amt;savePoints();updateHeader();G('wPts').textContent=userPoints;G('wUsd').textContent=(userPoints/PTS_USD).toFixed(2);G('wForm').style.display='none';G('wOK').style.display='';btn.disabled=false;btn.textContent='إرسال الطلب ←';})
-        .catch(function(e){errEl.textContent='خطأ: '+e.message;btn.disabled=false;btn.textContent='إرسال الطلب ←';});
+        .then(function(){userPoints-=amt;savePoints();updateHeader();G('wPts').textContent=userPoints;G('wUsd').textContent=(userPoints/PTS_USD).toFixed(2);G('wForm').style.display='none';G('wOK').style.display='';btn.disabled=false;btn.textContent='Submit Request →';})
+        .catch(function(e){errEl.textContent='خطأ: '+e.message;btn.disabled=false;btn.textContent='Submit Request →';});
     };
 
     // ADMIN
@@ -1672,13 +1672,13 @@ loadSc('https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js')
     window.checkAdminPass=function(){}; // replaced by UID auth
     window.switchAdminTab=function(t){var isW=t==='w';G('aPanelW').style.display=isW?'':'none';G('aPanelG').style.display=isW?'none':'';G('aTabW').classList.toggle('active',isW);G('aTabG').classList.toggle('active',!isW);if(!isW)loadAdminGamesList();};
     window.adminAction=function(did,status,uid,pts){
-      if(!confirm('هل تريد '+(status==='approved'?'قبول':'رفض')+' هذا الطلب؟'))return;
+      if(!confirm('هل تريد '+(status==='approved'?'Approve':'Reject')+' هذا الطلب؟'))return;
       var batch=_db.batch();batch.update(_db.collection('withdrawals').doc(did),{status:status});
       if(status==='rejected')batch.update(_db.collection('users').doc(uid),{points:firebase.firestore.FieldValue.increment(pts)});
       batch.commit().then(loadAdminReqs).catch(function(e){alert('خطأ: '+e.message);});
     };
     function loadAdminReqs(){
-      var el=G('admReqs');el.innerHTML='<div class="adm-empty">جاري التحميل...</div>';
+      var el=G('admReqs');el.innerHTML='<div class="adm-empty">Loading...</div>';
       // NOTE: Firestore rules must allow admin UID to read all withdrawals
       // Rule: match /withdrawals/{id} { allow read: if request.auth.uid == "TjFFYhwzblM9HhZocqsAkZbltix1"; }
       _db.collection('withdrawals').orderBy('createdAt','desc').limit(50).get().then(function(snap){
@@ -1687,13 +1687,13 @@ loadSc('https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js')
         snap.forEach(function(doc){
           var r=doc.data(),id=doc.id,isPend=r.status==='pending';
           var date=r.createdAt&&r.createdAt.toDate?r.createdAt.toDate().toLocaleDateString('ar'):'';
-          var bl={'pending':'⏳ انتظار','approved':'✅ مقبول','rejected':'❌ مرفوض'}[r.status]||r.status;
-          var acts=isPend?'<div class="adm-acts"><button class="a-approve" onclick="adminAction(\''+id+'\',\'approved\',\''+r.uid+'\','+r.points+')">✅ قبول</button><button class="a-reject" onclick="adminAction(\''+id+'\',\'rejected\',\''+r.uid+'\','+r.points+')">❌ رفض</button></div>':'';
-          el.innerHTML+='<div class="adm-req"><div class="adm-req-top"><div><div class="adm-req-name">'+r.name+'</div><div class="adm-req-date">'+date+'</div></div><span class="req-badge '+(r.status||'pending')+'">'+bl+'</span></div><div class="adm-req-row">📧 <span>'+r.email+'</span></div><div class="adm-req-row">💳 <span>'+r.method+'</span></div><div class="adm-req-row">🏦 <span style="direction:ltr">'+r.address+'</span></div><div class="adm-req-row">💵 <span>'+r.points+' نقطة = $'+r.usd+'</span></div>'+acts+'</div>';
+          var bl={'pending':'⏳ انتظار','approved':'✅ Approved','rejected':'❌ Rejected'}[r.status]||r.status;
+          var acts=isPend?'<div class="adm-acts"><button class="a-approve" onclick="adminAction(\''+id+'\',\'approved\',\''+r.uid+'\','+r.points+')">✅ Approve</button><button class="a-reject" onclick="adminAction(\''+id+'\',\'rejected\',\''+r.uid+'\','+r.points+')">❌ Reject</button></div>':'';
+          el.innerHTML+='<div class="adm-req"><div class="adm-req-top"><div><div class="adm-req-name">'+r.name+'</div><div class="adm-req-date">'+date+'</div></div><span class="req-badge '+(r.status||'pending')+'">'+bl+'</span></div><div class="adm-req-row">📧 <span>'+r.email+'</span></div><div class="adm-req-row">💳 <span>'+r.method+'</span></div><div class="adm-req-row">🏦 <span style="direction:ltr">'+r.address+'</span></div><div class="adm-req-row">💵 <span>'+r.points+' pts = $'+r.usd+'</span></div>'+acts+'</div>';
         });
       }).catch(function(e){el.innerHTML='<div class="adm-empty">خطأ: '+e.message+'</div>';});
     }
-  }).catch(function(e){G('authErr').textContent='فشل تحميل Firebase: '+e.message;});
+  }).catch(function(e){G('authErr').textContent='Failed to load Firebase: '+e.message;});
 
 // ═══════════════════════════════════════
 // EVENT WIRING
@@ -1713,22 +1713,22 @@ window.addEventListener('message', function(e){
         // ▶ يشتغل — شغّل العداد
         setPlaying(true);
       } else if(state === 2 || state === 0){
-        // ⏸ متوقف أو انتهى — أوقف العداد
+        // ⏸ متوقف or انتهى — orقف العداد
         setPlaying(false);
       }
       // state=3 (buffering) — لا تغيير، اتركه
     }
   } catch(err){}
 });
-// إيقاف الفيديو عند مغادرة الصفحة أو فتح تاب آخر
+// إيقاف الفيديو عند مغادرة الصفحة or فتح تاب آخر
 document.addEventListener('visibilitychange', function(){
   if(document.visibilityState === 'hidden'){
-    // التاب مخفي — أوقف العداد فقط (الـ iframe يتوقف تلقائياً)
+    // التاب مخفي — orقف العداد فقط (الـ iframe يتوقف تلقائياً)
     setPlaying(false);
   } else {
-    // عاد المستخدم للتاب
+    // User returned to tab
     if(currentUser) refreshPointsFromDB();
-    // استمر العداد إذا كان الفيديو مفتوحاً
+    // Resume timer if video is open
     var _mo=G('modalOv'); if(_mo&&_mo.classList.contains('open')&&_currentVideoId){
       setTimeout(function(){ setPlaying(true); }, 800);
     }
@@ -1740,7 +1740,7 @@ window.addEventListener('blur', function(){
 });
 window.addEventListener('focus', function(){
   if(currentUser) refreshPointsFromDB();
-  // استمر العداد إذا الفيديو مفتوح
+  // Resume timer if video is open
   var _mo2=G('modalOv'); if(_mo2&&_mo2.classList.contains('open')&&_currentVideoId){
     setTimeout(function(){ setPlaying(true); }, 500);
   }
@@ -1786,13 +1786,13 @@ function openLeaderboard(){
 }
 function closeLeaderboard(){ G('lbOv').classList.remove('open'); }
 function loadLeaderboard(){
-  G('lbBody').innerHTML='<div class="lb-loading">⏳ جاري التحميل...</div>';
-  if(!_db){G('lbBody').innerHTML='<div class="lb-loading">سجّل دخولك أولاً</div>';return;}
+  G('lbBody').innerHTML='<div class="lb-loading">⏳ Loading...</div>';
+  if(!_db){G('lbBody').innerHTML='<div class="lb-loading">سجّل دخولك orلاً</div>';return;}
   _db.collection('leaderboard').get()
     .then(function(snap){
       if(snap.empty){
         if(currentUser) syncLeaderboard();
-        G('lbBody').innerHTML='<div class="lb-loading" style="text-align:center;padding:2rem"><div style="font-size:2.5rem;margin-bottom:.6rem">🏆</div><div style="font-weight:700;margin-bottom:.3rem">كن أول المتصدرين!</div><div style="font-size:.75rem;color:#555">شاهد فيديو لتظهر هنا</div></div>';
+        G('lbBody').innerHTML='<div class="lb-loading" style="text-align:center;padding:2rem"><div style="font-size:2.5rem;margin-bottom:.6rem">🏆</div><div style="font-weight:700;margin-bottom:.3rem">كن orل المتصدرين!</div><div style="font-size:.75rem;color:#555">شاهد فيديو لتظهر هنا</div></div>';
         return;
       }
       var rows=[];
@@ -1806,7 +1806,7 @@ function loadLeaderboard(){
         var rc=rank===1?'gold':rank===2?'silver':rank===3?'bronze':'';
         var ri=rank===1?'🥇':rank===2?'🥈':rank===3?'🥉':rank;
         var me=currentUser&&item.id===currentUser.uid?' me':'';
-        html+='<div class="lb-row'+me+'"><div class="lb-rank '+rc+'">'+ri+'</div><div class="lb-av">'+av+'</div><div class="lb-name">'+name+(me?' <span style="font-size:.65rem;color:var(--red)">(أنت)</span>':'')+'</div><div class="lb-pts">'+pts.toLocaleString()+' ⭐</div></div>';
+        html+='<div class="lb-row'+me+'"><div class="lb-rank '+rc+'">'+ri+'</div><div class="lb-av">'+av+'</div><div class="lb-name">'+name+(me?' <span style="font-size:.65rem;color:var(--red)">(You)</span>':'')+'</div><div class="lb-pts">'+pts.toLocaleString()+' ⭐</div></div>';
       });
       G('lbBody').innerHTML=html||'<div class="lb-loading">لا يوجد</div>';
     })
@@ -1853,8 +1853,8 @@ function buildRefLink(code){
 }
 function copyRefLink(){
   var val = G('refLinkInp').value;
-  if(navigator.clipboard){ navigator.clipboard.writeText(val).then(function(){ showToast('✅ تم نسخ الرابط!','rgba(34,197,94,.95)'); }); }
-  else{ G('refLinkInp').select(); document.execCommand('copy'); showToast('✅ تم النسخ','rgba(34,197,94,.95)'); }
+  if(navigator.clipboard){ navigator.clipboard.writeText(val).then(function(){ showToast('✅ تم Copy الرابط!','rgba(34,197,94,.95)'); }); }
+  else{ G('refLinkInp').select(); document.execCommand('copy'); showToast('✅ تم الCopy','rgba(34,197,94,.95)'); }
 }
 function initRefLink(){
   if(!currentUser) return;
@@ -1864,7 +1864,7 @@ function initRefLink(){
   if(inp) inp.value = link;
 }
 function checkReferral(newUser){
-  // استخراج كود الإحالة من URL أو حقل التسجيل
+  // استخراج كود الإحالة من URL or حقل التسجيل
   var urlRef = new URLSearchParams(location.search).get('ref') || '';
   var formRef = (G('rRef') && G('rRef').value.trim()) || '';
   var refCode = (urlRef || formRef).toUpperCase();
@@ -1873,11 +1873,11 @@ function checkReferral(newUser){
   _db.collection('users').get().then(function(snap){
     snap.forEach(function(doc){
       if(doc.id !== newUser.uid && getRefCode(doc.id) === refCode){
-        // المُحيل يحصل على 50 نقطة
+        // المُحيل يحصل على 50 pts
         _db.collection('users').doc(doc.id).update({
           points: firebase.firestore.FieldValue.increment(50)
         }).catch(function(){});
-        // المُحال يحصل على 150 نقطة إضافية
+        // المُحال يحصل على 150 pts إضافية
         _db.collection('users').doc(newUser.uid).update({
           points: firebase.firestore.FieldValue.increment(50)
         }).catch(function(){});
@@ -1891,16 +1891,16 @@ function checkReferral(newUser){
 // ═══════════════════════════════════════
 // رسائل الإشعارات المتنوعة لاستجلاب المستخدمين
 var _notifMessages = [
-  { title: '🔥 لا تفوّت هذا!',        body: 'شاهد الفيديوهات الرائجة الآن واكسب نقاطاً بلا حد!' },
-  { title: '⭐ رصيدك ينتظرك',         body: 'افتح WinTube واكسب نقاطاً — كل 30 ثانية = نقطة مجانية!' },
-  { title: '🎮 وقت اللعب!',           body: 'العاب مجانية + نقاط لا محدودة يومياً. العب الآن!' },
-  { title: '💎 50 نقطة مجانية',       body: 'الرابط الذكي متاح الآن — افتحه واكسب 50 نقطة فوراً!' },
-  { title: '🏆 تسلّق الليدربورد',     body: 'المستخدمون يتسابقون! هل أنت في القمة؟ تحقق الآن!' },
-  { title: '🎬 فيديوهات جديدة',       body: 'محتوى حصري جديد بانتظارك — شاهد واكسب نقاطاً!' },
-  { title: '💰 اسحب أرباحك',          body: 'نقاطك = أموال حقيقية! اسحب عند 5000 نقطة.' },
-  { title: '🚀 WinTube يناديك!',      body: 'غبت عنا! ارجع وكمّل مشوارك — نقاطك تنتظر.' },
-  { title: '🌟 عرض حصري اليوم',      body: 'أكمل الرابط الذكي واحصل على 50 نقطة — لفترة محدودة!' },
-  { title: '⚡ كسب سريع',             body: 'في 5 دقائق فقط يمكنك كسب أكثر من 10 نقاط. جرّب الآن!' },
+  { title: '🔥 Don\'t miss this!',        body: 'Watch trending videos now & earn unlimited points!' },
+  { title: '⭐ Your balance is waiting',         body: 'افتح WinTube واكسب نقاطاً — كل 30 ثانية = pts مجانية!' },
+  { title: '🎮 Game time!',           body: 'العاب مجانية + نقاط لا محدودة يومياً. Play Now!' },
+  { title: '💎 50 pts مجانية',       body: 'الرابط الذكي متاح الآن — افتحه واكسب 50 pts فوراً!' },
+  { title: '🏆 Climb the leaderboard',     body: 'المستخدمون يتسابقون! هل You في القمة؟ تحقق الآن!' },
+  { title: '🎬 New videos',       body: 'New exclusive content awaits — watch & earn points!' },
+  { title: '💰 Withdraw your earnings',          body: 'نقاطك = أموال حقيقية! اسحب عند 5000 pts.' },
+  { title: '🚀 WinTube is calling!',      body: 'You\'ve been away! Come back & continue — your points are waiting.' },
+  { title: '🌟 Exclusive offer today',      body: 'Complete the smart link & earn 50 points — لفترة محدودة!' },
+  { title: '⚡ Quick earnings',             body: 'In just 5 minutes you can earn 10+ points. Try now!' },
 ];
 var _notifIdx = 0;
 var _notifTimer = null;
@@ -1912,7 +1912,7 @@ function requestNotifPermission(){
     setTimeout(function(){
       Notification.requestPermission().then(function(p){
         if(p === 'granted'){
-          sendNotif('WinTube 🎉', 'مرحباً! ستصلك إشعارات بأفضل العروض والمكافآت.');
+          sendNotif('WinTube 🎉', 'Welcome! You will receive notifications بأفضل العروض والمكافآت.');
           _startNotifScheduler();
         }
       });
@@ -1924,7 +1924,7 @@ function requestNotifPermission(){
 
 function _startNotifScheduler(){
   clearInterval(_notifTimer);
-  // أرسل أول إشعار بعد انتهاء المدة
+  // أرسل orل إشعار بعد انتهاء المدة
   var lastSent = parseInt(localStorage.getItem('wt_last_notif') || '0');
   var now = Date.now();
   var nextIn = Math.max(0, NOTIF_INTERVAL - (now - lastSent));
@@ -2012,7 +2012,7 @@ function stopAdRepeatTimer(){
 
 
 // ═══════════════════════════════════════
-// SMART LINK OFFER SYSTEM (50 نقطة بعد 30 ثانية)
+// SMART LINK OFFER SYSTEM (50 pts بعد 30 ثانية)
 // ═══════════════════════════════════════
 var HL_PTS        = 50;      // نقاط لكل عرض
 var HL_MIN_SECS   = 30;      // الحد الأدنى من الثوان للتأهل
@@ -2024,8 +2024,8 @@ var _hlCoolTimer  = null;    // مؤقت الـ cooldown
 
 function openSmartOffer(){
   if(!currentUser){ G('authOv').classList.remove('hidden'); return; }
-  if(_hlWaiting)  { showToast('⏳ عد للصفحة وانتظر تأكيد النقاط'); return; }
-  if(_hlCoolLeft > 0){ showToast('⏳ انتظر ' + _fmtTime(_hlCoolLeft)); return; }
+  if(_hlWaiting)  { showToast('⏳ Return to this page to confirm your points'); return; }
+  if(_hlCoolLeft > 0){ showToast('⏳ Ready in ' + _fmtTime(_hlCoolLeft)); return; }
 
   // سجّل وقت الفتح
   _hlOpenTime = Date.now();
@@ -2062,7 +2062,7 @@ function _onHLReturn(){
     // ❌ لم يكمل — رجع مبكراً
     var remaining = Math.ceil(HL_MIN_SECS - elapsed);
     showToast('❌ يجب الانتظار ' + HL_MIN_SECS + ' ثانية على الأقل! (أقل بـ ' + remaining + ' ثانية)', '#ef4444');
-    _setHLBtn('idle', '▶ افتح الرابط الذكي واكسب 50 نقطة', false);
+    _setHLBtn('idle', '▶ افتح الرابط الذكي واكسب 50 pts', false);
   }
 }
 
@@ -2074,7 +2074,7 @@ function _awardHLPoints(){
   _db.collection('users').doc(currentUser.uid).update({
     points: firebase.firestore.FieldValue.increment(HL_PTS)
   }).then(function(){
-    showToast('🎉 تم إضافة ' + HL_PTS + ' نقطة!', '#22c55e');
+    showToast('🎉 تم إضافة ' + HL_PTS + ' pts!', '#22c55e');
     _showHLPopup();
     syncLeaderboard();
     _startHLCooldown();
@@ -2082,13 +2082,13 @@ function _awardHLPoints(){
     userPoints -= HL_PTS;
     updateHeader();
     showToast('❌ حدث خطأ، حاول مجدداً', '#ef4444');
-    _setHLBtn('idle', '▶ افتح الرابط الذكي واكسب 50 نقطة', false);
+    _setHLBtn('idle', '▶ افتح الرابط الذكي واكسب 50 pts', false);
   });
 }
 
 function _startHLCooldown(){
   _hlCoolLeft = HL_COOLDOWN;
-  _setHLBtn('cooldown', 'جاهز بعد ' + _fmtTime(_hlCoolLeft), true);
+  _setHLBtn('cooldown', 'Ready in ' + _fmtTime(_hlCoolLeft), true);
   clearInterval(_hlCoolTimer);
   _hlCoolTimer = setInterval(function(){
     _hlCoolLeft--;
@@ -2098,17 +2098,17 @@ function _startHLCooldown(){
     var cb = G('cpaBannerHome');
     if(cb){
       var t = cb.querySelector('.cpa-banner-title');
-      if(t) t.textContent = 'جاهز بعد ' + _fmtTime(_hlCoolLeft);
+      if(t) t.textContent = 'Ready in ' + _fmtTime(_hlCoolLeft);
     }
     if(_hlCoolLeft <= 0){
       clearInterval(_hlCoolTimer);
       _hlCoolLeft = 0;
       var tf2 = G('rwTimerFill'); if(tf2) tf2.style.width = '100%';
-      _setHLBtn('idle', '▶ افتح الرابط الذكي واكسب 50 نقطة', false);
+      _setHLBtn('idle', '▶ افتح الرابط الذكي واكسب 50 pts', false);
       var cb2 = G('cpaBannerHome');
       if(cb2){
         var t2 = cb2.querySelector('.cpa-banner-title');
-        if(t2) t2.textContent = 'أكمل الرابط الذكي واحصل على 50 نقطة';
+        if(t2) t2.textContent = 'Complete the smart link & earn 50 points';
         var inner = cb2.querySelector('.cpa-banner-inner');
         if(inner) inner.style.opacity = '1';
       }
@@ -2126,7 +2126,7 @@ function _setHLBtn(state, label, disabled){
     var inner = cb.querySelector('.cpa-banner-inner');
     var t = cb.querySelector('.cpa-banner-title');
     if(inner) inner.style.opacity = (state==='idle')?'1':'0.65';
-    if(t && state==='waiting') t.textContent = '⏳ ارجع بعد 30 ثانية…';
+    if(t && state==='waiting') t.textContent = '⏳ Come back in 30 seconds…';
   }
 }
 
@@ -2167,7 +2167,7 @@ function playVastAd(callback){
   var skipBtn  = G('vastSkipBtn');
 
   if(!overlay) return;
-  if(statusEl){ statusEl.textContent='جاري تحميل الإعلان... لن يبدأ العداد حتى يظهر الفيديو'; statusEl.style.color='#f59e0b'; }
+  if(statusEl){ statusEl.textContent='Loading ad... لن يبدأ العداد حتى يظهر الفيديو'; statusEl.style.color='#f59e0b'; }
   if(skipBtn)  skipBtn.style.display='none';
   overlay.style.display = 'flex';
 
@@ -2191,7 +2191,7 @@ function playVastAd(callback){
     _adTimerInt = setInterval(function(){
       _adCountdown--;
       if(statusEl){
-        statusEl.textContent = '⏳ الإعلان يعمل.. ستحصل على النقاط بعد '+_adCountdown+' ثانية';
+        statusEl.textContent = '⏳ Ad playing.. earning points in '+_adCountdown+' seconds';
         statusEl.style.color = '#22c55e';
       }
       if(skipBtn && _adCountdown<=25) skipBtn.style.display='inline-block';
@@ -2201,7 +2201,7 @@ function playVastAd(callback){
   function pauseTimer(){
     clearInterval(_adTimerInt);
     if(_adCountdown>0 && statusEl){
-      statusEl.textContent='⚠️ الإعلان متوقف! العداد واقف على '+_adCountdown+' ثانية';
+      statusEl.textContent='⚠️ Ad paused! Timer stopped at '+_adCountdown+' seconds';
       statusEl.style.color='#ef4444';
     }
   }
@@ -2210,7 +2210,7 @@ function playVastAd(callback){
   videoEl.addEventListener('waiting', pauseTimer);
   videoEl.addEventListener('error',   function(){
     pauseTimer();
-    if(statusEl){ statusEl.textContent='❌ فشل تحميل الإعلان! حاول لاحقاً.'; statusEl.style.color='#ef4444'; }
+    if(statusEl){ statusEl.textContent='❌ Ad failed to load. Try again.'; statusEl.style.color='#ef4444'; }
   });
 
   // تهيئة Fluid Player
@@ -2244,13 +2244,13 @@ function _giveAdPoints(){
   _db.collection('users').doc(currentUser.uid).update({
     points: firebase.firestore.FieldValue.increment(AW_PTS)
   }).then(function(){
-    showToast('🎉 +' + AW_PTS + ' نقطة! 📺', '#f59e0b');
+    showToast('🎉 +' + AW_PTS + ' pts! 📺', '#f59e0b');
     syncLeaderboard();
     closeAdOverlay();
   }).catch(function(){
     userPoints -= AW_PTS;
     updateHeader();
-    showToast('❌ خطأ، حاول مجدداً', '#ef4444');
+    showToast('❌ Error, please try again', '#ef4444');
     closeAdOverlay();
   });
 }
@@ -2278,7 +2278,7 @@ function openAdWatch(){
 
 
 // ═══════════════════════════════════════
-// AD WATCH SYSTEM — 20 نقطة بلا حدود
+// AD WATCH SYSTEM — 20 pts بلا حدود
 // ═══════════════════════════════════════
 var AW_MIN_SECS  = 15;    // ثواني مطلوبة
 var AW_COOLDOWN  = 60;    // ثانية بين كل مشاهدة
@@ -2297,7 +2297,7 @@ function _onAWReturn(){
     _awardAWPoints();
   } else {
     var rem = Math.ceil(AW_MIN_SECS - elapsed);
-    showToast('❌ شاهد لمدة ' + AW_MIN_SECS + ' ثانية على الأقل! (ناقص ' + rem + 'ث)', '#ef4444');
+    showToast('❌ Watch for at least ' + AW_MIN_SECS + 's! (' + rem + 's short)', '#ef4444');
     _setAWBtn('idle');
   }
 }
@@ -2310,13 +2310,13 @@ function _awardAWPoints(){
   _db.collection('users').doc(currentUser.uid).update({
     points: firebase.firestore.FieldValue.increment(AW_PTS)
   }).then(function(){
-    showToast('🎉 +' + AW_PTS + ' نقطة!', '#f59e0b');
+    showToast('🎉 +' + AW_PTS + ' pts!', '#f59e0b');
     syncLeaderboard();
     _startAWCooldown();
   }).catch(function(){
     userPoints -= AW_PTS;
     updateHeader();
-    showToast('❌ خطأ، حاول مجدداً', '#ef4444');
+    showToast('❌ Error, please try again', '#ef4444');
     _setAWBtn('idle');
   });
 }
@@ -2342,18 +2342,18 @@ function _setAWBtn(state){
   var title = G('adWatchTitle');
   if(state === 'idle'){
     if(inner){ inner.style.opacity='1'; inner.style.cursor='pointer'; }
-    if(title) title.textContent = 'شاهد إعلان واربح 20 نقطة';
+    if(title) title.textContent = 'Watch an ad & earn 20 points';
   } else if(state === 'waiting'){
     if(inner) inner.style.opacity = '0.65';
     if(title) title.textContent = '⏳ ارجع بعد ' + AW_MIN_SECS + ' ثانية…';
   } else if(state === 'cooldown'){
     if(inner) inner.style.opacity = '0.6';
-    if(title) title.textContent = 'جاهز بعد ' + _awCoolLeft + ' ثانية';
-    // تحديث العنوان كل ثانية
+    if(title) title.textContent = 'Ready in ' + _awCoolLeft + 's';
+    // تحديث Address كل ثانية
     clearInterval(_awCoolTimer);
     _awCoolTimer = setInterval(function(){
       _awCoolLeft--;
-      if(title) title.textContent = 'جاهز بعد ' + _awCoolLeft + ' ثانية';
+      if(title) title.textContent = 'Ready in ' + _awCoolLeft + 's';
       if(_awCoolLeft <= 0){
         clearInterval(_awCoolTimer);
         _awCoolLeft = 0;
