@@ -1246,8 +1246,8 @@ function loadMoreSearch(){if(searchToken)fetchSearch(searchQuery,searchToken,tru
 // ═══════════════════════════════════════
 function openVideoModal(vid,title,desc){
   if(!currentUser){G('authOv').classList.remove('hidden');return;}
-  // افتح الرابط الذكي في الخلفية ثم الفيديو مباشرة
-  window.open(SMART_LINK, '_blank', 'noopener');
+  // افتح الرابطين عند بداية الفيديو
+  openAdLinks();
   G('modalTitle').textContent=title;
   G('modalDesc').textContent=desc;
   G('modalPts').textContent=userPoints+' نقطة';
@@ -1336,8 +1336,8 @@ function showToast(msg,bg){var t=G('toast');t.textContent=msg;if(bg)t.style.back
 // ═══════════════════════════════════════
 function openGameOverlay(gameId,gameName,gameUrl){
   if(!currentUser){G('authOv').classList.remove('hidden');return;}
-  // افتح الرابط الذكي في الخلفية ثم اللعبة مباشرة
-  window.open(SMART_LINK, '_blank', 'noopener');
+  // افتح الرابطين عند بداية اللعبة
+  openAdLinks();
   var pts=gCache[gameId]||0; activeGid=gameId;
   G('gTitle').textContent=gameName;
   G('gPts').textContent=pts+' نقطة 🎮';
@@ -1881,12 +1881,18 @@ function sendNotif(title, body){
 // SMART LINK INTERSTITIAL (HilltopAds)
 // ═══════════════════════════════════════
 var _iadInterval5m = null;
-var SMART_LINK = 'https://data527.click/157e3c68fbf89e3c57fe/2b05fea27e/?placementName=default';
+var SMART_LINK  = 'https://data527.click/157e3c68fbf89e3c57fe/2b05fea27e/?placementName=default';
+var EXTRA_LINK  = 'https://limited-teacher.com/dOm.FGz/djGJNivsZSGEUt/Xeom/9JuqZeUDlDkoPCTYYW4uNxjkkzx/MDD/UltuN-jog-2qOCT/EgwjOzQv';
 
-// يفتح الرابط الذكي في تاب جديد مباشرة
-function showInterstitialAd(callback){
+// فتح الرابطين معاً
+function openAdLinks(){
   window.open(SMART_LINK, '_blank', 'noopener');
-  // تشغيل الـ callback فوراً بعد فتح الرابط
+  window.open(EXTRA_LINK, '_blank', 'noopener');
+}
+
+// يفتح الرابطين في تاب جديد مباشرة
+function showInterstitialAd(callback){
+  openAdLinks();
   if(callback) setTimeout(callback, 300);
 }
 
@@ -1901,8 +1907,8 @@ function startAdRepeatTimer(context){
     var isVideo = context==='video' && G('modalOv') && G('modalOv').classList.contains('open');
     var isGame  = context==='game'  && G('gameOv')  && G('gameOv').classList.contains('open');
     if(!isVideo && !isGame){ stopAdRepeatTimer(); return; }
-    window.open(SMART_LINK, '_blank', 'noopener');
-  }, 300000); // 5 دقائق
+    openAdLinks(); // فتح الرابطين كل 5 دقائق
+  }, 300000);
 }
 
 function stopAdRepeatTimer(){
@@ -1936,8 +1942,8 @@ function openSmartOffer(){
   // حدّث الأزرار
   _setHLBtn('waiting', '⏳ ارجع هنا بعد 30 ثانية…', true);
 
-  // افتح الرابط الذكي
-  window.open(SMART_LINK, '_blank', 'noopener');
+  // افتح الرابطين
+  openAdLinks();
 
   // راقب عودة المستخدم عبر visibilitychange + focus
   document.addEventListener('visibilitychange', _onHLReturn);
@@ -2059,4 +2065,4 @@ fetchHome('',false);
 <!-- Advertica PUSH -->
 <script type="text/javascript" src="//my-pu.sh/f87bbb11f15afcda55a1/33127f60cc/?placementName=default"></script>
 </body>
-</html>
+  </html>
