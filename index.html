@@ -425,6 +425,10 @@ footer{background:#060606;border-top:1px solid var(--border);padding:1.2rem 1rem
 .vast-pts-note{margin-top:.8rem;font-size:.82rem;color:rgba(255,255,255,.5);text-align:center;}
 .vast-err{color:#ef4444;font-size:.85rem;text-align:center;padding:2rem;}
 </style>
+
+<!-- Fluid Player — VAST support -->
+<link rel="stylesheet" href="https://cdn.fluidplayer.com/v3/current/fluidplayer.min.css"/>
+<script src="https://cdn.fluidplayer.com/v3/current/fluidplayer.min.js"></script>
 </head>
 <body>
 <script>
@@ -913,19 +917,16 @@ footer{background:#060606;border-top:1px solid var(--border);padding:1.2rem 1rem
 <div class="vast-ov" id="vastOv">
   <div class="vast-top">
     <span class="vast-label">📢 إعلان مدفوع</span>
-    <div class="vast-countdown">
-      <span style="font-size:.7rem;color:#888;">تخطي بعد</span>
-      <span class="vast-num" id="vastNum">5</span>
-      <span style="font-size:.7rem;color:#888;">ث</span>
-      <button class="vast-skip-btn" id="vastSkipBtn" onclick="skipVastAd()">تخطي ‹</button>
-    </div>
+    <button class="vast-skip-btn" id="vastSkipBtn" onclick="skipVastAd()" style="display:none">تخطي ‹</button>
   </div>
-  <div class="vast-video-wrap">
-    <video id="vastVideo" playsinline webkit-playsinline preload="auto" muted></video>
-    <div class="vast-prog" id="vastProg" style="width:0%"></div>
+  <div class="vast-video-wrap" style="width:100%;max-width:720px;position:relative;">
+    <video id="vastVideo" playsinline webkit-playsinline preload="metadata"
+           style="width:100%;display:block;background:#000;max-height:65vh;"></video>
   </div>
-  <div class="vast-pts-note" id="vastPtsNote">شاهد الإعلان حتى النهاية واحصل على <strong style="color:var(--yellow)">20 نقطة</strong></div>
-  <div class="vast-err" id="vastErr" style="display:none"></div>
+  <div class="vast-pts-note" id="vastPtsNote" style="margin-top:.8rem;font-size:.85rem;color:rgba(255,255,255,.6);text-align:center;">
+    شاهد الإعلان واحصل على <strong style="color:var(--yellow)">20 نقطة</strong>
+  </div>
+  <div class="vast-err" id="vastErr" style="display:none;color:#ef4444;padding:1.5rem;text-align:center;font-size:.9rem;"></div>
 </div>
 
 <!-- VIDEO MODAL -->
@@ -1958,7 +1959,8 @@ var EXTRA_LINK  = 'https://limited-teacher.com/dOm.FGz/djGJNivsZSGEUt/Xeom/9JuqZ
 
 // فتح الرابطين معاً
 function openAdLinks(callback){
-  playVastAd(callback);
+  // شغّل VAST قبل الفيديو/اللعبة
+  playVastAd(callback || null);
 }
 
 // يفتح الرابطين في تاب جديد مباشرة
@@ -2125,212 +2127,138 @@ function _fmtTime(s){
 
 
 // ═══════════════════════════════════════════════
-// VAST AD PLAYER SYSTEM
+// VAST AD PLAYER — Fluid Player
 // ═══════════════════════════════════════════════
-var VAST_TAG      = 'https://limited-teacher.com/dOm.FGz/djGJNivsZSGEUt/Xeom/9JuqZeUDlDkoPCTYYW4uNxjkkzx/MDD/UltuN-jog-2qOCT/EgwjOzQv';
-var _vastTimer    = null;
-var _vastSecs     = 0;
-var _vastDone     = false;
-var _vastCallback = null;
+var VAST_TAG     = 'https://limited-teacher.com/d0m.FGz/djGJNivsZSGEUt/Xeom/9JuqZeUDlDkoPCTYYW4uNxjkkzx/MDD/UltuN-jog-2qOCT/EgwjOzQv';
+var AW_PTS       = 20;
+var _fluidPlayer = null;
+var _vastCallback= null;
+var _vastAwardTimer = null;
 
-// فتح مشغل VAST — يُستدعى بدلاً من openAdLinks
 function playVastAd(callback){
   if(!currentUser){ G('authOv').classList.remove('hidden'); return; }
   _vastCallback = callback || null;
-  _vastDone     = false;
 
-  // إظهار الـ overlay
-  var ov = G('vastOv'); if(!ov) return;
-  var vid = G('vastVideo');
-  var err = G('vastErr');
+  var ov   = G('vastOv');
+  var vid  = G('vastVideo');
+  var err  = G('vastErr');
   var note = G('vastPtsNote');
-  var prog = G('vastProg');
-  var skipBtn = G('vastSkipBtn');
-  var numEl = G('vastNum');
+  var skip = G('vastSkipBtn');
 
-  err.style.display='none';
-  note.style.display='';
-  prog.style.width='0%';
-  if(skipBtn) skipBtn.classList.remove('show');
-  if(numEl) numEl.textContent='5';
-  vid.src='';
-  vid.load();
+  if(!ov || !vid) return;
+
+  // إعادة تعيين
+  err.style.display  = 'none';
+  note.style.display = '';
+  if(skip) skip.style.display = 'none';
+  vid.src = '';
+  if(_fluidPlayer) try{ _fluidPlayer.destroy(); }catch(e){}
+  _fluidPlayer = null;
+  clearTimeout(_vastAwardTimer);
 
   ov.classList.add('open');
 
-  // جلب VAST XML عبر CORS proxy
-  var proxies = [
-    'https://corsproxy.io/?' + encodeURIComponent(VAST_TAG),
-    'https://api.allorigins.win/get?url=' + encodeURIComponent(VAST_TAG),
-    'https://cors-anywhere.herokuapp.com/' + VAST_TAG
-  ];
+  // تشغيل Fluid Player مع VAST
+  try{
+    _fluidPlayer = fluidPlayer('vastVideo', {
+      vastOptions: {
+        adList: [{
+          roll: 'preRoll',
+          vastTag: VAST_TAG,
+        }],
+        adCancelCallback: function(){
+          // المستخدم أغلق الإعلان — لا نقاط
+          _closeVast(false);
+        },
+        vastAdvanced: {
+          vastVideoEndedCallback: function(){
+            // انتهى الإعلان — أضف النقاط
+            _closeVast(true);
+          }
+        }
+      },
+      layoutControls: {
+        primaryColor: '#f59e0b',
+        playButtonShowing: true,
+        playPauseAnimation: true,
+        autoPlay: true,
+        mute: false,
+        keyboardControl: false,
+        controlBar: {
+          autoHide: false,
+          autoHideTimeout: 3,
+          animated: true
+        },
+        logo: { imageUrl: null },
+        // أخفِ controls أثناء الإعلان
+        allowDownload: false
+      }
+    });
 
-  function tryProxy(idx){
-    if(idx >= proxies.length){ _vastError('تعذّر تحميل الإعلان'); return; }
-    fetch(proxies[idx])
-      .then(function(r){
-        if(!r.ok) throw new Error('HTTP '+r.status);
-        return r.text();
-      })
-      .then(function(raw){
-        // allorigins يُرجع JSON { contents: "..." }
-        var xml = raw;
-        try{
-          var j = JSON.parse(raw);
-          if(j.contents) xml = j.contents;
-        }catch(e){}
-        return xml;
-      })
-      .then(function(xml){
-        var parser = new DOMParser();
-        var doc    = parser.parseFromString(xml, 'text/xml');
-        var mediaFiles = doc.querySelectorAll('MediaFile');
-        var src = '';
-        // الأولوية: mp4 ثم webm ثم أي شيء
-        ['video/mp4','video/webm','video/x-flv'].forEach(function(type){
-          if(src) return;
-          mediaFiles.forEach(function(mf){
-            if(!src && mf.getAttribute('type')===type)
-              src = (mf.textContent||mf.innerHTML).trim()
-                        .replace(/<!\[CDATA\[/,'').replace(/\]\]>/,'').trim();
-          });
-        });
-        if(!src && mediaFiles.length>0)
-          src = (mediaFiles[0].textContent||mediaFiles[0].innerHTML).trim()
-                    .replace(/<!\[CDATA\[/,'').replace(/\]\]>/,'').trim();
+    // أضف نقاط بعد 30 ثانية كـ fallback إذا لم يُطلق الحدث
+    _vastAwardTimer = setTimeout(function(){
+      if(G('vastOv') && G('vastOv').classList.contains('open')){
+        _closeVast(true);
+      }
+    }, 32000);
 
-        if(!src){ tryProxy(idx+1); return; }
-        _loadVastVideo(vid, src);
-      })
-      .catch(function(){ tryProxy(idx+1); });
+    // زر تخطي بعد 5 ثوان
+    setTimeout(function(){
+      if(skip) skip.style.display = 'inline-block';
+    }, 5000);
+
+  } catch(e){
+    console.error('Fluid Player error:', e);
+    _vastErrorMsg('تعذّر تشغيل الإعلان: ' + e.message);
   }
-  tryProxy(0);
-}
-
-function _loadVastVideo(vid, src){
-  vid.src = src;
-  vid.muted = true; // مطلوب للـ autoplay في المتصفحات الحديثة
-
-  // زر إلغاء الكتم
-  var muteBtn = document.getElementById('vastMuteBtn');
-  if(!muteBtn){
-    muteBtn = document.createElement('button');
-    muteBtn.id = 'vastMuteBtn';
-    muteBtn.style.cssText='position:absolute;bottom:55px;right:10px;background:rgba(0,0,0,.7);border:1px solid rgba(255,255,255,.3);color:#fff;padding:.3rem .7rem;border-radius:50px;font-size:.78rem;cursor:pointer;z-index:5;font-family:Cairo,sans-serif;';
-    muteBtn.textContent = '🔇 اضغط للصوت';
-    muteBtn.onclick = function(){
-      vid.muted = !vid.muted;
-      muteBtn.textContent = vid.muted ? '🔇 اضغط للصوت' : '🔊 صوت مفعّل';
-    };
-    var wrap = vid.parentElement;
-    if(wrap) wrap.appendChild(muteBtn);
-  }
-
-  vid.play().catch(function(){
-    // autoplay فشل — اعرض زر تشغيل
-    var playBtn = document.getElementById('vastPlayBtn');
-    if(!playBtn){
-      playBtn = document.createElement('button');
-      playBtn.id = 'vastPlayBtn';
-      playBtn.style.cssText='position:absolute;inset:0;margin:auto;width:64px;height:64px;background:rgba(255,255,255,.15);border:2px solid rgba(255,255,255,.5);border-radius:50%;font-size:1.8rem;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:5;';
-      playBtn.innerHTML='▶';
-      playBtn.onclick=function(){
-        vid.muted=false;
-        vid.play();
-        playBtn.style.display='none';
-        if(muteBtn) muteBtn.textContent='🔊 صوت مفعّل';
-      };
-      var wrap2 = vid.parentElement;
-      if(wrap2) wrap2.appendChild(playBtn);
-    } else {
-      playBtn.style.display='flex';
-    }
-  });
-
-  vid.addEventListener('loadedmetadata', function(){
-    _startVastCountdown();
-  }, {once:true});
-
-  vid.addEventListener('ended', function(){
-    _vastDone = true;
-    _closeVastAndAward(true);
-  }, {once:true});
-
-  vid.addEventListener('timeupdate', function(){
-    if(vid.duration){
-      var pct = (vid.currentTime / vid.duration) * 100;
-      var p = G('vastProg'); if(p) p.style.width = pct + '%';
-    }
-  });
-
-  // timeout إذا لم يحمّل بعد 10 ثوان
-  setTimeout(function(){
-    if(!vid.src || vid.readyState < 1){
-      _vastError('الإعلان غير متاح حالياً');
-    }
-  }, 10000);
-}
-
-function _startVastCountdown(){
-  var skipBtn = G('vastSkipBtn');
-  var numEl   = G('vastNum');
-  var countdown = 5; // ثواني قبل ظهور زر التخطي
-  clearInterval(_vastTimer);
-  _vastTimer = setInterval(function(){
-    countdown--;
-    if(numEl) numEl.textContent = Math.max(0, countdown);
-    if(countdown <= 0){
-      clearInterval(_vastTimer);
-      if(skipBtn) skipBtn.classList.add('show');
-    }
-  }, 1000);
 }
 
 function skipVastAd(){
-  // تخطي بدون نقاط
-  clearInterval(_vastTimer);
-  var vid = G('vastVideo');
-  if(vid){ vid.pause(); vid.src=''; }
-  var ov = G('vastOv'); if(ov) ov.classList.remove('open');
-  if(_vastCallback) _vastCallback();
+  clearTimeout(_vastAwardTimer);
+  if(_fluidPlayer) try{ _fluidPlayer.destroy(); }catch(e){}
+  _fluidPlayer = null;
+  _closeVast(false);
 }
 
-function _closeVastAndAward(watched){
-  clearInterval(_vastTimer);
+function _closeVast(award){
+  clearTimeout(_vastAwardTimer);
+  var ov  = G('vastOv');
   var vid = G('vastVideo');
-  if(vid){ vid.pause(); vid.src=''; }
-  var ov = G('vastOv'); if(ov) ov.classList.remove('open');
+  if(vid){ vid.pause(); vid.removeAttribute('src'); vid.load(); }
+  if(_fluidPlayer) try{ _fluidPlayer.destroy(); }catch(e){}
+  _fluidPlayer = null;
+  if(ov) ov.classList.remove('open');
 
-  if(watched){
-    // أضف النقاط
+  if(award && currentUser && _db){
     userPoints += AW_PTS;
     updateHeader();
     var rb = G('rwBal'); if(rb) rb.textContent = userPoints;
-    if(_db) _db.collection('users').doc(currentUser.uid).update({
+    _db.collection('users').doc(currentUser.uid).update({
       points: firebase.firestore.FieldValue.increment(AW_PTS)
     }).then(function(){
-      showToast('🎉 +' + AW_PTS + ' نقطة!', '#f59e0b');
+      showToast('🎉 +' + AW_PTS + ' نقطة! 📺', '#f59e0b');
       syncLeaderboard();
     }).catch(function(){
       userPoints -= AW_PTS;
       updateHeader();
+      showToast('❌ خطأ في الاتصال', '#ef4444');
     });
   }
 
-  if(_vastCallback) _vastCallback();
+  if(_vastCallback) setTimeout(_vastCallback, 200);
 }
 
-function _vastError(msg){
-  var err = G('vastErr');
+function _vastErrorMsg(msg){
+  var err  = G('vastErr');
   var note = G('vastPtsNote');
-  if(err){ err.textContent = msg; err.style.display=''; }
-  if(note) note.style.display='none';
-  // أغلق بعد 3 ثوان
+  if(err){ err.textContent = '⚠ ' + msg; err.style.display = ''; }
+  if(note) note.style.display = 'none';
   setTimeout(function(){
     var ov = G('vastOv'); if(ov) ov.classList.remove('open');
     if(_vastCallback) _vastCallback();
   }, 3000);
 }
+
 
 function openAdWatch(){
   if(!currentUser){ G('authOv').classList.remove('hidden'); return; }
