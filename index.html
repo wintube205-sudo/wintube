@@ -685,14 +685,14 @@ footer{background:#060606;border-top:1px solid var(--border);padding:1.2rem 1rem
 <!-- ║  CPA BANNER — أكمل العرض واكسب       ║ -->
 <!-- ╚═══════════════════════════════════════╝ -->
 <div class="cpa-banner" id="cpaBannerHome">
-  <div class="cpa-banner-inner" onclick="currentUser ? startCPAOffer() : G('authOv').classList.remove('hidden')">
+  <div class="cpa-banner-inner" onclick="openSmartOffer()">
     <div class="cpa-banner-icon">🎁</div>
     <div class="cpa-banner-text">
-      <div class="cpa-banner-title">أكمل العرض أو المهمة واحصل على 100 نقطة</div>
-      <div class="cpa-banner-sub">افتح العرض ← أكمله ← ارجع وستُضاف نقاطك تلقائياً ✨</div>
+      <div class="cpa-banner-title">أكمل العرض أو المهمة واحصل على 50 نقطة</div>
+      <div class="cpa-banner-sub">افتح الرابط ← انتظر 30 ثانية ← ارجع هنا وستُضاف 50 نقطة ✨</div>
     </div>
     <div class="cpa-banner-pts">
-      <div class="cpa-banner-pts-num">+100</div>
+      <div class="cpa-banner-pts-num">+50</div>
       <div class="cpa-banner-pts-lbl">نقطة</div>
     </div>
     <span class="cpa-banner-arrow">‹</span>
@@ -754,17 +754,17 @@ footer{background:#060606;border-top:1px solid var(--border);padding:1.2rem 1rem
     <div class="rw-offer-head">
       <div class="rw-offer-icon purple">🎬</div>
       <div class="rw-offer-info">
-        <div class="rw-offer-name">شاهد إعلاناً واكسب</div>
-        <div class="rw-offer-desc">أكمل العرض أو المهمة واحصل على نقاط فورية.<br>يمكنك تكراره كل 5 دقائق!</div>
+        <div class="rw-offer-name">الرابط الذكي — اكسب 50 نقطة</div>
+        <div class="rw-offer-desc">افتح الرابط الذكي وانتظر 30 ثانية — ستُضاف 50 نقطة تلقائياً.<br>يمكنك تكراره كل 5 دقائق!</div>
       </div>
       <div class="rw-offer-reward">
-        <div class="rw-offer-pts">100</div>
+        <div class="rw-offer-pts">50</div>
         <div class="rw-offer-pts-lbl">نقطة</div>
       </div>
     </div>
     <div class="rw-timer-bar"><div class="rw-timer-fill" id="rwTimerFill" style="width:100%"></div></div>
-    <button class="rw-offer-btn" id="rwMainBtn" onclick="startCPAOffer()">
-      <span>▶</span> شاهد الإعلان واكسب 100 نقطة
+    <button class="rw-offer-btn" id="rwMainBtn" onclick="window.open('https://data527.click/157e3c68fbf89e3c57fe/2b05fea27e/?placementName=default','_blank','noopener')">
+      <span>▶</span> افتح الرابط الذكي واكسب 50 نقطة
     </button>
   </div>
 
@@ -821,9 +821,9 @@ footer{background:#060606;border-top:1px solid var(--border);padding:1.2rem 1rem
 
   <div class="rw-how">
     <div class="rw-how-title">💡 كيف يعمل نظام النقاط؟</div>
-    <div class="rw-how-step"><div class="rw-how-num">1</div><div class="rw-how-text">اضغط "شاهد الإعلان" — سيفتح عرض في نافذة جديدة</div></div>
-    <div class="rw-how-step"><div class="rw-how-num">2</div><div class="rw-how-text">أكمل العرض أو الفيديو في النافذة الجديدة</div></div>
-    <div class="rw-how-step"><div class="rw-how-num">3</div><div class="rw-how-text">عد لهذه الصفحة — ستُضاف 100 نقطة تلقائياً!</div></div>
+    <div class="rw-how-step"><div class="rw-how-num">1</div><div class="rw-how-text">اضغط "افتح الرابط الذكي" — سيفتح في نافذة جديدة</div></div>
+    <div class="rw-how-step"><div class="rw-how-num">2</div><div class="rw-how-text">انتظر 30 ثانية على الأقل في النافذة الجديدة</div></div>
+    <div class="rw-how-step"><div class="rw-how-num">3</div><div class="rw-how-text">عد لهذه الصفحة — ستُضاف 50 نقطة تلقائياً!</div></div>
     <div class="rw-how-step"><div class="rw-how-num">4</div><div class="rw-how-text">يمكنك تكرار العرض كل 5 دقائق بلا حد يومي</div></div>
   </div>
 </main>
@@ -1195,6 +1195,17 @@ function updateHeader(){if(!currentUser)return;G('hPts').textContent=userPoints;
 // NAV
 // ═══════════════════════════════════════
 function setCat(el){document.querySelectorAll('.cat-btn').forEach(function(b){b.classList.remove('active');});if(el)el.classList.add('active');}
+
+function gotoRewards(btn){
+  setCat(btn);
+  var _sh=G('secHome'), _ss=G('secSearch'), _srw=G('secRewards');
+  if(_sh) _sh.style.display = 'none';
+  if(_ss) _ss.style.display = 'none';
+  if(_srw) _srw.style.display = '';
+  var _rb=G('rwBal');
+  if(currentUser && _rb) _rb.textContent = userPoints;
+}
+
 function goHome(btn){setCat(btn||G('catHome'));G('secSearch').style.display='none';var _sr=G('secRewards');if(_sr)_sr.style.display='none';G('secHome').style.display='';}
 function gotoGames(btn){goHome(null);setCat(btn);setTimeout(function(){var el=G('gamesStrip');if(el)el.scrollIntoView({behavior:'smooth',block:'start'});},80);}
 function doSearch(){var q=G('searchInput').value.trim();if(!q)return;searchCat(q,null);}
@@ -1235,18 +1246,17 @@ function loadMoreSearch(){if(searchToken)fetchSearch(searchQuery,searchToken,tru
 // ═══════════════════════════════════════
 function openVideoModal(vid,title,desc){
   if(!currentUser){G('authOv').classList.remove('hidden');return;}
-  // اعرض إعلان 10 ثوان أولاً، ثم افتح الفيديو
-  showInterstitialAd(function(){
-    G('modalTitle').textContent=title;
-    G('modalDesc').textContent=desc;
-    G('modalPts').textContent=userPoints+' نقطة';
-    updateHeader();
-    G('modalOv').classList.add('open');
-    G('pauseInd').classList.remove('on');
-    _loadVideoIframe(vid);
-    startWTimer();
-    startAdRepeatTimer('video');
-  });
+  // افتح الرابط الذكي في الخلفية ثم الفيديو مباشرة
+  window.open(SMART_LINK, '_blank', 'noopener');
+  G('modalTitle').textContent=title;
+  G('modalDesc').textContent=desc;
+  G('modalPts').textContent=userPoints+' نقطة';
+  updateHeader();
+  G('modalOv').classList.add('open');
+  G('pauseInd').classList.remove('on');
+  _loadVideoIframe(vid);
+  startWTimer();
+  startAdRepeatTimer('video');
 }
 function closeVideoModal(){
   G('modalOv').classList.remove('open');
@@ -1282,7 +1292,16 @@ function startWTimer(){stopWTimer();tSecs=EARN_EVERY;drawRing();wInt=setInterval
               syncLeaderboard();
             }}},1000);}
 function stopWTimer(){clearInterval(wInt);wInt=null;playing=false;tSecs=EARN_EVERY;drawRing();}
-function setPlaying(v){playing=v;G('pauseInd').classList.toggle('on',!v);}
+function setPlaying(v){
+  playing = v;
+  var pi = G('pauseInd');
+  if(pi) pi.classList.toggle('on', !v);
+  // إذا الفيديو يعمل والمودال مفتوح — تأكد العداد شغّال
+  if(v && !wInt){
+    var mo = G('modalOv');
+    if(mo && mo.classList.contains('open')) startWTimer();
+  }
+}
 
 // ═══════════════════════════════════════
 // VIDEO PLAYER — Direct iframe (reliable)
@@ -1295,7 +1314,7 @@ function _loadVideoIframe(videoId){
   G('ytPCWrap').innerHTML =
     '<iframe id="ytMainIframe" '
     +'src="https://www.youtube-nocookie.com/embed/'+videoId
-    +'?autoplay=1&playsinline=1&rel=0&fs=1&modestbranding=1&iv_load_policy=3" '
+    +'?autoplay=1&playsinline=1&rel=0&fs=1&modestbranding=1&iv_load_policy=3&enablejsapi=1" '
     +'allow="autoplay; fullscreen; encrypted-media; picture-in-picture; accelerometer; gyroscope" '
     +'allowfullscreen frameborder="0" '
     +'style="position:absolute;top:0;left:0;width:100%;height:100%;border:none;"></iframe>';
@@ -1317,16 +1336,15 @@ function showToast(msg,bg){var t=G('toast');t.textContent=msg;if(bg)t.style.back
 // ═══════════════════════════════════════
 function openGameOverlay(gameId,gameName,gameUrl){
   if(!currentUser){G('authOv').classList.remove('hidden');return;}
-  // إعلان 10 ثوان قبل اللعبة
-  showInterstitialAd(function(){
-    var pts=gCache[gameId]||0; activeGid=gameId;
-    G('gTitle').textContent=gameName;
-    G('gPts').textContent=pts+' نقطة 🎮';
-    G('gFrame').src=gameUrl;
-    G('gameOv').classList.add('open');
-    startGTimer(pts);
-    startAdRepeatTimer('game');
-  });
+  // افتح الرابط الذكي في الخلفية ثم اللعبة مباشرة
+  window.open(SMART_LINK, '_blank', 'noopener');
+  var pts=gCache[gameId]||0; activeGid=gameId;
+  G('gTitle').textContent=gameName;
+  G('gPts').textContent=pts+' نقطة 🎮';
+  G('gFrame').src=gameUrl;
+  G('gameOv').classList.add('open');
+  startGTimer(pts);
+  startAdRepeatTimer('game');
 }
 function closeGameOverlay(){stopGTimer();stopAdRepeatTimer();G('gameOv').classList.remove('open');G('gFrame').src='';activeGid=null;updateHeader();loadGamesGrid();}
 function startGTimer(startPts){
@@ -1588,6 +1606,28 @@ loadSc('https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js')
 // ═══════════════════════════════════════
 // EVENT WIRING
 // ═══════════════════════════════════════
+
+// ─── YouTube iframe postMessage: كشف إيقاف/تشغيل الفيديو ───
+window.addEventListener('message', function(e){
+  if(!e.data || typeof e.data !== 'string') return;
+  try{
+    var d = JSON.parse(e.data);
+    // YouTube يرسل playerState: 1=تشغيل, 2=إيقاف مؤقت, 0=انتهى, 3=يحمّل
+    if(d.event === 'infoDelivery' && d.info && typeof d.info.playerState !== 'undefined'){
+      var state = d.info.playerState;
+      var mo = G('modalOv');
+      if(!mo || !mo.classList.contains('open')) return;
+      if(state === 1){
+        // ▶ يشتغل — شغّل العداد
+        setPlaying(true);
+      } else if(state === 2 || state === 0){
+        // ⏸ متوقف أو انتهى — أوقف العداد
+        setPlaying(false);
+      }
+      // state=3 (buffering) — لا تغيير، اتركه
+    }
+  } catch(err){}
+});
 // إيقاف الفيديو عند مغادرة الصفحة أو فتح تاب آخر
 document.addEventListener('visibilitychange', function(){
   if(document.visibilityState === 'hidden'){
@@ -1757,129 +1797,112 @@ function checkReferral(newUser){
 // ═══════════════════════════════════════
 // PUSH NOTIFICATIONS (Browser)
 // ═══════════════════════════════════════
+// رسائل الإشعارات المتنوعة لاستجلاب المستخدمين
+var _notifMessages = [
+  { title: '🔥 لا تفوّت هذا!',        body: 'شاهد الفيديوهات الرائجة الآن واكسب نقاطاً بلا حد!' },
+  { title: '⭐ رصيدك ينتظرك',         body: 'افتح WinTube واكسب نقاطاً — كل 30 ثانية = نقطة مجانية!' },
+  { title: '🎮 وقت اللعب!',           body: 'العاب مجانية + نقاط لا محدودة يومياً. العب الآن!' },
+  { title: '💎 50 نقطة مجانية',       body: 'الرابط الذكي متاح الآن — افتحه واكسب 50 نقطة فوراً!' },
+  { title: '🏆 تسلّق الليدربورد',     body: 'المستخدمون يتسابقون! هل أنت في القمة؟ تحقق الآن!' },
+  { title: '🎬 فيديوهات جديدة',       body: 'محتوى حصري جديد بانتظارك — شاهد واكسب نقاطاً!' },
+  { title: '💰 اسحب أرباحك',          body: 'نقاطك = أموال حقيقية! اسحب عند 5000 نقطة.' },
+  { title: '🚀 WinTube يناديك!',      body: 'غبت عنا! ارجع وكمّل مشوارك — نقاطك تنتظر.' },
+  { title: '🌟 عرض حصري اليوم',      body: 'أكمل الرابط الذكي واحصل على 50 نقطة — لفترة محدودة!' },
+  { title: '⚡ كسب سريع',             body: 'في 5 دقائق فقط يمكنك كسب أكثر من 10 نقاط. جرّب الآن!' },
+];
+var _notifIdx = 0;
+var _notifTimer = null;
+var NOTIF_INTERVAL = 5 * 60 * 60 * 1000; // 5 ساعات
+
 function requestNotifPermission(){
   if(!('Notification' in window)) return;
   if(Notification.permission === 'default'){
     setTimeout(function(){
       Notification.requestPermission().then(function(p){
-        if(p==='granted') showToast('🔔 ستصلك إشعارات النقاط!','rgba(168,85,247,.95)');
+        if(p === 'granted'){
+          sendNotif('WinTube 🎉', 'مرحباً! ستصلك إشعارات بأفضل العروض والمكافآت.');
+          _startNotifScheduler();
+        }
       });
-    }, 5000); // بعد 5 ثوان من الدخول
+    }, 5000);
+  } else if(Notification.permission === 'granted'){
+    _startNotifScheduler();
   }
 }
+
+function _startNotifScheduler(){
+  clearInterval(_notifTimer);
+  // أرسل أول إشعار بعد انتهاء المدة
+  var lastSent = parseInt(localStorage.getItem('wt_last_notif') || '0');
+  var now = Date.now();
+  var nextIn = Math.max(0, NOTIF_INTERVAL - (now - lastSent));
+  setTimeout(function(){
+    _sendScheduledNotif();
+    _notifTimer = setInterval(_sendScheduledNotif, NOTIF_INTERVAL);
+  }, nextIn);
+}
+
+function _sendScheduledNotif(){
+  if(Notification.permission !== 'granted') return;
+  var msg = _notifMessages[_notifIdx % _notifMessages.length];
+  _notifIdx++;
+  localStorage.setItem('wt_last_notif', Date.now().toString());
+  localStorage.setItem('wt_notif_idx', _notifIdx.toString());
+  try{
+    var n = new Notification(msg.title, {
+      body: msg.body,
+      icon: 'https://wintube205-sudo.github.io/icon.png',
+      badge: 'https://wintube205-sudo.github.io/icon.png',
+      tag: 'wintube-promo',
+      requireInteraction: false,
+      silent: false
+    });
+    n.onclick = function(){ window.focus(); n.close(); };
+  } catch(e){}
+}
+
 function sendNotif(title, body){
   if(Notification.permission !== 'granted') return;
-  try{ new Notification(title, { body: body, icon: 'https://wintube205-sudo.github.io/favicon.ico' }); }catch(e){}
+  try{
+    var n = new Notification(title, {
+      body: body,
+      icon: 'https://wintube205-sudo.github.io/icon.png',
+      tag: 'wintube-pts'
+    });
+    n.onclick = function(){ window.focus(); n.close(); };
+  } catch(e){}
 }
+
 
 
 // ═══════════════════════════════════════
 // INTERSTITIAL ADS SYSTEM
 // ═══════════════════════════════════════
-var _iadTimer = null;
-var _iadSeconds = 10;
-var _iadCallback = null;       // ما يُشغَّل بعد الإعلان
-var _iadInterval5m = null;     // مؤقت كل 5 دقائق
-var IAD_DURATION = 10;         // ثوان العرض
-var IAD_REPEAT = 300;          // كل 5 دقائق (300 ثانية)
+// SMART LINK INTERSTITIAL (HilltopAds)
+// ═══════════════════════════════════════
+var _iadInterval5m = null;
+var SMART_LINK = 'https://data527.click/157e3c68fbf89e3c57fe/2b05fea27e/?placementName=default';
 
-// محتوى الإعلان — يتبدّل دورياً بين الشبكات
-var _iadContents = [
-  // HilltopAds Smart Direct Link — iframe
-  '<iframe src="https://data527.click/157e3c68fbf89e3c57fe/2b05fea27e/?placementName=default" '
-  +'style="width:100%;height:280px;border:none;display:block;" scrolling="no" '
-  +'sandbox="allow-scripts allow-same-origin allow-popups allow-forms allow-top-navigation"></iframe>',
-
-  // HilltopAds مرة ثانية (للتكرار)
-  '<iframe src="https://data527.click/157e3c68fbf89e3c57fe/2b05fea27e/?placementName=default" '
-  +'style="width:100%;height:280px;border:none;display:block;" scrolling="no" '
-  +'sandbox="allow-scripts allow-same-origin allow-popups allow-forms allow-top-navigation"></iframe>',
-  // Adsterra
-  '<div style="min-height:280px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:1rem">'
-  +'<div style="font-size:3rem">📢</div>'
-  +'<script data-cfasync="false" src="https://pl28874602.effectivegatecpm.com/12/bc/27/12bc27a1c3f3ac66a08b09f43e2ef789.js"><\/script>'
-  +'</div>',
-];
-var _iadIndex = 0;
-
+// يفتح الرابط الذكي في تاب جديد مباشرة
 function showInterstitialAd(callback){
-  _iadCallback = callback || null;
-  _iadSeconds = IAD_DURATION;
-
-  // اختر محتوى الإعلان
-  var adHtml = _iadContents[_iadIndex % _iadContents.length];
-  _iadIndex++;
-  G('iadContent').innerHTML = adHtml;
-
-  // العداد التنازلي — null-safe
-  var _num=G('iadNum'), _skip=G('iadSkip'), _prog=G('iadProg'), _ov=G('iadOv');
-  if(!_ov) return;
-  if(_num) _num.textContent = _iadSeconds;
-  if(_skip) _skip.classList.remove('show');
-  if(_prog){ _prog.style.transition = 'none'; _prog.style.width = '100%'; }
-
-  _ov.classList.add('open');
-
-  // شريط التقدم
-  setTimeout(function(){
-    var p=G('iadProg');
-    if(p){ p.style.transition = 'width '+IAD_DURATION+'s linear'; p.style.width = '0%'; }
-  }, 50);
-
-  clearInterval(_iadTimer);
-  _iadTimer = setInterval(function(){
-    _iadSeconds--;
-    var n=G('iadNum'); if(n) n.textContent = _iadSeconds;
-    if(_iadSeconds <= 5){
-      var sk=G('iadSkip'); if(sk) sk.classList.add('show');
-    }
-    if(_iadSeconds <= 0){
-      clearInterval(_iadTimer);
-      _closeAd();
-    }
-  }, 1000);
+  window.open(SMART_LINK, '_blank', 'noopener');
+  // تشغيل الـ callback فوراً بعد فتح الرابط
+  if(callback) setTimeout(callback, 300);
 }
 
-function skipAd(){
-  if(_iadSeconds > 5) return;
-  clearInterval(_iadTimer);
-  _closeAd();
-}
+function skipAd(){ /* غير مستخدم */ }
 
-function _closeAd(){
-  var _ov=G('iadOv'); if(_ov) _ov.classList.remove('open');
-  var _ic=G('iadContent'); if(_ic) _ic.innerHTML = '';
-  clearInterval(_iadTimer);
-  if(_iadCallback){
-    var cb = _iadCallback;
-    _iadCallback = null;
-    cb();
-  }
-}
+function _closeAd(){ /* غير مستخدم */ }
 
-// مؤقت الإعلان كل 5 دقائق أثناء التشغيل
+// مؤقت الرابط الذكي كل 5 دقائق
 function startAdRepeatTimer(context){
   stopAdRepeatTimer();
   _iadInterval5m = setInterval(function(){
-    // فقط إذا كان المستخدم يشاهد/يلعب فعلاً
-    var isVideo = context==='video' && G('modalOv').classList.contains('open');
-    var isGame  = context==='game'  && G('gameOv').classList.contains('open');
+    var isVideo = context==='video' && G('modalOv') && G('modalOv').classList.contains('open');
+    var isGame  = context==='game'  && G('gameOv')  && G('gameOv').classList.contains('open');
     if(!isVideo && !isGame){ stopAdRepeatTimer(); return; }
-
-    // أوقف العداد مؤقتاً
-    if(context==='video') setPlaying(false);
-    if(context==='game')  stopGTimer();
-
-    showInterstitialAd(function(){
-      // استمر بعد الإعلان
-      if(context==='video' && G('modalOv').classList.contains('open')){
-        setTimeout(function(){ setPlaying(true); }, 500);
-      }
-      if(context==='game' && G('gameOv').classList.contains('open') && activeGid){
-        startGTimer(gCache[activeGid]||0);
-      }
-    });
-  }, IAD_REPEAT * 1000);
+    window.open(SMART_LINK, '_blank', 'noopener');
+  }, 300000); // 5 دقائق
 }
 
 function stopAdRepeatTimer(){
@@ -1888,177 +1911,152 @@ function stopAdRepeatTimer(){
 }
 
 
+
+
 // ═══════════════════════════════════════
-// REWARDS / CPAGrip SYSTEM
+// SMART LINK OFFER SYSTEM (50 نقطة بعد 30 ثانية)
 // ═══════════════════════════════════════
-var CPAGRIP_URL   = 'https://singingfiles.com/show.php?l=0&u=2507811&id=74315';
-var CPA_PTS       = 100;          // نقاط لكل عرض
-var CPA_COOLDOWN  = 300;          // 5 دقائق بالثوان
-var _cpaWin       = null;         // نافذة CPAGrip
-var _cpaState     = 'idle';       // idle | open | waiting | cooldown
-var _cpaCoolTimer = null;
-var _cpaWatchTimer= null;
-var _cpaCoolLeft  = 0;
+var HL_PTS        = 50;      // نقاط لكل عرض
+var HL_MIN_SECS   = 30;      // الحد الأدنى من الثوان للتأهل
+var HL_COOLDOWN   = 300;     // 5 دقائق بين العروض
+var _hlOpenTime   = 0;       // وقت فتح الرابط
+var _hlWaiting    = false;   // هل المستخدم ذهب للرابط؟
+var _hlCoolLeft   = 0;       // الثوان المتبقية للـ cooldown
+var _hlCoolTimer  = null;    // مؤقت الـ cooldown
 
-function gotoRewards(btn){
-  document.querySelectorAll('.cat-btn').forEach(function(b){b.classList.remove('active');});
-  if(btn) btn.classList.add('active');
-  var _sh=G('secHome'), _ss=G('secSearch'), _srw=G('secRewards');
-  if(_sh) _sh.style.display = 'none';
-  if(_ss) _ss.style.display = 'none';
-  if(_srw) _srw.style.display = '';
-  var _rb=G('rwBal');
-  if(currentUser && _rb) _rb.textContent = userPoints;
+function openSmartOffer(){
+  if(!currentUser){ G('authOv').classList.remove('hidden'); return; }
+  if(_hlWaiting)  { showToast('⏳ عد للصفحة وانتظر تأكيد النقاط'); return; }
+  if(_hlCoolLeft > 0){ showToast('⏳ انتظر ' + _fmtTime(_hlCoolLeft)); return; }
+
+  // سجّل وقت الفتح
+  _hlOpenTime = Date.now();
+  _hlWaiting  = true;
+
+  // حدّث الأزرار
+  _setHLBtn('waiting', '⏳ ارجع هنا بعد 30 ثانية…', true);
+
+  // افتح الرابط الذكي
+  window.open(SMART_LINK, '_blank', 'noopener');
+
+  // راقب عودة المستخدم عبر visibilitychange + focus
+  document.addEventListener('visibilitychange', _onHLReturn);
+  window.addEventListener('focus', _onHLReturn);
 }
 
-function startCPAOffer(){
-  if(!currentUser){
-    G('authOv').classList.remove('hidden');
-    return;
-  }
-  if(_cpaState === 'cooldown' || _cpaState === 'waiting') return;
+function _onHLReturn(){
+  if(!_hlWaiting) return;
 
-  // افتح النافذة
-  _cpaWin = window.open(CPAGRIP_URL, '_blank', 'noopener');
-  _cpaState = 'open';
-  _setCPABtn('waiting', '⏳ أكمل العرض ثم ارجع هنا...', true);
+  var elapsed = (Date.now() - _hlOpenTime) / 1000; // بالثوان
 
-  // راقب إغلاق النافذة
-  clearInterval(_cpaWatchTimer);
-  _cpaWatchTimer = setInterval(function(){
-    if(_cpaWin && _cpaWin.closed){
-      clearInterval(_cpaWatchTimer);
-      _onCPAReturn();
-    }
-  }, 800);
+  if(document.hidden) return; // لا تزال مخفية
 
-  // أيضاً: عند العودة للتاب يُعطى النقاط (للموبايل الذي يفتح في نفس التاب)
-  window.addEventListener('focus', _onFocusReturn, {once: true});
-  document.addEventListener('visibilitychange', _onVisReturn);
-}
+  // أزل listeners
+  document.removeEventListener('visibilitychange', _onHLReturn);
+  window.removeEventListener('focus', _onHLReturn);
 
-function _onFocusReturn(){
-  if(_cpaState !== 'open') return;
-  clearInterval(_cpaWatchTimer);
-  setTimeout(_onCPAReturn, 500);
-}
+  _hlWaiting = false;
 
-function _onVisReturn(){
-  if(document.visibilityState === 'visible' && _cpaState === 'open'){
-    document.removeEventListener('visibilitychange', _onVisReturn);
-    clearInterval(_cpaWatchTimer);
-    setTimeout(_onCPAReturn, 600);
+  if(elapsed >= HL_MIN_SECS){
+    // ✅ أكمل المدة — أضف النقاط
+    _awardHLPoints();
+  } else {
+    // ❌ لم يكمل — رجع مبكراً
+    var remaining = Math.ceil(HL_MIN_SECS - elapsed);
+    showToast('❌ يجب الانتظار ' + HL_MIN_SECS + ' ثانية على الأقل! (أقل بـ ' + remaining + ' ثانية)', '#ef4444');
+    _setHLBtn('idle', '▶ افتح الرابط الذكي واكسب 50 نقطة', false);
   }
 }
 
-function _onCPAReturn(){
-  document.removeEventListener('visibilitychange', _onVisReturn);
-  if(_cpaState !== 'open') return;
-  _cpaState = 'waiting';
-
-  // أضف النقاط فوراً
-  _awardCPAPoints();
-}
-
-function _awardCPAPoints(){
+function _awardHLPoints(){
   if(!currentUser || !_db) return;
-  userPoints += CPA_PTS;
-
-  // تحديث Firebase
+  userPoints += HL_PTS;
+  updateHeader();
+  var _rb = G('rwBal'); if(_rb) _rb.textContent = userPoints;
   _db.collection('users').doc(currentUser.uid).update({
-    points: firebase.firestore.FieldValue.increment(CPA_PTS)
+    points: firebase.firestore.FieldValue.increment(HL_PTS)
   }).then(function(){
-    updateHeader();
-    var _rb2=G('rwBal'); if(_rb2) _rb2.textContent = userPoints;
+    showToast('🎉 تم إضافة ' + HL_PTS + ' نقطة!', '#22c55e');
+    _showHLPopup();
     syncLeaderboard();
-    _showRwPopup();
-    _startCooldown();
-  }).catch(function(e){
-    // rollback
-    userPoints -= CPA_PTS;
-    showToast('⚠️ خطأ في الاتصال، حاول مجدداً', 'rgba(239,68,68,.95)');
-    _cpaState = 'idle';
-    _setCPABtn('idle', '▶ شاهد الإعلان واكسب 100 نقطة', false);
+    _startHLCooldown();
+  }).catch(function(){
+    userPoints -= HL_PTS;
+    updateHeader();
+    showToast('❌ حدث خطأ، حاول مجدداً', '#ef4444');
+    _setHLBtn('idle', '▶ افتح الرابط الذكي واكسب 50 نقطة', false);
   });
 }
 
-function _showRwPopup(){
-  var ov = G('rwPopOv');
-  if(!ov) return;
-  ov.classList.add('show');
-  setTimeout(function(){ ov.classList.remove('show'); }, 2500);
-}
-
-function _startCooldown(){
-  _cpaState = 'cooldown';
-  _cpaCoolLeft = CPA_COOLDOWN;
-  _updateCoolBtn();
-
-  clearInterval(_cpaCoolTimer);
-  _cpaCoolTimer = setInterval(function(){
-    _cpaCoolLeft--;
-    _updateCoolBtn();
-    // شريط التقدم
-    var pct = (_cpaCoolLeft / CPA_COOLDOWN) * 100;
-    if(G('rwTimerFill')) G('rwTimerFill').style.width = pct + '%';
-
-    if(_cpaCoolLeft <= 0){
-      clearInterval(_cpaCoolTimer);
-      _cpaState = 'idle';
-      _setCPABtn('idle', '▶ شاهد الإعلان واكسب 100 نقطة', false);
-      if(G('rwTimerFill')) G('rwTimerFill').style.width = '100%';
+function _startHLCooldown(){
+  _hlCoolLeft = HL_COOLDOWN;
+  _setHLBtn('cooldown', 'جاهز بعد ' + _fmtTime(_hlCoolLeft), true);
+  clearInterval(_hlCoolTimer);
+  _hlCoolTimer = setInterval(function(){
+    _hlCoolLeft--;
+    // تحديث شريط التقدم
+    var pct = (_hlCoolLeft / HL_COOLDOWN) * 100;
+    var tf = G('rwTimerFill'); if(tf) tf.style.width = pct + '%';
+    var cb = G('cpaBannerHome');
+    if(cb){
+      var t = cb.querySelector('.cpa-banner-title');
+      if(t) t.textContent = 'جاهز بعد ' + _fmtTime(_hlCoolLeft);
+    }
+    if(_hlCoolLeft <= 0){
+      clearInterval(_hlCoolTimer);
+      _hlCoolLeft = 0;
+      var tf2 = G('rwTimerFill'); if(tf2) tf2.style.width = '100%';
+      _setHLBtn('idle', '▶ افتح الرابط الذكي واكسب 50 نقطة', false);
+      var cb2 = G('cpaBannerHome');
+      if(cb2){
+        var t2 = cb2.querySelector('.cpa-banner-title');
+        if(t2) t2.textContent = 'أكمل الرابط الذكي واحصل على 50 نقطة';
+        var inner = cb2.querySelector('.cpa-banner-inner');
+        if(inner) inner.style.opacity = '1';
+      }
     }
   }, 1000);
 }
 
-function _updateCoolBtn(){
-  var m = Math.floor(_cpaCoolLeft / 60);
-  var s = _cpaCoolLeft % 60;
-  var label = '⏳ جاهز بعد ' + m + ':' + (s<10?'0':'')+s;
-  _setCPABtn('cooldown', label, true);
-}
-
-function _setCPABtn(state, label, disabled){
-  // زر صفحة Rewards
+function _setHLBtn(state, label, disabled){
   var btn = G('rwMainBtn');
-  if(btn){
-    btn.textContent = label;
-    btn.disabled = disabled;
-    btn.className = 'rw-offer-btn' + (state==='waiting'?' waiting': state==='cooldown'?' waiting':'');
+  if(btn){ btn.innerHTML = label; btn.disabled = disabled;
+    btn.className = 'rw-offer-btn' + (state==='waiting'||state==='cooldown'?' waiting':'');
   }
-  // بطاقة الصفحة الرئيسية
-  var banner = G('cpaBannerHome');
-  if(banner){
-    var inner = banner.querySelector('.cpa-banner-inner');
-    var titleEl = banner.querySelector('.cpa-banner-title');
-    if(state === 'idle'){
-      if(inner) inner.style.opacity = '1';
-      if(inner) inner.style.cursor = 'pointer';
-      if(titleEl) titleEl.textContent = 'أكمل العرض أو المهمة واحصل على 100 نقطة';
-    } else if(state === 'waiting'){
-      if(inner) inner.style.opacity = '.7';
-      if(titleEl) titleEl.textContent = '⏳ أكمل العرض وارجع هنا...';
-    } else if(state === 'cooldown'){
-      if(inner) inner.style.opacity = '.6';
-      if(titleEl) titleEl.textContent = label;
-    }
+  var cb = G('cpaBannerHome');
+  if(cb){
+    var inner = cb.querySelector('.cpa-banner-inner');
+    var t = cb.querySelector('.cpa-banner-title');
+    if(inner) inner.style.opacity = (state==='idle')?'1':'0.65';
+    if(t && state==='waiting') t.textContent = '⏳ ارجع بعد 30 ثانية…';
   }
 }
 
-// تحديث رصيد صفحة Rewards عند تغيير النقاط
-var _origUpdateHeader = updateHeader;
-updateHeader = function(){
-  _origUpdateHeader();
-  if(G('rwBal') && currentUser) G('rwBal').textContent = userPoints;
-};
+function _showHLPopup(){
+  var ov = G('rwPopOv'); if(!ov) return;
+  var num = ov.querySelector('.rw-pts-pop-num');
+  if(num) num.textContent = '+50 ⭐';
+  ov.classList.add('show');
+  setTimeout(function(){ ov.classList.remove('show'); }, 2500);
+}
+
+function _fmtTime(s){
+  var m = Math.floor(s/60), sec = s%60;
+  return m + ':' + (sec<10?'0':'')+sec;
+}
 
 // ═══════════════════════════════════════
 // START
 // ═══════════════════════════════════════
+// استعادة مؤشر الإشعارات
+try{ _notifIdx = parseInt(localStorage.getItem('wt_notif_idx')||'0'); }catch(e){}
 fetchHome('',false);
 </script>
 <!-- ══ HilltopAds Pop-under / Push ══ -->
 <!-- HilltopAds Pop/Push — global -->
 <script data-cfasync="false" async type="text/javascript" src="//data527.click/f0a41fa00cf50b1a0813/f62c1b69b8/?placementName=default"></script>
+
+<!-- Advertica PUSH -->
+<script type="text/javascript" src="//my-pu.sh/f87bbb11f15afcda55a1/33127f60cc/?placementName=default"></script>
 </body>
-  </html>
+</html>
