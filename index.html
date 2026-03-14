@@ -486,7 +486,7 @@ footer{background:#060606;border-top:1px solid var(--border);padding:1.2rem 1rem
     console.log('%c⛔ تحذير!', 'color:red;font-size:40px;font-weight:bold;');
     console.log('%cهذا الموقع محمي. أي محاولة تلاعب ستؤدي إلى حظر حسابك نهائياً.', 'color:#ff4444;font-size:16px;');
     // Blur ONLY non-ad content (لا تؤثر على iframes الإعلانات)
-    var adIds = ['wt-ad-zone-2','wt-ad-zone-3','wt-adsterra-top','wt-hilltop-mid','cpaBannerHome','adWatchBanner'];
+    var adIds = ['wt-ad-zone-2','wt-ad-zone-3','wt-adsterra-top','wt-hilltop-mid','cpaBannerHome','adWatchBanner','video-ad-container'];
     document.body.style.filter = 'blur(8px)';
     document.body.style.pointerEvents = 'none';
     // استثناء حاويات الإعلانات من التأثير
@@ -914,19 +914,25 @@ footer{background:#060606;border-top:1px solid var(--border);padding:1.2rem 1rem
 <!-- ╔═══════════════════════════════╗ -->
 <!-- ║  VAST AD PLAYER OVERLAY      ║ -->
 <!-- ╚═══════════════════════════════╝ -->
-<div class="vast-ov" id="vastOv">
-  <div class="vast-top">
-    <span class="vast-label">📢 إعلان مدفوع</span>
-    <button class="vast-skip-btn" id="vastSkipBtn" onclick="skipVastAd()" style="display:none">تخطي ‹</button>
+<div id="video-ad-container" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.96);z-index:98000;align-items:center;justify-content:center;flex-direction:column;">
+  <div style="width:95%;max-width:640px;position:relative;">
+    <!-- شريط علوي -->
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:.5rem .3rem .5rem 0;margin-bottom:.4rem;">
+      <span style="font-size:.72rem;color:#aaa;letter-spacing:.5px;">📢 إعلان مدفوع</span>
+      <button id="vastSkipBtn" onclick="skipVastAd()" style="display:none;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);color:#fff;padding:.3rem .9rem;border-radius:50px;font-family:Cairo,sans-serif;font-size:.75rem;cursor:pointer;">تخطي ›</button>
+    </div>
+    <!-- الفيديو -->
+    <video id="ad-video-player" style="width:100%;display:block;background:#000;border-radius:8px;max-height:60vh;">
+      <source src="" type="video/mp4">
+    </video>
+    <!-- عداد -->
+    <div style="text-align:center;margin-top:.7rem;">
+      <span id="adTimerWrap" style="background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.3);border-radius:50px;padding:.35rem 1rem;font-size:.82rem;color:#f59e0b;display:inline-block;">
+        ⏱ ستحصل على <strong>20 نقطة</strong> بعد <span id="adCountdown">30</span> ث
+      </span>
+    </div>
+    <div id="adErrMsg" style="display:none;color:#ef4444;text-align:center;margin-top:.6rem;font-size:.85rem;"></div>
   </div>
-  <div class="vast-video-wrap" style="width:100%;max-width:720px;position:relative;">
-    <video id="vastVideo" playsinline webkit-playsinline preload="metadata"
-           style="width:100%;display:block;background:#000;max-height:65vh;"></video>
-  </div>
-  <div class="vast-pts-note" id="vastPtsNote" style="margin-top:.8rem;font-size:.85rem;color:rgba(255,255,255,.6);text-align:center;">
-    شاهد الإعلان واحصل على <strong style="color:var(--yellow)">20 نقطة</strong>
-  </div>
-  <div class="vast-err" id="vastErr" style="display:none;color:#ef4444;padding:1.5rem;text-align:center;font-size:.9rem;"></div>
 </div>
 
 <!-- VIDEO MODAL -->
@@ -2126,108 +2132,93 @@ function _fmtTime(s){
 
 
 
+
 // ═══════════════════════════════════════════════
-// VAST AD PLAYER — Fluid Player
+// VAST AD PLAYER — Fluid Player (CLEAN)
 // ═══════════════════════════════════════════════
-var VAST_TAG     = 'https://limited-teacher.com/d0m.FGz/djGJNivsZSGEUt/Xeom/9JuqZeUDlDkoPCTYYW4uNxjkkzx/MDD/UltuN-jog-2qOCT/EgwjOzQv';
-var AW_PTS       = 20;
-var _fluidPlayer = null;
-var _vastCallback= null;
-var _vastAwardTimer = null;
+var VAST_TAG      = 'https://limited-teacher.com/d0m.FGz/djGJNivsZSGEUt/Xeom/9JuqZeUDlDkoPCTYYW4uNxjkkzx/MDD/UltuN-jog-2qOCT/EgwjOzQv';
+var AW_PTS        = 20;
+var _vpInstance   = null;
+var _adCountTimer = null;
+var _adCallback   = null;
+var _adInitDone   = false;
+
+function _initFluidPlayer(){
+  if(_adInitDone) return;
+  try{
+    _vpInstance = fluidPlayer('ad-video-player', {
+      vastOptions:{
+        adList:[{ roll:'preRoll', vastTag: VAST_TAG }],
+        adCancelCallback: function(){ _closeAdPlayer(false); },
+        vastAdvanced:{
+          vastVideoEndedCallback: function(){ _closeAdPlayer(true); }
+        }
+      },
+      layoutControls:{
+        primaryColor:'#f59e0b',
+        autoPlay: false,
+        mute: false,
+        allowDownload: false,
+        keyboardControl: false,
+        logo:{ imageUrl: null }
+      }
+    });
+    _adInitDone = true;
+  } catch(e){ console.error('FluidPlayer init:', e); }
+}
 
 function playVastAd(callback){
   if(!currentUser){ G('authOv').classList.remove('hidden'); return; }
-  _vastCallback = callback || null;
+  _adCallback = callback || null;
 
-  var ov   = G('vastOv');
-  var vid  = G('vastVideo');
-  var err  = G('vastErr');
-  var note = G('vastPtsNote');
-  var skip = G('vastSkipBtn');
+  var container = G('video-ad-container');
+  var skipBtn   = G('vastSkipBtn');
+  var err       = G('adErrMsg');
+  var countdown = G('adCountdown');
 
-  if(!ov || !vid) return;
+  if(!container) return;
 
-  // إعادة تعيين
   err.style.display  = 'none';
-  note.style.display = '';
-  if(skip) skip.style.display = 'none';
-  vid.src = '';
-  if(_fluidPlayer) try{ _fluidPlayer.destroy(); }catch(e){}
-  _fluidPlayer = null;
-  clearTimeout(_vastAwardTimer);
+  if(skipBtn) skipBtn.style.display = 'none';
+  if(countdown) countdown.textContent = '30';
+  container.style.display = 'flex';
 
-  ov.classList.add('open');
+  // تهيئة Fluid Player أول مرة
+  _initFluidPlayer();
 
-  // تشغيل Fluid Player مع VAST
-  try{
-    _fluidPlayer = fluidPlayer('vastVideo', {
-      vastOptions: {
-        adList: [{
-          roll: 'preRoll',
-          vastTag: VAST_TAG,
-        }],
-        adCancelCallback: function(){
-          // المستخدم أغلق الإعلان — لا نقاط
-          _closeVast(false);
-        },
-        vastAdvanced: {
-          vastVideoEndedCallback: function(){
-            // انتهى الإعلان — أضف النقاط
-            _closeVast(true);
-          }
-        }
-      },
-      layoutControls: {
-        primaryColor: '#f59e0b',
-        playButtonShowing: true,
-        playPauseAnimation: true,
-        autoPlay: true,
-        mute: false,
-        keyboardControl: false,
-        controlBar: {
-          autoHide: false,
-          autoHideTimeout: 3,
-          animated: true
-        },
-        logo: { imageUrl: null },
-        // أخفِ controls أثناء الإعلان
-        allowDownload: false
-      }
-    });
-
-    // أضف نقاط بعد 30 ثانية كـ fallback إذا لم يُطلق الحدث
-    _vastAwardTimer = setTimeout(function(){
-      if(G('vastOv') && G('vastOv').classList.contains('open')){
-        _closeVast(true);
-      }
-    }, 32000);
-
-    // زر تخطي بعد 5 ثوان
-    setTimeout(function(){
-      if(skip) skip.style.display = 'inline-block';
-    }, 5000);
-
-  } catch(e){
-    console.error('Fluid Player error:', e);
-    _vastErrorMsg('تعذّر تشغيل الإعلان: ' + e.message);
+  // شغّل الفيديو
+  if(_vpInstance){
+    try{ _vpInstance.play(); } catch(e){}
   }
+
+  // عداد 30 ثانية
+  var left = 30;
+  clearInterval(_adCountTimer);
+  _adCountTimer = setInterval(function(){
+    left--;
+    if(countdown) countdown.textContent = left;
+    // زر تخطي بعد 5 ثوان
+    if(left <= 25 && skipBtn) skipBtn.style.display = 'inline-block';
+    if(left <= 0){
+      clearInterval(_adCountTimer);
+      _closeAdPlayer(true);
+    }
+  }, 1000);
 }
 
 function skipVastAd(){
-  clearTimeout(_vastAwardTimer);
-  if(_fluidPlayer) try{ _fluidPlayer.destroy(); }catch(e){}
-  _fluidPlayer = null;
-  _closeVast(false);
+  clearInterval(_adCountTimer);
+  _closeAdPlayer(false);
 }
 
-function _closeVast(award){
-  clearTimeout(_vastAwardTimer);
-  var ov  = G('vastOv');
-  var vid = G('vastVideo');
-  if(vid){ vid.pause(); vid.removeAttribute('src'); vid.load(); }
-  if(_fluidPlayer) try{ _fluidPlayer.destroy(); }catch(e){}
-  _fluidPlayer = null;
-  if(ov) ov.classList.remove('open');
+function _closeAdPlayer(award){
+  clearInterval(_adCountTimer);
+  var container = G('video-ad-container');
+  if(container) container.style.display = 'none';
+
+  // أوقف الفيديو
+  var vid = document.getElementById('ad-video-player');
+  if(vid){ try{ vid.pause(); vid.currentTime=0; }catch(e){} }
 
   if(award && currentUser && _db){
     userPoints += AW_PTS;
@@ -2241,22 +2232,11 @@ function _closeVast(award){
     }).catch(function(){
       userPoints -= AW_PTS;
       updateHeader();
-      showToast('❌ خطأ في الاتصال', '#ef4444');
+      showToast('❌ خطأ، حاول مجدداً', '#ef4444');
     });
   }
 
-  if(_vastCallback) setTimeout(_vastCallback, 200);
-}
-
-function _vastErrorMsg(msg){
-  var err  = G('vastErr');
-  var note = G('vastPtsNote');
-  if(err){ err.textContent = '⚠ ' + msg; err.style.display = ''; }
-  if(note) note.style.display = 'none';
-  setTimeout(function(){
-    var ov = G('vastOv'); if(ov) ov.classList.remove('open');
-    if(_vastCallback) _vastCallback();
-  }, 3000);
+  if(_adCallback){ var cb=_adCallback; _adCallback=null; setTimeout(cb,200); }
 }
 
 
