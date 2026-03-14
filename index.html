@@ -486,7 +486,7 @@ footer{background:#060606;border-top:1px solid var(--border);padding:1.2rem 1rem
     console.log('%c⛔ تحذير!', 'color:red;font-size:40px;font-weight:bold;');
     console.log('%cهذا الموقع محمي. أي محاولة تلاعب ستؤدي إلى حظر حسابك نهائياً.', 'color:#ff4444;font-size:16px;');
     // Blur ONLY non-ad content (لا تؤثر على iframes الإعلانات)
-    var adIds = ['wt-ad-zone-2','wt-ad-zone-3','wt-adsterra-top','wt-hilltop-mid','cpaBannerHome','adWatchBanner','video-ad-container'];
+    var adIds = ['wt-ad-zone-2','wt-ad-zone-3','wt-adsterra-top','wt-hilltop-mid','cpaBannerHome','adWatchBanner','video-overlay'];
     document.body.style.filter = 'blur(8px)';
     document.body.style.pointerEvents = 'none';
     // استثناء حاويات الإعلانات من التأثير
@@ -914,25 +914,31 @@ footer{background:#060606;border-top:1px solid var(--border);padding:1.2rem 1rem
 <!-- ╔═══════════════════════════════╗ -->
 <!-- ║  VAST AD PLAYER OVERLAY      ║ -->
 <!-- ╚═══════════════════════════════╝ -->
-<div id="video-ad-container" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.96);z-index:98000;align-items:center;justify-content:center;flex-direction:column;">
-  <div style="width:95%;max-width:640px;position:relative;">
-    <!-- شريط علوي -->
-    <div style="display:flex;align-items:center;justify-content:space-between;padding:.5rem .3rem .5rem 0;margin-bottom:.4rem;">
-      <span style="font-size:.72rem;color:#aaa;letter-spacing:.5px;">📢 إعلان مدفوع</span>
-      <button id="vastSkipBtn" onclick="skipVastAd()" style="display:none;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);color:#fff;padding:.3rem .9rem;border-radius:50px;font-family:Cairo,sans-serif;font-size:.75rem;cursor:pointer;">تخطي ›</button>
-    </div>
-    <!-- الفيديو -->
-    <video id="ad-video-player" style="width:100%;display:block;background:#000;border-radius:8px;max-height:60vh;">
+<div id="video-overlay" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.96);z-index:98000;align-items:center;justify-content:center;flex-direction:column;">
+
+  <!-- زر الإغلاق X -->
+  <button onclick="closeAdOverlay()" style="position:absolute;top:14px;left:14px;width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);color:#fff;font-size:1.2rem;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:2;font-family:Cairo,sans-serif;transition:background .2s;" onmouseover="this.style.background='#ef4444'" onmouseout="this.style.background='rgba(255,255,255,.12)'">✕</button>
+
+  <!-- شريط علوي -->
+  <div style="width:95%;max-width:640px;display:flex;align-items:center;justify-content:space-between;margin-bottom:.5rem;">
+    <span style="font-size:.72rem;color:#aaa;letter-spacing:.5px;">📢 إعلان مدفوع</span>
+    <button id="vastSkipBtn" onclick="skipVastAd()" style="display:none;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);color:#fff;padding:.3rem .9rem;border-radius:50px;font-family:Cairo,sans-serif;font-size:.75rem;cursor:pointer;">تخطي ›</button>
+  </div>
+
+  <!-- الفيديو -->
+  <div id="fp-wrap" style="width:95%;max-width:640px;position:relative;">
+    <video id="reward-video-player" style="width:100%;display:block;background:#000;border-radius:10px;max-height:58vh;">
       <source src="" type="video/mp4">
     </video>
-    <!-- عداد -->
-    <div style="text-align:center;margin-top:.7rem;">
-      <span id="adTimerWrap" style="background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.3);border-radius:50px;padding:.35rem 1rem;font-size:.82rem;color:#f59e0b;display:inline-block;">
-        ⏱ ستحصل على <strong>20 نقطة</strong> بعد <span id="adCountdown">30</span> ث
-      </span>
-    </div>
-    <div id="adErrMsg" style="display:none;color:#ef4444;text-align:center;margin-top:.6rem;font-size:.85rem;"></div>
   </div>
+
+  <!-- الحالة / العداد -->
+  <div style="width:95%;max-width:640px;margin-top:.75rem;text-align:center;">
+    <span id="ad-status" style="background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.25);border-radius:50px;padding:.38rem 1.1rem;font-size:.82rem;color:#f59e0b;display:inline-block;">
+      جاري تحميل الإعلان...
+    </span>
+  </div>
+
 </div>
 
 <!-- VIDEO MODAL -->
@@ -2133,109 +2139,127 @@ function _fmtTime(s){
 
 
 
-// ═══════════════════════════════════════════════
-// VAST AD PLAYER — Fluid Player (CLEAN)
-// ═══════════════════════════════════════════════
-var VAST_TAG      = 'https://limited-teacher.com/d0m.FGz/djGJNivsZSGEUt/Xeom/9JuqZeUDlDkoPCTYYW4uNxjkkzx/MDD/UltuN-jog-2qOCT/EgwjOzQv';
-var AW_PTS        = 20;
-var _vpInstance   = null;
-var _adCountTimer = null;
-var _adCallback   = null;
-var _adInitDone   = false;
 
-function _initFluidPlayer(){
-  if(_adInitDone) return;
-  try{
-    _vpInstance = fluidPlayer('ad-video-player', {
-      vastOptions:{
-        adList:[{ roll:'preRoll', vastTag: VAST_TAG }],
-        adCancelCallback: function(){ _closeAdPlayer(false); },
-        vastAdvanced:{
-          vastVideoEndedCallback: function(){ _closeAdPlayer(true); }
-        }
-      },
-      layoutControls:{
-        primaryColor:'#f59e0b',
-        autoPlay: false,
-        mute: false,
-        allowDownload: false,
-        keyboardControl: false,
-        logo:{ imageUrl: null }
-      }
-    });
-    _adInitDone = true;
-  } catch(e){ console.error('FluidPlayer init:', e); }
-}
+// ═══════════════════════════════════════════════
+// VAST AD PLAYER — Fluid Player Smart Timer
+// ═══════════════════════════════════════════════
+var VAST_TAG     = 'https://limited-teacher.com/dOm.FGz/djGJNivsZSGEUt/Xeom/9JuqZeUDlDkoPCTYYW4uNxjkkzx/MDD/UltuN-jog-2qOCT/EgwjOzQv';
+var AW_PTS       = 20;
+var _myFP        = null;
+var _adCallback  = null;
+var _adTimerInt  = null;
+var _adCountdown = 30;
 
 function playVastAd(callback){
   if(!currentUser){ G('authOv').classList.remove('hidden'); return; }
-  _adCallback = callback || null;
+  _adCallback  = callback || null;
+  _adCountdown = 30;
 
-  var container = G('video-ad-container');
-  var skipBtn   = G('vastSkipBtn');
-  var err       = G('adErrMsg');
-  var countdown = G('adCountdown');
+  var overlay  = G('video-overlay');
+  var statusEl = G('ad-status');
+  var skipBtn  = G('vastSkipBtn');
 
-  if(!container) return;
+  if(!overlay) return;
+  if(statusEl){ statusEl.textContent='جاري تحميل الإعلان... لن يبدأ العداد حتى يظهر الفيديو'; statusEl.style.color='#f59e0b'; }
+  if(skipBtn)  skipBtn.style.display='none';
+  overlay.style.display = 'flex';
 
-  err.style.display  = 'none';
-  if(skipBtn) skipBtn.style.display = 'none';
-  if(countdown) countdown.textContent = '30';
-  container.style.display = 'flex';
+  clearInterval(_adTimerInt);
 
-  // تهيئة Fluid Player أول مرة
-  _initFluidPlayer();
+  // destroy الـ player القديم وأعد البناء من جديد
+  if(_myFP){ try{ _myFP.destroy(); }catch(e){} _myFP=null; }
 
-  // شغّل الفيديو
-  if(_vpInstance){
-    try{ _vpInstance.play(); } catch(e){}
+  // أعد بناء عنصر الفيديو حتى نتجنب أي cache
+  var wrap = document.getElementById('fp-wrap');
+  if(wrap){
+    wrap.innerHTML = '<video id="reward-video-player" style="width:100%;display:block;background:#000;border-radius:10px;max-height:58vh;"><source src="" type="video/mp4"></video>';
   }
 
-  // عداد 30 ثانية
-  var left = 30;
-  clearInterval(_adCountTimer);
-  _adCountTimer = setInterval(function(){
-    left--;
-    if(countdown) countdown.textContent = left;
-    // زر تخطي بعد 5 ثوان
-    if(left <= 25 && skipBtn) skipBtn.style.display = 'inline-block';
-    if(left <= 0){
-      clearInterval(_adCountTimer);
-      _closeAdPlayer(true);
+  var videoEl = document.getElementById('reward-video-player');
+  if(!videoEl) return;
+
+  // ربط العداد الذكي
+  function startTimer(){
+    clearInterval(_adTimerInt);
+    _adTimerInt = setInterval(function(){
+      _adCountdown--;
+      if(statusEl){
+        statusEl.textContent = '⏳ الإعلان يعمل.. ستحصل على النقاط بعد '+_adCountdown+' ثانية';
+        statusEl.style.color = '#22c55e';
+      }
+      if(skipBtn && _adCountdown<=25) skipBtn.style.display='inline-block';
+      if(_adCountdown<=0){ clearInterval(_adTimerInt); _giveAdPoints(); }
+    }, 1000);
+  }
+  function pauseTimer(){
+    clearInterval(_adTimerInt);
+    if(_adCountdown>0 && statusEl){
+      statusEl.textContent='⚠️ الإعلان متوقف! العداد واقف على '+_adCountdown+' ثانية';
+      statusEl.style.color='#ef4444';
     }
-  }, 1000);
+  }
+  videoEl.addEventListener('playing', startTimer);
+  videoEl.addEventListener('pause',   pauseTimer);
+  videoEl.addEventListener('waiting', pauseTimer);
+  videoEl.addEventListener('error',   function(){
+    pauseTimer();
+    if(statusEl){ statusEl.textContent='❌ فشل تحميل الإعلان! حاول لاحقاً.'; statusEl.style.color='#ef4444'; }
+  });
+
+  // تهيئة Fluid Player
+  try{
+    _myFP = fluidPlayer('reward-video-player',{
+      vastOptions:{
+        adList:[{ roll:'preRoll', vastTag: VAST_TAG }],
+        adCancelCallback: function(){ closeAdOverlay(); },
+        vastTimeout: 8000
+      },
+      layoutControls:{
+        primaryColor: '#f59e0b',
+        autoPlay: true,
+        mute: false,
+        allowDownload: false,
+        keyboardControl: false,
+        controlBar:{ autoHideTimeout:2 },
+        logo:{ imageUrl:null }
+      }
+    });
+  } catch(e){
+    if(statusEl){ statusEl.textContent='❌ خطأ في تشغيل المشغل: '+e.message; statusEl.style.color='#ef4444'; }
+  }
+}
+
+function _giveAdPoints(){
+  if(!currentUser || !_db) return;
+  userPoints += AW_PTS;
+  updateHeader();
+  var rb = G('rwBal'); if(rb) rb.textContent = userPoints;
+  _db.collection('users').doc(currentUser.uid).update({
+    points: firebase.firestore.FieldValue.increment(AW_PTS)
+  }).then(function(){
+    showToast('🎉 +' + AW_PTS + ' نقطة! 📺', '#f59e0b');
+    syncLeaderboard();
+    closeAdOverlay();
+  }).catch(function(){
+    userPoints -= AW_PTS;
+    updateHeader();
+    showToast('❌ خطأ، حاول مجدداً', '#ef4444');
+    closeAdOverlay();
+  });
 }
 
 function skipVastAd(){
-  clearInterval(_adCountTimer);
-  _closeAdPlayer(false);
+  clearInterval(_adTimerInt);
+  closeAdOverlay();
 }
 
-function _closeAdPlayer(award){
-  clearInterval(_adCountTimer);
-  var container = G('video-ad-container');
-  if(container) container.style.display = 'none';
-
-  // أوقف الفيديو
-  var vid = document.getElementById('ad-video-player');
+function closeAdOverlay(){
+  clearInterval(_adTimerInt);
+  var overlay = G('video-overlay');
+  if(overlay) overlay.style.display = 'none';
+  var vid = document.getElementById('reward-video-player');
   if(vid){ try{ vid.pause(); vid.currentTime=0; }catch(e){} }
-
-  if(award && currentUser && _db){
-    userPoints += AW_PTS;
-    updateHeader();
-    var rb = G('rwBal'); if(rb) rb.textContent = userPoints;
-    _db.collection('users').doc(currentUser.uid).update({
-      points: firebase.firestore.FieldValue.increment(AW_PTS)
-    }).then(function(){
-      showToast('🎉 +' + AW_PTS + ' نقطة! 📺', '#f59e0b');
-      syncLeaderboard();
-    }).catch(function(){
-      userPoints -= AW_PTS;
-      updateHeader();
-      showToast('❌ خطأ، حاول مجدداً', '#ef4444');
-    });
-  }
-
+  if(_myFP) try{ _myFP.pause(); }catch(e){}
   if(_adCallback){ var cb=_adCallback; _adCallback=null; setTimeout(cb,200); }
 }
 
