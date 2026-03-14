@@ -2158,67 +2158,117 @@ function playVastAd(callback){
 
   ov.classList.add('open');
 
-  // جلب VAST XML
-  fetch(VAST_TAG)
-    .then(function(r){ return r.text(); })
-    .then(function(xml){
-      // parse XML وجلب رابط الفيديو
-      var parser = new DOMParser();
-      var doc    = parser.parseFromString(xml, 'text/xml');
+  // جلب VAST XML عبر CORS proxy
+  var proxies = [
+    'https://corsproxy.io/?' + encodeURIComponent(VAST_TAG),
+    'https://api.allorigins.win/get?url=' + encodeURIComponent(VAST_TAG),
+    'https://cors-anywhere.herokuapp.com/' + VAST_TAG
+  ];
 
-      // جرب MediaFile بالترتيب: mp4 أولاً ثم webm ثم flv
-      var mediaFiles = doc.querySelectorAll('MediaFile');
-      var src = '';
-      ['video/mp4','video/webm','video/x-flv','video/flv'].forEach(function(type){
-        if(src) return;
-        mediaFiles.forEach(function(mf){
-          if(!src && mf.getAttribute('type') === type){
-            src = mf.textContent.trim();
-          }
+  function tryProxy(idx){
+    if(idx >= proxies.length){ _vastError('تعذّر تحميل الإعلان'); return; }
+    fetch(proxies[idx])
+      .then(function(r){
+        if(!r.ok) throw new Error('HTTP '+r.status);
+        return r.text();
+      })
+      .then(function(raw){
+        // allorigins يُرجع JSON { contents: "..." }
+        var xml = raw;
+        try{
+          var j = JSON.parse(raw);
+          if(j.contents) xml = j.contents;
+        }catch(e){}
+        return xml;
+      })
+      .then(function(xml){
+        var parser = new DOMParser();
+        var doc    = parser.parseFromString(xml, 'text/xml');
+        var mediaFiles = doc.querySelectorAll('MediaFile');
+        var src = '';
+        // الأولوية: mp4 ثم webm ثم أي شيء
+        ['video/mp4','video/webm','video/x-flv'].forEach(function(type){
+          if(src) return;
+          mediaFiles.forEach(function(mf){
+            if(!src && mf.getAttribute('type')===type)
+              src = (mf.textContent||mf.innerHTML).trim()
+                        .replace(/<!\[CDATA\[/,'').replace(/\]\]>/,'').trim();
+          });
         });
-      });
+        if(!src && mediaFiles.length>0)
+          src = (mediaFiles[0].textContent||mediaFiles[0].innerHTML).trim()
+                    .replace(/<!\[CDATA\[/,'').replace(/\]\]>/,'').trim();
 
-      // إذا لم يجد نوع محدد، خذ الأول
-      if(!src && mediaFiles.length > 0){
-        src = mediaFiles[0].textContent.trim();
-      }
+        if(!src){ tryProxy(idx+1); return; }
+        _loadVastVideo(vid, src);
+      })
+      .catch(function(){ tryProxy(idx+1); });
+  }
+  tryProxy(0);
+}
 
-      if(!src){
-        _vastError('لا يوجد فيديو إعلاني متاح الآن');
-        return;
-      }
+function _loadVastVideo(vid, src){
+  vid.src = src;
+  vid.muted = true; // مطلوب للـ autoplay في المتصفحات الحديثة
 
-      // شغّل الفيديو
-      vid.src = src;
-      vid.muted = false;
-      vid.play().catch(function(){
-        vid.muted = true;
+  // زر إلغاء الكتم
+  var muteBtn = document.getElementById('vastMuteBtn');
+  if(!muteBtn){
+    muteBtn = document.createElement('button');
+    muteBtn.id = 'vastMuteBtn';
+    muteBtn.style.cssText='position:absolute;bottom:55px;right:10px;background:rgba(0,0,0,.7);border:1px solid rgba(255,255,255,.3);color:#fff;padding:.3rem .7rem;border-radius:50px;font-size:.78rem;cursor:pointer;z-index:5;font-family:Cairo,sans-serif;';
+    muteBtn.textContent = '🔇 اضغط للصوت';
+    muteBtn.onclick = function(){
+      vid.muted = !vid.muted;
+      muteBtn.textContent = vid.muted ? '🔇 اضغط للصوت' : '🔊 صوت مفعّل';
+    };
+    var wrap = vid.parentElement;
+    if(wrap) wrap.appendChild(muteBtn);
+  }
+
+  vid.play().catch(function(){
+    // autoplay فشل — اعرض زر تشغيل
+    var playBtn = document.getElementById('vastPlayBtn');
+    if(!playBtn){
+      playBtn = document.createElement('button');
+      playBtn.id = 'vastPlayBtn';
+      playBtn.style.cssText='position:absolute;inset:0;margin:auto;width:64px;height:64px;background:rgba(255,255,255,.15);border:2px solid rgba(255,255,255,.5);border-radius:50%;font-size:1.8rem;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:5;';
+      playBtn.innerHTML='▶';
+      playBtn.onclick=function(){
+        vid.muted=false;
         vid.play();
-      });
+        playBtn.style.display='none';
+        if(muteBtn) muteBtn.textContent='🔊 صوت مفعّل';
+      };
+      var wrap2 = vid.parentElement;
+      if(wrap2) wrap2.appendChild(playBtn);
+    } else {
+      playBtn.style.display='flex';
+    }
+  });
 
-      // مدة الفيديو
-      vid.addEventListener('loadedmetadata', function(){
-        _vastSecs = Math.ceil(vid.duration) || 30;
-        _startVastCountdown();
-      }, {once:true});
+  vid.addEventListener('loadedmetadata', function(){
+    _startVastCountdown();
+  }, {once:true});
 
-      // انتهى الفيديو
-      vid.addEventListener('ended', function(){
-        _vastDone = true;
-        _closeVastAndAward(true);
-      }, {once:true});
+  vid.addEventListener('ended', function(){
+    _vastDone = true;
+    _closeVastAndAward(true);
+  }, {once:true});
 
-      // تحديث شريط التقدم
-      vid.addEventListener('timeupdate', function(){
-        if(vid.duration){
-          var pct = (vid.currentTime / vid.duration) * 100;
-          var p = G('vastProg'); if(p) p.style.width = pct + '%';
-        }
-      });
-    })
-    .catch(function(e){
-      _vastError('تعذّر تحميل الإعلان: ' + e.message);
-    });
+  vid.addEventListener('timeupdate', function(){
+    if(vid.duration){
+      var pct = (vid.currentTime / vid.duration) * 100;
+      var p = G('vastProg'); if(p) p.style.width = pct + '%';
+    }
+  });
+
+  // timeout إذا لم يحمّل بعد 10 ثوان
+  setTimeout(function(){
+    if(!vid.src || vid.readyState < 1){
+      _vastError('الإعلان غير متاح حالياً');
+    }
+  }, 10000);
 }
 
 function _startVastCountdown(){
