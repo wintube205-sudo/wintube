@@ -12,8 +12,7 @@
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-<link rel="stylesheet" href="https://cdn.fluidplayer.com/v3/current/fluidplayer.min.css"/>
-<script src="https://cdn.fluidplayer.com/v3/current/fluidplayer.min.js"></script>
+
 <style>
 :root{--red:#ff2d2d;--dark:#0a0a0a;--card:#111;--border:#1e1e1e;--text:#f0f0f0;--muted:#666;--green:#22c55e;--yellow:#f59e0b;--purple:#a855f7;}
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
@@ -611,20 +610,15 @@ footer{background:#060606;border-top:1px solid var(--border);padding:1.2rem 1rem
 </div>
 
 <!-- VAST AD PLAYER -->
-<div id="video-overlay">
-  <button onclick="closeAdOverlay()" style="position:absolute;top:14px;left:14px;width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);color:#fff;font-size:1.2rem;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:2;">✕</button>
-  <div style="width:95%;max-width:640px;display:flex;align-items:center;justify-content:space-between;margin-bottom:.5rem;">
-    <span style="font-size:.72rem;color:#aaa;">📢 Sponsored Ad</span>
-    <button id="vastSkipBtn" onclick="skipVastAd()" style="display:none;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);color:#fff;padding:.3rem .9rem;border-radius:50px;font-family:Cairo,sans-serif;font-size:.75rem;cursor:pointer;">Skip ›</button>
+<div id="video-overlay" style="position:fixed;inset:0;z-index:98000;background:rgba(0,0,0,.95);display:none;align-items:center;justify-content:center;flex-direction:column;gap:1.2rem;">
+  <div style="font-size:2.5rem;">📢</div>
+  <div style="font-size:1rem;font-weight:700;color:#fff;">Ad opened in new tab</div>
+  <span id="ad-status" style="background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.25);border-radius:50px;padding:.5rem 1.3rem;font-size:.85rem;color:#f59e0b;display:inline-block;text-align:center;max-width:300px;">⏳ Return here after 15s to earn 20 pts...</span>
+  <div style="display:flex;gap:.8rem;margin-top:.5rem;">
+    <button id="vastSkipBtn" onclick="skipVastAd()" style="display:none;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.3);color:#fff;padding:.5rem 1.2rem;border-radius:50px;font-family:Cairo,sans-serif;font-size:.85rem;cursor:pointer;">Skip (no pts)</button>
+    <button onclick="closeAdOverlay()" style="background:rgba(255,45,45,.2);border:1px solid rgba(255,45,45,.4);color:#ff6b6b;padding:.5rem 1.2rem;border-radius:50px;font-family:Cairo,sans-serif;font-size:.85rem;cursor:pointer;">✕ Close</button>
   </div>
-  <div id="fp-wrap" style="width:95%;max-width:640px;position:relative;">
-    <video id="reward-video-player" style="width:100%;display:block;background:#000;border-radius:10px;max-height:58vh;">
-      <source src="" type="video/mp4">
-    </video>
-  </div>
-  <div style="width:95%;max-width:640px;margin-top:.75rem;text-align:center;">
-    <span id="ad-status" style="background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.25);border-radius:50px;padding:.38rem 1.1rem;font-size:.82rem;color:#f59e0b;display:inline-block;">Loading ad...</span>
-  </div>
+  <div id="fp-wrap" style="display:none;"><video id="reward-video-player"><source src="" type="video/mp4"></video></div>
 </div>
 
 <!-- VIDEO MODAL -->
@@ -1291,49 +1285,42 @@ var AW_PTS=20, _myFP=null, _adCallback=null, _adTimerInt=null, _adCountdown=30;
 
 function playVastAd(callback){
   if(!currentUser){ if(callback) callback(); return; }
-  _adCallback=callback||null;
-  _adCountdown=30;
-  var overlay=G('video-overlay'), statusEl=G('ad-status'), skipBtn=G('vastSkipBtn');
-  if(!overlay){ if(callback) callback(); return; }
-  if(statusEl){ statusEl.textContent='Loading ad... Timer starts when video plays'; statusEl.style.color='#f59e0b'; }
-  if(skipBtn) skipBtn.style.display='none';
-  overlay.style.display='flex';
-  clearInterval(_adTimerInt);
-  if(_myFP){ try{ _myFP.destroy(); }catch(e){} _myFP=null; }
-  var wrap=G('fp-wrap');
-  if(wrap) wrap.innerHTML='<video id="reward-video-player" style="width:100%;display:block;background:#000;border-radius:10px;max-height:58vh;"><source src="" type="video/mp4"></video>';
-  var videoEl=document.getElementById('reward-video-player');
-  if(!videoEl){ closeAdOverlay(); return; }
-  function startTimer(){
-    clearInterval(_adTimerInt);
-    _adTimerInt=setInterval(function(){
-      _adCountdown--;
-      if(statusEl){ statusEl.textContent='⏳ Ad playing.. earning points in '+_adCountdown+'s'; statusEl.style.color='#22c55e'; }
-      if(skipBtn&&_adCountdown<=25) skipBtn.style.display='inline-block';
-      if(_adCountdown<=0){ clearInterval(_adTimerInt); _giveAdPoints(); }
-    },1000);
+  _adCallback  = callback || null;
+  _adOpenTime  = Date.now();
+  _adWaiting   = true;
+
+  var overlay  = G('video-overlay');
+  var statusEl = G('ad-status');
+  var skipBtn  = G('vastSkipBtn');
+  if(overlay)  overlay.style.display = 'flex';
+  if(statusEl){ statusEl.textContent = '⏳ Ad opened — return here in 15s to earn 20 pts'; statusEl.style.color = '#f59e0b'; }
+  if(skipBtn)  skipBtn.style.display = 'none';
+
+  window.open(EXTRA_LINK, '_blank', 'noopener');
+
+  var count = 15;
+  var countTimer = setInterval(function(){
+    count--;
+    if(statusEl) statusEl.textContent = '⏳ Return here in ' + count + 's to earn 20 pts...';
+    if(count <= 5 && skipBtn) skipBtn.style.display = 'inline-block';
+    if(count <= 0){ clearInterval(countTimer); if(statusEl){ statusEl.textContent = '✅ Done! You can close this now'; statusEl.style.color = '#22c55e'; } }
+  }, 1000);
+
+  function onReturn(){
+    if(!_adWaiting) return;
+    if(document.hidden) return;
+    document.removeEventListener('visibilitychange', onReturn);
+    window.removeEventListener('focus', onReturn);
+    _adWaiting = false;
+    clearInterval(countTimer);
+    closeAdOverlay();
+    var elapsed = (Date.now() - _adOpenTime) / 1000;
+    if(elapsed >= AW_MIN_SECS){ _giveAdPoints(); }
+    if(_adCallback){ var cb=_adCallback; _adCallback=null; setTimeout(cb, 100); }
   }
-  function pauseTimer(){
-    clearInterval(_adTimerInt);
-    if(_adCountdown>0&&statusEl){ statusEl.textContent='⚠️ Ad paused! Timer stopped at '+_adCountdown+'s'; statusEl.style.color='#ef4444'; }
-  }
-  videoEl.addEventListener('playing',startTimer);
-  videoEl.addEventListener('pause',pauseTimer);
-  videoEl.addEventListener('waiting',pauseTimer);
-  videoEl.addEventListener('error',function(){
-    pauseTimer();
-    if(statusEl){ statusEl.textContent='❌ Ad failed to load. Try again.'; statusEl.style.color='#ef4444'; }
-    setTimeout(closeAdOverlay,3000);
-  });
-  try{
-    _myFP=fluidPlayer('reward-video-player',{
-      vastOptions:{ adList:[{roll:'preRoll',vastTag:VAST_TAG}], adCancelCallback:function(){ closeAdOverlay(); }, vastTimeout:8000 },
-      layoutControls:{ primaryColor:'#f59e0b', autoPlay:true, mute:false, allowDownload:false, keyboardControl:false, logo:{imageUrl:null} }
-    });
-  }catch(e){
-    if(statusEl){ statusEl.textContent='Player error: '+e.message; statusEl.style.color='#ef4444'; }
-    setTimeout(closeAdOverlay,2000);
-  }
+
+  document.addEventListener('visibilitychange', onReturn);
+  window.addEventListener('focus', onReturn);
 }
 function _giveAdPoints(){
   if(!currentUser||!_db){ closeAdOverlay(); return; }
