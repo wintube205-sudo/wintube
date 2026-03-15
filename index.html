@@ -8,6 +8,10 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0">
 <title>WinTube — Watch &amp; Earn</title>
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=Bebas+Neue&display=swap" rel="stylesheet">
+<!-- Firebase SDKs — loaded statically for reliability -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 <link rel="stylesheet" href="https://cdn.fluidplayer.com/v3/current/fluidplayer.min.css"/>
 <script src="https://cdn.fluidplayer.com/v3/current/fluidplayer.min.js"></script>
 <style>
@@ -884,22 +888,13 @@ var myRefCode='';
 var _iadInterval5m=null;
 
 // ── FIREBASE LOAD ──
-function loadSc(src,cb){
-  var s=document.createElement('script');
-  s.src=src;
-  s.onload=cb;
-  s.onerror=function(){ console.error('Failed to load script:',src); if(cb) cb(); };
-  document.head.appendChild(s);
-}
-
-loadSc('https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js', function(){
-  loadSc('https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js', function(){
-    loadSc('https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js', function(){
-      try{
-        if(!firebase.apps.length) firebase.initializeApp(FB_CFG);
-        _db   = firebase.firestore();
-        _auth = firebase.auth();
-        _auth.onAuthStateChanged(function(u){
+// Firebase initialized directly (scripts loaded in <head>)
+function initFirebase(){
+  try{
+    if(!firebase.apps.length) firebase.initializeApp(FB_CFG);
+    _db   = firebase.firestore();
+    _auth = firebase.auth();
+    _auth.onAuthStateChanged(function(u){
           if(u){
             currentUser = u;
             refreshPointsFromDB();
@@ -918,9 +913,9 @@ loadSc('https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js', funct
           }
         });
       }catch(e){ if(G('authErr')) G('authErr').textContent='Firebase error: '+e.message; }
-    });
-  });
-});
+}
+
+initFirebase();
 
 // ── AUTH ──
 function doGoogle(){
