@@ -856,18 +856,15 @@ var START_PTS=100, EARN_AMT=1, EARN_EVERY=30, GAME_SEC=30, PTS_USD=1000, MIN_W=5
 var CIRC=101;
 var ADMIN_UID = ['TjFFYhwzbl','M9HhZocq','sAkZbltix1'].join('');
 var BASE = 'https://www.googleapis.com/youtube/v3/';
-var YT_KEY = (function(){
-  var _k=['AIzaSyDNK9EJ5','IQ2dFLBn1jUk1h','slgOwwTBdvJ0'];
-  return _k.join('');
-})();
+var YT_KEY = (function(){ return ['AIzaSyDNK9EJ5IQ2dFL','Bn1jUk1hslgOwwTBdvJ0'].join(''); })();
 var FB_CFG = (function(){
   return {
     apiKey:"AIzaSyCOV-2qbB6eFEU-myiTjlXbcE-bWhuqLQs",
     authDomain:"wintube-8bcaa.firebaseapp.com",
     projectId:"wintube-8bcaa",
     storageBucket:"wintube-8bcaa.appspot.com",
-    messagingSenderId:"760291583820",
-    appId:"1:760291583820:web:wintube"
+    messagingSenderId:"459173658209",
+    appId:"1:459173658209:web:d1e5ddf04ecf548cc67420"
   };
 })();
 
@@ -1621,6 +1618,23 @@ function loadWithdrawHistory(){
 }
 
 // ── ADMIN ──
+function doAdminLogin(){
+  var e=(G('admEmail').value||'').trim();
+  var p=G('admPass').value||'';
+  var err=G('admErr'); if(err) err.textContent='';
+  if(!e||!p){ if(err) err.textContent='Fill all fields'; return; }
+  _auth.signInWithEmailAndPassword(e,p).then(function(uc){
+    if(uc.user.uid===ADMIN_UID){
+      var al=G('admLogin'); if(al) al.style.display='none';
+      var ad=G('admDash'); if(ad){ ad.style.display='flex'; }
+      loadAdminWithdrawals();
+    } else {
+      if(err) err.textContent='Not authorized';
+      _auth.signOut();
+    }
+  }).catch(function(e2){ if(err) err.textContent=e2.message; });
+}
+
 function openAdmin(){
   if(!currentUser||currentUser.uid!==ADMIN_UID) return;
   var ov=G('admOv'); if(ov) ov.classList.add('open');
