@@ -1,20 +1,20 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="e1671906fe12dcb75fecc23751123667896567cd" content="e1671906fe12dcb75fecc23751123667896567cd" />
 <meta name='admaven-placement' content='BqjsGrHaG'>
 <meta name="monetag" content="014ad3389bf7251c4d16e51475f8daeb">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0">
-<title>WinTube — Watch & Earn</title>
+<title>WinTube — Watch &amp; Earn</title>
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=Bebas+Neue&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.fluidplayer.com/v3/current/fluidplayer.min.css"/>
+<script src="https://cdn.fluidplayer.com/v3/current/fluidplayer.min.js"></script>
 <style>
 :root{--red:#ff2d2d;--dark:#0a0a0a;--card:#111;--border:#1e1e1e;--text:#f0f0f0;--muted:#666;--green:#22c55e;--yellow:#f59e0b;--purple:#a855f7;}
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
 html{font-size:16px;-webkit-text-size-adjust:100%;}
 body{background:var(--dark);color:var(--text);font-family:'Cairo',sans-serif;min-height:100vh;overflow-x:hidden;}
-
-/* HEADER */
 header{position:sticky;top:0;z-index:200;background:rgba(10,10,10,.98);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:0 1rem;height:60px;display:flex;align-items:center;gap:.75rem;}
 .logo{font-family:'Bebas Neue',sans-serif;font-size:1.7rem;color:var(--red);letter-spacing:3px;flex-shrink:0;line-height:1;}
 .logo span{color:var(--text);}
@@ -30,19 +30,13 @@ header{position:sticky;top:0;z-index:200;background:rgba(10,10,10,.98);backdrop-
 .hbtn{border:none;color:#fff;border-radius:50px;padding:.33rem .85rem;font-family:'Cairo',sans-serif;font-size:.75rem;font-weight:700;cursor:pointer;white-space:nowrap;flex-shrink:0;}
 .hbtn-gold{background:linear-gradient(135deg,#f59e0b,#d97706);}
 .hbtn-red{background:linear-gradient(135deg,#ef4444,#b91c1c);}
-
-/* CATEGORIES */
 .categories{padding:.6rem 1rem;display:flex;gap:.4rem;overflow-x:auto;border-bottom:1px solid var(--border);scrollbar-width:none;-webkit-overflow-scrolling:touch;}
 .categories::-webkit-scrollbar{display:none;}
 .cat-btn{background:var(--card);border:1px solid var(--border);color:var(--muted);padding:.35rem .9rem;border-radius:50px;cursor:pointer;font-family:'Cairo',sans-serif;font-size:.8rem;white-space:nowrap;transition:all .2s;flex-shrink:0;}
 .cat-btn:hover,.cat-btn.active{background:var(--red);border-color:var(--red);color:#fff;}
-
-/* MAIN */
 main{padding:1.25rem 1rem;}
 .section-title{font-size:1.1rem;font-weight:700;margin-bottom:1.25rem;display:flex;align-items:center;gap:.7rem;flex-wrap:wrap;}
 .section-title::before{content:'';width:4px;height:1.2em;background:var(--red);border-radius:2px;flex-shrink:0;}
-
-/* VIDEO GRID */
 .video-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,260px),1fr));gap:1rem;}
 .video-card{background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden;cursor:pointer;transition:transform .2s,border-color .2s;}
 .video-card:hover{transform:translateY(-3px);border-color:var(--red);}
@@ -66,8 +60,6 @@ main{padding:1.25rem 1rem;}
 .lm-wrap{text-align:center;margin-top:2rem;}
 .lm-btn{background:var(--card);border:1px solid var(--red);color:var(--red);padding:.65rem 2rem;border-radius:50px;cursor:pointer;font-family:'Cairo',sans-serif;font-size:.88rem;transition:all .2s;}
 .lm-btn:hover{background:var(--red);color:#fff;}
-
-/* GAMES */
 .games-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,240px),1fr));gap:1rem;}
 .game-card{background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden;cursor:pointer;transition:transform .2s,border-color .2s;position:relative;}
 .game-card:hover{transform:translateY(-3px);border-color:var(--purple);}
@@ -77,16 +69,12 @@ main{padding:1.25rem 1rem;}
 .game-card:hover .game-ov{opacity:1;}
 @media(hover:none){.game-ov{opacity:1;background:rgba(0,0,0,.2);}}
 .game-play{width:46px;height:46px;background:var(--purple);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.2rem;}
-.game-cap-badge{position:absolute;top:7px;right:7px;background:rgba(168,85,247,.85);color:#fff;font-size:.62rem;font-weight:700;padding:2px 7px;border-radius:50px;}
-.game-cap-badge.maxed{background:rgba(34,197,94,.85);}
 .game-info{padding:.7rem .85rem;}
 .game-name{font-size:.88rem;font-weight:700;margin-bottom:.3rem;}
 .game-bar-wrap{display:flex;align-items:center;gap:.5rem;}
 .game-bar-bg{flex:1;height:4px;background:#1a1a1a;border-radius:99px;overflow:hidden;}
 .game-bar-fill{height:100%;background:linear-gradient(90deg,var(--purple),#7c3aed);border-radius:99px;transition:width .4s;}
 .game-bar-lbl{font-size:.65rem;color:var(--muted);white-space:nowrap;}
-
-/* AUTH */
 .auth-ov{position:fixed;inset:0;background:rgba(0,0,0,.97);z-index:9000;display:flex;align-items:center;justify-content:center;padding:1rem;overflow-y:auto;}
 .auth-ov.hidden{display:none;}
 .auth-box{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:2rem 1.5rem;width:100%;max-width:390px;}
@@ -102,14 +90,12 @@ main{padding:1.25rem 1rem;}
 .auth-tabs{display:flex;gap:.4rem;margin-bottom:1rem;}
 .auth-tab{flex:1;padding:.5rem;background:transparent;border:1px solid var(--border);color:var(--muted);border-radius:8px;cursor:pointer;font-family:'Cairo',sans-serif;font-size:.85rem;transition:all .2s;}
 .auth-tab.active{background:var(--red);border-color:var(--red);color:#fff;font-weight:700;}
-.a-inp{width:100%;background:#0a0a0a;border:1px solid var(--border);color:var(--text);padding:.72rem .9rem;font-family:'Cairo',sans-serif;font-size:max(.9rem,16px);border-radius:10px;outline:none;display:block;margin-bottom:.7rem;text-align:left;transition:border-color .2s;}
+.a-inp{width:100%;background:#0a0a0a;border:1px solid var(--border);color:var(--text);padding:.72rem .9rem;font-family:'Cairo',sans-serif;font-size:max(.9rem,16px);border-radius:10px;outline:none;display:block;margin-bottom:.7rem;transition:border-color .2s;}
 .a-inp:focus{border-color:var(--red);}
 .a-sub{width:100%;background:var(--red);border:none;color:#fff;padding:.8rem;border-radius:10px;font-family:'Cairo',sans-serif;font-size:1rem;font-weight:700;cursor:pointer;transition:background .2s;}
 .a-sub:hover{background:#cc2424;}
 .a-sub:disabled{background:#555;cursor:not-allowed;}
 .a-err{color:var(--red);font-size:.82rem;margin-top:.75rem;min-height:1.2em;text-align:center;}
-
-/* VIDEO MODAL */
 .modal-ov{position:fixed;inset:0;z-index:1000;display:none;flex-direction:column;background:#000;}
 .modal-ov.open{display:flex;}
 .modal{width:100%;height:100%;display:flex;flex-direction:column;overflow:hidden;}
@@ -123,22 +109,19 @@ main{padding:1.25rem 1rem;}
 .ring-bg{fill:none;stroke:#1e1e1e;stroke-width:3;}
 .ring-fill{fill:none;stroke-width:3;stroke-linecap:round;stroke-dasharray:101;stroke-dashoffset:0;transition:stroke-dashoffset .8s,stroke .3s;stroke:#22c55e;}
 .t-num{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:.66rem;font-weight:700;color:#22c55e;}
-.pts-info{text-align:left;}
+.pts-info{text-align:right;}
 .pts-lbl{font-size:.62rem;color:var(--muted);}
 .pts-val{font-size:.85rem;font-weight:700;color:var(--green);}
 .pts-val.flash{animation:flashG .6s;}
 @keyframes flashG{0%,100%{color:var(--green);}50%{color:#fff;text-shadow:0 0 12px #22c55e;}}
 .iframe-wrap{flex:1;position:relative;background:#000;overflow:hidden;}
 .iframe-wrap #ytPCWrap{position:absolute;top:0;left:0;width:100%;height:100%;}
-.iframe-wrap #ytPCWrap #ytInnerDiv,.iframe-wrap #ytPCWrap iframe{position:absolute;top:0;left:0;width:100%!important;height:100%!important;border:none;}
-.iframe-wrap #ytPCWrap iframe{position:absolute;top:0;left:0;width:100%;height:100%;border:none;}
+.iframe-wrap #ytPCWrap iframe{position:absolute;top:0;left:0;width:100%!important;height:100%!important;border:none;}
 .pause-ind{position:absolute;top:0;left:0;right:0;background:rgba(0,0,0,.8);display:none;flex-direction:row;align-items:center;justify-content:center;gap:.5rem;z-index:5;padding:.4rem .8rem;pointer-events:none;}
 .pause-ind.on{display:flex;}
 .pause-icon{font-size:1rem;}
 .pause-lbl{font-size:.75rem;color:#f0f0f0;font-weight:600;white-space:nowrap;}
 .modal-desc{padding:.6rem .9rem;font-size:.76rem;color:var(--muted);max-height:60px;overflow-y:auto;flex-shrink:0;border-top:1px solid var(--border);background:#111;}
-
-/* GAME OVERLAY */
 .game-ov-full{position:fixed;inset:0;z-index:1500;background:#000;display:none;flex-direction:column;}
 .game-ov-full.open{display:flex;}
 .g-close{position:absolute;top:10px;right:10px;z-index:20;background:rgba(0,0,0,.8);border:2px solid rgba(255,255,255,.3);color:#fff;width:42px;height:42px;border-radius:50%;cursor:pointer;font-size:1.2rem;display:flex;align-items:center;justify-content:center;transition:background .2s;}
@@ -148,14 +131,10 @@ main{padding:1.25rem 1rem;}
 .g-pts-badge{background:rgba(168,85,247,.9);color:#fff;border-radius:50px;padding:.25rem .7rem;font-size:.72rem;font-weight:700;font-family:'Cairo',sans-serif;}
 .g-iframe{flex:1;position:relative;}
 .g-iframe iframe{position:absolute;inset:0;width:100%;height:100%;border:none;}
-
-/* TOAST */
 .toast{position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%) translateY(20px);background:rgba(34,197,94,.95);color:#fff;padding:.45rem 1.3rem;border-radius:50px;font-size:.85rem;font-weight:700;z-index:9999;opacity:0;pointer-events:none;transition:opacity .3s,transform .3s;white-space:nowrap;font-family:'Cairo',sans-serif;}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 .g-toast{position:fixed;top:55px;left:50%;transform:translateX(-50%) translateY(-10px);background:rgba(168,85,247,.95);color:#fff;padding:.4rem 1.1rem;border-radius:50px;font-size:.82rem;font-weight:700;z-index:9999;opacity:0;pointer-events:none;transition:opacity .3s,transform .3s;white-space:nowrap;font-family:'Cairo',sans-serif;}
 .g-toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
-
-/* WITHDRAW */
 .w-ov{position:fixed;inset:0;background:rgba(0,0,0,.95);z-index:5000;display:none;align-items:center;justify-content:center;padding:1rem;}
 .w-ov.open{display:flex;}
 .w-box{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:1.8rem 1.4rem;width:100%;max-width:440px;max-height:92dvh;overflow-y:auto;}
@@ -175,8 +154,6 @@ main{padding:1.25rem 1rem;}
 .req-badge.pending{background:rgba(245,158,11,.12);color:var(--yellow);border:1px solid rgba(245,158,11,.25);}
 .req-badge.approved{background:rgba(34,197,94,.12);color:var(--green);border:1px solid rgba(34,197,94,.25);}
 .req-badge.rejected{background:rgba(255,45,45,.12);color:var(--red);border:1px solid rgba(255,45,45,.25);}
-
-/* ADMIN */
 .adm-ov{position:fixed;inset:0;background:rgba(0,0,0,.98);z-index:6000;display:none;flex-direction:column;}
 .adm-ov.open{display:flex;}
 .adm-bar{background:#0c0c0c;border-bottom:1px solid var(--border);padding:.75rem 1.2rem;display:flex;align-items:center;gap:1rem;flex-shrink:0;}
@@ -202,7 +179,6 @@ main{padding:1.25rem 1rem;}
 .adm-form-row{display:flex;flex-direction:column;gap:.4rem;margin-bottom:.9rem;}
 .adm-form-lbl{font-size:.78rem;color:var(--muted);}
 .adm-inp{background:#0a0a0a;border:1px solid var(--border);color:var(--text);padding:.65rem .9rem;border-radius:8px;font-family:'Cairo',sans-serif;font-size:.88rem;outline:none;width:100%;direction:ltr;text-align:left;}
-.adm-inp.rtl{direction:ltr;text-align:left;}
 .adm-inp:focus{border-color:var(--red);}
 .adm-add{width:100%;background:var(--red);border:none;color:#fff;padding:.75rem;border-radius:10px;font-family:'Cairo',sans-serif;font-size:.92rem;font-weight:700;cursor:pointer;margin-top:.2rem;}
 .adm-add:disabled{background:#444;cursor:not-allowed;}
@@ -210,68 +186,21 @@ main{padding:1.25rem 1rem;}
 .adm-game-name{font-size:.85rem;font-weight:700;}
 .adm-game-url{font-size:.7rem;color:var(--muted);direction:ltr;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:180px;}
 .adm-game-del{background:rgba(255,45,45,.1);border:1px solid rgba(255,45,45,.25);color:var(--red);padding:.3rem .7rem;border-radius:7px;font-family:'Cairo',sans-serif;font-size:.75rem;cursor:pointer;flex-shrink:0;margin-right:auto;}
-
-/* IMAGE UPLOAD */
 .img-upload-box{border:2px dashed var(--border);border-radius:10px;padding:1rem;text-align:center;cursor:pointer;transition:border-color .2s;position:relative;overflow:hidden;background:#0a0a0a;margin-bottom:.9rem;}
 .img-upload-box:hover{border-color:var(--red);}
 .img-upload-box input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;}
 .img-preview{width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:8px;display:none;}
 .img-placeholder{color:var(--muted);font-size:.82rem;padding:.5rem 0;}
 .img-placeholder span{display:block;font-size:1.8rem;margin-bottom:.3rem;}
-
-
-/* ═══ AD CONTAINERS ═══ */
-.ad-slot{width:100%;overflow:hidden;text-align:center;background:transparent;margin:0.75rem 0;display:block;}
-.ad-slot-banner{width:100%;min-height:60px;}
-.ad-slot-mid{width:100%;min-height:250px;}
-.ad-label{font-size:.6rem;color:var(--muted);text-align:center;margin-bottom:2px;letter-spacing:1px;text-transform:uppercase;}
-/* MOBILE */
-@media(max-width:767px){
-  .ad-slot-banner{min-height:50px;}
-  header{height:auto;padding:.55rem .75rem;flex-wrap:wrap;gap:.45rem;}
-  .logo{font-size:1.5rem;order:1;}
-  .user-panel{order:2;margin-right:auto;}
-  .user-name{display:none;}
-  .search-bar{order:3;width:100%;max-width:100%;flex:none;}
-  .hbtn{display:none;}
-  .video-grid{grid-template-columns:repeat(2,1fr);gap:.6rem;}
-  .games-grid{grid-template-columns:repeat(2,1fr);gap:.6rem;}
-  main{padding:.75rem;}
-  
-  
-}
-@media(max-width:420px){
-  .video-grid{grid-template-columns:1fr;}
-  .games-grid{grid-template-columns:1fr;}
-}
-@media(min-width:1200px){
-  header{padding:0 2rem;}main{padding:1.75rem 2rem;}.categories{padding:.7rem 2rem;}
-  .video-grid{grid-template-columns:repeat(auto-fill,minmax(280px,1fr));}
-}
-.mob-bar{display:none;position:fixed;bottom:0;left:0;right:0;z-index:150;background:rgba(10,10,10,.97);backdrop-filter:blur(16px);border-top:1px solid var(--border);padding:.55rem 1rem;gap:.6rem;align-items:center;justify-content:center;}
-@media(max-width:599px){
-  .mob-bar{display:flex;}
-  body{padding-bottom:60px;}
-  .mob-bar-btn{flex:1;border:none;color:#fff;border-radius:10px;padding:.6rem .5rem;font-family:'Cairo',sans-serif;font-size:.8rem;font-weight:700;cursor:pointer;display:none;align-items:center;justify-content:center;gap:.4rem;}
-  .mob-bar-btn.gold{background:linear-gradient(135deg,#f59e0b,#d97706);}
-  .mob-bar-btn.red{background:linear-gradient(135deg,#ef4444,#b91c1c);}
-  .mob-bar-btn[data-show]{display:flex;}
-}
-
-
-
-/* ═══ REGION SELECTOR ═══ */
 .region-bar{display:flex;align-items:center;gap:.4rem;padding:.4rem 1rem;background:rgba(255,255,255,.02);border-bottom:1px solid var(--border);overflow-x:auto;scrollbar-width:none;}
 .region-bar::-webkit-scrollbar{display:none;}
 .region-btn{background:transparent;border:1px solid var(--border);color:var(--muted);padding:.28rem .7rem;border-radius:50px;cursor:pointer;font-family:'Cairo',sans-serif;font-size:.75rem;white-space:nowrap;transition:all .2s;flex-shrink:0;}
 .region-btn:hover,.region-btn.active{background:rgba(255,45,45,.12);border-color:var(--red);color:#fff;}
 .region-lbl{font-size:.7rem;color:var(--muted);flex-shrink:0;margin-left:.3rem;}
-
-/* ═══ LEADERBOARD ═══ */
 .lb-ov{position:fixed;inset:0;background:rgba(0,0,0,.97);z-index:8000;display:none;align-items:center;justify-content:center;padding:1rem;}
 .lb-ov.open{display:flex;}
 .lb-box{background:var(--card);border:1px solid var(--border);border-radius:18px;width:100%;max-width:420px;max-height:88vh;overflow:hidden;display:flex;flex-direction:column;}
-.lb-head{background:linear-gradient(135deg,#1a0533,#2d0a5c);padding:1.2rem 1.2rem .9rem;text-align:center;flex-shrink:0;}
+.lb-head{background:linear-gradient(135deg,#1a0533,#2d0a5c);padding:1.2rem 1.2rem .9rem;text-align:center;flex-shrink:0;position:relative;}
 .lb-title{font-family:'Bebas Neue',sans-serif;font-size:1.8rem;letter-spacing:3px;color:#fff;}
 .lb-sub{font-size:.75rem;color:rgba(255,255,255,.5);margin-top:.2rem;}
 .lb-close{position:absolute;top:.8rem;left:.8rem;background:rgba(255,255,255,.1);border:none;color:#fff;width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:.95rem;}
@@ -286,16 +215,12 @@ main{padding:1.25rem 1rem;}
 .lb-name{flex:1;font-size:.85rem;font-weight:600;}
 .lb-pts{font-size:.82rem;font-weight:800;color:var(--yellow);}
 .lb-loading{text-align:center;padding:2.5rem;color:var(--muted);}
-
-/* ═══ REFERRAL ═══ */
 .ref-box{background:rgba(34,197,94,.06);border:1px solid rgba(34,197,94,.2);border-radius:10px;padding:.75rem 1rem;margin-top:.8rem;}
 .ref-title{font-size:.78rem;color:var(--green);font-weight:700;margin-bottom:.45rem;}
 .ref-link-row{display:flex;gap:.4rem;align-items:center;}
 .ref-link-inp{flex:1;background:#0a0a0a;border:1px solid var(--border);color:#aaa;padding:.45rem .7rem;border-radius:7px;font-size:.72rem;direction:ltr;text-align:left;outline:none;}
 .ref-copy{background:var(--green);border:none;color:#fff;padding:.45rem .75rem;border-radius:7px;font-family:'Cairo',sans-serif;font-size:.75rem;font-weight:700;cursor:pointer;white-space:nowrap;flex-shrink:0;}
 .ref-note{font-size:.68rem;color:var(--muted);margin-top:.4rem;}
-
-/* ═══ PRIVACY POLICY ═══ */
 .pp-ov{position:fixed;inset:0;background:rgba(0,0,0,.97);z-index:9500;display:none;align-items:center;justify-content:center;padding:1rem;overflow-y:auto;}
 .pp-ov.open{display:flex;}
 .pp-box{background:var(--card);border:1px solid var(--border);border-radius:18px;width:100%;max-width:600px;max-height:90vh;overflow-y:auto;padding:1.8rem 1.5rem;}
@@ -304,8 +229,6 @@ main{padding:1.25rem 1rem;}
 .pp-h{font-size:.95rem;font-weight:800;color:var(--yellow);margin:1.2rem 0 .4rem;}
 .pp-p{font-size:.83rem;color:#ccc;line-height:1.8;margin-bottom:.5rem;}
 .pp-close-btn{width:100%;background:var(--red);border:none;color:#fff;padding:.75rem;border-radius:10px;font-family:'Cairo',sans-serif;font-size:.92rem;font-weight:700;cursor:pointer;margin-top:1.2rem;}
-
-/* ═══ ABOUT ═══ */
 .about-ov{position:fixed;inset:0;background:rgba(0,0,0,.97);z-index:9500;display:none;align-items:center;justify-content:center;padding:1rem;}
 .about-ov.open{display:flex;}
 .about-box{background:var(--card);border:1px solid var(--border);border-radius:18px;width:100%;max-width:480px;padding:2rem 1.5rem;text-align:center;}
@@ -318,32 +241,40 @@ main{padding:1.25rem 1rem;}
 .about-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.6rem;margin-bottom:1.2rem;}
 .about-p{font-size:.82rem;color:#bbb;line-height:1.8;margin-bottom:.8rem;text-align:left;}
 .about-close{width:100%;background:var(--card);border:1px solid var(--border);color:var(--text);padding:.7rem;border-radius:10px;font-family:'Cairo',sans-serif;font-size:.9rem;cursor:pointer;margin-top:.5rem;}
-
-/* ═══ FOOTER ═══ */
 footer{background:#060606;border-top:1px solid var(--border);padding:1.2rem 1rem;text-align:center;margin-top:2rem;}
 .footer-links{display:flex;justify-content:center;gap:1.2rem;flex-wrap:wrap;margin-bottom:.7rem;}
 .footer-link{color:var(--muted);font-size:.78rem;cursor:pointer;transition:color .2s;background:none;border:none;font-family:'Cairo',sans-serif;}
 .footer-link:hover{color:var(--red);}
 .footer-copy{font-size:.7rem;color:#333;}
-
-
-/* ═══ INTERSTITIAL AD OVERLAY ═══ */
-.iad-ov{position:fixed;inset:0;z-index:99000;background:rgba(0,0,0,.97);display:none;flex-direction:column;align-items:center;justify-content:center;font-family:'Cairo',sans-serif;}
-.iad-ov.open{display:flex;}
-.iad-top{width:100%;max-width:600px;display:flex;align-items:center;justify-content:space-between;padding:.6rem 1rem;background:rgba(255,255,255,.04);border-bottom:1px solid rgba(255,255,255,.08);}
-.iad-label{font-size:.72rem;color:#aaa;letter-spacing:.5px;}
-.iad-countdown{display:flex;align-items:center;gap:.5rem;}
-.iad-num{font-size:.85rem;font-weight:800;color:var(--yellow);min-width:18px;text-align:center;}
-.iad-skip{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:#fff;padding:.32rem .9rem;border-radius:50px;font-family:'Cairo',sans-serif;font-size:.75rem;cursor:pointer;transition:all .2s;display:none;}
-.iad-skip.show{display:inline-block;}
-.iad-skip:hover{background:var(--red);border-color:var(--red);}
-.iad-body{width:100%;max-width:600px;min-height:300px;display:flex;align-items:center;justify-content:center;padding:.5rem 1rem;position:relative;}
-.iad-body iframe{width:100%;min-height:280px;border:none;display:block;}
-.iad-progress{position:absolute;bottom:0;left:0;height:3px;background:var(--red);transition:width 1s linear;border-radius:0 2px 2px 0;}
-.iad-bottom{width:100%;max-width:600px;text-align:center;padding:.5rem;font-size:.65rem;color:#444;}
-
-
-/* ═══ REWARDS PAGE ═══ */
+.mob-bar{display:none;position:fixed;bottom:0;left:0;right:0;z-index:150;background:rgba(10,10,10,.97);backdrop-filter:blur(16px);border-top:1px solid var(--border);padding:.55rem 1rem;gap:.6rem;align-items:center;justify-content:center;}
+@media(max-width:599px){
+  .mob-bar{display:flex;}
+  body{padding-bottom:60px;}
+  .mob-bar-btn{flex:1;border:none;color:#fff;border-radius:10px;padding:.6rem .5rem;font-family:'Cairo',sans-serif;font-size:.8rem;font-weight:700;cursor:pointer;display:none;align-items:center;justify-content:center;gap:.4rem;}
+  .mob-bar-btn.gold{background:linear-gradient(135deg,#f59e0b,#d97706);}
+  .mob-bar-btn.red{background:linear-gradient(135deg,#ef4444,#b91c1c);}
+  .mob-bar-btn[data-show]{display:flex;}
+}
+@media(max-width:767px){
+  header{height:auto;padding:.55rem .75rem;flex-wrap:wrap;gap:.45rem;}
+  .logo{font-size:1.5rem;order:1;}
+  .user-panel{order:2;margin-right:auto;}
+  .user-name{display:none;}
+  .search-bar{order:3;width:100%;max-width:100%;flex:none;}
+  .hbtn{display:none;}
+  .video-grid{grid-template-columns:repeat(2,1fr);gap:.6rem;}
+  .games-grid{grid-template-columns:repeat(2,1fr);gap:.6rem;}
+  main{padding:.75rem;}
+}
+@media(max-width:420px){
+  .video-grid{grid-template-columns:1fr;}
+  .games-grid{grid-template-columns:1fr;}
+}
+@media(min-width:1200px){
+  header{padding:0 2rem;}main{padding:1.75rem 2rem;}.categories{padding:.7rem 2rem;}
+  .video-grid{grid-template-columns:repeat(auto-fill,minmax(280px,1fr));}
+}
+/* REWARDS */
 #secRewards{display:none;}
 .rw-hero{background:linear-gradient(135deg,#0d001a,#1a0035,#0d001a);border:1px solid rgba(168,85,247,.2);border-radius:16px;padding:1.5rem 1.2rem;text-align:center;margin-bottom:1.5rem;position:relative;overflow:hidden;}
 .rw-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(168,85,247,.15),transparent 70%);pointer-events:none;}
@@ -351,7 +282,6 @@ footer{background:#060606;border-top:1px solid var(--border);padding:1.2rem 1rem
 .rw-hero-title{font-family:'Bebas Neue',sans-serif;font-size:2rem;letter-spacing:3px;color:#fff;margin-bottom:.3rem;}
 .rw-hero-sub{font-size:.82rem;color:rgba(255,255,255,.5);margin-bottom:1.2rem;}
 .rw-balance{display:inline-flex;align-items:center;gap:.5rem;background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.25);border-radius:50px;padding:.4rem 1.1rem;font-size:.9rem;font-weight:800;color:var(--yellow);}
-
 .rw-offer-card{background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:1rem;transition:border-color .2s;}
 .rw-offer-card:hover{border-color:rgba(168,85,247,.4);}
 .rw-offer-head{display:flex;align-items:center;gap:.9rem;padding:1rem 1.1rem;}
@@ -368,27 +298,21 @@ footer{background:#060606;border-top:1px solid var(--border);padding:1.2rem 1rem
 .rw-offer-btn{width:100%;background:linear-gradient(135deg,#7c3aed,#a855f7);border:none;color:#fff;padding:.75rem;font-family:'Cairo',sans-serif;font-size:.9rem;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:.5rem;transition:opacity .2s;}
 .rw-offer-btn:hover{opacity:.9;}
 .rw-offer-btn:disabled{background:#333;color:#666;cursor:not-allowed;}
-.rw-offer-btn.claimed{background:linear-gradient(135deg,#14532d,#16a34a);}
 .rw-offer-btn.waiting{background:linear-gradient(135deg,#1e3a5f,#2563eb);}
-
-.rw-timer-bar{height:4px;background:#1a1a1a;position:relative;}
+.rw-timer-bar{height:4px;background:#1a1a1a;}
 .rw-timer-fill{height:100%;background:linear-gradient(90deg,#7c3aed,#a855f7);border-radius:2px;transition:width .5s linear;}
-
 .rw-how{background:rgba(255,255,255,.02);border:1px solid var(--border);border-radius:12px;padding:1rem 1.1rem;margin-top:1.2rem;}
 .rw-how-title{font-size:.85rem;font-weight:700;color:var(--purple);margin-bottom:.8rem;}
 .rw-how-step{display:flex;align-items:flex-start;gap:.7rem;margin-bottom:.6rem;}
 .rw-how-num{width:24px;height:24px;border-radius:50%;background:rgba(168,85,247,.15);border:1px solid rgba(168,85,247,.3);color:var(--purple);font-size:.72rem;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:.05rem;}
 .rw-how-text{font-size:.78rem;color:#bbb;line-height:1.5;}
-
 .rw-toast-overlay{position:fixed;inset:0;z-index:99999;display:none;align-items:center;justify-content:center;pointer-events:none;}
 .rw-toast-overlay.show{display:flex;}
 .rw-pts-pop{background:linear-gradient(135deg,#14532d,#16a34a);color:#fff;border-radius:18px;padding:1.5rem 2rem;text-align:center;animation:rwPop .5s ease;pointer-events:none;box-shadow:0 0 40px rgba(34,197,94,.3);}
 @keyframes rwPop{0%{transform:scale(.5);opacity:0;}70%{transform:scale(1.1);}100%{transform:scale(1);opacity:1;}}
 .rw-pts-pop-num{font-size:3rem;font-weight:900;line-height:1;}
 .rw-pts-pop-lbl{font-size:.9rem;opacity:.8;margin-top:.3rem;}
-
-
-/* ═══ CPA BANNER — HOME ═══ */
+/* CPA BANNER */
 .cpa-banner{width:100%;margin:.6rem 0;padding:.4rem 1rem;box-sizing:border-box;}
 .cpa-banner-inner{background:linear-gradient(135deg,#1a0035,#2d0060,#1a0035);border:1px solid rgba(168,85,247,.35);border-radius:14px;padding:.85rem 1.1rem;display:flex;align-items:center;gap:.9rem;cursor:pointer;transition:border-color .2s,transform .15s;position:relative;overflow:hidden;}
 .cpa-banner-inner::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 30% 50%,rgba(168,85,247,.12),transparent 70%);pointer-events:none;}
@@ -402,314 +326,106 @@ footer{background:#060606;border-top:1px solid var(--border);padding:1.2rem 1rem
 .cpa-banner-pts-num{font-size:1.5rem;font-weight:900;color:#f59e0b;line-height:1;}
 .cpa-banner-pts-lbl{font-size:.6rem;color:rgba(255,255,255,.4);margin-top:.1rem;}
 .cpa-banner-arrow{color:rgba(168,85,247,.7);font-size:1.2rem;flex-shrink:0;}
-@media(max-width:480px){
-  .cpa-banner-inner{padding:.7rem .85rem;gap:.65rem;}
-  .cpa-banner-icon{width:44px;height:44px;font-size:1.4rem;}
-  .cpa-banner-title{font-size:.85rem;}
-}
-
-
-/* ═══ VAST AD PLAYER ═══ */
+/* AD WATCH BANNER */
+.aw-banner-inner{background:linear-gradient(135deg,#1a1a00,#3d2e00,#1a1a00);border:1px solid rgba(245,158,11,.35);border-radius:14px;padding:.85rem 1.1rem;display:flex;align-items:center;gap:.9rem;cursor:pointer;transition:border-color .2s,transform .15s;}
+.aw-banner-inner:hover{border-color:rgba(245,158,11,.7);transform:translateY(-1px);}
+/* VAST */
 .vast-ov{position:fixed;inset:0;z-index:98000;background:#000;display:none;flex-direction:column;align-items:center;justify-content:center;}
 .vast-ov.open{display:flex;}
-.vast-top{position:absolute;top:0;left:0;right:0;display:flex;align-items:center;justify-content:space-between;padding:.5rem .9rem;background:rgba(0,0,0,.6);z-index:2;}
-.vast-label{font-size:.72rem;color:#aaa;letter-spacing:.5px;}
-.vast-countdown{display:flex;align-items:center;gap:.5rem;}
-.vast-num{font-size:.9rem;font-weight:800;color:var(--yellow);min-width:22px;text-align:center;}
-.vast-skip-btn{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);color:#fff;padding:.35rem 1rem;border-radius:50px;font-family:'Cairo',sans-serif;font-size:.78rem;cursor:pointer;display:none;}
-.vast-skip-btn.show{display:inline-block;}
-.vast-skip-btn:hover{background:var(--yellow);border-color:var(--yellow);color:#000;}
-.vast-video-wrap{width:100%;max-width:700px;position:relative;background:#000;}
-.vast-video-wrap video{width:100%;max-height:60vh;display:block;background:#000;}
-.vast-prog{position:absolute;bottom:0;left:0;height:3px;background:var(--yellow);transition:width .5s linear;}
-.vast-pts-note{margin-top:.8rem;font-size:.82rem;color:rgba(255,255,255,.5);text-align:center;}
-.vast-err{color:#ef4444;font-size:.85rem;text-align:center;padding:2rem;}
+#video-overlay{position:fixed;inset:0;z-index:98000;background:rgba(0,0,0,.97);display:none;align-items:center;justify-content:center;flex-direction:column;}
+#video-overlay.open{display:flex;}
 </style>
-
-<!-- Fluid Player — VAST support -->
-<link rel="stylesheet" href="https://cdn.fluidplayer.com/v3/current/fluidplayer.min.css"/>
-<script src="https://cdn.fluidplayer.com/v3/current/fluidplayer.min.js"></script>
 </head>
 <body>
-<script>
-// ╔══════════════════════════════════════════════╗
-// ║         WINTUBE SECURITY SHIELD v2.0         ║
-// ╚══════════════════════════════════════════════╝
-(function(){
-  'use strict';
-
-  // ── [1] Object.freeze removed — breaks Firebase ──
-
-  // ── [2] Disable right-click ──
-  document.addEventListener('contextmenu', function(e){ e.preventDefault(); });
-
-  // ── [3] Block devtools keyboard shortcuts ──
-  document.addEventListener('keydown', function(e){
-    // F12
-    if(e.key === 'F12') { e.preventDefault(); return false; }
-    // Ctrl+Shift+I / Ctrl+Shift+J / Ctrl+Shift+C
-    if(e.ctrlKey && e.shiftKey && ['I','i','J','j','C','c'].indexOf(e.key) > -1){
-      e.preventDefault(); return false;
-    }
-    // Ctrl+U (view source)
-    if(e.ctrlKey && (e.key==='u'||e.key==='U')){
-      e.preventDefault(); return false;
-    }
-    // Ctrl+S (save page)
-    if(e.ctrlKey && (e.key==='s'||e.key==='S')){
-      e.preventDefault(); return false;
-    }
-  });
-
-  // ── [4] DevTools detection via size change ──
-  var _devOpen = false;
-  var _threshold = 300; // رُفع لتجنب Desktop Mode على الموبايل
-  function _checkDevTools(){
-    // تجاهل الحماية على الموبايل (لتجنب false positive)
-    if(window.innerWidth <= 900) return;
-    var w = window.outerWidth - window.innerWidth > _threshold;
-    var h = window.outerHeight - window.innerHeight > _threshold;
-    if((w || h) && !_devOpen){
-      _devOpen = true;
-      _onDevToolsOpen();
-    } else if(!w && !h && _devOpen){
-      _devOpen = false;
-      // إزالة الحماية عند إغلاق DevTools
-      document.body.style.filter='';
-      document.body.style.pointerEvents='';
-      var ov=document.getElementById('_secOv');
-      if(ov) ov.style.display='none';
-    }
-  }
-  function _onDevToolsOpen(){
-    console.clear();
-    console.log('%c⛔ تحذير!', 'color:red;font-size:40px;font-weight:bold;');
-    console.log('%cهذا الموقع محمي. أي محاولة تلاعب ستؤدي إلى حظر حسابك نهائياً.', 'color:#ff4444;font-size:16px;');
-    // Blur ONLY non-ad content (لا تؤثر على iframes الإعلانات)
-    var adIds = ['wt-ad-zone-2','wt-ad-zone-3','wt-adsterra-top','wt-hilltop-mid','cpaBannerHome','adWatchBanner','video-overlay'];
-    document.body.style.filter = 'blur(8px)';
-    document.body.style.pointerEvents = 'none';
-    // استثناء حاويات الإعلانات من التأثير
-    adIds.forEach(function(id){
-      var el = document.getElementById(id);
-      if(el){ el.style.filter='none'; el.style.pointerEvents='auto'; }
-    });
-    var ov = document.getElementById('_secOv');
-    if(ov) ov.style.display = 'flex';
-  }
-  setInterval(_checkDevTools, 1000);
-
-  // ── [5] eval override removed (breaks Firebase) ──
-
-  // ── [7] Disable text selection on sensitive areas ──
-  document.addEventListener('selectstart', function(e){
-    if(e.target.closest && e.target.closest('.modal,.auth-box,.adm-ov')){
-      e.preventDefault();
-    }
-  });
-
-})();
-</script>
-
-<!-- Security Warning Overlay -->
-<div id="_secOv" style="display:none;position:fixed;inset:0;z-index:99999;background:rgba(0,0,0,.97);align-items:center;justify-content:center;flex-direction:column;font-family:'Cairo',sans-serif;text-align:center;padding:2rem;">
-  <div style="font-size:4rem;margin-bottom:1rem">🛡️</div>
-  <div style="color:#ef4444;font-size:1.4rem;font-weight:700;margin-bottom:.5rem">تحذير أمني!</div>
-  <div style="color:#f0f0f0;font-size:.95rem;margin-bottom:1.5rem;max-width:360px;line-height:1.6">تم رصد أدوات المطورين.<br>أي محاولة تلاعب ستؤدي إلى حظر حسابك نهائياً.</div>
-  <button onclick="document.getElementById('_secOv').style.display='none';document.body.style.filter='';document.body.style.pointerEvents='';" style="background:#ef4444;color:#fff;border:none;padding:.7rem 2rem;border-radius:50px;font-family:'Cairo',sans-serif;font-size:.95rem;cursor:pointer;font-weight:700;">حسناً، أغلق الأدوات</button>
+<!-- SECURITY OVERLAY -->
+<div id="_secOv" style="display:none;position:fixed;inset:0;z-index:99999;background:#000;align-items:center;justify-content:center;">
+  <div style="background:#111;border:1px solid #333;border-radius:16px;padding:2rem 1.5rem;width:90%;max-width:360px;line-height:1.6">
+    <div style="font-size:1.1rem;font-weight:700;margin-bottom:.5rem;color:var(--red)">Security Warning!</div>
+    <div style="color:#f0f0f0;">DevTools detected.<br>Any manipulation will lead to a permanent ban.</div>
+    <button onclick="document.getElementById('_secOv').style.display='none';document.body.style.filter='';document.body.style.pointerEvents='';" style="margin-top:1rem;width:100%;background:var(--red);border:none;color:#fff;padding:.75rem;border-radius:10px;font-family:Cairo,sans-serif;font-size:.92rem;font-weight:700;cursor:pointer;">OK, Close DevTools</button>
+  </div>
 </div>
 
-
-<!-- AUTH -->
-<div class="auth-ov" id="authOv">
+<!-- AUTH OVERLAY -->
+<div class="auth-ov hidden" id="authOv">
   <div class="auth-box">
     <div class="auth-logo">WIN<span>TUBE</span></div>
-    <div class="auth-sub">شاهد الفيديوهات واكسب نقاطك!</div>
-    <div class="bonus">🎁 احصل على <strong>100 pts</strong> مجاناً عند التسجيل</div>
+    <div class="auth-sub">Watch videos &amp; earn real points</div>
+    <div class="bonus">🎁 Get <strong>100 pts</strong> on sign-up for free!</div>
     <button class="google-btn" id="btnGoogle" onclick="doGoogle()">
-      <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.31-8.16 2.31-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
-      متابعة مع Google
+      <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.5 0 6.5 1.2 8.9 3.2l6.6-6.6C35.5 2.5 30.1 0 24 0 14.6 0 6.6 5.5 2.8 13.5l7.7 6C12.4 13.1 17.7 9.5 24 9.5z"/><path fill="#4285F4" d="M46.5 24.5c0-1.6-.1-3.1-.4-4.5H24v8.5h12.7c-.6 3-2.3 5.5-4.8 7.2l7.5 5.8c4.3-4 6.8-9.9 6.8-17z"/><path fill="#FBBC05" d="M10.5 28.5c-.5-1.5-.8-3-.8-4.5s.3-3 .8-4.5l-7.7-6C1 16.5 0 20.1 0 24s1 7.5 2.8 10.5l7.7-6z"/><path fill="#34A853" d="M24 48c6.1 0 11.2-2 14.9-5.4l-7.5-5.8c-2 1.4-4.6 2.2-7.4 2.2-6.3 0-11.6-4.2-13.5-9.9l-7.7 6C6.6 42.5 14.6 48 24 48z"/></svg>
+      Continue with Google
     </button>
-    <div class="auth-divider"><span>or</span></div>
+    <div class="auth-divider">or</div>
     <div class="auth-tabs">
       <button class="auth-tab active" id="tabLogin" onclick="switchTab('login')">Sign In</button>
-      <button class="auth-tab" id="tabReg" onclick="switchTab('reg')">حساب جديد</button>
+      <button class="auth-tab" id="tabReg" onclick="switchTab('reg')">Sign Up</button>
     </div>
     <div id="fLogin">
-      <input class="a-inp" type="email" id="lEmail" placeholder="Email" autocomplete="email">
-      <input class="a-inp" type="password" id="lPass" placeholder="Password" autocomplete="current-password">
+      <input class="a-inp" id="lEmail" type="email" placeholder="Email" autocomplete="email">
+      <input class="a-inp" id="lPass" type="password" placeholder="Password" autocomplete="current-password">
       <button class="a-sub" id="btnLogin" onclick="doLogin()">Sign In →</button>
     </div>
     <div id="fReg" style="display:none">
-      <input class="a-inp" type="text" id="rName" placeholder="Name" autocomplete="name">
-      <input class="a-inp" type="email" id="rEmail" placeholder="Email" autocomplete="email">
-      <input class="a-inp" type="password" id="rPass" placeholder="Password (6 أحرف+)" autocomplete="new-password">
-      <input class="a-inp" type="text" id="rRef" placeholder="كود الإحالة (اختياري)" style="direction:ltr;text-align:left;">
+      <input class="a-inp" id="rName" type="text" placeholder="Name">
+      <input class="a-inp" id="rEmail" type="email" placeholder="Email" autocomplete="email">
+      <input class="a-inp" id="rPass" type="password" placeholder="Password (min 6 chars)" autocomplete="new-password">
+      <input class="a-inp" id="rRef" type="text" placeholder="Referral code (optional)">
       <button class="a-sub" id="btnReg" onclick="doRegister()">Create Account →</button>
     </div>
     <div class="a-err" id="authErr"></div>
   </div>
 </div>
 
-<!-- WITHDRAW -->
-<div class="w-ov" id="wOv">
-  <div class="w-box">
-    <div class="w-title">💰 Withdraw</div>
-    <div class="w-bal">
-      <div><div style="font-size:.78rem;color:var(--muted)">رصيدك</div><div style="font-size:1.2rem;font-weight:800;color:var(--yellow)"><span id="wPts">0</span> pts</div></div>
-      <div style="text-align:left"><div style="font-size:.78rem;color:var(--muted)">يساوي</div><div style="font-size:.95rem;font-weight:700;color:var(--green)">≈ $<span id="wUsd">0.00</span></div></div>
-    </div>
-    <div id="wForm">
-      <div style="font-size:.76rem;color:var(--muted);background:rgba(255,255,255,.03);border-radius:8px;padding:.55rem .8rem;margin-bottom:1rem">الحد الأدنى: 5000 pts ($5) | كل 1000 pts = $1</div>
-      <label class="w-lbl">Payment Method</label>
-      <select class="w-sel" id="wMethod" onchange="updateWalletPlaceholder()">
-        <option value="">اختر Payment Method</option>
-        <optgroup label="💎 كريبتو">
-          <option value="USDT (TRC20)">USDT (TRC20)</option>
-          <option value="BNB (BEP20)">BNB (BEP20)</option>
-          <option value="Ethereum (ERC20)">Ethereum - إيثيريوم (ERC20)</option>
-        </optgroup>
-        <optgroup label="📱 شحن هاتف">
-          <option value="Asiacell">آسياسيل - Asiacell</option>
-          <option value="Zain (Eather)">زين / إيثر - Zain</option>
-        </optgroup>
-        <optgroup label="💳 بطاقات">
-          <option value="Mastercard">Mastercard</option>
-        </optgroup>
-      </select>
-      <label class="w-lbl" id="wAddrLbl">عنوان المحفظة</label>
-      <input class="w-inp" type="text" id="wAddr" placeholder="أدخل Address">
-      <label class="w-lbl">عدد النقاط (مضاعفات 1000)</label>
-      <input class="w-inp" type="number" id="wAmt" placeholder="مثال: 5000" min="5000" step="1000" oninput="calcWithdraw()">
-      <div style="font-size:.85rem;color:var(--green);margin-bottom:.6rem" id="wCalc"></div>
-      <div class="w-acts">
-        <button class="w-sub" id="wBtn" onclick="submitWithdraw()">Submit Request →</button>
-        <button class="w-cancel" onclick="closeWithdraw()">Cancel</button>
-      </div>
-      <div class="ref-box" id="refBoxW">
-        <div class="ref-title">🎁 رابط الإحالة — ادعُ أصدقاءك واكسب 50 pts لكل صديق!</div>
-        <div class="ref-link-row">
-          <input class="ref-link-inp" id="refLinkInp" readonly value="Loading...">
-          <button class="ref-copy" onclick="copyRefLink()">Copy 📋</button>
-        </div>
-        <div class="ref-note">عند تسجيل صديقك بكودك، يحصل هو على 150 pts وYou على 50 pts مجاناً</div>
-      </div>
-      <div class="w-err" id="wErr"></div>
-    </div>
-    <div id="wOK" style="display:none;text-align:center;padding:1.5rem 0">
-      <div style="font-size:3.5rem">✅</div>
-      <div style="font-size:1.1rem;font-weight:800;margin:.7rem 0 .3rem">تم إرسال طلب السحب!</div>
-      <button class="a-sub" style="max-width:160px;margin:1.2rem auto 0;display:block" onclick="closeWithdraw()">حسناً</button>
-    </div>
-    <div id="wHist" style="margin-top:.8rem"></div>
-  </div>
-</div>
-
-<!-- ADMIN -->
-<div class="adm-ov" id="admOv">
-  <div id="admLogin" style="display:none;flex:1;align-items:center;justify-content:center;padding:1rem">
-    <div class="adm-login">
-      <div style="font-family:'Bebas Neue',sans-serif;font-size:1.8rem;color:var(--red);margin-bottom:1.2rem">WINTUBE <span style="color:var(--text)">ADMIN</span></div>
-      
-      
-      <div class="a-err" id="admErr"></div>
-      <button onclick="closeAdmin()" style="background:none;border:none;color:var(--muted);margin-top:.8rem;cursor:pointer;font-family:'Cairo',sans-serif;font-size:.88rem;display:block;width:100%">Cancel</button>
-    </div>
-  </div>
-  <div id="admDash" style="display:none;flex-direction:column;flex:1;overflow:hidden">
-    <div class="adm-bar">
-      <div class="adm-logo">WIN<span style="color:var(--text)">TUBE</span> <span style="color:var(--yellow);font-size:.9rem;font-family:'Cairo',sans-serif">ADMIN</span></div>
-      <button class="adm-close" onclick="closeAdmin()">✕</button>
-    </div>
-    <div class="adm-body">
-      <div class="adm-tabs">
-        <button class="adm-tab active" id="aTabW" onclick="switchAdminTab('w')">💰 Withdrawal Requests</button>
-        <button class="adm-tab" id="aTabG" onclick="switchAdminTab('g')">🎮 Manage Games</button>
-      </div>
-      <div id="aPanelW"><div class="adm-title">📋 Withdrawal Requests</div><div id="admReqs"><div class="adm-empty">Loading...</div></div></div>
-      <div id="aPanelG" style="display:none">
-        <div class="adm-title">➕ Add Game</div>
-        <div style="display:flex;gap:.4rem;margin-bottom:.9rem">
-          <button class="adm-tab active" id="srcUrl" onclick="switchGameSrc('url')">🔗 رابط</button>
-          <button class="adm-tab" id="srcIframe" onclick="switchGameSrc('iframe')">🖼️ iframe</button>
-        </div>
-        <div class="adm-form-row">
-          <label class="adm-form-lbl">صورة اللعبة (اختياري)</label>
-          <div class="img-upload-box" onclick="G('newGameImg').click()">
-            <input type="file" id="newGameImg" accept="image/*" onchange="previewGameImg(this)" onclick="event.stopPropagation()">
-            <img id="imgPreview" class="img-preview" alt="">
-            <div class="img-placeholder" id="imgPlaceholder"><span>🖼️</span>اضغط لرفع صورة اللعبة</div>
-          </div>
-        </div>
-        <div class="adm-form-row"><label class="adm-form-lbl">Game name</label><input class="adm-inp rtl" type="text" id="newGameName" placeholder="مثال: Subway Surfers"></div>
-        <div class="adm-form-row" id="rowUrl"><label class="adm-form-lbl">Game URL</label><input class="adm-inp" type="url" id="newGameUrl" placeholder="https://..."></div>
-        <div class="adm-form-row" id="rowIframe" style="display:none">
-          <label class="adm-form-lbl">كود iframe</label>
-          <textarea class="adm-inp" id="newGameIframe" rows="3" style="resize:vertical" placeholder='<iframe src="https://..."></iframe>'></textarea>
-        </div>
-        <button class="adm-add" id="addBtn" onclick="adminAddGame()">➕ إضافة اللعبة</button>
-        <div class="w-err" id="addErr" style="margin-bottom:.7rem"></div>
-        <div class="adm-title" style="margin-top:1.3rem">🎮 Games الحالية</div>
-        <div id="admGames"><div class="adm-empty">Loading...</div></div>
-      </div>
-    </div>
-  </div>
-</div>
-
 <!-- HEADER -->
 <header>
+  <div class="user-panel" onclick="currentUser ? null : G('authOv').classList.remove('hidden')">
+    <div class="user-avatar" id="hAvatar">?</div>
+    <div>
+      <div class="user-name" id="hName">Guest</div>
+      <div class="user-pts" id="hPts">0 pts ⭐</div>
+    </div>
+  </div>
   <div class="logo">WIN<span>TUBE</span></div>
   <div class="search-bar">
-    <button onclick="doSearch()">🔍</button>
-    <input type="text" id="searchInput" placeholder="Search any video..." onkeydown="if(event.key==='Enter')doSearch()">
+    <input type="text" id="searchInp" placeholder="Search any video..." onkeydown="if(event.key==='Enter'){var q=this.value.trim();if(q)searchCat(q,null);}">
+    <button onclick="var q=G('searchInp').value.trim();if(q)searchCat(q,null);">🔍</button>
   </div>
-  <div class="user-panel" id="userPanel" onclick="doSignOut()">
-    <div><div class="user-name" id="hName">—</div><div class="user-pts">⭐ <span id="hPts">0</span> pts</div></div>
-    <div class="user-avatar" id="hAvatar">?</div>
-  </div>
-  <button class="hbtn hbtn-gold" id="btnW" onclick="openWithdraw()" style="display:none">💰 سحب</button>
-  <button class="hbtn hbtn-red" id="btnA" onclick="openAdmin()" style="display:none">🛡️ أدمن</button>
+  <button class="hbtn hbtn-red" id="btnA" onclick="openAdmin()" style="display:none">🛡️ Admin</button>
+  <button class="hbtn hbtn-gold" id="btnW" onclick="openWithdraw()" style="display:none">Withdraw 💰</button>
 </header>
 
 <!-- REGION BAR -->
 <div class="region-bar">
-  <span class="region-lbl">📍</span>
-  <button class="region-btn active" id="rgIQ" onclick="setRegion('IQ',this)">🇮🇶 Iraq</button>
+  <span class="region-lbl">Region:</span>
+  <button class="region-btn active" id="rgGL" onclick="setRegion('GL',this)">🌍 Global</button>
+  <button class="region-btn" id="rgUS" onclick="setRegion('US',this)">🇺🇸 US</button>
   <button class="region-btn" id="rgSA" onclick="setRegion('SA',this)">🇸🇦 Saudi</button>
   <button class="region-btn" id="rgEG" onclick="setRegion('EG',this)">🇪🇬 Egypt</button>
-  <button class="region-btn" id="rgUS" onclick="setRegion('US',this)">🌍 Global</button>
+  <button class="region-btn" id="rgIQ" onclick="setRegion('IQ',this)">🇮🇶 Iraq</button>
   <button class="region-btn" id="rgTR" onclick="setRegion('TR',this)">🇹🇷 Turkey</button>
-  <button class="region-btn" style="margin-right:auto;border-color:var(--purple);color:var(--purple);" onclick="openLeaderboard()">🏆 Leaderboard</button>
 </div>
-
-
-
 
 <!-- CATEGORIES -->
 <div class="categories">
   <button class="cat-btn active" id="catHome" onclick="goHome(this)">🔥 Trending</button>
-  <button class="cat-btn" onclick="searchCat('تعليم',this)">📚 Education</button>
-  <button class="cat-btn" onclick="searchCat('تكنولوجيا',this)">💻 Tech</button>
-  <button class="cat-btn" onclick="searchCat('رياضة',this)">⚽ Sports</button>
-  <button class="cat-btn" onclick="searchCat('موسيقى',this)">🎵 موسيقى</button>
-  <button class="cat-btn" onclick="searchCat('طبخ',this)">🍳 طبخ</button>
-  <button class="cat-btn" onclick="searchCat('سفر',this)">✈️ سفر</button>
-  <button class="cat-btn" id="catGames" onclick="gotoGames(this)">🎮 ألعاب</button>
-  <button class="cat-btn" onclick="searchCat('أخبار',this)">📰 أخبار</button>
-  <button class="cat-btn" onclick="searchCat('أفلام',this)">🎬 أفلام</button>
-  <button class="cat-btn" onclick="searchCat('صحة',this)">💪 صحة</button>
+  <button class="cat-btn" id="catGames" onclick="gotoGames(this)">🎮 Games</button>
   <button class="cat-btn" id="catRewards" onclick="gotoRewards(this)">💎 Earn Points</button>
+  <button class="cat-btn" onclick="searchCat('Sports',this)">⚽ Sports</button>
+  <button class="cat-btn" onclick="searchCat('Tech',this)">💻 Tech</button>
+  <button class="cat-btn" onclick="searchCat('Education',this)">📚 Education</button>
+  <button class="cat-btn" onclick="searchCat('Music',this)">🎵 Music</button>
+  <button class="cat-btn" onclick="searchCat('News',this)">📰 News</button>
+  <button class="cat-btn" style="margin-left:auto;border-color:var(--purple);color:var(--purple);" onclick="openLeaderboard()">🏆 Leaderboard</button>
 </div>
 
-<!-- ╔═══════════════════════════════════════╗ -->
-<!-- ║  CPA BANNER — أكمل العرض واكسب       ║ -->
-<!-- ╚═══════════════════════════════════════╝ -->
+<!-- CPA BANNER -->
 <div class="cpa-banner" id="cpaBannerHome">
   <div class="cpa-banner-inner" onclick="openSmartOffer()">
     <div class="cpa-banner-icon">🎁</div>
     <div class="cpa-banner-text">
-      <div class="cpa-banner-title">أكمل العرض or المهمة واحصل على 50 pts</div>
-      <div class="cpa-banner-sub">Open link ← Wait 30s ← Come back & get 50 pts ✨</div>
+      <div class="cpa-banner-title" id="cpaBannerTitle">Complete smart link &amp; earn 50 pts</div>
+      <div class="cpa-banner-sub">Open link ← Wait 30s ← Return &amp; get 50 pts ✨</div>
     </div>
     <div class="cpa-banner-pts">
       <div class="cpa-banner-pts-num">+50</div>
@@ -719,15 +435,13 @@ footer{background:#060606;border-top:1px solid var(--border);padding:1.2rem 1rem
   </div>
 </div>
 
-<!-- ╔═══════════════════════════════════════╗ -->
-<!-- ║  AD WATCH BANNER — 20 pts           ║ -->
-<!-- ╚═══════════════════════════════════════╝ -->
+<!-- AD WATCH BANNER -->
 <div class="cpa-banner" id="adWatchBanner">
-  <div class="cpa-banner-inner" style="background:linear-gradient(135deg,#1a1a00,#3d2e00,#1a1a00);border-color:rgba(245,158,11,.35);" onclick="openAdWatch()">
+  <div class="aw-banner-inner" onclick="openAdWatch()">
     <div class="cpa-banner-icon" style="background:linear-gradient(135deg,#92400e,#f59e0b);">📺</div>
     <div class="cpa-banner-text">
-      <div class="cpa-banner-title" id="adWatchTitle">Watch an ad & earn 20 points</div>
-      <div class="cpa-banner-sub">Watch a short ad & get 20 points — no daily limit!</div>
+      <div class="cpa-banner-title" id="adWatchTitle">Watch an ad &amp; earn 20 pts</div>
+      <div class="cpa-banner-sub">Watch a short ad &amp; get 20 pts instantly — no daily limit!</div>
     </div>
     <div class="cpa-banner-pts">
       <div class="cpa-banner-pts-num" style="color:#f59e0b;">+20</div>
@@ -737,17 +451,13 @@ footer{background:#060606;border-top:1px solid var(--border);padding:1.2rem 1rem
   </div>
 </div>
 
-<!-- ╔══════════════════════════════════════════╗ -->
-<!-- ║  Popunder Ad — Adsterra                 ║ -->
-<!-- ╚══════════════════════════════════════════╝ -->
+<!-- Popunder Ad -->
 <div style="width:100%;padding:.2rem 1rem;box-sizing:border-box;">
   <script src="https://pl28918409.effectivegatecpm.com/10/cb/98/10cb984b897effcb78f534f1e8a63180.js"></script>
 </div>
 
-<!-- ╔══════════════════════════════════════════╗ -->
-<!-- ║  AD ZONE 2 — Adsterra (Banner/Native)   ║ -->
-<!-- ╚══════════════════════════════════════════╝ -->
-<div id="wt-ad-zone-2" style="width:100%;padding:.4rem 1rem;box-sizing:border-box;background:transparent;min-height:70px;">
+<!-- AD ZONE 2 — Adsterra -->
+<div id="wt-ad-zone-2" style="width:100%;padding:.4rem 1rem;box-sizing:border-box;min-height:70px;">
   <div style="font-size:.55rem;color:#444;text-align:center;letter-spacing:1px;margin-bottom:4px;text-transform:uppercase;">Advertisement</div>
   <div id="wt-adsterra-top" style="width:100%;overflow:hidden;text-align:center;min-height:60px;">
     <script data-cfasync="false" src="https://pl28874602.effectivegatecpm.com/12/bc/27/12bc27a1c3f3ac66a08b09f43e2ef789.js"></script>
@@ -762,8 +472,7 @@ footer{background:#060606;border-top:1px solid var(--border);padding:1.2rem 1rem
   <div class="video-grid" id="gridHome"></div>
   <div class="lm-wrap" id="lmHome" style="display:none"><button class="lm-btn" onclick="loadMoreHome()">Load More</button></div>
 
-  <!-- AD ZONE 3 — HilltopAds -->
-  <div id="wt-ad-zone-3" style="width:100%;padding:.4rem 0;box-sizing:border-box;background:transparent;min-height:60px;margin:1rem 0;">
+  <div id="wt-ad-zone-3" style="width:100%;padding:.4rem 0;min-height:60px;margin:1rem 0;">
     <div style="font-size:.55rem;color:#444;text-align:center;letter-spacing:1px;margin-bottom:4px;text-transform:uppercase;">Advertisement</div>
     <div id="wt-hilltop-mid" style="width:100%;overflow:hidden;text-align:center;min-height:60px;">
       <script data-cfasync="false" type="text/javascript" src="//data527.click/f0a41fa00cf50b1a0813/f62c1b69b8/?placementName=inpage"></script>
@@ -791,16 +500,16 @@ footer{background:#060606;border-top:1px solid var(--border);padding:1.2rem 1rem
   <div class="rw-hero">
     <span class="rw-hero-icon">💎</span>
     <div class="rw-hero-title">Earn Points</div>
-    <div class="rw-hero-sub">Complete tasks & earn extra points</div>
-    <div class="rw-balance">⭐ <span id="rwBal">0</span> pts في رصيدك</div>
+    <div class="rw-hero-sub">Complete tasks &amp; earn extra points</div>
+    <div class="rw-balance">⭐ <span id="rwBal">0</span> pts in your balance</div>
   </div>
 
   <div class="rw-offer-card" id="rwMainCard">
     <div class="rw-offer-head">
-      <div class="rw-offer-icon purple">🎬</div>
+      <div class="rw-offer-icon purple">🎁</div>
       <div class="rw-offer-info">
-        <div class="rw-offer-name">الرابط الذكي — اكسب 50 pts</div>
-        <div class="rw-offer-desc">افتح الرابط الذكي وانتظر 30 ثانية — ستُضاف 50 pts تلقائياً.<br>يمكنك تكراره كل 5 دقائق!</div>
+        <div class="rw-offer-name">Smart Link — Earn 50 pts</div>
+        <div class="rw-offer-desc">Open the smart link &amp; wait 30s — 50 pts added automatically.<br>Repeat every 5 minutes!</div>
       </div>
       <div class="rw-offer-reward">
         <div class="rw-offer-pts">50</div>
@@ -809,7 +518,7 @@ footer{background:#060606;border-top:1px solid var(--border);padding:1.2rem 1rem
     </div>
     <div class="rw-timer-bar"><div class="rw-timer-fill" id="rwTimerFill" style="width:100%"></div></div>
     <button class="rw-offer-btn" id="rwMainBtn" onclick="openSmartOffer()">
-      <span>▶</span> افتح الرابط واكسب 50 pts
+      <span>▶</span> Open Smart Link &amp; Earn 50 pts
     </button>
   </div>
 
@@ -817,8 +526,8 @@ footer{background:#060606;border-top:1px solid var(--border);padding:1.2rem 1rem
     <div class="rw-offer-head">
       <div class="rw-offer-icon" style="background:linear-gradient(135deg,#92400e,#f59e0b);">📺</div>
       <div class="rw-offer-info">
-        <div class="rw-offer-name">شاهد إعلان — 20 pts بلا حدود</div>
-        <div class="rw-offer-desc">اضغط وشاهد إعلاناً قصيراً واحصل على 20 pts فوراً — يمكن التكرار!</div>
+        <div class="rw-offer-name">Watch Ad — 20 pts unlimited</div>
+        <div class="rw-offer-desc">Watch a short ad &amp; get 20 pts instantly — repeatable!</div>
       </div>
       <div class="rw-offer-reward">
         <div class="rw-offer-pts" style="color:#f59e0b;">20</div>
@@ -826,7 +535,7 @@ footer{background:#060606;border-top:1px solid var(--border);padding:1.2rem 1rem
       </div>
     </div>
     <button class="rw-offer-btn" style="background:linear-gradient(135deg,#92400e,#f59e0b)" onclick="openAdWatch()">
-      <span>📺</span> Watch an ad & earn 20 points
+      <span>📺</span> Watch Ad &amp; Earn 20 pts
     </button>
   </div>
 
@@ -835,11 +544,11 @@ footer{background:#060606;border-top:1px solid var(--border);padding:1.2rem 1rem
       <div class="rw-offer-icon gold">📺</div>
       <div class="rw-offer-info">
         <div class="rw-offer-name">Watch Regular Videos</div>
-        <div class="rw-offer-desc">كل 30 ثانية مشاهدة = pts واحدة بدون حد يومي</div>
+        <div class="rw-offer-desc">Every 30s watched = 1 point, no daily limit</div>
       </div>
       <div class="rw-offer-reward">
         <div class="rw-offer-pts">1</div>
-        <div class="rw-offer-pts-lbl">pts/30s</div>
+        <div class="rw-offer-pts-lbl">pt/30s</div>
       </div>
     </div>
     <button class="rw-offer-btn" style="background:linear-gradient(135deg,#78350f,#d97706)" onclick="goHome(G('catHome'))">
@@ -852,11 +561,11 @@ footer{background:#060606;border-top:1px solid var(--border);padding:1.2rem 1rem
       <div class="rw-offer-icon green">🎮</div>
       <div class="rw-offer-info">
         <div class="rw-offer-name">Play Games</div>
-        <div class="rw-offer-desc">كل 30 ثانية لعب = pts. ألعاب بلا حد يومي!</div>
+        <div class="rw-offer-desc">Every 30s played = 1 point. No daily limit!</div>
       </div>
       <div class="rw-offer-reward">
         <div class="rw-offer-pts">1</div>
-        <div class="rw-offer-pts-lbl">pts/30s</div>
+        <div class="rw-offer-pts-lbl">pt/30s</div>
       </div>
     </div>
     <button class="rw-offer-btn" style="background:linear-gradient(135deg,#4c1d95,#7c3aed)" onclick="gotoGames(G('catGames'))">
@@ -869,15 +578,15 @@ footer{background:#060606;border-top:1px solid var(--border);padding:1.2rem 1rem
       <div class="rw-offer-icon purple">👥</div>
       <div class="rw-offer-info">
         <div class="rw-offer-name">Invite Friends</div>
-        <div class="rw-offer-desc">لكل صديق يسجل بكودك: You 50 pts وهو 150 pts</div>
+        <div class="rw-offer-desc">Per friend who signs up with your code: you get 50 pts &amp; they get 150 pts</div>
       </div>
       <div class="rw-offer-reward">
         <div class="rw-offer-pts">50</div>
-        <div class="rw-offer-pts-lbl">pts/صديق</div>
+        <div class="rw-offer-pts-lbl">pts/friend</div>
       </div>
     </div>
     <button class="rw-offer-btn" onclick="currentUser&&openWithdraw()">
-      <span>📋</span> اCopy رابط الإحالة
+      <span>📋</span> Copy Referral Link
     </button>
   </div>
 
@@ -885,67 +594,33 @@ footer{background:#060606;border-top:1px solid var(--border);padding:1.2rem 1rem
     <div class="rw-how-title">💡 How does the points system work?</div>
     <div class="rw-how-step"><div class="rw-how-num">1</div><div class="rw-how-text">Tap "Open Smart Link" — opens in a new tab</div></div>
     <div class="rw-how-step"><div class="rw-how-num">2</div><div class="rw-how-text">Wait at least 30 seconds in the new tab</div></div>
-    <div class="rw-how-step"><div class="rw-how-num">3</div><div class="rw-how-text">عد لهذه الصفحة — ستُضاف 50 pts تلقائياً!</div></div>
-    <div class="rw-how-step"><div class="rw-how-num">4</div><div class="rw-how-text">Repeat the offer every 5 minutes, no daily limit</div></div>
+    <div class="rw-how-step"><div class="rw-how-num">3</div><div class="rw-how-text">Return here — 50 pts added automatically!</div></div>
+    <div class="rw-how-step"><div class="rw-how-num">4</div><div class="rw-how-text">Repeat every 5 minutes, no daily limit</div></div>
   </div>
 </main>
 
-<!-- Rewards Points Popup -->
 <div class="rw-toast-overlay" id="rwPopOv">
   <div class="rw-pts-pop">
-    <div class="rw-pts-pop-num">+100 ⭐</div>
+    <div class="rw-pts-pop-num">+50 ⭐</div>
     <div class="rw-pts-pop-lbl">Points added!</div>
   </div>
 </div>
 
-<!-- ╔═══════════════════════════════╗ -->
-<!-- ║  INTERSTITIAL AD OVERLAY     ║ -->
-<!-- ╚═══════════════════════════════╝ -->
-<div class="iad-ov" id="iadOv">
-  <div class="iad-top">
-    <span class="iad-label">📢 إعلان</span>
-    <div class="iad-countdown">
-      <span style="font-size:.72rem;color:#888">يمكن التخطي بعد</span>
-      <span class="iad-num" id="iadNum">10</span>
-      <span style="font-size:.72rem;color:#888">ثانية</span>
-      <button class="iad-skip" id="iadSkip" onclick="skipAd()">تخطي ←</button>
-    </div>
-  </div>
-  <div class="iad-body">
-    <div id="iadContent" style="width:100%;text-align:center;"></div>
-    <div class="iad-progress" id="iadProg" style="width:100%;"></div>
-  </div>
-  <div class="iad-bottom">الإعلانات تدعم المنصة وتساعدنا في توفير المكافآت للمستخدمين</div>
-</div>
-
-<!-- ╔═══════════════════════════════╗ -->
-<!-- ║  VAST AD PLAYER OVERLAY      ║ -->
-<!-- ╚═══════════════════════════════╝ -->
-<div id="video-overlay" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.96);z-index:98000;align-items:center;justify-content:center;flex-direction:column;">
-
-  <!-- زر الإغلاق X -->
-  <button onclick="closeAdOverlay()" style="position:absolute;top:14px;left:14px;width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);color:#fff;font-size:1.2rem;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:2;font-family:Cairo,sans-serif;transition:background .2s;" onmouseover="this.style.background='#ef4444'" onmouseout="this.style.background='rgba(255,255,255,.12)'">✕</button>
-
-  <!-- شريط علوي -->
+<!-- VAST AD PLAYER -->
+<div id="video-overlay">
+  <button onclick="closeAdOverlay()" style="position:absolute;top:14px;left:14px;width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);color:#fff;font-size:1.2rem;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:2;">✕</button>
   <div style="width:95%;max-width:640px;display:flex;align-items:center;justify-content:space-between;margin-bottom:.5rem;">
-    <span style="font-size:.72rem;color:#aaa;letter-spacing:.5px;">📢 Sponsored Ad</span>
+    <span style="font-size:.72rem;color:#aaa;">📢 Sponsored Ad</span>
     <button id="vastSkipBtn" onclick="skipVastAd()" style="display:none;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);color:#fff;padding:.3rem .9rem;border-radius:50px;font-family:Cairo,sans-serif;font-size:.75rem;cursor:pointer;">Skip ›</button>
   </div>
-
-  <!-- الفيديو -->
   <div id="fp-wrap" style="width:95%;max-width:640px;position:relative;">
     <video id="reward-video-player" style="width:100%;display:block;background:#000;border-radius:10px;max-height:58vh;">
       <source src="" type="video/mp4">
     </video>
   </div>
-
-  <!-- الحالة / العداد -->
   <div style="width:95%;max-width:640px;margin-top:.75rem;text-align:center;">
-    <span id="ad-status" style="background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.25);border-radius:50px;padding:.38rem 1.1rem;font-size:.82rem;color:#f59e0b;display:inline-block;">
-      Loading ad...
-    </span>
+    <span id="ad-status" style="background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.25);border-radius:50px;padding:.38rem 1.1rem;font-size:.82rem;color:#f59e0b;display:inline-block;">Loading ad...</span>
   </div>
-
 </div>
 
 <!-- VIDEO MODAL -->
@@ -956,15 +631,24 @@ footer{background:#060606;border-top:1px solid var(--border);padding:1.2rem 1rem
       <div class="modal-title" id="modalTitle"></div>
       <div class="pts-ctr">
         <div class="t-ring">
-          <svg width="36" height="36" viewBox="0 0 38 38"><circle class="ring-bg" cx="19" cy="19" r="16"/><circle class="ring-fill" id="ringFill" cx="19" cy="19" r="16"/></svg>
+          <svg viewBox="0 0 34 34" width="34" height="34">
+            <circle class="ring-bg" cx="17" cy="17" r="16"/>
+            <circle class="ring-fill" id="ringFill" cx="17" cy="17" r="16"/>
+          </svg>
           <div class="t-num" id="tNum">30</div>
         </div>
-        <div class="pts-info"><div class="pts-lbl">نقاطك</div><div class="pts-val" id="modalPts">0 pts</div></div>
+        <div class="pts-info">
+          <div class="pts-lbl">Balance</div>
+          <div class="pts-val" id="modalPts">0 pts</div>
+        </div>
       </div>
     </div>
     <div class="iframe-wrap">
       <div id="ytPCWrap"></div>
-      <div class="pause-ind" id="pauseInd"><div class="pause-icon">⏸</div><div class="pause-lbl">Timer paused — play video to earn points</div></div>
+      <div class="pause-ind" id="pauseInd">
+        <div class="pause-icon">⏸</div>
+        <div class="pause-lbl">Timer paused — play video to earn points</div>
+      </div>
     </div>
     <div class="modal-desc" id="modalDesc"></div>
   </div>
@@ -973,399 +657,537 @@ footer{background:#060606;border-top:1px solid var(--border);padding:1.2rem 1rem
 <!-- GAME OVERLAY -->
 <div class="game-ov-full" id="gameOv">
   <button class="g-close" id="closeGame">✕</button>
-  <div class="g-topbar"><div class="g-title-badge" id="gTitle">لعبة</div><div class="g-pts-badge" id="gPts">0 pts 🎮</div></div>
-  <div class="g-iframe"><iframe id="gFrame" allowfullscreen allow="autoplay;fullscreen"></iframe></div>
+  <div class="g-topbar">
+    <div class="g-title-badge" id="gTitle">Game</div>
+    <div class="g-pts-badge" id="gPts">0 pts</div>
+  </div>
+  <div class="g-iframe"><iframe id="gFrame" src="" allowfullscreen sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-top-navigation"></iframe></div>
 </div>
 
-<div class="toast" id="toast"></div>
-<div class="g-toast" id="gToast">+1 pts 🎮</div>
-
-
-<!-- ╔══════════════════════════╗ -->
-<!-- ║  LEADERBOARD OVERLAY    ║ -->
-<!-- ╚══════════════════════════╝ -->
+<!-- LEADERBOARD -->
 <div class="lb-ov" id="lbOv">
   <div class="lb-box" style="position:relative;">
-    <button class="lb-close" onclick="closeLeaderboard()">✕</button>
     <div class="lb-head">
-      <div class="lb-title">🏆 Leaderboard</div>
-      <div class="lb-sub">أعلى 10 مستخدمين نقاطاً</div>
+      <div class="lb-title">🏆 LEADERBOARD</div>
+      <div class="lb-sub">Top 10 users by points</div>
+      <button class="lb-close" onclick="closeLeaderboard()">✕</button>
     </div>
-    <div class="lb-body" id="lbBody">
-      <div class="lb-loading">⏳ Loading...</div>
+    <div class="lb-body" id="lbBody"><div class="lb-loading">Loading...</div></div>
+  </div>
+</div>
+
+<!-- WITHDRAW -->
+<div class="w-ov" id="wOv">
+  <div class="w-box">
+    <div class="w-title">💰 Withdraw Earnings</div>
+    <div class="w-bal">
+      <div><div style="font-size:.75rem;color:var(--muted)">Your Balance</div><div style="font-size:1.3rem;font-weight:800;color:var(--yellow)" id="wPts">0</div></div>
+      <div style="text-align:right;"><div style="font-size:.75rem;color:var(--muted)">USD Value</div><div style="font-size:1.1rem;font-weight:700;color:var(--green)" id="wUsd">$0.00</div></div>
+    </div>
+    <div id="wForm">
+      <label class="w-lbl">Payment Method</label>
+      <select class="w-sel" id="wMethod">
+        <option value="">-- Select --</option>
+        <optgroup label="💎 Crypto"><option value="USDT (TRC20)">USDT TRC20</option><option value="USDT (ERC20)">USDT ERC20</option><option value="Ethereum (ERC20)">Ethereum (ERC20)</option><option value="Bitcoin">Bitcoin</option></optgroup>
+        <optgroup label="🏦 Bank"><option value="PayPal">PayPal</option><option value="Bank Transfer">Bank Transfer</option><option value="Western Union">Western Union</option></optgroup>
+        <optgroup label="📱 Mobile Top-up"><option value="Asiacell">Asiacell</option><option value="Zain Iraq">Zain Iraq</option><option value="Korek">Korek</option></optgroup>
+        <optgroup label="💳 Cards"><option value="Mastercard">Mastercard</option><option value="Visa">Visa</option></optgroup>
+      </select>
+      <label class="w-lbl">Points amount (multiples of 1000)</label>
+      <input class="w-inp" type="number" id="wAmt" placeholder="e.g. 5000" min="5000" step="1000" oninput="var v=parseInt(this.value)||0;G('wCalc').textContent=v?v+' pts = $'+(v/1000).toFixed(2):'';">
+      <div style="font-size:.78rem;color:var(--yellow);margin-bottom:.6rem;" id="wCalc"></div>
+      <label class="w-lbl">Address / Account number</label>
+      <input class="w-inp" type="text" id="wAddr" placeholder="Enter Address">
+      <div class="w-acts">
+        <button class="w-sub" id="wBtn" onclick="submitWithdraw()">Submit Request →</button>
+        <button class="w-cancel" onclick="G('wOv').classList.remove('open')">Cancel</button>
+      </div>
+      <div class="w-err" id="wErr"></div>
+    </div>
+    <div id="wOK" style="display:none;text-align:center;padding:1.5rem 0;">
+      <div style="font-size:2.5rem;margin-bottom:.5rem;">✅</div>
+      <div style="font-size:1.1rem;font-weight:800;margin-bottom:.5rem">Withdrawal request submitted!</div>
+      <button class="w-cancel" onclick="G('wOv').classList.remove('open')">Close</button>
+    </div>
+    <div style="margin-top:1.2rem;">
+      <div style="font-size:.82rem;font-weight:700;margin-bottom:.6rem;color:var(--muted)">My Requests</div>
+      <div id="wReqs"><div style="font-size:.78rem;color:var(--muted);text-align:center;padding:1rem;">No requests yet</div></div>
+    </div>
+    <div class="ref-box" id="refBoxW">
+      <div class="ref-title">🎁 Referral link — Invite friends &amp; earn 50 pts per friend!</div>
+      <div class="ref-link-row">
+        <input class="ref-link-inp" id="refLinkInp" readonly>
+        <button class="ref-copy" onclick="var v=G('refLinkInp').value;if(v){navigator.clipboard.writeText(v).then(function(){showToast('Referral link copied! ✅');});}">Copy</button>
+      </div>
+      <div class="ref-note">When your friend signs up with your code: they get 150 pts &amp; you get 50</div>
     </div>
   </div>
 </div>
 
-<!-- ╔══════════════════════════╗ -->
-<!-- ║  PRIVACY POLICY         ║ -->
-<!-- ╚══════════════════════════╝ -->
+<!-- ADMIN -->
+<div class="adm-ov" id="admOv">
+  <div class="adm-bar">
+    <div class="adm-logo">🛡️ Admin Panel</div>
+    <button class="adm-close" onclick="G('admOv').classList.remove('open')">✕</button>
+  </div>
+  <div class="adm-body">
+    <div id="admLogin" style="display:none">
+      <div class="adm-login">
+        <div style="font-size:1.1rem;font-weight:800;margin-bottom:1rem;">Admin Login</div>
+        <div class="adm-form-row"><label class="adm-form-lbl">Email</label><input class="adm-inp" id="admEmail" type="email"></div>
+        <div class="adm-form-row"><label class="adm-form-lbl">Password</label><input class="adm-inp" id="admPass" type="password"></div>
+        <button class="adm-add" onclick="doAdminLogin()">Login →</button>
+        <div class="w-err" id="admErr"></div>
+      </div>
+    </div>
+    <div id="admDash" style="display:none;flex-direction:column;gap:.5rem;">
+      <div class="adm-title">📊 Admin Dashboard</div>
+      <div class="adm-tabs">
+        <button class="adm-tab active" id="aTabW" onclick="switchAdminTab('w')">Withdrawals</button>
+        <button class="adm-tab" id="aTabG" onclick="switchAdminTab('g')">Games</button>
+      </div>
+      <div id="aPanelW"><div id="admReqs"><div class="adm-empty">Loading...</div></div></div>
+      <div id="aPanelG" style="display:none">
+        <div class="adm-title" style="margin-top:1.3rem">🎮 Current Games</div>
+        <div id="admGames"><div class="adm-empty">Loading...</div></div>
+        <div style="margin-top:1rem;">
+          <div class="adm-form-row"><label class="adm-form-lbl">Game name</label><input class="adm-inp rtl" id="newGameName" type="text"></div>
+          <div class="adm-form-row"><label class="adm-form-lbl">Icon (emoji)</label><input class="adm-inp" id="newGameIcon" type="text" value="🎮" style="width:80px;"></div>
+          <div class="adm-form-row" id="rowUrl"><label class="adm-form-lbl">Game URL</label><input class="adm-inp" id="newGameUrl" type="url" placeholder="https://"></div>
+          <div class="adm-form-row" id="rowIframe" style="display:none"><label class="adm-form-lbl">Embed Code</label><textarea class="adm-inp" id="newGameIframe" rows="3" placeholder="<iframe...></iframe>"></textarea></div>
+          <div class="adm-form-row">
+            <label class="adm-form-lbl">Type</label>
+            <select class="adm-inp" id="gameSrcMode" onchange="var u=this.value==='url';G('rowUrl').style.display=u?'':'none';G('rowIframe').style.display=u?'none':'';">
+              <option value="url">URL Link</option>
+              <option value="iframe">Iframe</option>
+            </select>
+          </div>
+          <div class="img-upload-box">
+            <input type="file" id="newGameImg" accept="image/*" onchange="previewGameImg(this)">
+            <img id="imgPreview" class="img-preview">
+            <div class="img-placeholder" id="imgPlaceholder"><span>🖼️</span>Tap to upload game image</div>
+          </div>
+          <div id="addGameErr" class="a-err" style="min-height:.8rem;font-size:.78rem;color:#ef4444;"></div>
+        <button class="adm-add" id="addGameBtn" onclick="addGame()">Add Game ✚</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PRIVACY POLICY -->
 <div class="pp-ov" id="ppOv">
   <div class="pp-box">
     <div class="pp-title">Privacy Policy</div>
-    <div class="pp-date">آخر تحديث: مارس 2026</div>
-
-    <div class="pp-h">1. المعلومات التي نجمعها</div>
-    <p class="pp-p">نجمع معلومات الحساب (Name، Email) عند التسجيل. لا نجمع بيانات الدفع — يتم التحقق يدوياً من Withdrawal Requests.</p>
-
-    <div class="pp-h">2. كيف نستخدم بياناتك</div>
-    <p class="pp-p">تُستخدم بياناتك فقط لتشغيل الحساب وحساب النقاط ومعالجة Withdrawal Requests. لا نبيع أي بيانات لأطراف ثالثة.</p>
-
-    <div class="pp-h">3. الإعلانات</div>
-    <p class="pp-p">يستخدم الموقع شبكات إعلانية خارجية (Adsterra، HilltopAds، AADS، AdMaven) قد تستخدم ملفات تعريف الارتباط (Cookies) لعرض إعلانات مخصصة.</p>
-
-    <div class="pp-h">4. نظام النقاط</div>
-    <p class="pp-p">النقاط المكتسبة من مشاهدة الفيديوهات والألعاب يتم تخزينها في Firebase. Minimum withdrawal 5000 pts = $5. تحتفظ الإدارة بحق Reject أي طلب مشبوه.</p>
-
-    <div class="pp-h">5. الأمان</div>
-    <p class="pp-p">نستخدم Firebase Authentication وFirestore لتأمين البيانات. يُمنع أي محاولة تلاعب وسيؤدي إلى حظر الحساب نهائياً.</p>
-
-    <div class="pp-h">6. تواصل معنا</div>
-    <p class="pp-p">لأي استفسار يخص الخصوصية، يمكنك التواصل من خلال صفحة الموقع على GitHub.</p>
-
+    <div class="pp-date">Last Update: March 2026</div>
+    <div class="pp-h">1. Information We Collect</div>
+    <p class="pp-p">We collect account information (Name, Email) on sign-up. We do not collect payment data — withdrawals are verified manually.</p>
+    <div class="pp-h">2. How We Use Your Information</div>
+    <p class="pp-p">Your information is used to manage your account, calculate points, and process withdrawal requests. We do not sell or share your data with third parties.</p>
+    <div class="pp-h">3. Points &amp; Rewards</div>
+    <p class="pp-p">Points are earned by watching videos and completing tasks. Points have no cash value until a withdrawal request is approved by the admin.</p>
+    <div class="pp-h">4. Security</div>
+    <p class="pp-p">We use Firebase Authentication and Firestore to secure your data. Any manipulation attempt will result in a permanent account ban.</p>
+    <div class="pp-h">5. Contact Us</div>
+    <p class="pp-p">For any privacy inquiries, contact us through the GitHub page.</p>
     <button class="pp-close-btn" onclick="closePP()">✅ Got it</button>
   </div>
 </div>
 
-<!-- ╔══════════════════════════╗ -->
-<!-- ║  ABOUT OVERLAY          ║ -->
-<!-- ╚══════════════════════════╝ -->
+<!-- ABOUT -->
 <div class="about-ov" id="aboutOv">
   <div class="about-box">
     <div class="about-logo">WIN<span>TUBE</span></div>
-    <div class="about-tagline">شاهد • العب • اكسب</div>
+    <div class="about-tagline">Watch. Play. Earn real rewards.</div>
     <div class="about-stats">
-      <div class="about-stat"><div class="about-stat-val" id="statUsers">—</div><div class="about-stat-lbl">مستخدم</div></div>
-      <div class="about-stat"><div class="about-stat-val">∞</div><div class="about-stat-lbl">فيديو</div></div>
-      <div class="about-stat"><div class="about-stat-val">4</div><div class="about-stat-lbl">شركة إعلانية</div></div>
+      <div class="about-stat"><div class="about-stat-val" id="aStatUsers">—</div><div class="about-stat-lbl">Active users</div></div>
+      <div class="about-stat"><div class="about-stat-val">100+</div><div class="about-stat-lbl">Videos/day</div></div>
+      <div class="about-stat"><div class="about-stat-val">∞</div><div class="about-stat-lbl">Points given</div></div>
     </div>
-    <p class="about-p">WinTube هو موقع عراقي يتيح لك مشاهدة الفيديوهات وEarn Points وتحويلها إلى أموال حقيقية عبر طرق الدفع المتعددة المتاحة في العراق.</p>
-    <p class="about-p">كل 30 ثانية مشاهدة = pts واحدة. كل 1000 pts = $1 دولار أمريكي.</p>
-    <button class="about-close" onclick="G('aboutOv').classList.remove('open')">إغلاق</button>
+    <p class="about-p">WinTube is a free platform that lets you earn real reward points by watching videos and playing games. Points can be withdrawn as real money once you reach the minimum threshold.</p>
+    <p class="about-p">Built with ❤️ using Firebase + YouTube API. Always free, no hidden fees.</p>
+    <button class="about-close" onclick="G('aboutOv').classList.remove('open')">Close</button>
   </div>
 </div>
 
-<!-- ╔══════════════════════════╗ -->
-<!-- ║  FOOTER                 ║ -->
-<!-- ╚══════════════════════════╝ -->
+<!-- FOOTER -->
 <footer id="siteFooter">
   <div class="footer-links">
-    <button class="footer-link" onclick="G('aboutOv').classList.add('open');loadAboutStats()">عن WinTube</button>
-    <button class="footer-link" onclick="G('ppOv').classList.add('open')">Privacy Policy</button>
-    <button class="footer-link" onclick="openLeaderboard()">🏆 Leaderboard</button>
-    <button class="footer-link" onclick="currentUser&&openWithdraw()">💰 كيف تسحب؟</button>
+    <button class="footer-link" onclick="openPP()">Privacy Policy</button>
+    <button class="footer-link" onclick="G('aboutOv').classList.add('open');loadAboutStats()">About</button>
     <button class="footer-link" onclick="gotoRewards(G('catRewards'))">💎 Earn Points</button>
+    <button class="footer-link" onclick="openLeaderboard()">🏆 Leaderboard</button>
   </div>
-  <div class="footer-copy">© 2026 WinTube — All rights reserved</div>
+  <div class="footer-copy">© 2025 WinTube — All rights reserved</div>
 </footer>
 
 <!-- MOBILE BAR -->
-<div class="mob-bar" id="mobBar">
-  <button class="mob-bar-btn gold" id="mobBtnW" onclick="openWithdraw()">💰 Withdraw</button>
-
+<div class="mob-bar" id="mobileBar">
+  <button class="mob-bar-btn gold" id="mobBtnW" data-show onclick="openWithdraw()">Withdraw 💰</button>
+  <button class="mob-bar-btn red" onclick="gotoRewards(G('catRewards'))">💎 Earn</button>
 </div>
 
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+<div class="g-toast" id="gToast"></div>
+
+
+
+<!-- HilltopAds Pop/Push -->
+<script data-cfasync="false" async type="text/javascript" src="//data527.click/f0a41fa00cf50b1a0813/f62c1b69b8/?placementName=default"></script>
+<!-- Advertica PUSH -->
+<script type="text/javascript" src="//my-pu.sh/f87bbb11f15afcda55a1/33127f60cc/?placementName=default"></script>
+
 <script>
-// ═══════════════════════════════════════
-// CONFIG
-// ═══════════════════════════════════════
-// ── Config (obfuscated) ──
-var _k=['AIzaSyDNK9EJ5IQ','2dFLBn1jUk1hslg','OwwTBdvJ0'];
-var YT_KEY=_k.join('');
-var _f=['AIzaSyCOV-2qbB6e','FEU-myiTjlXbcE-','bWhuqLQs'];
-var FB_CFG=(function(){
-  var a=_f.join('');
+
+// ╔══════════════════════════════════════════════╗
+// ║         WINTUBE MAIN JS                       ║
+// ╚══════════════════════════════════════════════╝
+
+// ── HELPERS ──
+function G(id){ return document.getElementById(id); }
+
+// ── CONFIG ──
+var START_PTS=100, EARN_AMT=1, EARN_EVERY=30, GAME_SEC=30, PTS_USD=1000, MIN_W=5000;
+var CIRC=101;
+var ADMIN_UID = ['TjFFYhwzbl','M9HhZocq','sAkZbltix1'].join('');
+var BASE = 'https://www.googleapis.com/youtube/v3/';
+var YT_KEY = (function(){
+  var _k=['AIzaSyDNK9EJ5','IQ2dFLBn1jUk1h','slgOwwTBdvJ0'];
+  return _k.join('');
+})();
+var FB_CFG = (function(){
   return {
-    apiKey:a,
-    authDomain:'wintube-8bcaa'+'.firebaseapp.com',
-    projectId:'wintube-8bcaa',
-    storageBucket:'wintube-8bcaa'+'.firebasestorage.app',
-    messagingSenderId:'4591736'+'58209',
-    appId:'1:459173658209:web:'+'d1e5ddf04ecf548cc67420'
+    apiKey:"AIzaSyCOV-2qbB6eFEU-myiTjlXbcE-bWhuqLQs",
+    authDomain:"wintube-8bcaa.firebaseapp.com",
+    projectId:"wintube-8bcaa",
+    storageBucket:"wintube-8bcaa.appspot.com",
+    messagingSenderId:"760291583820",
+    appId:"1:760291583820:web:wintube"
   };
 })();
-var ADMIN_UID=(function(){
-  // assembled at runtime
-  return ['TjFFYhwzbl','M9HhZocq','sAkZbltix1'].join('');
-})();
-var START_PTS=100, EARN_AMT=1, EARN_EVERY=30, GAME_SEC=30, PTS_USD=1000, MIN_W=5000;
 
-// ═══════════════════════════════════════
-// STATE
-// ═══════════════════════════════════════
-var _auth=null, _db=null;
-var currentUser=null, userPoints=0, gameSrcMode='url';
-var gCache={};
-var CIRC=101, tSecs=EARN_EVERY, wInt=null, playing=false;
+// ── AD LINKS ──
+var SMART_LINK  = 'https://data527.click/157e3c68fbf89e3c57fe/2b05fea27e/?placementName=default';
+var EXTRA_LINK  = 'https://limited-teacher.com/dOm.FGz/djGJNivsZSGEUt/Xeom/9JuqZeUDlDkoPCTYYW4uNxjkkzx/MDD/UltuN-jog-2qOCT/EgwjOzQv';
+var VAST_TAG    = EXTRA_LINK;
+
+// ── STATE ──
+var _db=null, _auth=null, currentUser=null, userPoints=0;
+var tSecs=EARN_EVERY, wInt=null, playing=false;
 var gInt=null, gElapsed=0, activeGid=null;
 var homeToken='', searchToken='', searchQuery='';
-var GICONS=['🎮','🕹️','👾','🏆','⚔️','🧩','🚀','🎯','🏎️','⚽','🎲','🃏'];
+var currentRegion = 'GL';
+var _currentVideoId='';
+var lastVidPointTime=0, lastGamePointTime=0;
+var myRefCode='';
+var _iadInterval5m=null;
 
-// ═══════════════════════════════════════
-// HELPERS
-// ═══════════════════════════════════════
-function G(id){return document.getElementById(id);}
-function fmt(n){if(!n)return'';n=+n;return n>=1e6?(n/1e6).toFixed(1)+'M':n>=1e3?(n/1e3).toFixed(1)+'K':String(n);}
-function durFmt(iso){if(!iso)return'';var m=iso.match(/PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?/);if(!m)return'';var h=+m[1]||0,mn=+m[2]||0,s=+m[3]||0,p=function(x){return String(x).padStart(2,'0');};return h?h+':'+p(mn)+':'+p(s):mn+':'+p(s);}
-function ago(d){var s=Math.floor((Date.now()-new Date(d))/1000);if(s<60)return'الآن';if(s<3600)return Math.floor(s/60)+'د';if(s<86400)return Math.floor(s/3600)+'س';if(s<2592000)return Math.floor(s/86400)+'ي';return Math.floor(s/2592000)+'ش';}
-function todayK(){var d=new Date();return d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();}
-function loadSc(src){return new Promise(function(ok,err){var s=document.createElement('script');s.src=src;s.onload=ok;s.onerror=function(){err(new Error('fail:'+src));};document.head.appendChild(s);});}
-function authErrMsg(c){
-  var m={
-    'auth/user-not-found':'البريد غير مسجّل',
-    'auth/wrong-password':'Password خاطئة',
-    'auth/invalid-credential':'البريد or Password غير صحيحة',
-    'auth/invalid-login-credentials':'البريد or Password غير صحيحة',
-    'auth/user-disabled':'هذا الحساب موقوف',
-    'auth/email-already-in-use':'هذا البريد مستخدم مسبقاً',
-    'auth/invalid-email':'بريد إلكتروني غير صالح',
-    'auth/weak-password':'Password ضعيفة جداً (6 أحرف+)',
-    'auth/network-request-failed':'تحقق من اتصال الإنترنت',
-    'auth/too-many-requests':'تجاوزت عدد المحاولات، انتظر قليلاً',
-    'auth/popup-blocked':'السماح بالنوافذ المنبثقة في المتصفح',
-    'auth/popup-closed-by-user':'أغلقت نافذة Google',
-    'auth/cancelled-popup-request':'تم Cancel الطلب',
-    'auth/operation-not-allowed':'طريقة الدخول غير مفعّلة في Firebase',
-    'auth/missing-password':'أدخل Password'
-  };
-  return m[c]||(c||'حدث خطأ غير معروف');
+// ── FIREBASE LOAD ──
+function loadSc(src,cb){
+  var s=document.createElement('script');
+  s.src=src;
+  s.onload=cb;
+  s.onerror=function(){ console.error('Failed to load script:',src); if(cb) cb(); };
+  document.head.appendChild(s);
 }
 
-function doLogin(){
-  if(!_auth){G('authErr').textContent='Loading...';return;}
-  var em=G('lEmail').value.trim(), pw=G('lPass').value;
-  if(!em){G('authErr').textContent='أدخل Email';return;}
-  if(!pw){G('authErr').textContent='أدخل Password';return;}
-  G('authErr').textContent='';
-  var btn=G('btnLogin'); btn.disabled=true; btn.textContent='⏳ جاري الدخول...';
-  _auth.signInWithEmailAndPassword(em, pw)
-    .then(function(){ btn.disabled=false; btn.textContent='Sign In →'; })
-    .catch(function(e){
-      G('authErr').textContent=authErrMsg(e.code);
-      btn.disabled=false; btn.textContent='Sign In →';
+loadSc('https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js', function(){
+  loadSc('https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js', function(){
+    loadSc('https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js', function(){
+      try{
+        if(!firebase.apps.length) firebase.initializeApp(FB_CFG);
+        _db   = firebase.firestore();
+        _auth = firebase.auth();
+        _auth.onAuthStateChanged(function(u){
+          if(u){
+            currentUser = u;
+            refreshPointsFromDB();
+            initRefLink();
+            requestNotifPermission();
+            var ba=G('btnA'); if(ba) ba.style.display = u.uid===ADMIN_UID?'':'none';
+            var bw=G('btnW'); if(bw) bw.style.display='';
+            var mbw=G('mobBtnW'); if(mbw) mbw.setAttribute('data-show','1');
+            checkReferral(false);
+          } else {
+            currentUser=null; userPoints=0;
+            stopWTimer();
+            updateHeader();
+            var ba=G('btnA'); if(ba) ba.style.display='none';
+            var bw=G('btnW'); if(bw) bw.style.display='none';
+          }
+        });
+      }catch(e){ if(G('authErr')) G('authErr').textContent='Firebase error: '+e.message; }
     });
-}
-
-function doRegister(){
-  if(!_auth){G('authErr').textContent='Loading...';return;}
-  var nm=G('rName').value.trim(), em=G('rEmail').value.trim(), pw=G('rPass').value;
-  if(!nm||!em||!pw){G('authErr').textContent='Please fill in all fields';return;}
-  if(pw.length<6){G('authErr').textContent='Password 6 أحرف على الأقل';return;}
-  G('authErr').textContent='';
-  var btn=G('btnReg'); btn.disabled=true; btn.textContent='جاري الإنشاء...';
-  _auth.createUserWithEmailAndPassword(em,pw)
-    .then(function(c){
-      return c.user.updateProfile({displayName:nm}).then(function(){
-        if(_db){
-          _db.collection('users').doc(c.user.uid).set({
-            name:nm, email:em, points:START_PTS,
-            createdAt:firebase.firestore.FieldValue.serverTimestamp()
-          }).then(function(){
-            // تحقق من كود الإحالة بعد إنشاء المستند
-            checkReferral(c.user);
-          }).catch(function(){});
-        }
-      });
-    })
-    .then(function(){btn.disabled=false;btn.textContent='Create Account →';G('authErr').style.color='#22c55e';G('authErr').textContent='✅ Account created!';})
-    .catch(function(e){
-      btn.disabled=false; btn.textContent='Create Account →';
-      G('authErr').style.color='';
-      G('authErr').textContent = authErrMsg(e.code);
-    });
-}
-
-function doSignOut(){
-  if(!_auth)return;
-  if(!confirm('تسجيل الSign Out؟'))return;
-  stopWTimer(); closeVideoModal();
-  _auth.signOut().then(function(){
-    G('hPts').textContent='0'; G('hName').textContent='—'; G('hAvatar').textContent='?';
   });
-}
+});
 
+// ── AUTH ──
 function doGoogle(){
-  if(!_auth){
-    G('authErr').textContent='جاري تحميل Firebase، انتظر ثانية...';
-    return;
-  }
-  var btn=G('btnGoogle');
-  btn.disabled=true;
-  btn.innerHTML='<span style="display:inline-block;width:16px;height:16px;border:2px solid #ccc;border-top-color:#333;border-radius:50%;animation:spin .6s linear infinite;vertical-align:middle;margin-left:6px"></span> جاري الاتصال...';
-  G('authErr').textContent='';
+  var btn=G('btnGoogle'); if(btn){ btn.disabled=true; btn.textContent='Connecting...'; }
   var provider=new firebase.auth.GoogleAuthProvider();
-  provider.setCustomParameters({prompt:'select_account'});
-  // Always use popup (redirect causes button to get stuck)
-  _auth.signInWithPopup(provider)
-    .then(function(){
-      btn.disabled=false;
-      btn.innerHTML=googleBtnInner();
-    })
-    .catch(function(e){
-      G('authErr').textContent=authErrMsg(e.code);
-      btn.disabled=false;
-      btn.innerHTML=googleBtnInner();
-    });
-}
-function googleBtnInner(){
-  return '<svg width="18" height="18" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.31-8.16 2.31-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg> متابعة مع Google';
-}
-
-function switchTab(t){
-  G('fLogin').style.display=t==='login'?'':'none';
-  G('fReg').style.display=t==='reg'?'':'none';
-  G('tabLogin').classList.toggle('active',t==='login');
-  G('tabReg').classList.toggle('active',t==='reg');
-  G('authErr').textContent='';
-}
-
-// ═══════════════════════════════════════
-// POINTS
-// ═══════════════════════════════════════
-// آخر وقت تمت فيه إضافة pts (video + game)
-var lastVidPointTime = 0;
-var lastGamePointTime = 0;
-
-function savePoints(){
-  // Sync local points to Firestore — only called for withdrawal deduction
-  if(!_db||!currentUser)return;
-  _db.collection('users').doc(currentUser.uid).update({points:userPoints}).catch(function(e){
-    console.error('savePoints error:', e.message);
-  });
-}
-// Refresh points from Firestore (called on page load after auth)
-function refreshPointsFromDB(){
-  if(!_db||!currentUser)return;
-  _db.collection('users').doc(currentUser.uid).get().then(function(snap){
-    if(snap.exists){
-      userPoints = snap.data().points || 0;
-      updateHeader();
-      var mp = G('modalPts'); if(mp) mp.textContent = userPoints + ' pts';
+  _auth.signInWithPopup(provider).then(function(r){
+    if(r.additionalUserInfo&&r.additionalUserInfo.isNewUser){
+      return _db.collection('users').doc(r.user.uid).set({
+        name:r.user.displayName||'User', email:r.user.email,
+        points:START_PTS, createdAt:firebase.firestore.FieldValue.serverTimestamp()
+      }).then(function(){ userPoints=START_PTS; checkReferral(true); });
     }
-  }).catch(function(){});
+  }).catch(function(e){
+    if(G('authErr')) G('authErr').textContent=e.message;
+  }).finally(function(){
+    if(btn){ btn.disabled=false; btn.textContent='Continue with Google'; }
+    var ov=G('authOv'); if(ov) ov.classList.add('hidden');
+  });
+}
+function doLogin(){
+  var btn=G('btnLogin'); if(btn){ btn.disabled=true; btn.textContent='Signing in...'; }
+  var em=G('lEmail').value.trim(), pw=G('lPass').value;
+  _auth.signInWithEmailAndPassword(em,pw).then(function(){
+    var ov=G('authOv'); if(ov) ov.classList.add('hidden');
+  }).catch(function(e){
+    if(G('authErr')){ G('authErr').style.color=''; G('authErr').textContent=e.message; }
+  }).finally(function(){ if(btn){ btn.disabled=false; btn.textContent='Sign In →'; } });
+}
+function doRegister(){
+  var btn=G('btnReg'); if(btn){ btn.disabled=true; btn.textContent='Creating...'; }
+  var name=G('rName').value.trim(), em=G('rEmail').value.trim(), pw=G('rPass').value;
+  if(!name||!em||!pw){ if(G('authErr')) G('authErr').textContent='Please fill all fields'; if(btn){ btn.disabled=false; btn.textContent='Create Account →'; } return; }
+  _auth.createUserWithEmailAndPassword(em,pw).then(function(r){
+    return _db.collection('users').doc(r.user.uid).set({
+      name:name, email:em,
+      points:START_PTS, createdAt:firebase.firestore.FieldValue.serverTimestamp()
+    }).then(function(){ userPoints=START_PTS; checkReferral(true); });
+  }).then(function(){
+    if(G('authErr')){ G('authErr').style.color='#22c55e'; G('authErr').textContent='✅ Account created!'; }
+    setTimeout(function(){ var ov=G('authOv'); if(ov) ov.classList.add('hidden'); },800);
+  }).catch(function(e){
+    if(G('authErr')){ G('authErr').style.color=''; G('authErr').textContent=e.message; }
+  }).finally(function(){ if(btn){ btn.disabled=false; btn.textContent='Create Account →'; } });
+}
+function doSignOut(){
+  _auth.signOut();
+}
+function switchTab(t){
+  var fl=G('fLogin'), fr=G('fReg'), tl=G('tabLogin'), tr=G('tabReg');
+  if(fl) fl.style.display=t==='login'?'':'none';
+  if(fr) fr.style.display=t==='reg'?'':'none';
+  if(tl) tl.classList.toggle('active',t==='login');
+  if(tr) tr.classList.toggle('active',t==='reg');
 }
 
-// إضافة pts بأمان — يتحقق أن 30 ثانية مرت فعلاً
-// ══ SERVER-SIDE PROTECTION ══
-// Firestore rules must be set to:
-// users/{uid}: allow write only if request.auth.uid == uid
-// and points can only increment by 1 max per write
-// ════════════════════════════
+// ── POINTS ──
+var THRESHOLD=28000;
 function secureAddPoint(source){
-  if(!_db||!currentUser) return false;
-  var now = Date.now();
-  var last = source==='game' ? lastGamePointTime : lastVidPointTime;
-  // استخدم 28 ثانية بدل 30 لتعويض انحراف setInterval
-  var THRESHOLD = 28000;
-
-  if(now - last < THRESHOLD){
-    console.warn('⛔ محاولة غش — مصدر:', source, 'فرق:', Math.round((now-last)/1000)+'s');
-    return false;
+  if(!currentUser||!_db) return false;
+  var now=Date.now();
+  if(source==='video'){
+    if(now-lastVidPointTime<THRESHOLD) return false;
+    lastVidPointTime=now;
+  } else if(source==='game'){
+    if(now-lastGamePointTime<THRESHOLD) return false;
+    lastGamePointTime=now;
   }
-
-  // تحديث الوقت والنقاط محلياً فوراً (للعرض)
-  if(source==='game') lastGamePointTime = now;
-  else lastVidPointTime = now;
-  userPoints++;
+  userPoints+=EARN_AMT;
   updateHeader();
-
-  // مزامنة مع Firebase في الخلفية
   _db.collection('users').doc(currentUser.uid).update({
-    points: firebase.firestore.FieldValue.increment(1)
-  }).catch(function(e){
-    // إذا فشل Firebase، تراجع عن الpts محلياً
-    userPoints--;
-    updateHeader();
-    console.error('خطأ Firebase:', e.message);
-  });
-
+    points:firebase.firestore.FieldValue.increment(1)
+  }).catch(function(){ userPoints-=EARN_AMT; updateHeader(); });
   return true;
 }
-function updateHeader(){if(!currentUser)return;G('hPts').textContent=userPoints;var n=currentUser.displayName||currentUser.email.split('@')[0];G('hName').textContent=n;G('hAvatar').textContent=n[0].toUpperCase();}
-
-// ═══════════════════════════════════════
-// NAV
-// ═══════════════════════════════════════
-function setCat(el){document.querySelectorAll('.cat-btn').forEach(function(b){b.classList.remove('active');});if(el)el.classList.add('active');}
-
-function gotoRewards(btn){
-  setCat(btn);
-  var _sh=G('secHome'), _ss=G('secSearch'), _srw=G('secRewards');
-  if(_sh) _sh.style.display = 'none';
-  if(_ss) _ss.style.display = 'none';
-  if(_srw) _srw.style.display = '';
-  var _rb=G('rwBal');
-  if(currentUser && _rb) _rb.textContent = userPoints;
+function updateHeader(){
+  if(!currentUser){ return; }
+  var n=G('hName'), p=G('hPts'), av=G('hAvatar');
+  var dname=(currentUser.displayName||currentUser.email||'User').split(' ')[0];
+  if(n) n.textContent=dname;
+  if(p) p.textContent=userPoints+' pts';
+  if(av) av.textContent=dname.charAt(0).toUpperCase();
+  var rb=G('rwBal'); if(rb) rb.textContent=userPoints;
 }
-
-function goHome(btn){setCat(btn||G('catHome'));G('secSearch').style.display='none';var _sr=G('secRewards');if(_sr)_sr.style.display='none';G('secHome').style.display='';}
-function gotoGames(btn){goHome(null);setCat(btn);setTimeout(function(){var el=G('gamesStrip');if(el)el.scrollIntoView({behavior:'smooth',block:'start'});},80);}
-function doSearch(){var q=G('searchInput').value.trim();if(!q)return;searchCat(q,null);}
-function searchCat(q,btn){setCat(btn);searchQuery=q;searchToken='';G('secHome').style.display='none';var _sr2=G('secRewards');if(_sr2)_sr2.style.display='none';G('secSearch').style.display='';var L={تعليم:'📚 Education',تكنولوجيا:'💻 Tech',رياضة:'⚽ Sports',موسيقى:'🎵 Music',طبخ:'🍳 Cooking',سفر:'✈️ Travel',أخبار:'📰 News'};G('searchTitle').textContent=L[q]||('🔍 "'+q+'"');fetchSearch(q,'',false);}
-
-// ═══════════════════════════════════════
-// YOUTUBE FETCH
-// ═══════════════════════════════════════
-var BASE='https://www.googleapis.com/youtube/v3/';
-function fetchHome(token,append){
-  if(!append){G('ldHome').style.display='block';G('emHome').style.display='none';G('gridHome').innerHTML='';}
-  fetch(BASE+'videos?part=snippet,contentDetails,statistics&chart=mostPopular&regionCode='+currentRegion+'&hl=ar&maxResults=16&pageToken='+(token||'')+'&key='+YT_KEY)
-    .then(function(r){return r.json();}).then(function(d){G('ldHome').style.display='none';if(d.error)throw new Error(d.error.message);homeToken=d.nextPageToken||'';if(d.items&&d.items.length)renderCards(d.items,'gridHome');else if(!append)G('emHome').style.display='block';G('lmHome').style.display=homeToken?'block':'none';})
-    .catch(function(e){G('ldHome').style.display='none';G('gridHome').innerHTML='<div style="color:#ff6b6b;padding:2rem;grid-column:1/-1;text-align:center">⚠️ '+e.message+'</div>';});
-}
-function fetchSearch(q,token,append){
-  if(!append){G('ldSearch').style.display='block';G('emSearch').style.display='none';G('gridSearch').innerHTML='';}
-  fetch(BASE+'search?part=snippet&q='+encodeURIComponent(q)+'&type=video&maxResults=16&pageToken='+(token||'')+'&key='+YT_KEY)
-    .then(function(r){return r.json();}).then(function(sd){if(sd.error)throw new Error(sd.error.message);var ids=(sd.items||[]).map(function(i){return i.id.videoId;}).filter(Boolean);searchToken=sd.nextPageToken||'';if(!ids.length){G('ldSearch').style.display='none';if(!append)G('emSearch').style.display='block';G('lmSearch').style.display='none';return;}return fetch(BASE+'videos?part=snippet,contentDetails,statistics&id='+ids.join(',')+'&key='+YT_KEY).then(function(r){return r.json();}).then(function(vd){G('ldSearch').style.display='none';if(vd.items&&vd.items.length)renderCards(vd.items,'gridSearch');G('lmSearch').style.display=searchToken?'block':'none';});})
-    .catch(function(e){G('ldSearch').style.display='none';G('gridSearch').innerHTML='<div style="color:#ff6b6b;padding:2rem;grid-column:1/-1;text-align:center">⚠️ '+e.message+'</div>';});
-}
-function renderCards(items,gridId){
-  var grid=G(gridId);
-  items.forEach(function(item, idx){
-    var s=item.snippet,th=(s.thumbnails&&(s.thumbnails.high||s.thumbnails.medium)||{}).url||'',d=durFmt(item.contentDetails&&item.contentDetails.duration),vid=typeof item.id==='string'?item.id:(item.id&&item.id.videoId)||'',views=item.statistics&&item.statistics.viewCount?fmt(item.statistics.viewCount)+' مشاهدة':'';
-    var card=document.createElement('div');card.className='video-card';
-    card.innerHTML='<div class="thumb-wrap"><img src="'+th+'" alt="" loading="lazy"><div class="play-ov"><div class="play-btn"><svg width="20" height="20" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div>'+(d?'<div class="duration">'+d+'</div>':'')+'</div><div class="card-info"><div class="card-title">'+s.title+'</div><div class="card-meta"><span class="channel-name">'+s.channelTitle+'</span><span>'+views+(views?' • ':'')+ago(s.publishedAt)+'</span></div></div>';
-    (function(id,t,dc){card.onclick=function(){openVideoModal(id,t,dc);};})(vid,s.title,s.description||'');
-    grid.appendChild(card);
-
+function refreshPointsFromDB(){
+  if(!currentUser||!_db) return;
+  _db.collection('users').doc(currentUser.uid).get().then(function(doc){
+    if(doc.exists){
+      var d=doc.data();
+      userPoints=d.points||0;
+      updateHeader();
+      syncLeaderboard();
+    }
   });
 }
-function loadMoreHome(){if(homeToken)fetchHome(homeToken,true);}
-function loadMoreSearch(){if(searchToken)fetchSearch(searchQuery,searchToken,true);}
 
-// ═══════════════════════════════════════
-// VIDEO MODAL
-// ═══════════════════════════════════════
+// ── NAVIGATION ──
+function setCat(el){
+  document.querySelectorAll('.cat-btn').forEach(function(b){ b.classList.remove('active'); });
+  if(el) el.classList.add('active');
+}
+function goHome(btn){
+  setCat(btn||G('catHome'));
+  var ss=G('secSearch'), sr=G('secRewards'), sh=G('secHome');
+  if(ss) ss.style.display='none';
+  if(sr) sr.style.display='none';
+  if(sh) sh.style.display='';
+}
+function gotoGames(btn){
+  goHome(btn||G('catGames'));
+  setTimeout(function(){
+    var el=G('gamesStrip'); if(el) el.scrollIntoView({behavior:'smooth',block:'start'});
+  },80);
+}
+function gotoRewards(btn){
+  setCat(btn);
+  var sh=G('secHome'), ss=G('secSearch'), sr=G('secRewards');
+  if(sh) sh.style.display='none';
+  if(ss) ss.style.display='none';
+  if(sr) sr.style.display='';
+  var rb=G('rwBal'); if(rb&&currentUser) rb.textContent=userPoints;
+}
+function searchCat(q,btn){
+  setCat(btn);
+  searchQuery=q; searchToken='';
+  var sh=G('secHome'), sr=G('secRewards'), ss=G('secSearch');
+  if(sh) sh.style.display='none';
+  if(sr) sr.style.display='none';
+  if(ss) ss.style.display='';
+  var labels={'Education':'📚 Education','Tech':'💻 Tech','Sports':'⚽ Sports',
+    'Music':'🎵 Music','Cooking':'🍳 Cooking','Travel':'✈️ Travel','News':'📰 News'};
+  var st=G('searchTitle'); if(st) st.textContent=labels[q]||('🔍 "'+q+'"');
+  fetchSearch(q,'',false);
+}
+function setRegion(code, btn){
+  currentRegion=code;
+  document.querySelectorAll('.region-btn').forEach(function(b){ b.classList.remove('active'); });
+  if(btn) btn.classList.add('active');
+  homeToken='';
+  fetchHome('',false);
+}
+
+// ── YOUTUBE DATA ──
+function fetchHome(token, append){
+  var rp=currentRegion&&currentRegion!=='GL'?'&regionCode='+currentRegion:'';
+  var url=BASE+'videos?part=snippet,contentDetails,statistics&chart=mostPopular&maxResults=20'+rp+(token?'&pageToken='+token:'')+'&key='+YT_KEY;
+  var ld=G('ldHome'), em=G('emHome'), gr=G('gridHome'), lm=G('lmHome');
+  if(!append&&ld) ld.style.display='block';
+  if(!append&&em) em.style.display='none';
+  if(!append&&gr) gr.innerHTML='';
+  fetch(url).then(function(r){ return r.json(); }).then(function(d){
+    if(ld) ld.style.display='none';
+    if(d.error) throw new Error(d.error.message);
+    homeToken=d.nextPageToken||'';
+    if(d.items&&d.items.length) renderCards(d.items,'gridHome');
+    else if(!append&&em) em.style.display='block';
+    if(lm) lm.style.display=homeToken?'block':'none';
+  }).catch(function(e){
+    var ld=G('ldHome'); if(ld) ld.style.display='none';
+    var em=G('emHome'); if(em){ em.style.display='block'; em.querySelector('p').textContent='Connection error — check your internet'; }
+    console.error('fetchHome:',e);
+  });
+}
+function fetchSearch(q, token, append){
+  var url=BASE+'search?part=snippet&q='+encodeURIComponent(q)+'&type=video&maxResults=20'+(token?'&pageToken='+token:'')+'&key='+YT_KEY;
+  var ld=G('ldSearch'), em=G('emSearch'), lm=G('lmSearch');
+  if(!append&&ld) ld.style.display='block';
+  if(!append&&em) em.style.display='none';
+  if(!append&&G('gridSearch')) G('gridSearch').innerHTML='';
+  fetch(url).then(function(r){ return r.json(); }).then(function(sd){
+    if(sd.error) throw new Error(sd.error.message);
+    var ids=(sd.items||[]).map(function(i){ return i.id.videoId; }).filter(Boolean);
+    searchToken=sd.nextPageToken||'';
+    if(!ids.length){ if(ld) ld.style.display='none'; if(!append&&em) em.style.display='block'; if(lm) lm.style.display='none'; return; }
+    return fetch(BASE+'videos?part=snippet,contentDetails,statistics&id='+ids.join(',')+'&key='+YT_KEY)
+      .then(function(r){ return r.json(); }).then(function(vd){
+        if(ld) ld.style.display='none';
+        if(vd.items&&vd.items.length) renderCards(vd.items,'gridSearch');
+        if(lm) lm.style.display=searchToken?'block':'none';
+      });
+  }).catch(function(e){ if(ld) ld.style.display='none'; console.error(e); });
+}
+function renderCards(items, gridId){
+  var grid=G(gridId); if(!grid) return;
+  items.forEach(function(item, idx){
+    var s=item.snippet||{}, id=item.id;
+    var dur='', cd=item.contentDetails;
+    if(cd&&cd.duration){
+      var m=cd.duration.match(/PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?/);
+      if(m){ var h=parseInt(m[1]||0),mn=parseInt(m[2]||0),sc=parseInt(m[3]||0);
+        dur=h?(h+':'+(mn<10?'0':'')+mn+':'+(sc<10?'0':'')+sc):(mn+':'+(sc<10?'0':'')+sc); }
+    }
+    var card=document.createElement('div'); card.className='video-card';
+    card.innerHTML='<div class="thumb-wrap"><img src="'+(s.thumbnails&&s.thumbnails.medium?s.thumbnails.medium.url:'')+'" loading="lazy" alt="">'
+      +'<div class="play-ov"><div class="play-btn"><svg width="18" height="18" viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div></div>'
+      +(dur?'<div class="duration">'+dur+'</div>':'')+'</div>'
+      +'<div class="card-info"><div class="card-title">'+(s.title||'')+'</div>'
+      +'<div class="card-meta"><span class="channel-name">'+(s.channelTitle||'')+'</span>'
+      +((item.statistics&&item.statistics.viewCount)?formatViews(item.statistics.viewCount)+' views':'')+'</div></div>';
+    (function(vid,t,dc){ card.onclick=function(){ openVideoModal(vid,t,dc); }; })(id,s.title||'',s.description||'');
+    grid.appendChild(card);
+  });
+}
+function formatViews(n){
+  n=parseInt(n);
+  if(n>=1e9) return (n/1e9).toFixed(1)+'B';
+  if(n>=1e6) return (n/1e6).toFixed(1)+'M';
+  if(n>=1e3) return (n/1e3).toFixed(1)+'K';
+  return n;
+}
+function loadMoreHome(){ if(homeToken) fetchHome(homeToken,true); }
+function loadMoreSearch(){ if(searchToken) fetchSearch(searchQuery,searchToken,true); }
+
+// ── GAMES GRID ──
+function loadGamesGrid(){
+  if(!_db) return;
+  var grid=G('gGrid'), empty=G('gEmpty'); if(!grid) return;
+  grid.innerHTML='';
+  if(empty) empty.style.display='none';
+  _db.collection('games').get().then(function(snap){
+    if(snap.empty){ if(empty) empty.style.display='block'; return; }
+    snap.forEach(function(doc){
+      var d=doc.data();
+      var card=document.createElement('div'); card.className='game-card';
+      card.innerHTML='<div class="game-thumb">'
+        +(d.img?'<img src="'+d.img+'" style="width:100%;height:100%;object-fit:cover;position:absolute;inset:0;" alt="">':'<div class="game-icon">🎮</div>')
+        +'<div class="game-ov"><div class="game-play">▶</div></div></div>'
+        +'<div class="game-info"><div class="game-name">'+(d.name||'Game')+'</div>'
+        +'<div class="game-bar-wrap"><div class="game-bar-bg"><div class="game-bar-fill" style="width:0%"></div></div>'
+        +'<span class="game-bar-lbl">Unlimited</span></div></div>';
+      (function(gid,gname,gurl){ card.onclick=function(){ openGameOverlay(gid,gname,gurl); }; })(doc.id,d.name||'Game',d.url||d.iframe||'');
+      grid.appendChild(card);
+    });
+  });
+}
+
+// ── VIDEO MODAL ──
 function openVideoModal(vid,title,desc){
-  if(!currentUser){G('authOv').classList.remove('hidden');return;}
-  // شغّل VAST قبل الفيديو
-  openAdLinks(null);
-  G('modalTitle').textContent=title;
-  G('modalDesc').textContent=desc;
-  G('modalPts').textContent=userPoints+' pts';
-  updateHeader();
-  G('modalOv').classList.add('open');
-  G('pauseInd').classList.remove('on');
-  _loadVideoIframe(vid);
-  startWTimer();
-  startAdRepeatTimer('video');
+  if(!currentUser){ G('authOv').classList.remove('hidden'); return; }
+  // Show VAST ad first, then open video
+  playVastAd(function(){
+    var mt=G('modalTitle'), md=G('modalDesc'), mp=G('modalPts'), mo=G('modalOv'), pi=G('pauseInd');
+    if(mt) mt.textContent=title;
+    if(md) md.textContent=desc;
+    if(mp) mp.textContent=userPoints+' pts';
+    updateHeader();
+    if(mo) mo.classList.add('open');
+    if(pi) pi.classList.remove('on');
+    _loadVideoIframe(vid);
+    startWTimer();
+    startAdRepeatTimer('video');
+  });
 }
 function closeVideoModal(){
-  G('modalOv').classList.remove('open');
+  var mo=G('modalOv'), pi=G('pauseInd'), yw=G('ytPCWrap');
+  if(mo) mo.classList.remove('open');
   stopWTimer();
   stopAdRepeatTimer();
   setPlaying(false);
-  G('pauseInd').classList.remove('on');
-  G('ytPCWrap').innerHTML='';
+  if(pi) pi.classList.remove('on');
+  if(yw) yw.innerHTML='';
   _currentVideoId='';
   updateHeader();
 }
 
-// ═══════════════════════════════════════
-// WATCH TIMER
-// ═══════════════════════════════════════
+// ── WATCH TIMER ──
 function drawRing(){
-  var n=G('tNum'), f=G('ringFill');
+  var n=G('tNum'), f=G('ringFill'); if(!n&&!f) return;
   if(n) n.textContent=tSecs;
   if(f){
     var offset=CIRC*(1-(tSecs/EARN_EVERY));
@@ -1373,1008 +1195,637 @@ function drawRing(){
     f.style.stroke=tSecs>20?'#22c55e':tSecs>10?'#f59e0b':'#ef4444';
   }
 }
-function startWTimer(){stopWTimer();tSecs=EARN_EVERY;drawRing();wInt=setInterval(function(){if(!playing)return;tSecs--;drawRing();if(tSecs<=0){tSecs=EARN_EVERY;
-            var added = secureAddPoint('video');
-            if(added){
-              G('modalPts').textContent=userPoints+' pts';
-              var pv=G('modalPts');pv.classList.remove('flash');void pv.offsetWidth;pv.classList.add('flash');
-              setTimeout(function(){pv.classList.remove('flash');},700);
-              showToast('+1 pts 🎉','rgba(34,197,94,.95)');
-              sendNotif('WinTube 🎉', 'كسبت pts جديدة! رصيدك: '+userPoints+' pts');
-              syncLeaderboard();
-            }}},1000);}
-function stopWTimer(){clearInterval(wInt);wInt=null;playing=false;tSecs=EARN_EVERY;drawRing();}
+function startWTimer(){
+  stopWTimer(); tSecs=EARN_EVERY; drawRing();
+  wInt=setInterval(function(){
+    if(!playing) return;
+    tSecs--; drawRing();
+    if(tSecs<=0){
+      tSecs=EARN_EVERY;
+      var added=secureAddPoint('video');
+      if(added){
+        var mp=G('modalPts'); if(mp){ mp.textContent=userPoints+' pts'; mp.classList.remove('flash'); void mp.offsetWidth; mp.classList.add('flash'); setTimeout(function(){ mp.classList.remove('flash'); },700); }
+        showToast('+1 pt 🎉','rgba(34,197,94,.95)');
+        sendNotif('WinTube 🎉','New point! Balance: '+userPoints+' pts');
+        syncLeaderboard();
+      }
+    }
+  },1000);
+}
+function stopWTimer(){ clearInterval(wInt); wInt=null; playing=false; tSecs=EARN_EVERY; drawRing(); }
 function setPlaying(v){
-  playing = v;
-  var pi = G('pauseInd');
-  if(pi) pi.classList.toggle('on', !v);
-  // إذا الفيديو يعمل والمودال مفتوح — تأكد العداد شغّال
-  if(v && !wInt){
-    var mo = G('modalOv');
-    if(mo && mo.classList.contains('open')) startWTimer();
-  }
+  playing=v;
+  var pi=G('pauseInd'); if(pi) pi.classList.toggle('on',!v);
+  if(v&&!wInt){ var mo=G('modalOv'); if(mo&&mo.classList.contains('open')) startWTimer(); }
 }
 
-// ═══════════════════════════════════════
-// VIDEO PLAYER — Direct iframe (reliable)
-// ═══════════════════════════════════════
-var _ytPlayer = null; // kept for compatibility
-var _currentVideoId = '';
-
+// ── VIDEO PLAYER ──
 function _loadVideoIframe(videoId){
-  _currentVideoId = videoId;
-  G('ytPCWrap').innerHTML =
-    '<iframe id="ytMainIframe" '
-    +'src="https://www.youtube-nocookie.com/embed/'+videoId
+  _currentVideoId=videoId;
+  var wrap=G('ytPCWrap'); if(!wrap) return;
+  wrap.innerHTML='<iframe id="ytMainIframe" src="https://www.youtube-nocookie.com/embed/'+videoId
     +'?autoplay=1&playsinline=1&rel=0&fs=1&modestbranding=1&iv_load_policy=3&enablejsapi=1" '
     +'allow="autoplay; fullscreen; encrypted-media; picture-in-picture; accelerometer; gyroscope" '
-    +'allowfullscreen frameborder="0" '
-    +'style="position:absolute;top:0;left:0;width:100%;height:100%;border:none;"></iframe>';
-  // انتظر 1.5 ثانية ثم ابدأ العداد (وقت كافٍ لتحميل الفيديو)
+    +'allowfullscreen frameborder="0" style="position:absolute;top:0;left:0;width:100%;height:100%;border:none;"></iframe>';
   setTimeout(function(){
-    if(G('modalOv') && G('modalOv').classList.contains('open')){
-      setPlaying(true);
-    }
-  }, 1500);
+    var mo=G('modalOv'); if(mo&&mo.classList.contains('open')) setPlaying(true);
+  },1500);
 }
 
-// ═══════════════════════════════════════
-// TOAST
-// ═══════════════════════════════════════
-function showToast(msg,bg){var t=G('toast');t.textContent=msg;if(bg)t.style.background=bg;t.classList.add('show');setTimeout(function(){t.classList.remove('show');},1900);}
-
-// ═══════════════════════════════════════
-// GAME OVERLAY
-// ═══════════════════════════════════════
-function openGameOverlay(gameId,gameName,gameUrl){
-  if(!currentUser){G('authOv').classList.remove('hidden');return;}
-  // افتح الرابطين عند بداية اللعبة
-  openAdLinks();
-  var pts=gCache[gameId]||0; activeGid=gameId;
-  G('gTitle').textContent=gameName;
-  G('gPts').textContent=pts+' pts 🎮';
-  G('gFrame').src=gameUrl;
-  G('gameOv').classList.add('open');
-  startGTimer(pts);
-  startAdRepeatTimer('game');
-}
-function closeGameOverlay(){stopGTimer();stopAdRepeatTimer();G('gameOv').classList.remove('open');G('gFrame').src='';activeGid=null;updateHeader();loadGamesGrid();}
-function startGTimer(startPts){
-  stopGTimer();
-  var pts = startPts; gElapsed = 0;
-  gInt = setInterval(function(){
-    gElapsed++;
-    if(gElapsed >= GAME_SEC){
-      gElapsed = 0;
-      var added = secureAddPoint('game');
-      if(added){
-        pts++;
-        gCache[activeGid] = pts;
-        if(_db && currentUser) saveGameDayPts(activeGid, pts);
-        G('gPts').textContent = pts + ' pts 🎮';
-        var t = G('gToast'); t.classList.add('show');
-        setTimeout(function(){ t.classList.remove('show'); }, 1900);
-      }
-    }
-  }, 1000);
-}
-function stopGTimer(){clearInterval(gInt);gInt=null;gElapsed=0;}
-
-// ═══════════════════════════════════════
-// GAMES DB
-// ═══════════════════════════════════════
-function getGameDayPts(gameId,cb){if(!_db||!currentUser){cb(0);return;}_db.collection('users').doc(currentUser.uid).collection('gdp').doc(todayK()+'_'+gameId).get().then(function(s){cb(s.exists?(s.data().pts||0):0);}).catch(function(){cb(0);});}
-function saveGameDayPts(gameId,pts){if(!_db||!currentUser)return;_db.collection('users').doc(currentUser.uid).collection('gdp').doc(todayK()+'_'+gameId).set({pts:pts,gid:gameId,date:todayK()});}
-
-// ═══════════════════════════════════════
-// GAMES GRID
-// ═══════════════════════════════════════
-function loadGamesGrid(){
-  if(!_db)return;
-  var grid=G('gGrid'),empty=G('gEmpty');
-  grid.innerHTML='<div class="loading" style="display:block"><div class="spinner"></div><p>Loading...</p></div>';
-  empty.style.display='none';
-  _db.collection('games').orderBy('createdAt','asc').get().then(function(snap){
-    grid.innerHTML='';if(snap.empty){empty.style.display='block';return;}
-    var list=[];snap.forEach(function(d){list.push({id:d.id,d:d.data()});});
-    if(!currentUser){list.forEach(function(g){gCache[g.id]=0;});renderGamesGrid(list);return;}
-    var pend=list.length;
-    list.forEach(function(g){getGameDayPts(g.id,function(pts){gCache[g.id]=pts;if(--pend===0)renderGamesGrid(list);});});
-  }).catch(function(e){G('gGrid').innerHTML='<p style="color:var(--muted);padding:2rem;text-align:center">⚠️ '+e.message+'</p>';});
-}
-function renderGamesGrid(list){
-  var grid = G('gGrid'); grid.innerHTML = '';
-  list.forEach(function(g, i){
-    var pts = gCache[g.id] || 0;
-    var card = document.createElement('div'); card.className = 'game-card';
-    var thumbBg = g.d.img ? 'background:#000' : 'background:linear-gradient(135deg,#1a0533,#2d0a5c)';
-    var thumbContent = g.d.img
-      ? '<img src="'+g.d.img+'" style="width:100%;height:100%;object-fit:cover;display:block;" alt="">'
-      : '<div class="game-icon">'+GICONS[i%GICONS.length]+'</div>';
-    card.innerHTML =
-      '<div class="game-thumb" style="'+thumbBg+'">'+
-        thumbContent+
-        '<div class="game-ov"><div class="game-play">▶</div></div>'+
-        '<span class="game-cap-badge">'+pts+' pts</span>'+
-      '</div>'+
-      '<div class="game-info">'+
-        '<div class="game-name">'+g.d.name+'</div>'+
-        '<div class="game-bar-lbl" style="font-size:.72rem;color:var(--muted);padding:.2rem .65rem 0">اللعب لا محدود ✓</div>'+
-      '</div>';
-    (function(id,name,url){ card.onclick=function(){ openGameOverlay(id,name,url); }; })(g.id,g.d.name,g.d.url);
-    grid.appendChild(card);
+// ── GAME OVERLAY ──
+function openGameOverlay(gameId, gameName, gameUrl){
+  if(!currentUser){ G('authOv').classList.remove('hidden'); return; }
+  playVastAd(function(){
+    activeGid=gameId;
+    var go=G('gameOv'), gt=G('gTitle'), gf=G('gFrame');
+    if(gt) gt.textContent=gameName||'Game';
+    if(gf) gf.src=gameUrl||'about:blank';
+    if(go) go.classList.add('open');
+    startGTimer();
+    startAdRepeatTimer('game');
   });
 }
-
-// ═══════════════════════════════════════
-// IMAGE UPLOAD
-// ═══════════════════════════════════════
-function previewGameImg(input){
-  var file=input.files[0];if(!file)return;
-  var reader=new FileReader();
-  reader.onload=function(e){var img=new Image();img.onload=function(){var c=document.createElement('canvas'),MAX=400,sc=Math.min(1,MAX/img.width);c.width=Math.round(img.width*sc);c.height=Math.round(img.height*sc);c.getContext('2d').drawImage(img,0,0,c.width,c.height);var data=c.toDataURL('image/jpeg',.75);G('imgPreview').src=data;G('imgPreview').style.display='block';G('imgPlaceholder').style.display='none';};img.src=e.target.result;};
-  reader.readAsDataURL(file);
+function closeGameOverlay(){
+  stopGTimer(); stopAdRepeatTimer();
+  var go=G('gameOv'), gf=G('gFrame');
+  if(go) go.classList.remove('open');
+  if(gf) gf.src='';
+  activeGid=null; updateHeader(); loadGamesGrid();
 }
-function resetGameImgUpload(){G('newGameImg').value='';G('imgPreview').src='';G('imgPreview').style.display='none';G('imgPlaceholder').style.display='';}
-
-// ═══════════════════════════════════════
-// ADMIN GAMES
-// ═══════════════════════════════════════
-function switchGameSrc(t){
-  gameSrcMode=t;var u=t==='url';
-  G('rowUrl').style.display=u?'':'none';G('rowIframe').style.display=u?'none':'';
-  G('srcUrl').classList.toggle('active',u);G('srcIframe').classList.toggle('active',!u);
-}
-function adminAddGame(){
-  if(!_db)return;
-  var name=G('newGameName').value.trim(),err=G('addErr'),btn=G('addBtn'),url='';
-  if(gameSrcMode==='iframe'){var code=G('newGameIframe').value.trim();if(!code){err.textContent='أدخل كود iframe';return;}var m=code.match(/src=["']([^"']+)["']/i);if(!m){err.textContent='لم يتم العثور على src';return;}url=m[1];}
-  else{url=G('newGameUrl').value.trim();}
-  if(!name){err.textContent='أدخل Game name';return;}
-  if(!url||!url.startsWith('http')){err.textContent='أدخل رابطاً صحيحاً';return;}
-  var imgData=G('imgPreview').style.display==='none'?'':(G('imgPreview').src||'');
-  err.textContent='';btn.disabled=true;btn.textContent='جاري الإضافة...';
-  var doc={name:name,url:url,createdAt:firebase.firestore.FieldValue.serverTimestamp()};
-  if(imgData)doc.img=imgData;
-  _db.collection('games').add(doc)
-    .then(function(){G('newGameName').value='';G('newGameUrl').value='';G('newGameIframe').value='';resetGameImgUpload();btn.disabled=false;btn.textContent='➕ إضافة اللعبة';err.textContent='';loadAdminGamesList();loadGamesGrid();})
-    .catch(function(e){err.textContent='خطأ: '+e.message;btn.disabled=false;btn.textContent='➕ إضافة اللعبة';});
-}
-function adminDeleteGame(id){if(!_db||!confirm('Delete هذه اللعبة نهائياً؟'))return;_db.collection('games').doc(id).delete().then(function(){loadAdminGamesList();loadGamesGrid();}).catch(function(e){alert('خطأ: '+e.message);});}
-function loadAdminGamesList(){
-  if(!_db)return;
-  var el=G('admGames');el.innerHTML='<div class="adm-empty">Loading...</div>';
-  _db.collection('games').orderBy('createdAt','asc').get().then(function(snap){
-    if(snap.empty){el.innerHTML='<div class="adm-empty">لا توجد ألعاب</div>';return;}
-    el.innerHTML='';
-    snap.forEach(function(doc){var d=doc.data(),id=doc.id;var thumb=d.img?'<img src="'+d.img+'" style="width:48px;height:48px;object-fit:cover;border-radius:7px;flex-shrink:0;">':'<div style="width:48px;height:48px;background:linear-gradient(135deg,#1a0533,#2d0a5c);border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:1.4rem;flex-shrink:0;">🎮</div>';el.innerHTML+='<div class="adm-game-item">'+thumb+'<div style="min-width:0;flex:1;margin:0 .7rem"><div class="adm-game-name">'+d.name+'</div><div class="adm-game-url">'+d.url+'</div></div><button class="adm-game-del" onclick="adminDeleteGame(\''+id+'\')">🗑️ Delete</button></div>';});
-  }).catch(function(e){el.innerHTML='<div class="adm-empty">خطأ: '+e.message+'</div>';});
-}
-
-// ═══════════════════════════════════════
-// FIREBASE INIT
-// ═══════════════════════════════════════
-loadSc('https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js')
-  .then(function(){return loadSc('https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js');})
-  .then(function(){return loadSc('https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js');})
-  .then(function(){
-    try { firebase.app(); } catch(e) { firebase.initializeApp(FB_CFG); }
-    _auth = firebase.auth();
-    _auth.useDeviceLanguage();
-    _db = firebase.firestore();
-    console.log('✅ Firebase ready');
-
-    _auth.onAuthStateChanged(function(user){
-      if(user){
-        currentUser=user;
-        _db.collection('users').doc(user.uid).get().then(function(snap){
-          if(snap.exists){ userPoints=snap.data().points||0; }
-          else{
-            _db.collection('users').doc(user.uid).set({
-              name:user.displayName||'مستخدم',
-              email:user.email,
-              points:START_PTS,
-              createdAt:firebase.firestore.FieldValue.serverTimestamp()
-            });
-            userPoints=START_PTS;
-          }
-          updateHeader();
-          G('authOv').classList.add('hidden');
-          if(user && user.uid === ADMIN_UID){
-            var ba=G('btnA'); if(ba) ba.style.display='';
-          }
-          G('btnW').style.display='';
-          G('mobBtnW').setAttribute('data-show','1');
-          loadGamesGrid();
-          // إعداد الإحالة والإشعارات والـ leaderboard
-          initRefLink();
-          requestNotifPermission();
-          syncLeaderboard();
-        }).catch(function(){userPoints=0;updateHeader();G('authOv').classList.add('hidden');});
-      } else {
-        currentUser=null;userPoints=0;stopWTimer();
-        var ba=G('btnA'); if(ba) ba.style.display='none';
-        G('authOv').classList.remove('hidden');
-        G('btnW').style.display='none';
-        G('mobBtnW').removeAttribute('data-show');
-        if(_db) loadGamesGrid();
+function startGTimer(){
+  stopGTimer(); gElapsed=0;
+  var gp=G('gPts'); if(gp) gp.textContent='0 pts';
+  gInt=setInterval(function(){
+    gElapsed++;
+    if(gElapsed%GAME_SEC===0){
+      var added=secureAddPoint('game');
+      if(added){
+        var gp2=G('gPts'); if(gp2) gp2.textContent=userPoints+' pts';
+        var gt=G('gToast'); if(gt){ gt.textContent='+1 pt 🎮'; gt.classList.add('show'); setTimeout(function(){ gt.classList.remove('show'); },1500); }
+        syncLeaderboard();
       }
-    });
-
-    // WITHDRAW
-    window.openWithdraw=function(){
-      if(!currentUser)return;
-      G('wPts').textContent=userPoints;G('wUsd').textContent=(userPoints/PTS_USD).toFixed(2);
-      G('wForm').style.display='';G('wOK').style.display='none';G('wErr').textContent='';G('wAmt').value='';G('wAddr').value='';G('wMethod').value='';G('wCalc').textContent='';
-      // Composite index required: uid ASC + createdAt DESC
-      // Fallback: if index not ready, fetch without orderBy then sort client-side
-      var wRef = _db.collection('withdrawals').where('uid','==',currentUser.uid);
-      wRef.orderBy('createdAt','desc').limit(10).get()
-        .then(function(snap){ _renderWHist(snap); })
-        .catch(function(){
-          // Index not ready — fallback without orderBy
-          wRef.limit(10).get().then(function(snap){ _renderWHist(snap); }).catch(function(){});
-        });
-      function _renderWHist(snap){
-        var h='';
-        var docs=[];snap.forEach(function(d){docs.push(d);});
-        // Sort client-side if needed
-        docs.sort(function(a,b){
-          var ta=a.data().createdAt&&a.data().createdAt.seconds||0;
-          var tb=b.data().createdAt&&b.data().createdAt.seconds||0;
-          return tb-ta;
-        });
-        docs.forEach(function(doc){
-          var r=doc.data();
-          var badge=r.status==='pending'?'⏳ انتظار':r.status==='approved'?'✅ Approved':'❌ Rejected';
-          h+='<div class="req-item"><div><div style="font-weight:700;font-size:.78rem;color:var(--yellow)">'+r.method+'</div><div style="font-size:.72rem;color:var(--muted)">'+r.points+' pts = $'+r.usd+'</div></div><span class="req-badge '+(r.status||'pending')+'">'+badge+'</span></div>';
-        });
-        G('wHist').innerHTML=h||'';
-      }
-      G('wOv').classList.add('open');
-    };
-    window.closeWithdraw=function(){G('wOv').classList.remove('open');};
-    window.updateWalletPlaceholder=function(){
-      var m=G('wMethod').value, l=G('wAddrLbl'), i=G('wAddr');
-      if(m==='Mastercard'){
-        l.textContent='رقم البطاقة'; i.placeholder='XXXX XXXX XXXX XXXX';
-      } else if(m==='Asiacell'){
-        l.textContent='رقم الهاتف (آسياسيل)'; i.placeholder='077XXXXXXXX';
-      } else if(m==='Zain (Eather)'){
-        l.textContent='رقم الهاتف (زين / إيثر)'; i.placeholder='078XXXXXXXX or 079XXXXXXXX';
-      } else if(m){
-        l.textContent='عنوان المحفظة'; i.placeholder='أدخل عنوان '+m;
-      }
-    };
-    window.calcWithdraw=function(){var v=parseInt(G('wAmt').value)||0;G('wCalc').textContent=v>0?'≈ $'+(v/PTS_USD).toFixed(2):'';};
-    window.submitWithdraw=function(){
-      var method=G('wMethod').value,addr=G('wAddr').value.trim(),amt=parseInt(G('wAmt').value)||0,errEl=G('wErr'),btn=G('wBtn');
-      if(!method){errEl.textContent='اختر طريقة السحب';return;}if(!addr){errEl.textContent='أدخل Address';return;}
-      if(amt<MIN_W){errEl.textContent='الحد الأدنى 5000 pts';return;}if(amt>userPoints){errEl.textContent='رصيدك غير كافٍ';return;}if(amt%1000!==0){errEl.textContent='يجب أن يكون مضاعفاً لـ 1000';return;}
-      errEl.textContent='';btn.disabled=true;btn.textContent='جاري الإرسال...';
-      _db.collection('withdrawals').add({uid:currentUser.uid,name:currentUser.displayName||'',email:currentUser.email,method:method,address:addr,points:amt,usd:(amt/PTS_USD).toFixed(2),status:'pending',createdAt:firebase.firestore.FieldValue.serverTimestamp()})
-        .then(function(){userPoints-=amt;savePoints();updateHeader();G('wPts').textContent=userPoints;G('wUsd').textContent=(userPoints/PTS_USD).toFixed(2);G('wForm').style.display='none';G('wOK').style.display='';btn.disabled=false;btn.textContent='Submit Request →';})
-        .catch(function(e){errEl.textContent='خطأ: '+e.message;btn.disabled=false;btn.textContent='Submit Request →';});
-    };
-
-    // ADMIN
-    window.openAdmin=function(){
-  if(!currentUser || currentUser.uid !== ADMIN_UID){
-    // Silently ignore — not admin
-    return;
-  }
-  G('admLogin').style.display='none';
-  G('admDash').style.display='flex';
-  G('admOv').classList.add('open');
-  loadAdminReqs();
-};
-    window.closeAdmin=function(){G('admOv').classList.remove('open');};
-    window.checkAdminPass=function(){}; // replaced by UID auth
-    window.switchAdminTab=function(t){var isW=t==='w';G('aPanelW').style.display=isW?'':'none';G('aPanelG').style.display=isW?'none':'';G('aTabW').classList.toggle('active',isW);G('aTabG').classList.toggle('active',!isW);if(!isW)loadAdminGamesList();};
-    window.adminAction=function(did,status,uid,pts){
-      if(!confirm('هل تريد '+(status==='approved'?'Approve':'Reject')+' هذا الطلب؟'))return;
-      var batch=_db.batch();batch.update(_db.collection('withdrawals').doc(did),{status:status});
-      if(status==='rejected')batch.update(_db.collection('users').doc(uid),{points:firebase.firestore.FieldValue.increment(pts)});
-      batch.commit().then(loadAdminReqs).catch(function(e){alert('خطأ: '+e.message);});
-    };
-    function loadAdminReqs(){
-      var el=G('admReqs');el.innerHTML='<div class="adm-empty">Loading...</div>';
-      // NOTE: Firestore rules must allow admin UID to read all withdrawals
-      // Rule: match /withdrawals/{id} { allow read: if request.auth.uid == "TjFFYhwzblM9HhZocqsAkZbltix1"; }
-      _db.collection('withdrawals').orderBy('createdAt','desc').limit(50).get().then(function(snap){
-        if(snap.empty){el.innerHTML='<div class="adm-empty">لا توجد طلبات</div>';return;}
-        el.innerHTML='';
-        snap.forEach(function(doc){
-          var r=doc.data(),id=doc.id,isPend=r.status==='pending';
-          var date=r.createdAt&&r.createdAt.toDate?r.createdAt.toDate().toLocaleDateString('ar'):'';
-          var bl={'pending':'⏳ انتظار','approved':'✅ Approved','rejected':'❌ Rejected'}[r.status]||r.status;
-          var acts=isPend?'<div class="adm-acts"><button class="a-approve" onclick="adminAction(\''+id+'\',\'approved\',\''+r.uid+'\','+r.points+')">✅ Approve</button><button class="a-reject" onclick="adminAction(\''+id+'\',\'rejected\',\''+r.uid+'\','+r.points+')">❌ Reject</button></div>':'';
-          el.innerHTML+='<div class="adm-req"><div class="adm-req-top"><div><div class="adm-req-name">'+r.name+'</div><div class="adm-req-date">'+date+'</div></div><span class="req-badge '+(r.status||'pending')+'">'+bl+'</span></div><div class="adm-req-row">📧 <span>'+r.email+'</span></div><div class="adm-req-row">💳 <span>'+r.method+'</span></div><div class="adm-req-row">🏦 <span style="direction:ltr">'+r.address+'</span></div><div class="adm-req-row">💵 <span>'+r.points+' pts = $'+r.usd+'</span></div>'+acts+'</div>';
-        });
-      }).catch(function(e){el.innerHTML='<div class="adm-empty">خطأ: '+e.message+'</div>';});
     }
-  }).catch(function(e){G('authErr').textContent='Failed to load Firebase: '+e.message;});
-
-// ═══════════════════════════════════════
-// EVENT WIRING
-// ═══════════════════════════════════════
-
-// ─── YouTube iframe postMessage: كشف إيقاف/تشغيل الفيديو ───
-window.addEventListener('message', function(e){
-  if(!e.data || typeof e.data !== 'string') return;
-  try{
-    var d = JSON.parse(e.data);
-    // YouTube يرسل playerState: 1=تشغيل, 2=إيقاف مؤقت, 0=انتهى, 3=يحمّل
-    if(d.event === 'infoDelivery' && d.info && typeof d.info.playerState !== 'undefined'){
-      var state = d.info.playerState;
-      var mo = G('modalOv');
-      if(!mo || !mo.classList.contains('open')) return;
-      if(state === 1){
-        // ▶ يشتغل — شغّل العداد
-        setPlaying(true);
-      } else if(state === 2 || state === 0){
-        // ⏸ متوقف or انتهى — orقف العداد
-        setPlaying(false);
-      }
-      // state=3 (buffering) — لا تغيير، اتركه
-    }
-  } catch(err){}
-});
-// إيقاف الفيديو عند مغادرة الصفحة or فتح تاب آخر
-document.addEventListener('visibilitychange', function(){
-  if(document.visibilityState === 'hidden'){
-    // التاب مخفي — orقف العداد فقط (الـ iframe يتوقف تلقائياً)
-    setPlaying(false);
-  } else {
-    // User returned to tab
-    if(currentUser) refreshPointsFromDB();
-    // Resume timer if video is open
-    var _mo=G('modalOv'); if(_mo&&_mo.classList.contains('open')&&_currentVideoId){
-      setTimeout(function(){ setPlaying(true); }, 800);
-    }
-  }
-});
-window.addEventListener('blur', function(){
-  // لا تفعل شيئاً هنا — visibilitychange يتكفل بالإيقاف الحقيقي
-  // blur يحدث عادةً عند الضغط على الـ iframe وهذا طبيعي
-});
-window.addEventListener('focus', function(){
-  if(currentUser) refreshPointsFromDB();
-  // Resume timer if video is open
-  var _mo2=G('modalOv'); if(_mo2&&_mo2.classList.contains('open')&&_currentVideoId){
-    setTimeout(function(){ setPlaying(true); }, 500);
-  }
-});
-
-// Secret admin URL trigger
-if(location.hash === '#admin-secret-panel'){
-  setTimeout(function(){ openAdmin && openAdmin(); }, 1500);
+  },1000);
 }
-G('closeVid').addEventListener('click',closeVideoModal);
-G('lbOv').addEventListener('click',function(e){if(e.target===G('lbOv'))closeLeaderboard();});
-// إذا الصفحة مبهمة وأُغلق DevTools — إزالة تلقائية
-document.addEventListener('click', function(){
-  if(document.body.style.filter==='blur(8px)' && !document.getElementById('_secOv').style.display.includes('flex')){
-    document.body.style.filter='';
-    document.body.style.pointerEvents='';
-  }
-});
-G('ppOv').addEventListener('click',function(e){if(e.target===G('ppOv'))closePP();});
-G('aboutOv').addEventListener('click',function(e){if(e.target===G('aboutOv'))G('aboutOv').classList.remove('open');});
-G('modalOv').addEventListener('click',function(e){if(e.target===G('modalOv'))closeVideoModal();});
-G('closeGame').addEventListener('click',closeGameOverlay);
+function stopGTimer(){ clearInterval(gInt); gInt=null; }
 
-
-// ═══════════════════════════════════════
-// REGION SELECTOR
-// ═══════════════════════════════════════
-var currentRegion = 'IQ';
-function setRegion(code, btn){
-  currentRegion = code;
-  document.querySelectorAll('.region-btn').forEach(function(b){ b.classList.remove('active'); });
-  if(btn) btn.classList.add('active');
-  goHome(G('catHome'));
-  fetchHome('', false);
+// ── TOAST ──
+function showToast(msg,bg){
+  var t=G('toast'); if(!t) return;
+  t.textContent=msg;
+  if(bg) t.style.background=bg;
+  t.classList.add('show');
+  setTimeout(function(){ t.classList.remove('show'); },1900);
 }
 
-// ═══════════════════════════════════════
-// LEADERBOARD
-// ═══════════════════════════════════════
-function openLeaderboard(){
-  G('lbOv').classList.add('open');
-  loadLeaderboard();
-}
-function closeLeaderboard(){ G('lbOv').classList.remove('open'); }
-function loadLeaderboard(){
-  G('lbBody').innerHTML='<div class="lb-loading">⏳ Loading...</div>';
-  if(!_db){G('lbBody').innerHTML='<div class="lb-loading">سجّل دخولك orلاً</div>';return;}
-  _db.collection('leaderboard').get()
-    .then(function(snap){
-      if(snap.empty){
-        if(currentUser) syncLeaderboard();
-        G('lbBody').innerHTML='<div class="lb-loading" style="text-align:center;padding:2rem"><div style="font-size:2.5rem;margin-bottom:.6rem">🏆</div><div style="font-weight:700;margin-bottom:.3rem">كن orل المتصدرين!</div><div style="font-size:.75rem;color:#555">شاهد فيديو لتظهر هنا</div></div>';
-        return;
-      }
-      var rows=[];
-      snap.forEach(function(doc){rows.push({id:doc.id,d:doc.data()});});
-      rows.sort(function(a,b){return(b.d.points||0)-(a.d.points||0);});
-      rows=rows.slice(0,10);
-      var html='';
-      rows.forEach(function(item,idx){
-        var rank=idx+1,name=item.d.name||'مستخدم',pts=item.d.points||0;
-        var av=name[0].toUpperCase();
-        var rc=rank===1?'gold':rank===2?'silver':rank===3?'bronze':'';
-        var ri=rank===1?'🥇':rank===2?'🥈':rank===3?'🥉':rank;
-        var me=currentUser&&item.id===currentUser.uid?' me':'';
-        html+='<div class="lb-row'+me+'"><div class="lb-rank '+rc+'">'+ri+'</div><div class="lb-av">'+av+'</div><div class="lb-name">'+name+(me?' <span style="font-size:.65rem;color:var(--red)">(You)</span>':'')+'</div><div class="lb-pts">'+pts.toLocaleString()+' ⭐</div></div>';
-      });
-      G('lbBody').innerHTML=html||'<div class="lb-loading">لا يوجد</div>';
-    })
-    .catch(function(e){
-      G('lbBody').innerHTML='<div class="lb-loading" style="text-align:center;padding:1.5rem"><div style="font-size:1.8rem">⚠️</div><div style="font-size:.8rem;margin-top:.4rem">تأكد من Firestore Rules</div><div style="font-size:.65rem;color:#555;direction:ltr;margin-top:.3rem">'+e.message+'</div></div>';
-    });
-}
-
-// يُستدعى كل مرة تتغير النقاط — يكتب في leaderboard العامة
-function syncLeaderboard(){
-  if(!_db||!currentUser) return;
-  var name=currentUser.displayName||currentUser.email.split('@')[0]||'مستخدم';
-  _db.collection('leaderboard').doc(currentUser.uid).set({
-    name:name, points:userPoints,
-    updatedAt:firebase.firestore.FieldValue.serverTimestamp()
-  }).catch(function(){});
-}
-
-// ═══════════════════════════════════════
-// PRIVACY POLICY
-// ═══════════════════════════════════════
-function closePP(){ G('ppOv').classList.remove('open'); }
-
-// ═══════════════════════════════════════
-// ABOUT STATS
-// ═══════════════════════════════════════
-function loadAboutStats(){
-  if(!_db) return;
-  _db.collection('users').get().then(function(s){
-    G('statUsers').textContent = s.size + '+';
-  }).catch(function(){});
-}
-
-// ═══════════════════════════════════════
-// REFERRAL SYSTEM
-// ═══════════════════════════════════════
-var myRefCode = '';
-function getRefCode(uid){
-  // كود مختصر من الـ UID
-  return uid.substring(0,8).toUpperCase();
-}
-function buildRefLink(code){
-  return location.origin + location.pathname + '?ref=' + code;
-}
-function copyRefLink(){
-  var val = G('refLinkInp').value;
-  if(navigator.clipboard){ navigator.clipboard.writeText(val).then(function(){ showToast('✅ تم Copy الرابط!','rgba(34,197,94,.95)'); }); }
-  else{ G('refLinkInp').select(); document.execCommand('copy'); showToast('✅ تم الCopy','rgba(34,197,94,.95)'); }
-}
-function initRefLink(){
-  if(!currentUser) return;
-  myRefCode = getRefCode(currentUser.uid);
-  var link = buildRefLink(myRefCode);
-  var inp = G('refLinkInp');
-  if(inp) inp.value = link;
-}
-function checkReferral(newUser){
-  // استخراج كود الإحالة من URL or حقل التسجيل
-  var urlRef = new URLSearchParams(location.search).get('ref') || '';
-  var formRef = (G('rRef') && G('rRef').value.trim()) || '';
-  var refCode = (urlRef || formRef).toUpperCase();
-  if(!refCode || !_db) return;
-  // البحث عن صاحب الكود
-  _db.collection('users').get().then(function(snap){
-    snap.forEach(function(doc){
-      if(doc.id !== newUser.uid && getRefCode(doc.id) === refCode){
-        // المُحيل يحصل على 50 pts
-        _db.collection('users').doc(doc.id).update({
-          points: firebase.firestore.FieldValue.increment(50)
-        }).catch(function(){});
-        // المُحال يحصل على 150 pts إضافية
-        _db.collection('users').doc(newUser.uid).update({
-          points: firebase.firestore.FieldValue.increment(50)
-        }).catch(function(){});
-      }
-    });
-  }).catch(function(){});
-}
-
-// ═══════════════════════════════════════
-// PUSH NOTIFICATIONS (Browser)
-// ═══════════════════════════════════════
-// رسائل الإشعارات المتنوعة لاستجلاب المستخدمين
-var _notifMessages = [
-  { title: '🔥 Don\'t miss this!',        body: 'Watch trending videos now & earn unlimited points!' },
-  { title: '⭐ Your balance is waiting',         body: 'افتح WinTube واكسب نقاطاً — كل 30 ثانية = pts مجانية!' },
-  { title: '🎮 Game time!',           body: 'العاب مجانية + نقاط لا محدودة يومياً. Play Now!' },
-  { title: '💎 50 pts مجانية',       body: 'الرابط الذكي متاح الآن — افتحه واكسب 50 pts فوراً!' },
-  { title: '🏆 Climb the leaderboard',     body: 'المستخدمون يتسابقون! هل You في القمة؟ تحقق الآن!' },
-  { title: '🎬 New videos',       body: 'New exclusive content awaits — watch & earn points!' },
-  { title: '💰 Withdraw your earnings',          body: 'نقاطك = أموال حقيقية! اسحب عند 5000 pts.' },
-  { title: '🚀 WinTube is calling!',      body: 'You\'ve been away! Come back & continue — your points are waiting.' },
-  { title: '🌟 Exclusive offer today',      body: 'Complete the smart link & earn 50 points — لفترة محدودة!' },
-  { title: '⚡ Quick earnings',             body: 'In just 5 minutes you can earn 10+ points. Try now!' },
-];
-var _notifIdx = 0;
-var _notifTimer = null;
-var NOTIF_INTERVAL = 5 * 60 * 60 * 1000; // 5 ساعات
-
-function requestNotifPermission(){
-  if(!('Notification' in window)) return;
-  if(Notification.permission === 'default'){
-    setTimeout(function(){
-      Notification.requestPermission().then(function(p){
-        if(p === 'granted'){
-          sendNotif('WinTube 🎉', 'Welcome! You will receive notifications بأفضل العروض والمكافآت.');
-          _startNotifScheduler();
-        }
-      });
-    }, 5000);
-  } else if(Notification.permission === 'granted'){
-    _startNotifScheduler();
-  }
-}
-
-function _startNotifScheduler(){
-  clearInterval(_notifTimer);
-  // أرسل orل إشعار بعد انتهاء المدة
-  var lastSent = parseInt(localStorage.getItem('wt_last_notif') || '0');
-  var now = Date.now();
-  var nextIn = Math.max(0, NOTIF_INTERVAL - (now - lastSent));
-  setTimeout(function(){
-    _sendScheduledNotif();
-    _notifTimer = setInterval(_sendScheduledNotif, NOTIF_INTERVAL);
-  }, nextIn);
-}
-
-function _sendScheduledNotif(){
-  if(Notification.permission !== 'granted') return;
-  var msg = _notifMessages[_notifIdx % _notifMessages.length];
-  _notifIdx++;
-  localStorage.setItem('wt_last_notif', Date.now().toString());
-  localStorage.setItem('wt_notif_idx', _notifIdx.toString());
-  try{
-    var n = new Notification(msg.title, {
-      body: msg.body,
-      icon: 'https://wintube205-sudo.github.io/icon.png',
-      badge: 'https://wintube205-sudo.github.io/icon.png',
-      tag: 'wintube-promo',
-      requireInteraction: false,
-      silent: false
-    });
-    n.onclick = function(){ window.focus(); n.close(); };
-  } catch(e){}
-}
-
-function sendNotif(title, body){
-  if(Notification.permission !== 'granted') return;
-  try{
-    var n = new Notification(title, {
-      body: body,
-      icon: 'https://wintube205-sudo.github.io/icon.png',
-      tag: 'wintube-pts'
-    });
-    n.onclick = function(){ window.focus(); n.close(); };
-  } catch(e){}
-}
-
-
-
-// ═══════════════════════════════════════
-// INTERSTITIAL ADS SYSTEM
-// ═══════════════════════════════════════
-// SMART LINK INTERSTITIAL (HilltopAds)
-// ═══════════════════════════════════════
-var _iadInterval5m = null;
-var SMART_LINK  = 'https://data527.click/157e3c68fbf89e3c57fe/2b05fea27e/?placementName=default';
-var EXTRA_LINK  = 'https://limited-teacher.com/dOm.FGz/djGJNivsZSGEUt/Xeom/9JuqZeUDlDkoPCTYYW4uNxjkkzx/MDD/UltuN-jog-2qOCT/EgwjOzQv';
-
-// فتح الرابطين معاً
+// ── AD REPEAT (every 5 min during video/game) ──
 function openAdLinks(callback){
-  // شغّل VAST قبل الفيديو/اللعبة
-  playVastAd(callback || null);
+  playVastAd(callback);
 }
-
-// يفتح الرابطين في تاب جديد مباشرة
-function showInterstitialAd(callback){
-  openAdLinks();
-  if(callback) setTimeout(callback, 300);
-}
-
-function skipAd(){ /* غير مستخدم */ }
-
-function _closeAd(){ /* غير مستخدم */ }
-
-// مؤقت الرابط الذكي كل 5 دقائق
 function startAdRepeatTimer(context){
   stopAdRepeatTimer();
-  _iadInterval5m = setInterval(function(){
-    var isVideo = context==='video' && G('modalOv') && G('modalOv').classList.contains('open');
-    var isGame  = context==='game'  && G('gameOv')  && G('gameOv').classList.contains('open');
-    if(!isVideo && !isGame){ stopAdRepeatTimer(); return; }
-    openAdLinks(); // فتح الرابطين كل 5 دقائق
-  }, 300000);
+  _iadInterval5m=setInterval(function(){
+    var isVideo=context==='video'&&G('modalOv')&&G('modalOv').classList.contains('open');
+    var isGame =context==='game' &&G('gameOv') &&G('gameOv').classList.contains('open');
+    if(!isVideo&&!isGame){ stopAdRepeatTimer(); return; }
+    window.open(EXTRA_LINK,'_blank','noopener');
+  },300000);
 }
+function stopAdRepeatTimer(){ clearInterval(_iadInterval5m); _iadInterval5m=null; }
 
-function stopAdRepeatTimer(){
-  clearInterval(_iadInterval5m);
-  _iadInterval5m = null;
-}
-
-
-
-
-// ═══════════════════════════════════════
-// SMART LINK OFFER SYSTEM (50 pts بعد 30 ثانية)
-// ═══════════════════════════════════════
-var HL_PTS        = 50;      // نقاط لكل عرض
-var HL_MIN_SECS   = 30;      // الحد الأدنى من الثوان للتأهل
-var HL_COOLDOWN   = 300;     // 5 دقائق بين العروض
-var _hlOpenTime   = 0;       // وقت فتح الرابط
-var _hlWaiting    = false;   // هل المستخدم ذهب للرابط؟
-var _hlCoolLeft   = 0;       // الثوان المتبقية للـ cooldown
-var _hlCoolTimer  = null;    // مؤقت الـ cooldown
-
-function openSmartOffer(){
-  if(!currentUser){ G('authOv').classList.remove('hidden'); return; }
-  if(_hlWaiting)  { showToast('⏳ Return to this page to confirm your points'); return; }
-  if(_hlCoolLeft > 0){ showToast('⏳ Ready in ' + _fmtTime(_hlCoolLeft)); return; }
-
-  // سجّل وقت الفتح
-  _hlOpenTime = Date.now();
-  _hlWaiting  = true;
-
-  // حدّث الأزرار
-  _setHLBtn('waiting', '⏳ ارجع هنا بعد 30 ثانية…', true);
-
-  // افتح الرابطين
-  openAdLinks();
-
-  // راقب عودة المستخدم عبر visibilitychange + focus
-  document.addEventListener('visibilitychange', _onHLReturn);
-  window.addEventListener('focus', _onHLReturn);
-}
-
-function _onHLReturn(){
-  if(!_hlWaiting) return;
-
-  var elapsed = (Date.now() - _hlOpenTime) / 1000; // بالثوان
-
-  if(document.hidden) return; // لا تزال مخفية
-
-  // أزل listeners
-  document.removeEventListener('visibilitychange', _onHLReturn);
-  window.removeEventListener('focus', _onHLReturn);
-
-  _hlWaiting = false;
-
-  if(elapsed >= HL_MIN_SECS){
-    // ✅ أكمل المدة — أضف النقاط
-    _awardHLPoints();
-  } else {
-    // ❌ لم يكمل — رجع مبكراً
-    var remaining = Math.ceil(HL_MIN_SECS - elapsed);
-    showToast('❌ يجب الانتظار ' + HL_MIN_SECS + ' ثانية على الأقل! (أقل بـ ' + remaining + ' ثانية)', '#ef4444');
-    _setHLBtn('idle', '▶ افتح الرابط الذكي واكسب 50 pts', false);
-  }
-}
-
-function _awardHLPoints(){
-  if(!currentUser || !_db) return;
-  userPoints += HL_PTS;
-  updateHeader();
-  var _rb = G('rwBal'); if(_rb) _rb.textContent = userPoints;
-  _db.collection('users').doc(currentUser.uid).update({
-    points: firebase.firestore.FieldValue.increment(HL_PTS)
-  }).then(function(){
-    showToast('🎉 تم إضافة ' + HL_PTS + ' pts!', '#22c55e');
-    _showHLPopup();
-    syncLeaderboard();
-    _startHLCooldown();
-  }).catch(function(){
-    userPoints -= HL_PTS;
-    updateHeader();
-    showToast('❌ حدث خطأ، حاول مجدداً', '#ef4444');
-    _setHLBtn('idle', '▶ افتح الرابط الذكي واكسب 50 pts', false);
-  });
-}
-
-function _startHLCooldown(){
-  _hlCoolLeft = HL_COOLDOWN;
-  _setHLBtn('cooldown', 'Ready in ' + _fmtTime(_hlCoolLeft), true);
-  clearInterval(_hlCoolTimer);
-  _hlCoolTimer = setInterval(function(){
-    _hlCoolLeft--;
-    // تحديث شريط التقدم
-    var pct = (_hlCoolLeft / HL_COOLDOWN) * 100;
-    var tf = G('rwTimerFill'); if(tf) tf.style.width = pct + '%';
-    var cb = G('cpaBannerHome');
-    if(cb){
-      var t = cb.querySelector('.cpa-banner-title');
-      if(t) t.textContent = 'Ready in ' + _fmtTime(_hlCoolLeft);
-    }
-    if(_hlCoolLeft <= 0){
-      clearInterval(_hlCoolTimer);
-      _hlCoolLeft = 0;
-      var tf2 = G('rwTimerFill'); if(tf2) tf2.style.width = '100%';
-      _setHLBtn('idle', '▶ افتح الرابط الذكي واكسب 50 pts', false);
-      var cb2 = G('cpaBannerHome');
-      if(cb2){
-        var t2 = cb2.querySelector('.cpa-banner-title');
-        if(t2) t2.textContent = 'Complete the smart link & earn 50 points';
-        var inner = cb2.querySelector('.cpa-banner-inner');
-        if(inner) inner.style.opacity = '1';
-      }
-    }
-  }, 1000);
-}
-
-function _setHLBtn(state, label, disabled){
-  var btn = G('rwMainBtn');
-  if(btn){ btn.innerHTML = label; btn.disabled = disabled;
-    btn.className = 'rw-offer-btn' + (state==='waiting'||state==='cooldown'?' waiting':'');
-  }
-  var cb = G('cpaBannerHome');
-  if(cb){
-    var inner = cb.querySelector('.cpa-banner-inner');
-    var t = cb.querySelector('.cpa-banner-title');
-    if(inner) inner.style.opacity = (state==='idle')?'1':'0.65';
-    if(t && state==='waiting') t.textContent = '⏳ Come back in 30 seconds…';
-  }
-}
-
-function _showHLPopup(){
-  var ov = G('rwPopOv'); if(!ov) return;
-  var num = ov.querySelector('.rw-pts-pop-num');
-  if(num) num.textContent = '+50 ⭐';
-  ov.classList.add('show');
-  setTimeout(function(){ ov.classList.remove('show'); }, 2500);
-}
-
-function _fmtTime(s){
-  var m = Math.floor(s/60), sec = s%60;
-  return m + ':' + (sec<10?'0':'')+sec;
-}
-
-
-
-
-
-// ═══════════════════════════════════════════════
-// VAST AD PLAYER — Fluid Player Smart Timer
-// ═══════════════════════════════════════════════
-var VAST_TAG     = 'https://limited-teacher.com/dOm.FGz/djGJNivsZSGEUt/Xeom/9JuqZeUDlDkoPCTYYW4uNxjkkzx/MDD/UltuN-jog-2qOCT/EgwjOzQv';
-var AW_PTS       = 20;
-var _myFP        = null;
-var _adCallback  = null;
-var _adTimerInt  = null;
-var _adCountdown = 30;
+// ── VAST AD PLAYER (Fluid Player) ──
+var AW_PTS=20, _myFP=null, _adCallback=null, _adTimerInt=null, _adCountdown=30;
 
 function playVastAd(callback){
-  if(!currentUser){ G('authOv').classList.remove('hidden'); return; }
-  _adCallback  = callback || null;
-  _adCountdown = 30;
-
-  var overlay  = G('video-overlay');
-  var statusEl = G('ad-status');
-  var skipBtn  = G('vastSkipBtn');
-
-  if(!overlay) return;
-  if(statusEl){ statusEl.textContent='Loading ad... لن يبدأ العداد حتى يظهر الفيديو'; statusEl.style.color='#f59e0b'; }
-  if(skipBtn)  skipBtn.style.display='none';
-  overlay.style.display = 'flex';
-
+  if(!currentUser){ if(callback) callback(); return; }
+  _adCallback=callback||null;
+  _adCountdown=30;
+  var overlay=G('video-overlay'), statusEl=G('ad-status'), skipBtn=G('vastSkipBtn');
+  if(!overlay){ if(callback) callback(); return; }
+  if(statusEl){ statusEl.textContent='Loading ad... Timer starts when video plays'; statusEl.style.color='#f59e0b'; }
+  if(skipBtn) skipBtn.style.display='none';
+  overlay.style.display='flex';
   clearInterval(_adTimerInt);
-
-  // destroy الـ player القديم وأعد البناء من جديد
   if(_myFP){ try{ _myFP.destroy(); }catch(e){} _myFP=null; }
-
-  // أعد بناء عنصر الفيديو حتى نتجنب أي cache
-  var wrap = document.getElementById('fp-wrap');
-  if(wrap){
-    wrap.innerHTML = '<video id="reward-video-player" style="width:100%;display:block;background:#000;border-radius:10px;max-height:58vh;"><source src="" type="video/mp4"></video>';
-  }
-
-  var videoEl = document.getElementById('reward-video-player');
-  if(!videoEl) return;
-
-  // ربط العداد الذكي
+  var wrap=G('fp-wrap');
+  if(wrap) wrap.innerHTML='<video id="reward-video-player" style="width:100%;display:block;background:#000;border-radius:10px;max-height:58vh;"><source src="" type="video/mp4"></video>';
+  var videoEl=document.getElementById('reward-video-player');
+  if(!videoEl){ closeAdOverlay(); return; }
   function startTimer(){
     clearInterval(_adTimerInt);
-    _adTimerInt = setInterval(function(){
+    _adTimerInt=setInterval(function(){
       _adCountdown--;
-      if(statusEl){
-        statusEl.textContent = '⏳ Ad playing.. earning points in '+_adCountdown+' seconds';
-        statusEl.style.color = '#22c55e';
-      }
-      if(skipBtn && _adCountdown<=25) skipBtn.style.display='inline-block';
+      if(statusEl){ statusEl.textContent='⏳ Ad playing.. earning points in '+_adCountdown+'s'; statusEl.style.color='#22c55e'; }
+      if(skipBtn&&_adCountdown<=25) skipBtn.style.display='inline-block';
       if(_adCountdown<=0){ clearInterval(_adTimerInt); _giveAdPoints(); }
-    }, 1000);
+    },1000);
   }
   function pauseTimer(){
     clearInterval(_adTimerInt);
-    if(_adCountdown>0 && statusEl){
-      statusEl.textContent='⚠️ Ad paused! Timer stopped at '+_adCountdown+' seconds';
-      statusEl.style.color='#ef4444';
-    }
+    if(_adCountdown>0&&statusEl){ statusEl.textContent='⚠️ Ad paused! Timer stopped at '+_adCountdown+'s'; statusEl.style.color='#ef4444'; }
   }
-  videoEl.addEventListener('playing', startTimer);
-  videoEl.addEventListener('pause',   pauseTimer);
-  videoEl.addEventListener('waiting', pauseTimer);
-  videoEl.addEventListener('error',   function(){
+  videoEl.addEventListener('playing',startTimer);
+  videoEl.addEventListener('pause',pauseTimer);
+  videoEl.addEventListener('waiting',pauseTimer);
+  videoEl.addEventListener('error',function(){
     pauseTimer();
     if(statusEl){ statusEl.textContent='❌ Ad failed to load. Try again.'; statusEl.style.color='#ef4444'; }
+    setTimeout(closeAdOverlay,3000);
   });
-
-  // تهيئة Fluid Player
   try{
-    _myFP = fluidPlayer('reward-video-player',{
-      vastOptions:{
-        adList:[{ roll:'preRoll', vastTag: VAST_TAG }],
-        adCancelCallback: function(){ closeAdOverlay(); },
-        vastTimeout: 8000
-      },
-      layoutControls:{
-        primaryColor: '#f59e0b',
-        autoPlay: true,
-        mute: false,
-        allowDownload: false,
-        keyboardControl: false,
-        controlBar:{ autoHideTimeout:2 },
-        logo:{ imageUrl:null }
-      }
+    _myFP=fluidPlayer('reward-video-player',{
+      vastOptions:{ adList:[{roll:'preRoll',vastTag:VAST_TAG}], adCancelCallback:function(){ closeAdOverlay(); }, vastTimeout:8000 },
+      layoutControls:{ primaryColor:'#f59e0b', autoPlay:true, mute:false, allowDownload:false, keyboardControl:false, logo:{imageUrl:null} }
     });
-  } catch(e){
-    if(statusEl){ statusEl.textContent='❌ خطأ في تشغيل المشغل: '+e.message; statusEl.style.color='#ef4444'; }
+  }catch(e){
+    if(statusEl){ statusEl.textContent='Player error: '+e.message; statusEl.style.color='#ef4444'; }
+    setTimeout(closeAdOverlay,2000);
   }
 }
-
 function _giveAdPoints(){
-  if(!currentUser || !_db) return;
-  userPoints += AW_PTS;
+  if(!currentUser||!_db){ closeAdOverlay(); return; }
+  userPoints+=AW_PTS;
   updateHeader();
-  var rb = G('rwBal'); if(rb) rb.textContent = userPoints;
   _db.collection('users').doc(currentUser.uid).update({
-    points: firebase.firestore.FieldValue.increment(AW_PTS)
+    points:firebase.firestore.FieldValue.increment(AW_PTS)
   }).then(function(){
-    showToast('🎉 +' + AW_PTS + ' pts! 📺', '#f59e0b');
+    showToast('🎉 +'+AW_PTS+' pts! 📺','#f59e0b');
     syncLeaderboard();
     closeAdOverlay();
   }).catch(function(){
-    userPoints -= AW_PTS;
-    updateHeader();
-    showToast('❌ Error, please try again', '#ef4444');
+    userPoints-=AW_PTS; updateHeader();
     closeAdOverlay();
   });
 }
-
-function skipVastAd(){
-  clearInterval(_adTimerInt);
-  closeAdOverlay();
-}
-
+function skipVastAd(){ clearInterval(_adTimerInt); closeAdOverlay(); }
 function closeAdOverlay(){
   clearInterval(_adTimerInt);
-  var overlay = G('video-overlay');
-  if(overlay) overlay.style.display = 'none';
-  var vid = document.getElementById('reward-video-player');
+  var overlay=G('video-overlay'); if(overlay) overlay.style.display='none';
+  var vid=document.getElementById('reward-video-player');
   if(vid){ try{ vid.pause(); vid.currentTime=0; }catch(e){} }
-  if(_myFP) try{ _myFP.pause(); }catch(e){}
+  if(_myFP){ try{ _myFP.pause(); }catch(e){} }
   if(_adCallback){ var cb=_adCallback; _adCallback=null; setTimeout(cb,200); }
 }
-
-
 function openAdWatch(){
   if(!currentUser){ G('authOv').classList.remove('hidden'); return; }
   playVastAd(null);
 }
 
+// ── SMART LINK OFFER (50 pts after 30s) ──
+var HL_PTS=50, HL_MIN_SECS=30, HL_COOLDOWN=300;
+var _hlOpenTime=0, _hlWaiting=false, _hlCoolLeft=0, _hlCoolTimer=null;
 
-// ═══════════════════════════════════════
-// AD WATCH SYSTEM — 20 pts بلا حدود
-// ═══════════════════════════════════════
-var AW_MIN_SECS  = 15;    // ثواني مطلوبة
-var AW_COOLDOWN  = 60;    // ثانية بين كل مشاهدة
-
-function _onAWReturn(){
-  if(!_awWaiting) return;
+function openSmartOffer(){
+  if(!currentUser){ G('authOv').classList.remove('hidden'); return; }
+  if(_hlWaiting){ showToast('⏳ Return to this page to confirm your points'); return; }
+  if(_hlCoolLeft>0){ showToast('⏳ Ready in '+_fmtTime(_hlCoolLeft)); return; }
+  _hlOpenTime=Date.now(); _hlWaiting=true;
+  _setHLBtn('waiting');
+  window.open(EXTRA_LINK,'_blank','noopener');
+  document.addEventListener('visibilitychange',_onHLReturn);
+  window.addEventListener('focus',_onHLReturn);
+}
+function _onHLReturn(){
+  if(!_hlWaiting) return;
   if(document.hidden) return;
-
-  document.removeEventListener('visibilitychange', _onAWReturn);
-  window.removeEventListener('focus', _onAWReturn);
-  _awWaiting = false;
-
-  var elapsed = (Date.now() - _awOpenTime) / 1000;
-
-  if(elapsed >= AW_MIN_SECS){
-    _awardAWPoints();
+  document.removeEventListener('visibilitychange',_onHLReturn);
+  window.removeEventListener('focus',_onHLReturn);
+  _hlWaiting=false;
+  var elapsed=(Date.now()-_hlOpenTime)/1000;
+  if(elapsed>=HL_MIN_SECS){
+    _awardHLPoints();
   } else {
-    var rem = Math.ceil(AW_MIN_SECS - elapsed);
-    showToast('❌ Watch for at least ' + AW_MIN_SECS + 's! (' + rem + 's short)', '#ef4444');
-    _setAWBtn('idle');
+    var rem=Math.ceil(HL_MIN_SECS-elapsed);
+    showToast('❌ Wait at least '+HL_MIN_SECS+'s! ('+rem+'s short)','#ef4444');
+    _setHLBtn('idle');
   }
 }
-
-function _awardAWPoints(){
-  if(!currentUser || !_db) return;
-  userPoints += AW_PTS;
-  updateHeader();
-  var rb = G('rwBal'); if(rb) rb.textContent = userPoints;
+function _awardHLPoints(){
+  if(!currentUser||!_db) return;
+  userPoints+=HL_PTS; updateHeader();
+  var rb=G('rwBal'); if(rb) rb.textContent=userPoints;
   _db.collection('users').doc(currentUser.uid).update({
-    points: firebase.firestore.FieldValue.increment(AW_PTS)
+    points:firebase.firestore.FieldValue.increment(HL_PTS)
   }).then(function(){
-    showToast('🎉 +' + AW_PTS + ' pts!', '#f59e0b');
+    showToast('🎉 +'+HL_PTS+' points added!','#22c55e');
+    var ov=G('rwPopOv'); if(ov){ ov.classList.add('show'); setTimeout(function(){ ov.classList.remove('show'); },2500); }
     syncLeaderboard();
-    _startAWCooldown();
-  }).catch(function(){
-    userPoints -= AW_PTS;
+    _startHLCooldown();
+  }).catch(function(){ userPoints-=HL_PTS; updateHeader(); _setHLBtn('idle'); });
+}
+function _startHLCooldown(){
+  _hlCoolLeft=HL_COOLDOWN;
+  _setHLBtn('cooldown');
+  clearInterval(_hlCoolTimer);
+  _hlCoolTimer=setInterval(function(){
+    _hlCoolLeft--;
+    var tf=G('rwTimerFill'); if(tf) tf.style.width=((_hlCoolLeft/HL_COOLDOWN)*100)+'%';
+    var cb=G('cpaBannerHome');
+    if(cb){ var t=cb.querySelector('.cpa-banner-title'); if(t) t.textContent='Ready in '+_fmtTime(_hlCoolLeft); }
+    if(_hlCoolLeft<=0){
+      clearInterval(_hlCoolTimer); _hlCoolLeft=0;
+      var tf2=G('rwTimerFill'); if(tf2) tf2.style.width='100%';
+      _setHLBtn('idle');
+      var cb2=G('cpaBannerHome'); if(cb2){ var t2=cb2.querySelector('.cpa-banner-title'); if(t2) t2.textContent='Complete smart link & earn 50 pts'; var inn=cb2.querySelector('.cpa-banner-inner'); if(inn) inn.style.opacity='1'; }
+    }
+  },1000);
+}
+function _setHLBtn(state){
+  var btn=G('rwMainBtn'); if(btn){ btn.disabled=(state!=='idle'); btn.className='rw-offer-btn'+(state!=='idle'?' waiting':''); }
+  var cb=G('cpaBannerHome');
+  if(cb){ var inn=cb.querySelector('.cpa-banner-inner'), t=cb.querySelector('.cpa-banner-title');
+    if(inn) inn.style.opacity=(state==='idle'?'1':'0.65');
+    if(t&&state==='waiting') t.textContent='⏳ Return in 30 seconds…';
+  }
+}
+function _fmtTime(s){ var m=Math.floor(s/60),sec=s%60; return m+':'+(sec<10?'0':'')+sec; }
+
+// ── NOTIFICATIONS ──
+var _notifMessages=[
+  {title:'🔥 Don\'t miss this!', body:'Watch trending videos now & earn unlimited points!'},
+  {title:'⭐ Your balance is waiting', body:'Open WinTube & earn points — every 30s = 1 free point!'},
+  {title:'🎮 Game time!', body:'Free games + unlimited daily points. Play now!'},
+  {title:'💎 50 free points', body:'Smart link is live — open it & earn 50 pts instantly!'},
+  {title:'🏆 Climb the leaderboard', body:'Users are competing! Are you at the top? Check now!'},
+  {title:'🎬 New videos', body:'New exclusive content awaits — watch & earn points!'},
+  {title:'💰 Withdraw your earnings', body:'Your points = real money! Withdraw at 5000 pts.'},
+  {title:'🚀 WinTube is calling!', body:'You\'ve been away! Come back & continue — your points are waiting.'},
+  {title:'🌟 Exclusive offer today', body:'Complete the smart link & get 50 pts — limited time!'},
+  {title:'⚡ Quick earnings', body:'In just 5 minutes you can earn 10+ points. Try now!'}
+];
+var _notifIdx=0, _notifTimer=null;
+var NOTIF_INTERVAL=5*60*60*1000;
+try{ _notifIdx=parseInt(localStorage.getItem('wt_notif_idx')||'0'); }catch(e){}
+
+function requestNotifPermission(){
+  if(!('Notification' in window)) return;
+  if(Notification.permission==='default'){
+    setTimeout(function(){
+      Notification.requestPermission().then(function(p){
+        if(p==='granted'){ sendNotif('WinTube 🎉','Welcome! You will receive notifications about offers & rewards.'); _startNotifScheduler(); }
+      });
+    },5000);
+  } else if(Notification.permission==='granted'){
+    _startNotifScheduler();
+  }
+}
+function _startNotifScheduler(){
+  clearInterval(_notifTimer);
+  var lastSent=0; try{ lastSent=parseInt(localStorage.getItem('wt_last_notif')||'0'); }catch(e){}
+  var nextIn=Math.max(0,NOTIF_INTERVAL-(Date.now()-lastSent));
+  setTimeout(function(){ _sendScheduledNotif(); _notifTimer=setInterval(_sendScheduledNotif,NOTIF_INTERVAL); },nextIn);
+}
+function _sendScheduledNotif(){
+  if(Notification.permission!=='granted') return;
+  var msg=_notifMessages[_notifIdx%_notifMessages.length]; _notifIdx++;
+  try{ localStorage.setItem('wt_last_notif',Date.now().toString()); localStorage.setItem('wt_notif_idx',_notifIdx.toString()); }catch(e){}
+  try{ var n=new Notification(msg.title,{body:msg.body,icon:'https://wintube205-sudo.github.io/icon.png',tag:'wintube-promo'});
+    n.onclick=function(){ window.focus(); n.close(); }; }catch(e){}
+}
+function sendNotif(title,body){
+  if(Notification.permission!=='granted') return;
+  try{ var n=new Notification(title,{body:body,icon:'https://wintube205-sudo.github.io/icon.png',tag:'wintube-pts'});
+    n.onclick=function(){ window.focus(); n.close(); }; }catch(e){}
+}
+
+// ── LEADERBOARD ──
+function openLeaderboard(){
+  var ov=G('lbOv'); if(ov) ov.classList.add('open');
+  loadLeaderboard();
+}
+function closeLeaderboard(){
+  var ov=G('lbOv'); if(ov) ov.classList.remove('open');
+}
+function loadLeaderboard(){
+  var body=G('lbBody'); if(!body||!_db) return;
+  body.innerHTML='<div class="lb-loading">Loading...</div>';
+  _db.collection('leaderboard').get().then(function(snap){
+    var rows=[];
+    snap.forEach(function(doc){ var d=doc.data(); rows.push({id:doc.id,name:d.name||'User',points:d.points||0}); });
+    rows.sort(function(a,b){ return b.points-a.points; });
+    body.innerHTML='';
+    rows.slice(0,50).forEach(function(row,i){
+      var rankClass=i===0?'gold':i===1?'silver':i===2?'bronze':'';
+      var isMe=currentUser&&row.id===currentUser.uid;
+      var div=document.createElement('div'); div.className='lb-row'+(isMe?' me':'');
+      div.innerHTML='<div class="lb-rank '+rankClass+'">'+(i===0?'🥇':i===1?'🥈':i===2?'🥉':(i+1))+'</div>'
+        +'<div class="lb-av">'+(row.name.charAt(0).toUpperCase())+'</div>'
+        +'<div class="lb-name">'+(row.name)+(isMe?' (You)':'')+'</div>'
+        +'<div class="lb-pts">'+row.points+'</div>';
+      body.appendChild(div);
+    });
+    if(rows.length===0) body.innerHTML='<div class="lb-loading">No users yet</div>';
+  });
+}
+function syncLeaderboard(){
+  if(!currentUser||!_db) return;
+  _db.collection('leaderboard').doc(currentUser.uid).set({
+    name:currentUser.displayName||currentUser.email||'User',
+    points:userPoints,
+    updatedAt:firebase.firestore.FieldValue.serverTimestamp()
+  },{ merge:true });
+}
+
+// ── REFERRAL ──
+function checkReferral(isNew){
+  if(!currentUser||!_db) return;
+  var code='';
+  var urlP=new URLSearchParams(window.location.search).get('ref');
+  var formRef=G('rRef'); if(formRef) code=formRef.value.trim();
+  if(urlP) code=urlP;
+  if(!code){ initRefLink(); return; }
+  if(code===currentUser.uid) return;
+  if(isNew){
+    // New user: award 150 pts to self + 50 to referrer
+    _db.collection('users').doc(currentUser.uid).update({
+      points:firebase.firestore.FieldValue.increment(150)
+    });
+    _db.collection('users').doc(code).get().then(function(doc){
+      if(doc.exists){
+        _db.collection('users').doc(code).update({ points:firebase.firestore.FieldValue.increment(50) });
+      }
+    });
+  }
+  initRefLink();
+}
+function initRefLink(){
+  if(!currentUser) return;
+  myRefCode=currentUser.uid;
+  var refUrl='https://wintube205-sudo.github.io?ref='+myRefCode;
+  var el=G('refLinkInp'); if(el) el.value=refUrl;
+}
+function copyRefLink(){
+  var el=G('refLinkInp'); if(!el) return;
+  navigator.clipboard.writeText(el.value).catch(function(){});
+  showToast('Copied! ✅');
+}
+
+// ── WITHDRAW ──
+function openWithdraw(){
+  if(!currentUser){ G('authOv').classList.remove('hidden'); return; }
+  var ov=G('wOv');
+  if(ov) ov.classList.add('open');
+  var wp=G('wPts'), wu=G('wUsd');
+  if(wp) wp.textContent=userPoints;
+  if(wu) wu.textContent=(userPoints/PTS_USD).toFixed(2);
+  var wf=G('wForm'), wok=G('wOK'), we=G('wErr'), wa=G('wAmt');
+  if(wf) wf.style.display='';
+  if(wok) wok.style.display='none';
+  if(we) we.textContent='';
+  if(wa) wa.value='';
+  loadWithdrawHistory();
+}
+function closeWithdraw(){
+  var ov=G('wOv'); if(ov) ov.classList.remove('open');
+}
+function calcWithdraw(){
+  var wa=G('wAmt'), wc=G('wCalc'); if(!wa||!wc) return;
+  var v=parseInt(wa.value)||0;
+  wc.textContent=v>=1000?('$'+(v/PTS_USD).toFixed(2)):'(Minimum 1000 pts)';
+}
+function submitWithdraw(){
+  var btn=G('wBtn'); if(!btn) return;
+  var amt=parseInt(G('wAmt')&&G('wAmt').value)||0;
+  var method=G('wMethod')&&G('wMethod').value;
+  var addr=G('wAddr')&&G('wAddr').value.trim();
+  var we=G('wErr');
+  if(amt<MIN_W){ if(we) we.textContent='Minimum withdrawal: '+MIN_W+' pts ($'+(MIN_W/PTS_USD).toFixed(2)+')'; return; }
+  if(amt>userPoints){ if(we) we.textContent='Insufficient points'; return; }
+  if(!method||!addr){ if(we) we.textContent='Please fill in all fields'; return; }
+  if(amt%1000!==0){ if(we) we.textContent='Points must be a multiple of 1000'; return; }
+  btn.disabled=true; btn.textContent='Sending...';
+  _db.collection('withdrawals').add({
+    uid:currentUser.uid, name:currentUser.displayName||currentUser.email,
+    email:currentUser.email, method:method, address:addr,
+    points:amt, usd:parseFloat((amt/PTS_USD).toFixed(2)),
+    status:'pending', createdAt:firebase.firestore.FieldValue.serverTimestamp()
+  }).then(function(){
+    userPoints-=amt;
+    _db.collection('users').doc(currentUser.uid).update({ points:firebase.firestore.FieldValue.increment(-amt) });
     updateHeader();
-    showToast('❌ Error, please try again', '#ef4444');
-    _setAWBtn('idle');
+    var wf=G('wForm'), wok=G('wOK');
+    if(wf) wf.style.display='none';
+    if(wok) wok.style.display='';
+  }).catch(function(e){ if(we) we.textContent='Error: '+e.message; })
+  .finally(function(){ btn.disabled=false; btn.textContent='Submit Request →'; });
+}
+function loadWithdrawHistory(){
+  var hist=G('wReqs'); if(!hist||!_db) return;
+  hist.innerHTML='';
+  _db.collection('withdrawals').where('uid','==',currentUser.uid).get().then(function(snap){
+    if(snap.empty){ hist.innerHTML='<div style="color:#666;font-size:.8rem;text-align:center;padding:.5rem;">No requests yet</div>'; return; }
+    snap.forEach(function(doc){
+      var d=doc.data();
+      var div=document.createElement('div'); div.className='req-item';
+      div.innerHTML='<div><div style="font-size:.82rem;font-weight:600;">'+d.points+' pts = $'+d.usd+'</div>'
+        +'<div style="font-size:.7rem;color:#666;">'+d.method+' — '+d.address+'</div></div>'
+        +'<span class="req-badge '+d.status+'">'+d.status+'</span>';
+      hist.appendChild(div);
+    });
   });
 }
 
-function _startAWCooldown(){
-  _awCoolLeft = AW_COOLDOWN;
-  _setAWBtn('cooldown');
-  clearInterval(_awCoolTimer);
-  _awCoolTimer = setInterval(function(){
-    _awCoolLeft--;
-    if(_awCoolLeft <= 0){
-      clearInterval(_awCoolTimer);
-      _awCoolLeft = 0;
-      _setAWBtn('idle');
+// ── ADMIN ──
+function openAdmin(){
+  if(!currentUser||currentUser.uid!==ADMIN_UID) return;
+  var ov=G('admOv'); if(ov) ov.classList.add('open');
+  var al=G('admLogin'), ad=G('admDash'); if(al) al.style.display='none'; if(ad) ad.style.display='flex';
+  loadAdminRequests();
+  window.switchAdminTab=function(t){
+    var isW=t==='w';
+    var pw=G('aPanelW'), pg=G('aPanelG'), tw=G('aTabW'), tg=G('aTabG');
+    if(pw) pw.style.display=isW?'':'none';
+    if(pg) pg.style.display=isW?'none':'';
+    if(tw) tw.classList.toggle('active',isW);
+    if(tg) tg.classList.toggle('active',!isW);
+    if(!isW) loadAdminGamesList();
+  };
+}
+function closeAdmin(){
+  var ov=G('admOv'); if(ov) ov.classList.remove('open');
+}
+function loadAdminRequests(){
+  var cont=G('admReqs'); if(!cont||!_db) return;
+  cont.innerHTML='<div class="adm-empty">Loading...</div>';
+  _db.collection('withdrawals').where('status','==','pending').get().then(function(snap){
+    cont.innerHTML='';
+    if(snap.empty){ cont.innerHTML='<div class="adm-empty">No pending requests</div>'; return; }
+    snap.forEach(function(doc){
+      var d=doc.data();
+      var div=document.createElement('div'); div.className='adm-req';
+      div.innerHTML='<div class="adm-req-top"><div><div class="adm-req-name">'+d.name+'</div><div class="adm-req-date">'+(d.email||'')+'</div></div>'
+        +'<span class="req-badge pending">pending</span></div>'
+        +'<div class="adm-req-row">Points: <span>'+d.points+'</span> = <span>$'+d.usd+'</span></div>'
+        +'<div class="adm-req-row">Method: <span>'+d.method+'</span></div>'
+        +'<div class="adm-req-row">Address: <span>'+d.address+'</span></div>'
+        +'<div class="adm-acts">'
+        +'<button class="a-approve" onclick="adminAction(\''+doc.id+'\',\'approved\',\''+d.uid+'\','+d.points+')">Approve ✅</button>'
+        +'<button class="a-reject" onclick="adminAction(\''+doc.id+'\',\'rejected\',\''+d.uid+'\','+d.points+')">Reject ❌</button>'
+        +'</div>';
+      cont.appendChild(div);
+    });
+  });
+}
+function adminAction(id, status, uid, pts){
+  if(!_db) return;
+  _db.collection('withdrawals').doc(id).update({ status:status }).then(function(){
+    if(status==='rejected'){
+      _db.collection('users').doc(uid).update({ points:firebase.firestore.FieldValue.increment(pts) });
     }
-  }, 1000);
+    loadAdminRequests();
+  });
+}
+function loadAdminGamesList(){
+  var cont=G('admGames'); if(!cont||!_db) return;
+  cont.innerHTML='<div class="adm-empty">Loading...</div>';
+  _db.collection('games').get().then(function(snap){
+    cont.innerHTML='';
+    if(snap.empty){ cont.innerHTML='<div class="adm-empty">No games yet</div>'; return; }
+    snap.forEach(function(doc){
+      var d=doc.data();
+      var div=document.createElement('div'); div.className='adm-game-item';
+      div.innerHTML='<div style="flex:1"><div class="adm-game-name">'+(d.name||'Game')+'</div>'
+        +'<div class="adm-game-url">'+(d.url||d.iframe||'')+'</div></div>'
+        +'<button class="adm-game-del" onclick="deleteGame(\''+doc.id+'\')">Delete</button>';
+      cont.appendChild(div);
+    });
+  });
+}
+function deleteGame(id){
+  if(!_db||!confirm('Delete this game?')) return;
+  _db.collection('games').doc(id).delete().then(function(){ loadAdminGamesList(); loadGamesGrid(); });
+}
+function addGame(){
+  var btn=G('addGameBtn'), err=G('addGameErr'); if(!_db) return;
+  var name=G('newGameName')&&G('newGameName').value.trim();
+  var mode=G('gameSrcMode')&&G('gameSrcMode').value==='url'?'url':'iframe';
+  var url=mode==='url'?(G('newGameUrl')&&G('newGameUrl').value.trim()):'';
+  var iframe=mode==='iframe'?(G('newGameIframe')&&G('newGameIframe').value.trim()):'';
+  var img=G('imgPreview')&&G('imgPreview').style.display!=='none'?(G('imgPreview').src||''):'';
+  if(!name||(!url&&!iframe)){ if(err) err.textContent='Please fill in all fields'; return; }
+  if(btn){ btn.disabled=true; btn.textContent='Saving...'; }
+  if(err) err.textContent='';
+  var data={name:name,createdAt:firebase.firestore.FieldValue.serverTimestamp()};
+  if(url) data.url=url; if(iframe) data.iframe=iframe; if(img) data.img=img;
+  _db.collection('games').add(data).then(function(){
+    if(G('newGameName')) G('newGameName').value='';
+    if(G('newGameUrl')) G('newGameUrl').value='';
+    if(G('newGameIframe')) G('newGameIframe').value='';
+    resetGameImgUpload();
+    loadAdminGamesList(); loadGamesGrid();
+  }).catch(function(e){ if(err) err.textContent=e.message; })
+  .finally(function(){ if(btn){ btn.disabled=false; btn.textContent='Add Game'; } });
+}
+function toggleSrcMode(mode){
+  var ru=G('rowUrl'), ri=G('rowIframe'), su=G('gameSrcMode');
+  var u=mode==='url'||(su&&su.checked);
+  if(ru) ru.style.display=u?'':'none';
+  if(ri) ri.style.display=u?'none':'';
+}
+function handleImgUpload(input){
+  if(!input.files||!input.files[0]) return;
+  var r=new FileReader();
+  r.onload=function(e){
+    var img=new Image();
+    img.onload=function(){
+      var c=document.createElement('canvas'), MAX=400, sc=Math.min(1,MAX/img.width);
+      c.width=Math.round(img.width*sc); c.height=Math.round(img.height*sc);
+      c.getContext('2d').drawImage(img,0,0,c.width,c.height);
+      var data=c.toDataURL('image/jpeg',.75);
+      var ip=G('imgPreview'), ipl=G('imgPlaceholder');
+      if(ip){ ip.src=data; ip.style.display='block'; }
+      if(ipl) ipl.style.display='none';
+    };
+    img.src=e.target.result;
+  };
+  r.readAsDataURL(input.files[0]);
+}
+function resetGameImgUpload(){
+  var ni=G('newGameImg'), ip=G('imgPreview'), ipl=G('imgPlaceholder');
+  if(ni) ni.value='';
+  if(ip){ ip.src=''; ip.style.display='none'; }
+  if(ipl) ipl.style.display='';
 }
 
-function _setAWBtn(state){
-  var banner = G('adWatchBanner');
-  if(!banner) return;
-  var inner = banner.querySelector('.cpa-banner-inner');
-  var title = G('adWatchTitle');
-  if(state === 'idle'){
-    if(inner){ inner.style.opacity='1'; inner.style.cursor='pointer'; }
-    if(title) title.textContent = 'Watch an ad & earn 20 points';
-  } else if(state === 'waiting'){
-    if(inner) inner.style.opacity = '0.65';
-    if(title) title.textContent = '⏳ ارجع بعد ' + AW_MIN_SECS + ' ثانية…';
-  } else if(state === 'cooldown'){
-    if(inner) inner.style.opacity = '0.6';
-    if(title) title.textContent = 'Ready in ' + _awCoolLeft + 's';
-    // تحديث Address كل ثانية
-    clearInterval(_awCoolTimer);
-    _awCoolTimer = setInterval(function(){
-      _awCoolLeft--;
-      if(title) title.textContent = 'Ready in ' + _awCoolLeft + 's';
-      if(_awCoolLeft <= 0){
-        clearInterval(_awCoolTimer);
-        _awCoolLeft = 0;
-        _setAWBtn('idle');
-      }
-    }, 1000);
+// ── PRIVACY + ABOUT ──
+function openPP(){
+  var ov=G('ppOv'); if(ov) ov.classList.add('open');
+}
+function closePP(){
+  var ov=G('ppOv'); if(ov) ov.classList.remove('open');
+}
+function loadAboutStats(){
+  if(!_db) return;
+  _db.collection('leaderboard').get().then(function(snap){
+    var el=G('aStatUsers'); if(el) el.textContent=snap.size||'—';
+  });
+}
+
+// ── SEARCH ──
+function doSearch(){
+  var q=G('searchInp')&&G('searchInp').value.trim();
+  if(!q) return;
+  searchCat(q, null);
+}
+
+// ── EVENT WIRING ──
+// YouTube postMessage: detect pause/play
+window.addEventListener('message',function(e){
+  if(!e.data||typeof e.data!=='string') return;
+  try{
+    var d=JSON.parse(e.data);
+    if(d.event==='infoDelivery'&&d.info&&typeof d.info.playerState!=='undefined'){
+      var state=d.info.playerState;
+      var mo=G('modalOv'); if(!mo||!mo.classList.contains('open')) return;
+      if(state===1){ setPlaying(true); }
+      else if(state===2||state===0){ setPlaying(false); }
+    }
+  }catch(err){}
+});
+
+// Tab visibility
+document.addEventListener('visibilitychange',function(){
+  if(document.visibilityState==='hidden'){
+    setPlaying(false);
+    // Smart offer listener
+    _onHLReturn();
+  } else {
+    if(currentUser) refreshPointsFromDB();
+    var mo=G('modalOv'); if(mo&&mo.classList.contains('open')&&_currentVideoId){
+      setTimeout(function(){ setPlaying(true); },800);
+    }
   }
-}
+});
+window.addEventListener('focus',function(){
+  if(currentUser) refreshPointsFromDB();
+  var mo=G('modalOv'); if(mo&&mo.classList.contains('open')&&_currentVideoId){
+    setTimeout(function(){ setPlaying(true); },500);
+  }
+});
 
-// ═══════════════════════════════════════
-// START
-// ═══════════════════════════════════════
-// استعادة مؤشر الإشعارات
-try{ _notifIdx = parseInt(localStorage.getItem('wt_notif_idx')||'0'); }catch(e){}
+// Close buttons
+var cv=G('closeVid'); if(cv) cv.addEventListener('click',closeVideoModal);
+var cg=G('closeGame'); if(cg) cg.addEventListener('click',closeGameOverlay);
+var lb=G('lbOv'); if(lb) lb.addEventListener('click',function(e){ if(e.target===lb) closeLeaderboard(); });
+var pp=G('ppOv'); if(pp) pp.addEventListener('click',function(e){ if(e.target===pp) closePP(); });
+var ao=G('aboutOv'); if(ao) ao.addEventListener('click',function(e){ if(e.target===ao) ao.classList.remove('open'); });
+var mo=G('modalOv'); if(mo) mo.addEventListener('click',function(e){ if(e.target===mo) closeVideoModal(); });
+
+// Secret admin
+if(location.hash==='#admin-secret-panel') setTimeout(function(){ openAdmin&&openAdmin(); },1500);
+
+// DevTools click clear
+document.addEventListener('click',function(){
+  if(document.body.style.filter==='blur(8px)'){
+    var so=document.getElementById('_secOv');
+    if(!so||!so.style.display.includes('flex')){ document.body.style.filter=''; document.body.style.pointerEvents=''; }
+  }
+});
+
+// ── START ──
 fetchHome('',false);
-</script>
-<!-- ══ HilltopAds Pop-under / Push ══ -->
-<!-- HilltopAds Pop/Push — global -->
-<script data-cfasync="false" async type="text/javascript" src="//data527.click/f0a41fa00cf50b1a0813/f62c1b69b8/?placementName=default"></script>
+loadGamesGrid();
 
-<!-- Advertica PUSH -->
-<script type="text/javascript" src="//my-pu.sh/f87bbb11f15afcda55a1/33127f60cc/?placementName=default"></script>
+</script>
 </body>
 </html>
