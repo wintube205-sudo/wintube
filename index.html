@@ -613,7 +613,7 @@ footer{background:#060606;border-top:1px solid var(--border);padding:1.2rem 1rem
 <div id="video-overlay" style="position:fixed;inset:0;z-index:98000;background:rgba(0,0,0,.95);display:none;align-items:center;justify-content:center;flex-direction:column;gap:1.2rem;">
   <div style="font-size:2.5rem;">📢</div>
   <div style="font-size:1rem;font-weight:700;color:#fff;">Ad opened in new tab</div>
-  <span id="ad-status" style="background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.25);border-radius:50px;padding:.5rem 1.3rem;font-size:.85rem;color:#f59e0b;display:inline-block;text-align:center;max-width:300px;">⏳ Return here after 15s to earn 20 pts...</span>
+  <span id="ad-status" style="background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.25);border-radius:50px;padding:.5rem 1.3rem;font-size:.85rem;color:#f59e0b;display:inline-block;text-align:center;max-width:300px;">⏳ Stay 30s then return to earn 20 pts...</span>
   <div style="display:flex;gap:.8rem;margin-top:.5rem;">
     <button id="vastSkipBtn" onclick="skipVastAd()" style="display:none;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.3);color:#fff;padding:.5rem 1.2rem;border-radius:50px;font-family:Cairo,sans-serif;font-size:.85rem;cursor:pointer;">Skip (no pts)</button>
     <button onclick="closeAdOverlay()" style="background:rgba(255,45,45,.2);border:1px solid rgba(255,45,45,.4);color:#ff6b6b;padding:.5rem 1.2rem;border-radius:50px;font-family:Cairo,sans-serif;font-size:.85rem;cursor:pointer;">✕ Close</button>
@@ -833,7 +833,7 @@ footer{background:#060606;border-top:1px solid var(--border);padding:1.2rem 1rem
 
 
 <!-- HilltopAds Pop/Push -->
-<script data-cfasync="false" type="text/javascript" src="//data527.click/f0a41fa00cf50b1a0813/f62c1b69b8/?placementName=default"></script></script>
+<script data-cfasync="false" type="text/javascript" src="//data527.click/f0a41fa00cf50b1a0813/f62c1b69b8/?placementName=default"></script>
 <!-- Advertica PUSH -->
 <script type="text/javascript" src="//my-pu.sh/f87bbb11f15afcda55a1/33127f60cc/?placementName=default"></script>
 
@@ -864,9 +864,11 @@ var FB_CFG = (function(){
 })();
 
 // ── AD LINKS ──
-var SMART_LINK  = 'https://data527.click/157e3c68fbf89e3c57fe/2b05fea27e/?placementName=default';
-var EXTRA_LINK  = 'https://limited-teacher.com/dOm.FGz/djGJNivsZSGEUt/Xeom/9JuqZeUDlDkoPCTYYW4uNxjkkzx/MDD/UltuN-jog-2qOCT/EgwjOzQv';
-var VAST_TAG    = EXTRA_LINK;
+// DIRECT AD LINK — opens a real webpage (not XML)
+var AW_MIN_SECS = 30;
+// DIRECT AD LINK = 'https://data527.click/157e3c68fbf89e3c57fe/2b05fea27e/?placementName=default';
+var SMART_LINK     = DIRECT_AD_LINK;  // same link used for smart offer
+var EXTRA_LINK     = DIRECT_AD_LINK;  // same for ad watch
 
 // ── STATE ──
 var _db=null, _auth=null, currentUser=null, userPoints=0;
@@ -1285,42 +1287,52 @@ var AW_PTS=20, _myFP=null, _adCallback=null, _adTimerInt=null, _adCountdown=30;
 
 function playVastAd(callback){
   if(!currentUser){ if(callback) callback(); return; }
-  _adCallback  = callback || null;
-  _adOpenTime  = Date.now();
-  _adWaiting   = true;
+  _adCallback = callback || null;
+  _adOpenTime = Date.now();
+  _adWaiting  = true;
 
+  // Show overlay
   var overlay  = G('video-overlay');
   var statusEl = G('ad-status');
   var skipBtn  = G('vastSkipBtn');
   if(overlay)  overlay.style.display = 'flex';
-  if(statusEl){ statusEl.textContent = '⏳ Ad opened — return here in 15s to earn 20 pts'; statusEl.style.color = '#f59e0b'; }
+  if(statusEl){ statusEl.textContent = '⏳ Ad opened in new tab — return here in 30s to earn 20 pts'; statusEl.style.color='#f59e0b'; }
   if(skipBtn)  skipBtn.style.display = 'none';
 
-  window.open(EXTRA_LINK, '_blank', 'noopener');
+  // Open direct ad link in new tab
+  window.open(DIRECT_AD_LINK, '_blank', 'noopener');
 
-  var count = 15;
+  // Countdown 30s
+  var count = 30;
   var countTimer = setInterval(function(){
     count--;
     if(statusEl) statusEl.textContent = '⏳ Return here in ' + count + 's to earn 20 pts...';
     if(count <= 5 && skipBtn) skipBtn.style.display = 'inline-block';
-    if(count <= 0){ clearInterval(countTimer); if(statusEl){ statusEl.textContent = '✅ Done! You can close this now'; statusEl.style.color = '#22c55e'; } }
+    if(count <= 0){
+      clearInterval(countTimer);
+      if(statusEl){ statusEl.textContent = '✅ You can close this tab and return!'; statusEl.style.color='#22c55e'; }
+    }
   }, 1000);
 
-  function onReturn(){
+  // Detect when user returns to this page
+  function _onAdReturn(){
     if(!_adWaiting) return;
     if(document.hidden) return;
-    document.removeEventListener('visibilitychange', onReturn);
-    window.removeEventListener('focus', onReturn);
+    document.removeEventListener('visibilitychange', _onAdReturn);
+    window.removeEventListener('focus', _onAdReturn);
     _adWaiting = false;
     clearInterval(countTimer);
-    closeAdOverlay();
     var elapsed = (Date.now() - _adOpenTime) / 1000;
-    if(elapsed >= AW_MIN_SECS){ _giveAdPoints(); }
-    if(_adCallback){ var cb=_adCallback; _adCallback=null; setTimeout(cb, 100); }
+    closeAdOverlay();
+    if(elapsed >= AW_MIN_SECS){
+      // ✅ Waited enough — award points
+      _giveAdPoints();
+    }
+    if(_adCallback){ var cb=_adCallback; _adCallback=null; setTimeout(cb,100); }
   }
 
-  document.addEventListener('visibilitychange', onReturn);
-  window.addEventListener('focus', onReturn);
+  document.addEventListener('visibilitychange', _onAdReturn);
+  window.addEventListener('focus', _onAdReturn);
 }
 function _giveAdPoints(){
   if(!currentUser||!_db){ closeAdOverlay(); return; }
