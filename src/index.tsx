@@ -1,0 +1,886 @@
+// WinTube - Main Application Entry
+import { Hono } from 'hono';
+import { cors } from 'hono/cors';
+import { logger } from 'hono/logger';
+import type { HonoEnv } from './lib/types';
+import authRoutes from './routes/auth';
+import videoRoutes from './routes/videos';
+import pointsRoutes from './routes/points';
+import socialRoutes from './routes/social';
+
+const app = new Hono<HonoEnv>();
+
+// ═══ MIDDLEWARE ═══
+app.use('*', logger());
+app.use('/api/*', cors({
+  origin: '*',
+  allowMethods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowHeaders: ['Content-Type', 'Authorization'],
+}));
+
+// ═══ API ROUTES ═══
+app.route('/api/auth', authRoutes);
+app.route('/api/videos', videoRoutes);
+app.route('/api/points', pointsRoutes);
+app.route('/api', socialRoutes);
+
+// ═══ API Health Check ═══
+app.get('/api/health', (c) => {
+  return c.json({ status: 'ok', version: '2.0.0', timestamp: new Date().toISOString() });
+});
+
+// ═══ MAIN PAGE ═══
+app.get('/', (c) => {
+  return c.html(getMainHTML());
+});
+
+// ═══ CATCH ALL — SPA fallback ═══
+app.get('*', (c) => {
+  return c.html(getMainHTML());
+});
+
+function getMainHTML(): string {
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<title>WinTube — Watch & Earn</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{--red:#ff2a4a;--dark:#000;--card:#111;--text:#fff;--muted:#888;--green:#22c55e;--yellow:#fbbf24;--purple:#a855f7}
+html,body{height:100%;overflow:hidden;background:#000;font-family:'Inter',sans-serif;color:#fff}
+
+/* ═══ FEED ═══ */
+#feed{height:100dvh;overflow-y:scroll;scroll-snap-type:y mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+#feed::-webkit-scrollbar{display:none}
+
+/* ═══ SLIDE ═══ */
+.slide{height:100dvh;width:100%;scroll-snap-align:start;scroll-snap-stop:always;position:relative;background:#000;overflow:hidden;display:flex;align-items:center;justify-content:center}
+.slide iframe{position:absolute;inset:0;width:100%;height:100%;border:none;pointer-events:auto}
+.slide.shorts-slide iframe{width:100%;height:100%}
+.slide.long-slide{background:#000}
+.slide.long-slide iframe{position:absolute;top:50%;left:0;transform:translateY(-50%);width:100%;height:56.25vw}
+
+/* ═══ OVERLAY ═══ */
+.v-overlay{position:absolute;inset:0;pointer-events:none;z-index:10;background:linear-gradient(to top,rgba(0,0,0,.7) 0%,transparent 40%,transparent 70%,rgba(0,0,0,.3) 100%)}
+.v-right{position:absolute;right:12px;bottom:120px;display:flex;flex-direction:column;align-items:center;gap:16px;pointer-events:all;z-index:20}
+.v-action{display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer}
+.v-action-btn{width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,.15);backdrop-filter:blur(10px);border:1.5px solid rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-size:1.2rem;transition:transform .15s,background .15s}
+.v-action-btn:active{transform:scale(.9)}
+.v-action-lbl{font-size:.62rem;color:rgba(255,255,255,.8);font-weight:600;text-shadow:0 1px 3px rgba(0,0,0,.8)}
+.v-bottom{position:absolute;bottom:0;left:0;right:60px;padding:16px 16px 20px;pointer-events:all;z-index:20}
+.v-title{font-size:.85rem;font-weight:700;line-height:1.4;text-shadow:0 1px 4px rgba(0,0,0,.8);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;margin-bottom:6px}
+.v-channel{font-size:.72rem;color:rgba(255,255,255,.65);text-shadow:0 1px 3px rgba(0,0,0,.7)}
+
+/* ═══ TIMER BADGE ═══ */
+.timer-badge{position:fixed;top:72px;right:12px;z-index:100;background:rgba(0,0,0,.7);border:1.5px solid rgba(255,255,255,.15);border-radius:50px;padding:4px 10px 4px 6px;display:flex;align-items:center;gap:6px;backdrop-filter:blur(10px);font-size:.72rem;font-weight:700}
+.timer-ring{position:relative;width:26px;height:26px;flex-shrink:0}
+.timer-ring svg{transform:rotate(-90deg)}
+.ring-bg{fill:none;stroke:rgba(255,255,255,.15);stroke-width:3}
+.ring-fill{fill:none;stroke-width:3;stroke-linecap:round;stroke-dasharray:75;stroke-dashoffset:0;transition:stroke-dashoffset .8s,stroke .3s;stroke:#22c55e}
+.ring-num{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:.55rem;font-weight:800;color:#22c55e}
+.pts-badge{color:var(--yellow);font-size:.72rem;font-weight:800}
+
+/* ═══ TOPBAR ═══ */
+.topbar{position:fixed;top:0;left:0;right:0;z-index:90;padding:10px 14px 8px;display:flex;align-items:center;gap:10px;background:linear-gradient(180deg,rgba(0,0,0,.7),transparent);pointer-events:none}
+.topbar>*{pointer-events:all}
+.logo-sm{font-size:1.2rem;font-weight:900;letter-spacing:2px;flex-shrink:0}
+.logo-sm .w{color:var(--red)}.logo-sm .t{color:#fff}
+.search-wrap{flex:1;display:flex;align-items:center;background:rgba(255,255,255,.12);border-radius:50px;backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.15);padding:0 12px;height:36px;gap:8px}
+.search-wrap input{flex:1;background:transparent;border:none;outline:none;color:#fff;font-family:'Inter',sans-serif;font-size:.85rem;caret-color:var(--red)}
+.search-wrap input::placeholder{color:rgba(255,255,255,.4)}
+.search-wrap button{background:none;border:none;color:rgba(255,255,255,.6);cursor:pointer;font-size:.9rem;display:flex;align-items:center;padding:0}
+.user-btn{width:34px;height:34px;border-radius:50%;flex-shrink:0;background:linear-gradient(135deg,var(--red),#ff6b35);display:flex;align-items:center;justify-content:center;font-size:.8rem;font-weight:800;cursor:pointer;border:2px solid rgba(255,255,255,.2)}
+
+/* ═══ BOTTOM NAV ═══ */
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;z-index:90;display:flex;justify-content:space-around;align-items:center;padding:8px 0 max(8px,env(safe-area-inset-bottom));background:linear-gradient(0deg,rgba(0,0,0,.85),transparent)}
+.nav-btn{display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;padding:4px 16px;border-radius:8px;transition:opacity .15s}
+.nav-btn:active{opacity:.7}
+.nav-icon{font-size:1.3rem}
+.nav-lbl{font-size:.58rem;color:rgba(255,255,255,.55);font-weight:600}
+.nav-btn.active .nav-lbl{color:#fff}
+.nav-btn.active .nav-icon{filter:drop-shadow(0 0 6px rgba(255,255,255,.6))}
+
+/* ═══ SKELETON ═══ */
+.skeleton-slide{height:100dvh;background:#111;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px}
+.sk-spinner{width:40px;height:40px;border:3px solid rgba(255,255,255,.1);border-top-color:var(--red);border-radius:50%;animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ═══ AUTH ═══ */
+.auth-ov{position:fixed;inset:0;z-index:9000;background:rgba(0,0,0,.95);backdrop-filter:blur(20px);display:flex;align-items:flex-end;justify-content:center}
+.auth-ov.hidden{display:none}
+.auth-sheet{background:#111;border-radius:24px 24px 0 0;width:100%;max-width:480px;padding:24px 20px 36px;border-top:1px solid rgba(255,255,255,.08)}
+.auth-logo{text-align:center;font-size:2rem;font-weight:900;letter-spacing:3px;margin-bottom:6px}
+.auth-logo .w{color:var(--red)}.auth-logo .t{color:#fff}
+.auth-sub{text-align:center;font-size:.8rem;color:var(--muted);margin-bottom:20px}
+.bonus-chip{display:inline-flex;align-items:center;gap:6px;background:rgba(251,191,36,.1);border:1px solid rgba(251,191,36,.25);border-radius:50px;padding:5px 14px;font-size:.78rem;color:var(--yellow);margin-bottom:18px;width:100%;justify-content:center}
+.inp{width:100%;background:rgba(255,255,255,.06);border:1.5px solid rgba(255,255,255,.1);color:#fff;padding:12px 14px;border-radius:12px;font-family:'Inter',sans-serif;font-size:max(.88rem,16px);outline:none;margin-bottom:10px;transition:border-color .2s}
+.inp:focus{border-color:var(--red)}
+.inp::placeholder{color:var(--muted)}
+.tabs{display:flex;gap:8px;margin-bottom:14px}
+.tab-btn{flex:1;padding:9px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);color:var(--muted);border-radius:10px;cursor:pointer;font-family:'Inter',sans-serif;font-size:.82rem;transition:all .2s}
+.tab-btn.active{background:var(--red);border-color:var(--red);color:#fff;font-weight:700}
+.submit-btn{width:100%;background:var(--red);border:none;color:#fff;padding:13px;border-radius:12px;font-family:'Inter',sans-serif;font-size:.95rem;font-weight:700;cursor:pointer;transition:opacity .15s}
+.submit-btn:active{opacity:.85}
+.submit-btn:disabled{opacity:.45;cursor:not-allowed}
+.err{color:#ff6b6b;font-size:.78rem;margin-top:8px;text-align:center;min-height:1em}
+
+/* ═══ MODALS ═══ */
+.modal-bg{position:fixed;inset:0;z-index:8000;background:rgba(0,0,0,.85);backdrop-filter:blur(16px);display:none;align-items:flex-end;justify-content:center}
+.modal-bg.open{display:flex}
+.modal-sheet{background:#0a0a0a;border-radius:24px 24px 0 0;width:100%;max-width:480px;padding:20px 18px 36px;border-top:1px solid rgba(255,255,255,.08);max-height:90dvh;overflow-y:auto}
+.modal-handle{width:36px;height:4px;background:rgba(255,255,255,.2);border-radius:2px;margin:0 auto 16px}
+
+/* ═══ EARN MODAL ═══ */
+.earn-bal{background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.18);border-radius:14px;padding:14px 16px;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center}
+.earn-offer{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:14px;padding:12px 14px;margin-bottom:10px;display:flex;align-items:center;gap:12px;cursor:pointer;transition:background .15s}
+.earn-offer:active{background:rgba(255,255,255,.08)}
+.eo-icon{width:42px;height:42px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0}
+.eo-info{flex:1}
+.eo-name{font-size:.85rem;font-weight:700;margin-bottom:2px}
+.eo-desc{font-size:.68rem;color:var(--muted);line-height:1.4}
+.eo-pts{font-size:1.1rem;font-weight:900;flex-shrink:0}
+.eo-bar{height:3px;background:rgba(255,255,255,.06);margin-top:10px;border-radius:2px}
+.eo-fill{height:100%;background:linear-gradient(90deg,#6d28d9,#a855f7);border-radius:2px;transition:width .4s linear}
+
+/* ═══ WITHDRAW ═══ */
+.w-lbl{font-size:.75rem;color:var(--muted);margin-bottom:6px;display:block}
+.w-inp,.w-sel{width:100%;background:rgba(255,255,255,.05);border:1.5px solid rgba(255,255,255,.1);color:#fff;padding:11px 13px;border-radius:11px;font-family:'Inter',sans-serif;font-size:.85rem;outline:none;margin-bottom:12px;display:block;transition:border-color .2s}
+.w-inp:focus,.w-sel:focus{border-color:var(--yellow)}
+.w-sel option{background:#111}
+.w-submit{width:100%;background:linear-gradient(135deg,#f59e0b,#d97706);border:none;color:#fff;padding:13px;border-radius:12px;font-family:'Inter',sans-serif;font-size:.9rem;font-weight:700;cursor:pointer}
+.w-submit:disabled{opacity:.45;cursor:not-allowed}
+.w-btn{width:100%;background:linear-gradient(135deg,#f59e0b,#d97706);border:none;color:#fff;padding:12px;border-radius:12px;font-family:'Inter',sans-serif;font-size:.9rem;font-weight:700;cursor:pointer;margin-top:6px}
+
+/* ═══ LEADERBOARD ═══ */
+.lb-row{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.05)}
+.lb-rank{width:28px;text-align:center;font-size:.82rem;font-weight:800;flex-shrink:0}
+.lb-av{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--red),#ff6b35);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.8rem;flex-shrink:0}
+.lb-name{flex:1;font-size:.82rem;font-weight:600}
+.lb-pts{font-size:.8rem;font-weight:800;color:var(--yellow)}
+
+/* ═══ TOAST ═══ */
+.toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(10px);background:rgba(15,15,15,.95);color:#fff;border:1px solid rgba(255,255,255,.12);padding:8px 18px;border-radius:50px;font-size:.8rem;font-weight:700;z-index:9999;opacity:0;pointer-events:none;transition:opacity .25s,transform .25s;white-space:nowrap}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* ═══ SECURITY BADGE ═══ */
+.sec-badge{position:fixed;top:72px;left:12px;z-index:100;background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.25);border-radius:50px;padding:3px 10px;font-size:.6rem;color:var(--green);font-weight:700;display:flex;align-items:center;gap:4px}
+
+@media(min-width:600px){
+  .slide.shorts-slide iframe{width:56.25vh;height:100%;left:50%;transform:translateX(-50%)}
+}
+</style>
+</head>
+<body>
+
+<!-- AUTH OVERLAY -->
+<div class="auth-ov hidden" id="authOv">
+  <div class="auth-sheet">
+    <div class="auth-logo"><span class="w">WIN</span><span class="t">TUBE</span></div>
+    <div class="auth-sub">Watch & Earn real rewards</div>
+    <div class="bonus-chip">&#127873; Get <strong style="margin:0 3px;">100 pts</strong> on sign-up</div>
+    <div class="tabs">
+      <button class="tab-btn active" id="tabL" onclick="WT.switchTab('login')">Sign In</button>
+      <button class="tab-btn" id="tabR" onclick="WT.switchTab('register')">Sign Up</button>
+    </div>
+    <div id="fLogin">
+      <input class="inp" id="lEmail" type="email" placeholder="Email" autocomplete="email">
+      <input class="inp" id="lPass" type="password" placeholder="Password" autocomplete="current-password">
+      <button class="submit-btn" id="loginBtn" onclick="WT.doLogin()">Sign In &#8594;</button>
+    </div>
+    <div id="fRegister" style="display:none">
+      <input class="inp" id="rName" type="text" placeholder="Name">
+      <input class="inp" id="rEmail" type="email" placeholder="Email" autocomplete="email">
+      <input class="inp" id="rPass" type="password" placeholder="Password (min 6)" autocomplete="new-password">
+      <input class="inp" id="rRef" type="text" placeholder="Referral code (optional)">
+      <button class="submit-btn" id="regBtn" onclick="WT.doRegister()">Create Account &#8594;</button>
+    </div>
+    <div class="err" id="authErr"></div>
+    <button onclick="WT.closeAuth()" style="width:100%;background:none;border:none;color:var(--muted);padding:12px;font-size:.82rem;cursor:pointer;margin-top:8px;">Maybe later</button>
+  </div>
+</div>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="logo-sm"><span class="w">WIN</span><span class="t">TUBE</span></div>
+  <div class="search-wrap">
+    <input type="text" id="searchInp" placeholder="Search videos..." onkeydown="if(event.key==='Enter')WT.doSearch()">
+    <button onclick="WT.doSearch()">&#128269;</button>
+    <button onclick="WT.clearSearch()" id="clearBtn" style="display:none">&#10005;</button>
+  </div>
+  <div class="user-btn" id="userBtn" onclick="WT.onUserClick()">?</div>
+</div>
+
+<!-- TIMER -->
+<div class="timer-badge" id="timerBadge">
+  <div class="timer-ring">
+    <svg viewBox="0 0 26 26" width="26" height="26">
+      <circle class="ring-bg" cx="13" cy="13" r="11"/>
+      <circle class="ring-fill" id="ringFill" cx="13" cy="13" r="11"/>
+    </svg>
+    <div class="ring-num" id="ringNum">30</div>
+  </div>
+  <span class="pts-badge" id="ptsBadge">0 pts &#11088;</span>
+</div>
+
+<!-- SECURITY BADGE -->
+<div class="sec-badge">&#128274; Secure</div>
+
+<!-- FEED -->
+<div id="feed">
+  <div class="skeleton-slide"><div class="sk-spinner"></div><div style="color:var(--muted);font-size:.8rem;">Loading...</div></div>
+</div>
+
+<!-- BOTTOM NAV -->
+<div class="bottom-nav">
+  <div class="nav-btn active" id="navHome" onclick="WT.navTo('home')">
+    <div class="nav-icon">&#127968;</div><div class="nav-lbl">Home</div>
+  </div>
+  <div class="nav-btn" id="navEarn" onclick="WT.openEarn()">
+    <div class="nav-icon">&#128142;</div><div class="nav-lbl">Earn</div>
+  </div>
+  <div class="nav-btn" id="navLB" onclick="WT.openLB()">
+    <div class="nav-icon">&#127942;</div><div class="nav-lbl">Top</div>
+  </div>
+  <div class="nav-btn" id="navW" onclick="WT.openWithdraw()" style="display:none">
+    <div class="nav-icon">&#128176;</div><div class="nav-lbl">Cash Out</div>
+  </div>
+</div>
+
+<!-- EARN MODAL -->
+<div class="modal-bg" id="earnModal" onclick="if(event.target===this)WT.closeEarn()">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div style="font-size:1rem;font-weight:800;margin-bottom:12px">&#128142; Earn Points</div>
+    <div class="earn-bal">
+      <div>
+        <div style="font-size:.72rem;color:var(--muted)">Your Balance</div>
+        <div style="font-size:1.4rem;font-weight:900;color:var(--yellow)" id="earnBalNum">0</div>
+      </div>
+      <div style="text-align:right">
+        <div style="font-size:.72rem;color:var(--muted)">USD Value</div>
+        <div style="font-size:1.1rem;font-weight:700;color:var(--green)" id="earnUsd">$0.00</div>
+      </div>
+    </div>
+    <div class="earn-offer" onclick="WT.claimSmartOffer()" id="smartOfferCard">
+      <div class="eo-icon" style="background:linear-gradient(135deg,#4c1d95,#7c3aed)">&#127873;</div>
+      <div class="eo-info">
+        <div class="eo-name" id="smartOfferName">Smart Link &#8212; Earn 50 pts</div>
+        <div class="eo-desc">Complete offer &#8594; Get points instantly &#10024;</div>
+        <div class="eo-bar"><div class="eo-fill" id="smartFill" style="width:100%"></div></div>
+      </div>
+      <div class="eo-pts" style="color:var(--purple)">+50</div>
+    </div>
+    <div class="earn-offer" onclick="WT.claimAdWatch()">
+      <div class="eo-icon" style="background:linear-gradient(135deg,#92400e,#f59e0b)">&#128250;</div>
+      <div class="eo-info">
+        <div class="eo-name">Watch Ad &#8212; 20 pts</div>
+        <div class="eo-desc">Watch ad for 30s &#8212; limited per hour</div>
+      </div>
+      <div class="eo-pts" style="color:var(--yellow)">+20</div>
+    </div>
+    <div class="earn-offer" style="cursor:default">
+      <div class="eo-icon" style="background:linear-gradient(135deg,#1e3a5f,#2563eb)">&#9654;</div>
+      <div class="eo-info">
+        <div class="eo-name">Watch Videos</div>
+        <div class="eo-desc">Every 30s = 1 pt (max 120/hour)</div>
+      </div>
+      <div class="eo-pts" style="color:#60a5fa">+1</div>
+    </div>
+    <div style="margin-top:8px;padding-top:10px;border-top:1px solid rgba(255,255,255,.06)">
+      <div style="font-size:.7rem;color:var(--muted);margin-bottom:8px">Referral link</div>
+      <div style="display:flex;gap:8px">
+        <input id="refInp" readonly style="flex:1;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);color:#888;padding:8px 10px;border-radius:9px;font-size:.7rem;direction:ltr;outline:none">
+        <button onclick="WT.copyRef()" style="background:var(--green);border:none;color:#fff;padding:8px 14px;border-radius:9px;font-size:.75rem;font-weight:700;cursor:pointer">Copy</button>
+      </div>
+    </div>
+    <button class="w-btn" onclick="WT.closeEarn();WT.openWithdraw()">&#128176; Withdraw Earnings</button>
+  </div>
+</div>
+
+<!-- LEADERBOARD MODAL -->
+<div class="modal-bg" id="lbModal" onclick="if(event.target===this)WT.closeLB()">
+  <div class="modal-sheet" style="max-height:80dvh;display:flex;flex-direction:column">
+    <div class="modal-handle"></div>
+    <div style="font-size:1rem;font-weight:800;margin-bottom:14px;text-align:center">&#127942; Leaderboard</div>
+    <div style="flex:1;overflow-y:auto" id="lbBody"><div style="text-align:center;color:var(--muted);padding:2rem">Loading...</div></div>
+  </div>
+</div>
+
+<!-- WITHDRAW MODAL -->
+<div class="modal-bg" id="wModal" onclick="if(event.target===this)WT.closeWithdraw()">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div style="font-size:1rem;font-weight:800;margin-bottom:14px">&#128176; Withdraw</div>
+    <div class="earn-bal" style="margin-bottom:14px">
+      <div><div style="font-size:.72rem;color:var(--muted)">Balance</div><div style="font-size:1.2rem;font-weight:800;color:var(--yellow)" id="wBal">0</div></div>
+      <div style="text-align:right"><div style="font-size:.72rem;color:var(--muted)">= USD</div><div style="font-size:1rem;font-weight:700;color:var(--green)" id="wUsdVal">$0.00</div></div>
+    </div>
+    <label class="w-lbl">Payment Method</label>
+    <select class="w-sel" id="wMethod">
+      <option value="">-- Select --</option>
+      <optgroup label="&#128142; Crypto"><option value="USDT (TRC20)">USDT TRC20</option><option value="USDT (ERC20)">USDT ERC20</option><option value="Bitcoin">Bitcoin</option></optgroup>
+      <optgroup label="&#127974; Bank"><option value="PayPal">PayPal</option><option value="Bank Transfer">Bank Transfer</option></optgroup>
+      <optgroup label="&#128241; Mobile"><option value="Asiacell">Asiacell</option><option value="Zain Iraq">Zain Iraq</option></optgroup>
+    </select>
+    <label class="w-lbl">Amount (pts, min 5000)</label>
+    <input class="w-inp" type="number" id="wAmt" placeholder="e.g. 5000" min="5000" step="1000" oninput="WT.calcWithdraw()">
+    <div style="font-size:.75rem;color:var(--yellow);margin-bottom:10px" id="wCalc"></div>
+    <label class="w-lbl">Address / Account</label>
+    <input class="w-inp" type="text" id="wAddr" placeholder="Enter your address">
+    <button class="w-submit" onclick="WT.submitWithdraw()">Submit Request &#8594;</button>
+    <div class="err" id="wErr"></div>
+    <div id="wOK" style="display:none;text-align:center;padding:16px"><div style="font-size:2rem">&#9989;</div><div style="font-weight:700;margin-top:6px">Request submitted!</div></div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ═══════════════════════════════════════════════
+// WinTube v2.0 — Secure Client
+// All sensitive logic runs on the server
+// ═══════════════════════════════════════════════
+(function(){
+'use strict';
+
+const API = '/api';
+const EARN_INTERVAL = 30;
+const CIRC = 69;
+
+// ═══ STATE ═══
+let _token = localStorage.getItem('wt_token') || '';
+let _user = null;
+let _points = 0;
+let _timerSecs = EARN_INTERVAL;
+let _timerInt = null;
+let _playing = false;
+let _watchSessionId = null;
+let _activeSlide = null;
+let _feedToken = '';
+let _isSearch = false;
+let _loading = false;
+let _scrollTimer = null;
+let _hlCoolLeft = 0;
+let _hlCoolTimer = null;
+
+const $ = (id) => document.getElementById(id);
+
+// ═══ SECURE API CALLS ═══
+async function api(path, opts = {}) {
+  const headers = { 'Content-Type': 'application/json' };
+  if (_token) headers['Authorization'] = 'Bearer ' + _token;
+  
+  try {
+    const res = await fetch(API + path, { ...opts, headers });
+    const data = await res.json();
+    
+    if (res.status === 401 && data.code === 'SESSION_EXPIRED') {
+      logout();
+      return { error: 'Session expired, please login again' };
+    }
+    
+    if (!res.ok) {
+      return { error: data.error || 'Request failed', status: res.status };
+    }
+    return data;
+  } catch (e) {
+    console.error('API Error:', e);
+    return { error: 'Network error' };
+  }
+}
+
+// ═══ AUTH ═══
+function switchTab(tab) {
+  $('fLogin').style.display = tab === 'login' ? '' : 'none';
+  $('fRegister').style.display = tab === 'register' ? '' : 'none';
+  $('tabL').classList.toggle('active', tab === 'login');
+  $('tabR').classList.toggle('active', tab === 'register');
+  $('authErr').textContent = '';
+}
+
+async function doLogin() {
+  const email = $('lEmail').value.trim();
+  const password = $('lPass').value;
+  if (!email || !password) { $('authErr').textContent = 'Fill all fields'; return; }
+  
+  $('loginBtn').disabled = true;
+  $('loginBtn').textContent = 'Signing in...';
+  
+  const data = await api('/auth/login', {
+    method: 'POST',
+    body: JSON.stringify({ email, password })
+  });
+  
+  $('loginBtn').disabled = false;
+  $('loginBtn').textContent = 'Sign In \\u2192';
+  
+  if (data.error) { $('authErr').textContent = data.error; return; }
+  
+  _token = data.token;
+  _user = data.user;
+  _points = data.user.points;
+  localStorage.setItem('wt_token', _token);
+  $('authOv').classList.add('hidden');
+  updateUI();
+  showToast('Welcome back! \\u2728');
+}
+
+async function doRegister() {
+  const name = $('rName').value.trim();
+  const email = $('rEmail').value.trim();
+  const password = $('rPass').value;
+  const referralCode = $('rRef').value.trim();
+  if (!name || !email || !password) { $('authErr').textContent = 'Fill all fields'; return; }
+  if (password.length < 6) { $('authErr').textContent = 'Password min 6 chars'; return; }
+  
+  $('regBtn').disabled = true;
+  $('regBtn').textContent = 'Creating...';
+  
+  const data = await api('/auth/register', {
+    method: 'POST',
+    body: JSON.stringify({ name, email, password, referralCode: referralCode || undefined })
+  });
+  
+  $('regBtn').disabled = false;
+  $('regBtn').textContent = 'Create Account \\u2192';
+  
+  if (data.error) { $('authErr').textContent = data.error; return; }
+  
+  _token = data.token;
+  _user = data.user;
+  _points = data.user.points;
+  localStorage.setItem('wt_token', _token);
+  $('authOv').classList.add('hidden');
+  updateUI();
+  showToast('+100 pts welcome bonus! \\u2728');
+}
+
+function logout() {
+  api('/auth/logout', { method: 'POST' });
+  _token = '';
+  _user = null;
+  _points = 0;
+  _watchSessionId = null;
+  localStorage.removeItem('wt_token');
+  stopTimer();
+  updateUI();
+}
+
+function closeAuth() { $('authOv').classList.add('hidden'); }
+
+async function checkSession() {
+  if (!_token) return;
+  const data = await api('/auth/me');
+  if (data.user) {
+    _user = data.user;
+    _points = data.user.points;
+    updateUI();
+  } else {
+    logout();
+  }
+}
+
+// ═══ UI UPDATE ═══
+function updateUI() {
+  const ub = $('userBtn');
+  if (_user) {
+    ub.textContent = _user.name.charAt(0).toUpperCase();
+    ub.style.background = 'linear-gradient(135deg,#e63946,#ff6b35)';
+    const nw = $('navW'); if(nw) nw.style.display = '';
+  } else {
+    ub.textContent = '?';
+    ub.style.background = 'rgba(255,255,255,.15)';
+    const nw = $('navW'); if(nw) nw.style.display = 'none';
+  }
+  const pb = $('ptsBadge'); if(pb) pb.textContent = _points + ' pts \\u2B50';
+  const eb = $('earnBalNum'); if(eb) eb.textContent = _points;
+  const eu = $('earnUsd'); if(eu) eu.textContent = '$' + (_points / 1000).toFixed(2);
+  const wb = $('wBal'); if(wb) wb.textContent = _points;
+  const wu = $('wUsdVal'); if(wu) wu.textContent = '$' + (_points / 1000).toFixed(2);
+  const ri = $('refInp'); 
+  if(ri && _user) ri.value = location.origin + '/?ref=' + (_user.refCode || '');
+}
+
+function onUserClick() {
+  if (_user) openEarn();
+  else $('authOv').classList.remove('hidden');
+}
+
+// ═══ FEED ═══
+async function loadFeed(pageToken) {
+  if (_loading) return;
+  _loading = true;
+  
+  const data = await api('/videos/feed' + (pageToken ? '?pageToken=' + pageToken : ''));
+  _loading = false;
+  
+  if (data.error) { showFeedError(data.error); return; }
+  _feedToken = data.nextPageToken || '';
+  appendSlides(data.items || [], true);
+}
+
+async function doSearch() {
+  const q = ($('searchInp').value || '').trim();
+  if (!q) return;
+  
+  _isSearch = true;
+  $('clearBtn').style.display = '';
+  $('feed').innerHTML = '<div class="skeleton-slide"><div class="sk-spinner"></div><div style="color:var(--muted);font-size:.8rem">Searching...</div></div>';
+  
+  const data = await api('/videos/search?q=' + encodeURIComponent(q));
+  if (data.error || !data.items?.length) { showFeedError('No results for "' + q + '"'); return; }
+  _feedToken = data.nextPageToken || '';
+  appendSlides(data.items, false);
+}
+
+function clearSearch() {
+  _isSearch = false;
+  $('searchInp').value = '';
+  $('clearBtn').style.display = 'none';
+  $('feed').innerHTML = '<div class="skeleton-slide"><div class="sk-spinner"></div></div>';
+  _feedToken = '';
+  _loading = false;
+  loadFeed();
+}
+
+function appendSlides(items, isShort) {
+  const feed = $('feed');
+  feed.querySelectorAll('.skeleton-slide').forEach(s => s.remove());
+  
+  items.forEach((item, idx) => {
+    let isShortVid = isShort;
+    if (item.duration) {
+      const m = item.duration.match(/PT(?:(\\d+)H)?(?:(\\d+)M)?(?:(\\d+)S)?/);
+      if (m) {
+        const secs = (parseInt(m[1]||0)*3600) + (parseInt(m[2]||0)*60) + parseInt(m[3]||0);
+        if (secs <= 90) isShortVid = true;
+      }
+    }
+    
+    const slide = document.createElement('div');
+    slide.className = 'slide ' + (isShortVid ? 'shorts-slide' : 'long-slide');
+    slide.dataset.vid = item.id;
+    slide.dataset.title = item.title;
+    slide.dataset.channel = item.channel;
+    
+    const params = isShortVid
+      ? '?autoplay=0&playsinline=1&rel=0&loop=1&playlist=' + item.id + '&controls=1&enablejsapi=1'
+      : '?autoplay=0&playsinline=1&rel=0&controls=1&enablejsapi=1';
+    
+    slide.innerHTML = 
+      '<iframe loading="lazy" src="https://www.youtube-nocookie.com/embed/' + item.id + params + '" ' +
+      'allow="autoplay; fullscreen; encrypted-media; picture-in-picture" allowfullscreen></iframe>' +
+      '<div class="v-overlay"></div>' +
+      '<div class="v-right">' +
+      '  <div class="v-action" onclick="WT.onUserClick()">' +
+      '    <div class="v-action-btn">&#128142;</div><div class="v-action-lbl">Earn</div>' +
+      '  </div>' +
+      '  <div class="v-action" onclick="WT.shareVid(\\''+item.id+'\\')">' +
+      '    <div class="v-action-btn">&#8599;</div><div class="v-action-lbl">Share</div>' +
+      '  </div>' +
+      '</div>' +
+      '<div class="v-bottom">' +
+      '  <div class="v-title">' + escHtml(item.title) + '</div>' +
+      '  <div class="v-channel">@' + escHtml(item.channel) + '</div>' +
+      '</div>';
+    
+    feed.appendChild(slide);
+    
+    // Lazy load: observe last item
+    if (idx === items.length - 1 && _feedToken) {
+      const obs = new IntersectionObserver(entries => {
+        if (entries[0].isIntersecting) { obs.disconnect(); loadFeed(_feedToken); }
+      }, { threshold: 0.5 });
+      obs.observe(slide);
+    }
+  });
+}
+
+function showFeedError(msg) {
+  $('feed').innerHTML = '<div class="skeleton-slide"><div style="color:var(--muted);font-size:.85rem;text-align:center;padding:2rem">' + msg + '</div></div>';
+}
+
+function escHtml(s) {
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// ═══ SCROLL / SNAP ═══
+$('feed').addEventListener('scroll', function() {
+  clearTimeout(_scrollTimer);
+  _scrollTimer = setTimeout(onSnapChange, 200);
+});
+
+function onSnapChange() {
+  const feed = $('feed');
+  const slides = feed.querySelectorAll('.slide');
+  const midY = feed.scrollTop + feed.clientHeight / 2;
+  let closest = null, closestDist = Infinity;
+  slides.forEach(s => {
+    const dist = Math.abs(s.offsetTop + s.offsetHeight / 2 - midY);
+    if (dist < closestDist) { closestDist = dist; closest = s; }
+  });
+  if (closest && closest.dataset.vid) onSlideEnter(closest);
+}
+
+async function onSlideEnter(slide) {
+  if (_activeSlide === slide) return;
+  if (_activeSlide) stopTimer();
+  _activeSlide = slide;
+  
+  if (!_user) return;
+  
+  // Start watch session on server
+  const data = await api('/points/watch/start', {
+    method: 'POST',
+    body: JSON.stringify({ videoId: slide.dataset.vid })
+  });
+  
+  if (data.sessionId) {
+    _watchSessionId = data.sessionId;
+    _playing = true;
+    startTimer();
+  }
+}
+
+// ═══ TIMER & HEARTBEAT ═══
+function drawRing() {
+  const f = $('ringFill'), n = $('ringNum');
+  if (!f || !n) return;
+  const pct = _timerSecs / EARN_INTERVAL;
+  f.style.strokeDashoffset = CIRC * (1 - pct);
+  f.style.stroke = _timerSecs > 20 ? '#22c55e' : _timerSecs > 10 ? '#fbbf24' : '#ff2a4a';
+  n.textContent = _timerSecs;
+  n.style.color = f.style.stroke;
+}
+
+function startTimer() {
+  stopTimer();
+  _timerSecs = EARN_INTERVAL;
+  drawRing();
+  _timerInt = setInterval(async () => {
+    if (!_playing || !_watchSessionId) return;
+    _timerSecs--;
+    drawRing();
+    if (_timerSecs <= 0) {
+      _timerSecs = EARN_INTERVAL;
+      // Send heartbeat to server — server decides if points are earned
+      const data = await api('/points/watch/heartbeat', {
+        method: 'POST',
+        body: JSON.stringify({ sessionId: _watchSessionId })
+      });
+      if (data.earned) {
+        _points = data.points;
+        updateUI();
+        showToast('+' + data.amount + ' pt \\uD83C\\uDF89', '#22c55e');
+      } else if (data.error) {
+        showToast(data.error, '#ff6b6b');
+      }
+      drawRing();
+    }
+  }, 1000);
+}
+
+function stopTimer() {
+  clearInterval(_timerInt);
+  _timerInt = null;
+  _playing = false;
+  _timerSecs = EARN_INTERVAL;
+  drawRing();
+}
+
+// ═══ EARN MODAL ═══
+function openEarn() {
+  if (!_user) { $('authOv').classList.remove('hidden'); return; }
+  refreshBalance();
+  $('earnModal').classList.add('open');
+}
+function closeEarn() { $('earnModal').classList.remove('open'); }
+
+async function refreshBalance() {
+  const data = await api('/points/balance');
+  if (data.points !== undefined) {
+    _points = data.points;
+    updateUI();
+  }
+}
+
+// ═══ SMART OFFER CLAIM (server-validated) ═══
+async function claimSmartOffer() {
+  if (!_user) { $('authOv').classList.remove('hidden'); return; }
+  if (_hlCoolLeft > 0) { showToast('Wait ' + fmtT(_hlCoolLeft)); return; }
+  
+  const data = await api('/points/claim/smart-offer', { method: 'POST' });
+  
+  if (data.error) {
+    if (data.cooldownLeft) {
+      startOfferCooldown(data.cooldownLeft);
+    }
+    showToast(data.error, '#ff6b6b');
+    return;
+  }
+  
+  _points = data.points;
+  updateUI();
+  showToast('+' + data.amount + ' pts! \\uD83C\\uDF89', '#a855f7');
+  if (data.cooldown) startOfferCooldown(data.cooldown);
+}
+
+function startOfferCooldown(secs) {
+  _hlCoolLeft = secs;
+  const card = $('smartOfferCard');
+  const name = $('smartOfferName');
+  if (card) card.style.opacity = '.6';
+  
+  clearInterval(_hlCoolTimer);
+  _hlCoolTimer = setInterval(() => {
+    _hlCoolLeft--;
+    const fill = $('smartFill');
+    if (fill) fill.style.width = ((_hlCoolLeft / 300) * 100) + '%';
+    if (name) name.textContent = 'Ready in ' + fmtT(_hlCoolLeft);
+    if (_hlCoolLeft <= 0) {
+      clearInterval(_hlCoolTimer);
+      if (card) card.style.opacity = '1';
+      if (name) name.textContent = 'Smart Link \\u2014 Earn 50 pts';
+      if (fill) fill.style.width = '100%';
+    }
+  }, 1000);
+}
+
+// ═══ AD WATCH CLAIM (server-validated) ═══
+async function claimAdWatch() {
+  if (!_user) { $('authOv').classList.remove('hidden'); return; }
+  
+  const data = await api('/points/claim/ad-watch', { method: 'POST' });
+  
+  if (data.error) { showToast(data.error, '#ff6b6b'); return; }
+  
+  _points = data.points;
+  updateUI();
+  showToast('+' + data.amount + ' pts! \\uD83C\\uDF89', '#fbbf24');
+}
+
+// ═══ LEADERBOARD ═══
+function openLB() { $('lbModal').classList.add('open'); loadLB(); }
+function closeLB() { $('lbModal').classList.remove('open'); }
+
+async function loadLB() {
+  const body = $('lbBody');
+  body.innerHTML = '<div style="text-align:center;color:var(--muted);padding:1.5rem">Loading...</div>';
+  
+  const data = await api('/leaderboard');
+  if (!data.leaderboard?.length) {
+    body.innerHTML = '<div style="text-align:center;color:var(--muted);padding:1.5rem">No users yet</div>';
+    return;
+  }
+  
+  const medals = ['\\uD83E\\uDD47','\\uD83E\\uDD48','\\uD83E\\uDD49'];
+  body.innerHTML = data.leaderboard.map((r, i) => {
+    const isMe = _user && r.name === _user.name;
+    return '<div class="lb-row" style="' + (isMe ? 'background:rgba(255,42,74,.08)' : '') + '">' +
+      '<div class="lb-rank" style="color:' + (i===0?'#fbbf24':i===1?'#94a3b8':i===2?'#cd7c37':'#fff') + '">' + (medals[i] || (i+1)) + '</div>' +
+      '<div class="lb-av">' + r.initial + '</div>' +
+      '<div class="lb-name">' + escHtml(r.name) + (isMe ? ' (You)' : '') + '</div>' +
+      '<div class="lb-pts">' + r.points + ' pts</div></div>';
+  }).join('');
+}
+
+// ═══ WITHDRAW ═══
+function openWithdraw() {
+  if (!_user) { $('authOv').classList.remove('hidden'); return; }
+  refreshBalance();
+  $('wModal').classList.add('open');
+  const ok = $('wOK'); if(ok) ok.style.display = 'none';
+  document.querySelector('.w-submit').style.display = '';
+}
+function closeWithdraw() { $('wModal').classList.remove('open'); }
+
+function calcWithdraw() {
+  const v = parseInt($('wAmt').value) || 0;
+  $('wCalc').textContent = v ? v + ' pts = $' + (v / 1000).toFixed(2) : '';
+}
+
+async function submitWithdraw() {
+  const amount = parseInt($('wAmt').value) || 0;
+  const method = $('wMethod').value;
+  const address = ($('wAddr').value || '').trim();
+  const err = $('wErr');
+  
+  if (!method || !address || amount < 5000) { err.textContent = 'Fill all fields correctly'; return; }
+  
+  const data = await api('/withdraw', {
+    method: 'POST',
+    body: JSON.stringify({ amount, method, address })
+  });
+  
+  if (data.error) { err.textContent = data.error; return; }
+  
+  err.textContent = '';
+  _points = data.remainingPoints;
+  updateUI();
+  $('wOK').style.display = 'block';
+  document.querySelector('.w-submit').style.display = 'none';
+  showToast('Withdrawal submitted! \\u2705');
+}
+
+// ═══ SHARE ═══
+function shareVid(vid) {
+  const url = 'https://youtu.be/' + vid;
+  if (navigator.share) navigator.share({ title: 'WinTube', url }).catch(() => {});
+  else navigator.clipboard.writeText(url).then(() => showToast('Copied! \\u2705'));
+}
+
+// ═══ NAV ═══
+function navTo(tab) {
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  if (tab === 'home') {
+    $('navHome').classList.add('active');
+    if (_isSearch) clearSearch();
+  }
+}
+
+// ═══ UTILS ═══
+function showToast(msg, color) {
+  const t = $('toast'); if(!t) return;
+  t.textContent = msg;
+  if (color) t.style.borderColor = color + '44';
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2000);
+}
+
+function fmtT(s) { const m = Math.floor(s/60), sec = s%60; return m + ':' + (sec<10?'0':'') + sec; }
+
+function copyRef() {
+  const v = $('refInp').value;
+  if (v) navigator.clipboard.writeText(v).then(() => showToast('Copied! \\u2705'));
+}
+
+// ═══ VISIBILITY ═══
+document.addEventListener('visibilitychange', () => {
+  if (document.hidden) { _playing = false; }
+  else { if (_user) refreshBalance(); }
+});
+
+// ═══ INIT ═══
+checkSession();
+loadFeed();
+
+// ═══ EXPOSE PUBLIC API ═══
+window.WT = {
+  switchTab, doLogin, doRegister, closeAuth, onUserClick,
+  doSearch, clearSearch, shareVid, navTo,
+  openEarn, closeEarn, claimSmartOffer, claimAdWatch,
+  openLB, closeLB, openWithdraw, closeWithdraw,
+  calcWithdraw, submitWithdraw, copyRef, logout,
+};
+
+})();
+</script>
+</body>
+</html>`;
+}
+
+export default app;
