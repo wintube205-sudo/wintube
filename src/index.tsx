@@ -363,7 +363,6 @@ let _activeSlide = null;
 let _feedToken = '';
 let _isSearch = false;
 let _loading = false;
-let _scrollTimer = null;
 let _hlCoolLeft = 0;
 let _hlCoolTimer = null;
 
@@ -589,13 +588,16 @@ function appendSlides(items, isShort) {
       '</div>';
     
     feed.appendChild(slide);
-    
-    // Lazy load: observe last item
+
+    // Register slide with play/pause observer
+    observeSlide(slide);
+
+    // Lazy load: observe last item to fetch next page
     if (idx === items.length - 1 && _feedToken) {
-      const obs = new IntersectionObserver(entries => {
-        if (entries[0].isIntersecting) { obs.disconnect(); loadFeed(_feedToken); }
+      const lazyObs = new IntersectionObserver(entries => {
+        if (entries[0].isIntersecting) { lazyObs.disconnect(); loadFeed(_feedToken); }
       }, { threshold: 0.5 });
-      obs.observe(slide);
+      lazyObs.observe(slide);
     }
   });
 }
@@ -608,37 +610,56 @@ function escHtml(s) {
   return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 
-// ═══ SCROLL / SNAP ═══
-$('feed').addEventListener('scroll', function() {
-  clearTimeout(_scrollTimer);
-  _scrollTimer = setTimeout(onSnapChange, 200);
-});
+// ═══ YOUTUBE IFRAME CONTROL VIA postMessage ═══
+function ytCmd(iframe, func) {
+  try {
+    iframe.contentWindow.postMessage(
+      JSON.stringify({ event: 'command', func: func, args: [] }), '*'
+    );
+  } catch(e) {}
+}
 
-function onSnapChange() {
-  const feed = $('feed');
-  const slides = feed.querySelectorAll('.slide');
-  const midY = feed.scrollTop + feed.clientHeight / 2;
-  let closest = null, closestDist = Infinity;
-  slides.forEach(s => {
-    const dist = Math.abs(s.offsetTop + s.offsetHeight / 2 - midY);
-    if (dist < closestDist) { closestDist = dist; closest = s; }
-  });
-  if (closest && closest.dataset.vid) onSlideEnter(closest);
+// ═══ INTERSECTION OBSERVER — Play ≥50% / Pause <50% ═══
+let _slideObserver = null;
+
+function initSlideObserver() {
+  _slideObserver = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      const slide = entry.target;
+      const iframe = slide.querySelector('iframe');
+      if (entry.intersectionRatio >= 0.5) {
+        if (iframe) ytCmd(iframe, 'playVideo');
+        onSlideEnter(slide);
+      } else {
+        if (iframe) ytCmd(iframe, 'pauseVideo');
+        onSlideLeave(slide);
+      }
+    });
+  }, { root: $('feed'), threshold: 0.5 });
+}
+
+function observeSlide(slide) {
+  if (_slideObserver) _slideObserver.observe(slide);
+}
+
+function onSlideLeave(slide) {
+  if (_activeSlide !== slide) return;
+  stopTimer();
+  _playing = false;
 }
 
 async function onSlideEnter(slide) {
   if (_activeSlide === slide) return;
-  if (_activeSlide) stopTimer();
   _activeSlide = slide;
-  
+
   if (!_user) return;
-  
+
   // Start watch session on server
   const data = await api('/points/watch/start', {
     method: 'POST',
     body: JSON.stringify({ videoId: slide.dataset.vid })
   });
-  
+
   if (data.sessionId) {
     _watchSessionId = data.sessionId;
     _playing = true;
@@ -865,6 +886,7 @@ document.addEventListener('visibilitychange', () => {
 });
 
 // ═══ INIT ═══
+initSlideObserver();
 checkSession();
 loadFeed();
 
