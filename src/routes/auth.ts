@@ -5,6 +5,17 @@ import { CONFIG } from '../lib/types';
 import { hashPassword, verifyPassword, generateToken, generateId, generateRefCode } from '../lib/crypto';
 import { checkRateLimit } from '../lib/rateLimit';
 
+// ═══ GOOGLE OAUTH HELPER ═══
+const GOOGLE_AUTH_URL = 'https://accounts.google.com/o/oauth2/v2/auth';
+const GOOGLE_TOKEN_URL = 'https://oauth2.googleapis.com/token';
+const GOOGLE_USERINFO_URL = 'https://www.googleapis.com/oauth2/v3/userinfo';
+
+function getRedirectUri(req: Request): string {
+  const host = req.headers.get('host') || '';
+  const proto = req.headers.get('x-forwarded-proto') || 'https';
+  return `${proto}://${host}/api/auth/google/callback`;
+}
+
 const auth = new Hono<HonoEnv>();
 
 // ═══ REGISTER ═══
@@ -130,6 +141,123 @@ auth.post('/login', async (c) => {
     },
     token: session.token,
   });
+});
+
+// ═══ GOOGLE OAUTH — REDIRECT ═══
+auth.get('/google', async (c) => {
+  const clientId = c.env.GOOGLE_CLIENT_ID;
+  if (!clientId) return c.json({ error: 'Google auth not configured' }, 500);
+
+  const state = generateToken(16);
+  const redirectUri = getRedirectUri(c.req.raw);
+
+  const params = new URLSearchParams({
+    client_id: clientId,
+    redirect_uri: redirectUri,
+    response_type: 'code',
+    scope: 'openid email profile',
+    state,
+    access_type: 'online',
+    prompt: 'select_account',
+  });
+
+  const res = c.redirect(`${GOOGLE_AUTH_URL}?${params.toString()}`);
+  res.headers.set('Set-Cookie', `g_state=${state}; HttpOnly; SameSite=Lax; Path=/; Max-Age=600`);
+  return res;
+});
+
+// ═══ GOOGLE OAUTH — CALLBACK ═══
+auth.get('/google/callback', async (c) => {
+  const code = c.req.query('code');
+  const state = c.req.query('state');
+  const cookieHeader = c.req.header('cookie') || '';
+  const cookieState = cookieHeader.match(/g_state=([^;]+)/)?.[1];
+
+  if (!code) return c.html('<script>window.location="/";alert("Google login cancelled")</script>');
+  if (state && cookieState && state !== cookieState) {
+    return c.html('<script>window.location="/";alert("Invalid state")</script>');
+  }
+
+  const clientId = c.env.GOOGLE_CLIENT_ID;
+  const clientSecret = c.env.GOOGLE_CLIENT_SECRET;
+  const redirectUri = getRedirectUri(c.req.raw);
+
+  // Exchange code for token
+  const tokenRes = await fetch(GOOGLE_TOKEN_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: new URLSearchParams({
+      code, client_id: clientId, client_secret: clientSecret,
+      redirect_uri: redirectUri, grant_type: 'authorization_code',
+    }),
+  });
+
+  const tokenData = await tokenRes.json<{ access_token?: string; error?: string }>();
+  if (!tokenData.access_token) {
+    return c.html('<script>window.location="/";alert("Google login failed")</script>');
+  }
+
+  // Get user info
+  const userRes = await fetch(GOOGLE_USERINFO_URL, {
+    headers: { Authorization: `Bearer ${tokenData.access_token}` },
+  });
+  const gUser = await userRes.json<{ sub?: string; name?: string; email?: string; picture?: string }>();
+
+  if (!gUser.email || !gUser.sub) {
+    return c.html('<script>window.location="/";alert("Could not get Google profile")</script>');
+  }
+
+  const db = c.env.DB;
+  const email = gUser.email.toLowerCase();
+  const name = gUser.name || email.split('@')[0];
+
+  // Find or create user
+  let user = await db.prepare(
+    'SELECT * FROM users WHERE email = ?'
+  ).bind(email).first<{ id: number; uid: string; name: string; email: string; points: number; ref_code: string; is_banned: number }>();
+
+  let isNew = false;
+  if (!user) {
+    isNew = true;
+    const uid = generateId();
+    const refCode = generateRefCode(uid);
+    const result = await db.prepare(
+      `INSERT INTO users (uid, name, email, auth_provider, points, ref_code, avatar_url)
+       VALUES (?, ?, ?, 'google', ?, ?, ?)`
+    ).bind(uid, name, email, CONFIG.SIGNUP_BONUS, refCode, gUser.picture || null).run();
+    const userId = result.meta.last_row_id as number;
+    await db.prepare(
+      `INSERT INTO point_transactions (user_id, amount, type, description) VALUES (?, ?, 'signup_bonus', 'Welcome bonus')`
+    ).bind(userId, CONFIG.SIGNUP_BONUS).run();
+    user = await db.prepare('SELECT * FROM users WHERE id = ?').bind(userId)
+      .first<{ id: number; uid: string; name: string; email: string; points: number; ref_code: string; is_banned: number }>();
+  } else {
+    // Update avatar if from Google
+    await db.prepare('UPDATE users SET avatar_url = ?, auth_provider = ?, updated_at = datetime(\'now\') WHERE id = ?')
+      .bind(gUser.picture || null, 'google', user.id).run();
+  }
+
+  if (!user || user.is_banned) {
+    return c.html('<script>window.location="/";alert("Account suspended")</script>');
+  }
+
+  const session = await createSession(db, user.id, c.req.raw);
+
+  // Redirect to frontend with token in hash (never in query string)
+  const payload = encodeURIComponent(JSON.stringify({
+    token: session.token,
+    user: { uid: user.uid, name: user.name, email: user.email, points: user.points, refCode: user.ref_code },
+    isNew,
+  }));
+
+  return c.html(`<!DOCTYPE html><html><head><meta charset="UTF-8"></head><body><script>
+    try {
+      const d = JSON.parse(decodeURIComponent("${payload}"));
+      localStorage.setItem('wt_token', d.token);
+      localStorage.setItem('wt_google_login', JSON.stringify(d));
+    } catch(e) {}
+    window.location.replace('/');
+  </script></body></html>`);
 });
 
 // ═══ LOGOUT ═══

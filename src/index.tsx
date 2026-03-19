@@ -126,6 +126,11 @@ html,body{height:100%;overflow:hidden;background:#000;font-family:'Inter',sans-s
 .submit-btn:active{opacity:.85}
 .submit-btn:disabled{opacity:.45;cursor:not-allowed}
 .err{color:#ff6b6b;font-size:.78rem;margin-top:8px;text-align:center;min-height:1em}
+.google-btn{width:100%;display:flex;align-items:center;justify-content:center;gap:10px;background:#fff;color:#222;border:none;padding:11px 14px;border-radius:12px;font-family:'Inter',sans-serif;font-size:.9rem;font-weight:700;cursor:pointer;margin-bottom:10px;transition:opacity .15s}
+.google-btn:active{opacity:.85}
+.google-btn svg{width:20px;height:20px;flex-shrink:0}
+.auth-divider{display:flex;align-items:center;gap:8px;margin:10px 0;color:rgba(255,255,255,.25);font-size:.72rem}
+.auth-divider::before,.auth-divider::after{content:'';flex:1;height:1px;background:rgba(255,255,255,.1)}
 
 /* ═══ MODALS ═══ */
 .modal-bg{position:fixed;inset:0;z-index:8000;background:rgba(0,0,0,.85);backdrop-filter:blur(16px);display:none;align-items:flex-end;justify-content:center}
@@ -181,6 +186,11 @@ html,body{height:100%;overflow:hidden;background:#000;font-family:'Inter',sans-s
     <div class="auth-logo"><span class="w">WIN</span><span class="t">TUBE</span></div>
     <div class="auth-sub">Watch & Earn real rewards</div>
     <div class="bonus-chip">&#127873; Get <strong style="margin:0 3px;">100 pts</strong> on sign-up</div>
+    <a class="google-btn" href="/api/auth/google">
+      <svg viewBox="0 0 48 48"><path fill="#FFC107" d="M43.6 20.2H42V20H24v8h11.3C33.7 32.7 29.3 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.1 7.9 2.9l5.7-5.7C34.5 6.5 29.6 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.6-.4-3.8z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.9C14.7 16 19 13 24 13c3.1 0 5.8 1.1 7.9 2.9l5.7-5.7C34.5 6.5 29.6 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-1.9 13.4-5.1l-6.2-5.2C29.2 35.5 26.7 36 24 36c-5.3 0-9.7-3.3-11.3-8H6.1C9.5 35.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.2H42V20H24v8h11.3c-.8 2.3-2.3 4.2-4.2 5.7l6.2 5.2C37 37.3 44 32 44 24c0-1.3-.1-2.6-.4-3.8z"/></svg>
+      Continue with Google
+    </a>
+    <div class="auth-divider">or</div>
     <div class="tabs">
       <button class="tab-btn active" id="tabL" onclick="WT.switchTab('login')">Sign In</button>
       <button class="tab-btn" id="tabR" onclick="WT.switchTab('register')">Sign Up</button>
@@ -220,7 +230,7 @@ html,body{height:100%;overflow:hidden;background:#000;font-family:'Inter',sans-s
       <circle class="ring-bg" cx="13" cy="13" r="11"/>
       <circle class="ring-fill" id="ringFill" cx="13" cy="13" r="11"/>
     </svg>
-    <div class="ring-num" id="ringNum">30</div>
+    <div class="ring-num" id="ringNum">60</div>
   </div>
   <span class="pts-badge" id="ptsBadge">0 pts &#11088;</span>
 </div>
@@ -348,7 +358,7 @@ html,body{height:100%;overflow:hidden;background:#000;font-family:'Inter',sans-s
 'use strict';
 
 const API = '/api';
-const EARN_INTERVAL = 30;
+const EARN_INTERVAL = 60;
 const CIRC = 69;
 
 // ═══ STATE ═══
@@ -887,6 +897,25 @@ document.addEventListener('visibilitychange', () => {
 
 // ═══ INIT ═══
 initSlideObserver();
+
+// Handle Google OAuth return
+(function handleGoogleReturn() {
+  try {
+    const raw = localStorage.getItem('wt_google_login');
+    if (!raw) return;
+    localStorage.removeItem('wt_google_login');
+    const d = JSON.parse(raw);
+    if (!d || !d.token || !d.user) return;
+    _token = d.token;
+    _user = d.user;
+    _points = d.user.points;
+    localStorage.setItem('wt_token', _token);
+    updateUI();
+    $('authOv').classList.add('hidden');
+    showToast(d.isNew ? '+100 pts welcome bonus! \u2728' : 'Welcome back! \u2728');
+  } catch(e) {}
+})();
+
 checkSession();
 loadFeed();
 

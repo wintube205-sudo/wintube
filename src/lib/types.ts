@@ -4,6 +4,8 @@ export type Bindings = {
   YT_API_KEY: string;
   JWT_SECRET: string;
   ADMIN_UIDS: string;
+  GOOGLE_CLIENT_ID: string;
+  GOOGLE_CLIENT_SECRET: string;
 };
 
 export type Variables = {
@@ -79,7 +81,7 @@ export interface WithdrawalRow {
 // Config constants (server-side only)
 export const CONFIG = {
   SIGNUP_BONUS: 100,
-  EARN_INTERVAL_SECS: 30,
+  EARN_INTERVAL_SECS: 60,
   POINTS_PER_WATCH: 1,
   SMART_OFFER_POINTS: 50,
   SMART_OFFER_COOLDOWN_SECS: 300,
