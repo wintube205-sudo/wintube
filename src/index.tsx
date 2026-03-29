@@ -457,14 +457,15 @@ html,body{height:100%;overflow:hidden;background:#000;font-family:'Inter',sans-s
 
 <!-- INTERSTITIAL AD -->
 <div class="interstitial-bg" id="interstitialBg">
-  <div class="interstitial-skip" id="interstitialSkip" onclick="WT.closeInterstitial()">
+  <div class="interstitial-skip" id="interstitialSkip" onclick="WT.closeInterstitial()" style="pointer-events:none;opacity:.4">
     <span id="interstitialCount">5</span> Skip &#8594;
   </div>
-  <div style="text-align:center;margin-bottom:16px;font-size:.72rem;color:rgba(255,255,255,.4)">Advertisement</div>
+  <div style="text-align:center;margin-bottom:10px;font-size:.7rem;color:rgba(255,255,255,.35);letter-spacing:.05em">ADVERTISEMENT</div>
   <div class="interstitial-ad" id="interstitialAd">
-    <div style="text-align:center;color:#444;font-size:.85rem;padding:20px">
+    <video id="vastVideo" style="width:100%;max-height:62vh;background:#000;display:none" playsinline></video>
+    <div id="vastLoading" style="text-align:center;color:#555;font-size:.85rem;padding:32px">
       <div style="font-size:2rem;margin-bottom:8px">&#128250;</div>
-      Ad Space — Configure your ad provider
+      Loading ad...
     </div>
   </div>
 </div>
@@ -839,9 +840,9 @@ async function onSlideEnter(slide) {
   if (_activeSlide === slide) return;
   _activeSlide = slide;
 
-  // Show interstitial every 5 videos
+  // Show interstitial every 4 videos
   _videoCount++;
-  if (_videoCount > 0 && _videoCount % 5 === 0) {
+  if (_videoCount > 0 && _videoCount % 4 === 0) {
     showInterstitial();
   }
 
@@ -1049,30 +1050,73 @@ function shareVid(vid) {
 }
 
 // ═══ INTERSTITIAL AD ═══
-function showInterstitial() {
+async function showInterstitial() {
   const bg = $('interstitialBg');
   if (!bg) return;
   bg.classList.add('open');
-  let count = 5;
+
   const countEl = $('interstitialCount');
   const skipEl = $('interstitialSkip');
-  if(countEl) countEl.textContent = count;
-  if(skipEl) skipEl.style.opacity = '.4';
+  const vid = $('vastVideo');
+  const loadingEl = $('vastLoading');
 
+  // Reset state
+  let count = 5;
+  if (countEl) countEl.textContent = String(count);
+  if (skipEl) { skipEl.style.opacity = '.4'; skipEl.style.pointerEvents = 'none'; }
+  if (vid) { vid.style.display = 'none'; vid.src = ''; }
+  if (loadingEl) loadingEl.style.display = '';
+
+  // Countdown (enables skip after 5s)
   clearInterval(_interstitialTimer);
   _interstitialTimer = setInterval(() => {
     count--;
-    if(countEl) countEl.textContent = count;
+    if (countEl) countEl.textContent = count > 0 ? String(count) : '\\u2713';
     if (count <= 0) {
       clearInterval(_interstitialTimer);
-      if(skipEl) skipEl.style.opacity = '1';
+      if (skipEl) { skipEl.style.opacity = '1'; skipEl.style.pointerEvents = 'auto'; }
     }
   }, 1000);
+
+  // Fetch and parse VAST
+  try {
+    const vastRes = await fetch('https://vast.yomeno.xyz/vast?spot_id=1486075');
+    const vastXml = await vastRes.text();
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(vastXml, 'text/xml');
+
+    // Find best MediaFile (prefer mp4)
+    const mediaFiles = Array.from(doc.querySelectorAll('MediaFile'));
+    let mediaSrc = '';
+    for (const mf of mediaFiles) {
+      const t = (mf.getAttribute('type') || '').toLowerCase();
+      if (t.includes('mp4') || t.includes('video/mp4')) { mediaSrc = (mf.textContent || '').trim(); break; }
+    }
+    if (!mediaSrc && mediaFiles.length) mediaSrc = (mediaFiles[0].textContent || '').trim();
+
+    if (mediaSrc && vid) {
+      if (loadingEl) loadingEl.style.display = 'none';
+      vid.style.display = '';
+      vid.src = mediaSrc;
+      vid.muted = false;
+      const playP = vid.play();
+      if (playP) playP.catch(() => { vid.muted = true; vid.play(); });
+      vid.onended = () => closeInterstitial();
+    }
+  } catch (e) {
+    // VAST failed — skip button already enabled after 5s
+    if (loadingEl) loadingEl.innerHTML = '<div style="font-size:2rem;margin-bottom:8px">&#128250;</div><div style="color:#555">Ad unavailable</div>';
+  }
 }
+
 function closeInterstitial() {
   const bg = $('interstitialBg');
   if (bg) bg.classList.remove('open');
   clearInterval(_interstitialTimer);
+  const vid = $('vastVideo');
+  if (vid) { vid.pause(); vid.src = ''; vid.style.display = 'none'; }
+  const loadingEl = $('vastLoading');
+  if (loadingEl) loadingEl.style.display = '';
 }
 
 // ═══ OFFERS ═══
