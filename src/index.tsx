@@ -480,7 +480,7 @@ html,body{height:100%;overflow:hidden;background:#000;font-family:'Inter',sans-s
 const API = '/api';
 const EARN_INTERVAL = 60;
 const CIRC = 69;
-const VIP_WALLET = 'TKxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'; // Set your USDT TRC20 wallet here
+const VIP_WALLET = 'TQovQSgQmL6YD9SCDWiMxqhPWC6VkTnVbv';
 
 // ═══ STATE ═══
 let _token = localStorage.getItem('wt_token') || '';
