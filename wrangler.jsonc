@@ -1,5 +1,4 @@
 {
-  "$schema": "node_modules/wrangler/config-schema.json",
   "name": "wintube",
   "compatibility_date": "2026-03-18",
   "pages_build_output_dir": "./dist",
@@ -10,5 +9,8 @@
       "database_name": "wintube-db",
       "database_id": "117e8017-b6f1-4c52-b30b-20b082454802"
     }
-  ]
+  ],
+  "vars": {
+    "VITE_YOUTUBE_API_KEY": "AIzaSyDNK9EJ5IQ2dFLBn1jUk1hslgOwwTBdvJ0"
+  }
 }
